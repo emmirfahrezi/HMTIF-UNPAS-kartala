@@ -3,9 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing.home');
 });
 
-Route::get('/home', function () {
-    return view('home');
+Route::get('/pengumuman', function () {
+    return view('landing.pengumuman');
+});
+
+Route::get('/detail-pengumuman', function () {
+    return view('landing.detail-pengumuman');
 });
