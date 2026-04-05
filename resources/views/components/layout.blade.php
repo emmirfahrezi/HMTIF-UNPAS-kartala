@@ -53,28 +53,7 @@
 
     <x-organisms.footer />
 
-    <!-- SCRIPT UNTUK SWAP GAMBAR -->
-    <script>
-        const bigBox = document.getElementById('bigPhoto');
-        const smallBoxes = document.querySelectorAll('.swap-box');
 
-        smallBoxes.forEach((box) => {
-            box.addEventListener('click', () => {
-                const smallImg = box.getAttribute('data-img');
-                if (!bigBox || !bigBox.style.backgroundImage) return;
-
-                const oldStyle = bigBox.style.backgroundImage;
-                const oldImgArr = oldStyle.match(/url\(["']?([^"']*)["']?\)/);
-                const oldBigImg = oldImgArr ? oldImgArr[1] : '';
-
-                bigBox.style.backgroundImage = `url('${smallImg}')`;
-
-                box.setAttribute('data-img', oldBigImg);
-                const imgEl = box.querySelector('img');
-                if (imgEl) imgEl.src = oldBigImg;
-            });
-        });
-    </script>
 </body>
 
 </html>

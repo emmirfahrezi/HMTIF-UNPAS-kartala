@@ -17,19 +17,19 @@
 
     <div class="container mx-auto px-6 relative z-10 text-center">
         @if($badge)
-            <span class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6 reveal reveal-up reveal-delay-1">
                 {{ $badge }}
             </span>
         @endif
 
         @if($title)
-            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
+            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter reveal reveal-up reveal-delay-2">
                 {{ $title }} @if($highlight)<span class="text-primary">{{ $highlight }}</span>@endif
             </h1>
         @endif
 
         @if($description)
-            <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">
+            <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed reveal reveal-up reveal-delay-3">
                 {{ $description }}
             </p>
         @endif
