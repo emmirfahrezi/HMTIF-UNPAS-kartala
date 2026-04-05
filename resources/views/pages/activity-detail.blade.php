@@ -1,4 +1,9 @@
-<x-layout title="Detail Kegiatan" :transparent="false">
+<x-layout 
+    title="Detail Kegiatan | HMTIF UNPAS" 
+    description="Lihat rincian lengkap kegiatan HMTIF UNPAS. Informasi waktu, lokasi, deskripsi acara, dan pendaftaran peserta untuk program kerja Informatika."
+    keywords="Detail Acara HMTIF, Info Kegiatan Informatika, Event Mahasiswa UNPAS"
+    :transparent="false"
+>
     {{-- Hero Section --}}
     <section class="relative pt-20 pb-6 overflow-hidden bg-white">
         <div class="absolute inset-0 z-0 opacity-10">
@@ -42,7 +47,7 @@
                 {{-- Main Image & Description --}}
                 <div class="lg:col-span-2 space-y-10">
                     <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-video border-8 border-white">
-                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846" alt="Main Activity" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846" alt="Poster Utama Kegiatan HMTIF UNPAS" class="w-full h-full object-cover">
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-body leading-relaxed space-y-6">

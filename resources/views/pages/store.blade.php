@@ -1,26 +1,36 @@
-<x-layout title="HMTIF Store" :transparent="false">
+<x-layout 
+    title="HMTIF Store | Official Merch" 
+    description="Dapatkan atribut resmi dan merchandise eksklusif HMTIF UNPAS. Dukung identitas almamater dengan produk berkualitas dari Niaga Kartala."
+    keywords="HMTIF Store, Merchandise Informatika, Jaket HMTIF, Atribut Teknik Informatika"
+    :transparent="false"
+>
+    <x-slot:head>
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@@type": "ListItem",
+                "position": 1,
+                "name": "Beranda",
+                "item": "{{ url('/') }}"
+            },{
+                "@@type": "ListItem",
+                "position": 2,
+                "name": "Niaga Kartala",
+                "item": "{{ url()->current() }}"
+            }]
+        }
+        </script>
+    </x-slot:head>
     {{-- Hero Section --}}
-    <section class="relative pt-28 pb-12 overflow-hidden bg-white">
-        <div class="absolute inset-0 z-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="currentColor" stroke-width="1"
-                    class="text-primary" />
-                <path d="M0 0 L100 100" stroke="currentColor" stroke-width="0.5" class="text-primary" />
-            </svg>
-        </div>
-        <div class="container mx-auto px-6 relative z-10 text-center">
-            <span
-                class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6">Official
-                Merch</span>
-            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
-                Niaga <span class="text-primary">Kartala</span>
-            </h1>
-            <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">
-                koleksi merchandise eksklusif dan atribut resmi hmtif unpas. teknik informatika progresif.
-            </p>
-        </div>
-    </section>
-
+    <x-molecules.sections.page-hero 
+        badge="Official Merchandise"
+        title="Niaga"
+        highlight="Kartala"
+        description="koleksi merchandise eksklusif dan atribut resmi hmtif unpas. teknik informatika progresif."
+    />
+    
     {{-- Category Strip --}}
     <section class="sticky top-[84px] z-30 bg-white/70 backdrop-blur-xl border-y border-gray-100 py-4 shadow-sm">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
@@ -43,6 +53,7 @@
     {{-- Product Grid --}}
     <section class="py-24 bg-section/30">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
+            <h2 class="sr-only">Daftar Produk</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach([
                     ['name' => 'Hoodie Kabinet Kartala 2024', 'price' => 'Rp 185.000', 'tag' => 'Best Seller', 'icon' => 'tag', 'desc' => 'Cotton Fleece Premium'],
@@ -70,7 +81,7 @@
 
                         {{-- Quick Action Overlay --}}
                         <div class="absolute inset-0 bg-primary-dark/80 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-30">
-                             <a href="/product-detail" class="px-8 py-3 bg-white text-primary rounded-lg text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                             <a href="/product-detail" class="px-8 py-3 bg-white text-primary rounded-lg text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500" aria-label="Lihat detail produk {{ $product['name'] }}">
                                 Lihat Produk
                              </a>
                         </div>
@@ -78,24 +89,33 @@
                     
                     <div class="p-6 flex flex-col flex-1">
                         <div class="flex flex-col gap-1 mb-4">
-                            <h3 class="font-bold text-heading text-lg group-hover:text-primary transition-colors line-clamp-1 leading-tight italic uppercase tracking-tighter">{{ $product['name'] }}</h3>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ $product['desc'] }}</p>
+                            <div class="relative">
+                                <div class="absolute inset-x-0 inset-y-1 bg-gray-50 animate-shimmer rounded-md"></div>
+                                <h3 class="relative z-10 font-bold text-heading text-lg group-hover:text-primary transition-colors line-clamp-1 leading-tight italic uppercase tracking-tighter">{{ $product['name'] }}</h3>
+                            </div>
+                            <div class="relative inline-block">
+                                <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
+                                <p class="relative z-10 text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ $product['desc'] }}</p>
+                            </div>
                         </div>
                         
                         <div class="mt-auto flex items-center justify-between gap-4">
                             <div class="flex flex-col">
                                 <span class="text-[10px] text-gray-400 uppercase font-black tracking-widest">Harga</span>
-                                <span class="text-primary font-black text-xl tracking-tighter">{{ $product['price'] }}</span>
+                                <div class="relative">
+                                    <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
+                                    <span class="relative z-10 text-primary font-black text-xl tracking-tighter">{{ $product['price'] }}</span>
+                                </div>
                             </div>
-                            <button class="w-12 h-12 rounded-lg bg-gray-50 text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm flex items-center justify-center border border-gray-100 hover:border-primary group/cart">
-                                <x-heroicon-o-shopping-cart class="size-6 transform group-hover/cart:scale-110 transition-transform" />
-                            </button>
+                                <button class="w-12 h-12 rounded-lg bg-gray-50 text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm flex items-center justify-center border border-gray-100 hover:border-primary group/cart" aria-label="Tambah {{ $product['name'] }} ke keranjang">
+                                    <x-heroicon-o-shopping-cart class="size-6 transform group-hover/cart:scale-110 transition-transform" aria-hidden="true" />
+                                </button>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
-
+            
             {{-- Custom Merchandise CTA --}}
             <div class="mt-20">
                 <div class="bg-primary-dark rounded-lg p-10 md:p-16 relative overflow-hidden shadow-2xl group border border-white/10">

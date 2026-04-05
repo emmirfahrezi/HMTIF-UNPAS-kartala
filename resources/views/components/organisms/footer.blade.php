@@ -4,7 +4,7 @@
             {{-- Brand Section --}}
             <div class="md:col-span-2 space-y-6">
                 <a href="/" class="flex items-center gap-3">
-                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=400" alt="Logo"
+                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=400" alt="Logo HMTIF UNPAS"
                         class="h-10 w-auto brightness-125" />
                     <h2 class="font-extrabold text-2xl tracking-tight text-white flex items-center gap-2">
                         HMTIF-UNPAS <span class="text-white/40 font-light prose-sm">|</span> <span
