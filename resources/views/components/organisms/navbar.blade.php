@@ -33,17 +33,17 @@
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
-            <a href="/pengurus"
-                class="relative text-sm/6 font-bold {{ request()->is('pengurus*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+            <a href="/staff"
+                class="relative text-sm/6 font-bold {{ request()->is('staff*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Pengurus
-                @if (request()->is('pengurus*'))
+                @if (request()->is('staff*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
-            <a href="/kegiatan"
-                class="relative text-sm/6 font-bold {{ request()->is('kegiatan*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+            <a href="/activities"
+                class="relative text-sm/6 font-bold {{ request()->is('activities*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Kegiatan
-                @if (request()->is('kegiatan*'))
+                @if (request()->is('activities*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
@@ -54,17 +54,17 @@
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
-            <a href="/pengumuman"
-                class="relative text-sm/6 font-bold {{ request()->is('pengumuman*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+            <a href="/announcements"
+                class="relative text-sm/6 font-bold {{ request()->is('announcements*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Pengumuman
-                @if (request()->is('pengumuman*'))
+                @if (request()->is('announcements*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
-            <a href="/aspirasi"
-                class="relative text-sm/6 font-bold {{ request()->is('aspirasi*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+            <a href="/aspirations"
+                class="relative text-sm/6 font-bold {{ request()->is('aspirations*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Aspirasi
-                @if (request()->is('aspirasi*'))
+                @if (request()->is('aspirations*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
@@ -103,11 +103,11 @@
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Beranda
                                 </a>
-                                <a href="/pengurus"
+                                <a href="/staff"
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Pengurus
                                 </a>
-                                <a href="/kegiatan"
+                                <a href="/activities"
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Kegiatan
                                 </a>
@@ -115,11 +115,11 @@
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors text-primary">
                                     Store
                                 </a>
-                                <a href="/pengumuman"
+                                <a href="/announcements"
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Pengumuman
                                 </a>
-                                <a href="/aspirasi"
+                                <a href="/aspirations"
                                     class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Aspirasi
                                 </a>

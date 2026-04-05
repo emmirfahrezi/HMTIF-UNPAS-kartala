@@ -98,6 +98,7 @@
                         <p class="text-white/80 text-sm mb-4 italic">Kirimkan aspirasimu melalui form resmi HMTIF UNPAS.
                         </p>
                         <x-atoms.button variant="outline"
+                            onclick="window.location.href='/aspirations'"
                             class="w-full border-white text-white hover:bg-white hover:text-primary py-2 text-sm">
                             Kirim Aspirasi
                         </x-atoms.button>
