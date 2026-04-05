@@ -1,6 +1,6 @@
 <x-layout title="Daftar Pengurus" :transparent="false">
     {{-- Hero Section --}}
-    <section class="relative pt-40 pb-24 overflow-hidden bg-white">
+    <section class="relative pt-28 pb-12 overflow-hidden bg-white">
         <div class="absolute inset-0 z-0 opacity-10">
             <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="currentColor" stroke-width="1"
@@ -12,7 +12,7 @@
             <span
                 class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6 uppercase">Informasi
                 Struktur</span>
-            <h1 class="text-4xl md:text-7xl font-black text-heading mb-6 uppercase italic tracking-tighter">
+            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
                 Kabinet <span class="text-primary">Kartala</span>
             </h1>
             <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">

@@ -22,11 +22,11 @@
                 Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui dedikasi dan kerja nyata.
             </p>
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <x-atoms.button variant="primary" class="px-8 py-3 text-base shadow-xl shadow-primary/30 w-full sm:w-auto transform hover:-translate-y-1 transition-all group">
+                <x-atoms.button variant="primary" onclick="window.location.href='/activities'" class="px-8 py-3 text-base shadow-xl shadow-primary/30 w-full sm:w-auto transform hover:-translate-y-1 transition-all group">
                     <span>Jelajahi Program</span>
                     <x-heroicon-o-rocket-launch class="size-5 group-hover:rotate-12 transition-transform" />
                 </x-atoms.button>
-                <x-atoms.button variant="outline" class="px-8 py-3 text-base border-white/40 text-white backdrop-blur-md hover:bg-white/10 w-full sm:w-auto transform hover:-translate-y-1 transition-all group rounded-lg">
+                <x-atoms.button variant="outline" onclick="window.location.href='/staff'" class="px-8 py-3 text-base border-white/40 text-white backdrop-blur-md hover:bg-white/10 w-full sm:w-auto transform hover:-translate-y-1 transition-all group rounded-lg">
                     <span>Tentang Kami</span>
                     <x-heroicon-o-information-circle class="size-5 group-hover:animate-bounce" />
                 </x-atoms.button>
@@ -238,7 +238,7 @@
                                 {{ $item['date'] }}
                             </div>
                             <h4 class="text-xl font-bold text-heading group-hover:text-primary transition-colors italic uppercase tracking-tighter mb-4">{{ $item['title'] }}</h4>
-                            <a href="/activities" class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all">
+                            <a href="/activity-detail" class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all">
                                 Detail Info
                                 <x-heroicon-o-chevron-right class="size-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                             </a>
@@ -290,7 +290,7 @@
                             <p class="text-sm text-gray-400 line-clamp-1">Klik untuk membaca rincian pengumuman secara lengkap...</p>
                         </div>
                         <div class="shrink-0">
-                            <a href="/announcements" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
+                            <a href="/announcement-detail" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
                                 <x-heroicon-o-arrow-right class="size-5" />
                             </a>
                         </div>

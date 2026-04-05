@@ -41,23 +41,23 @@
                 @endif
             </a>
             <a href="/activities"
-                class="relative text-sm/6 font-bold {{ request()->is('activities*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+                class="relative text-sm/6 font-bold {{ request()->is('activit*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Kegiatan
-                @if (request()->is('activities*'))
+                @if (request()->is('activit*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
             <a href="/store"
-                class="relative text-sm/6 font-bold {{ request()->is('store*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+                class="relative text-sm/6 font-bold {{ request()->is('store*', 'product*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Store
-                @if (request()->is('store*'))
+                @if (request()->is('store*', 'product*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
             <a href="/announcements"
-                class="relative text-sm/6 font-bold {{ request()->is('announcements*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
+                class="relative text-sm/6 font-bold {{ request()->is('announcement*') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Pengumuman
-                @if (request()->is('announcements*'))
+                @if (request()->is('announcement*'))
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
