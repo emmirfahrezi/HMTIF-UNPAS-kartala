@@ -1,6 +1,6 @@
 <x-layout title="HMTIF Store" :transparent="false">
     {{-- Hero Section --}}
-    <section class="relative pt-40 pb-24 overflow-hidden bg-white">
+    <section class="relative pt-28 pb-12 overflow-hidden bg-white">
         <div class="absolute inset-0 z-0 opacity-10">
             <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="currentColor" stroke-width="1"
@@ -12,7 +12,7 @@
             <span
                 class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6">Official
                 Merch</span>
-            <h1 class="text-4xl md:text-7xl font-black text-heading mb-6 uppercase italic tracking-tighter">
+            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
                 Niaga <span class="text-primary">Kartala</span>
             </h1>
             <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">
@@ -70,7 +70,7 @@
 
                         {{-- Quick Action Overlay --}}
                         <div class="absolute inset-0 bg-primary-dark/80 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-30">
-                             <a href="#" class="px-8 py-3 bg-white text-primary rounded-lg text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                             <a href="/product-detail" class="px-8 py-3 bg-white text-primary rounded-lg text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                                 Lihat Produk
                              </a>
                         </div>

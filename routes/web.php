@@ -26,6 +26,14 @@ Route::get('/announcement-detail', function () {
     return view('pages.announcement-detail');
 });
 
+Route::get('/activity-detail', function () {
+    return view('pages.activity-detail');
+});
+
+Route::get('/product-detail', function () {
+    return view('pages.product-detail');
+});
+
 Route::get('/aspirations', function () {
     return view('pages.aspirations');
 });

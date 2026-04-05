@@ -3,9 +3,11 @@
     'title' => 'Judul Pengumuman',
     'excerpt' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
     'date' => null,
+    'href' => '#',
 ])
 
-<div class="bg-white border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 group flex flex-col h-full">
+<div onclick="window.location.href='{{ $href }}'" 
+    class="bg-white border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 group flex flex-col h-full cursor-pointer">
     {{-- Thumbnail --}}
     <div class="relative overflow-hidden aspect-video">
         <img src="{{ $image }}" 
