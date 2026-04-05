@@ -12,7 +12,7 @@
     $classes = $alignClasses[$align] ?? $alignClasses['left'];
 @endphp
 
-<div class="flex flex-col {{ $classes }} gap-2 group">
+<div class="flex flex-col {{ $classes }} gap-2 group reveal reveal-up">
     <h2 {{ $attributes->merge(['class' => 'text-3xl md:text-4xl font-bold text-heading']) }}>
         {{ $slot }}
     </h2>

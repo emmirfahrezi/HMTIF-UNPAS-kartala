@@ -4,7 +4,7 @@
     'icon' => null,
 ])
 
-<div {{ $attributes->merge(['class' => 'bg-white p-8 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden']) }}>
+<div {{ $attributes->merge(['class' => 'bg-white p-8 rounded-2xl border border-border shadow-sm hover:shadow-xl transition-all duration-700 hover:-translate-y-2 relative overflow-hidden reveal reveal-up']) }}>
     {{-- Decorative Icon Background --}}
     @if($icon)
     <div class="absolute -right-4 -bottom-4 text-gray-50 group-hover:text-primary/5 transition-colors duration-500 transform group-hover:scale-110">

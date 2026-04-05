@@ -16,7 +16,7 @@
     };
 @endphp
 
-<div class="group relative overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-500 hover:-translate-y-3 border border-gray-100 hover:border-primary {{ $sizeClasses }}">
+<div class="group relative overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-700 hover:-translate-y-3 border border-gray-100 hover:border-primary reveal reveal-up {{ $sizeClasses }}">
     
     {{-- Intense Green Inner Shadow --}}
     <div class="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_80px_rgba(36,130,50,0.25)] ring-1 ring-inset ring-primary/5 group-hover:shadow-[inset_0_0_100px_rgba(36,130,50,0.4)] transition-all duration-700"></div>
