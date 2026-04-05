@@ -1,4 +1,9 @@
-<x-layout title="Detail Pengumuman" :transparent="false">
+<x-layout 
+    title="Detail Pengumuman | HMTIF UNPAS" 
+    description="Baca pengumuman resmi dan berita terbaru dari HMTIF UNPAS. Informasi terverifikasi mengenai akademik, organisasi, dan agenda penting."
+    keywords="Info Penting HMTIF, Warta Terbaru Informatika, Pengumuman Mahasiswa"
+    :transparent="false"
+>
     {{-- Hero Section --}}
     <section class="relative pt-20 pb-6 overflow-hidden bg-white">
         <div class="absolute inset-0 z-0 opacity-10">
@@ -42,7 +47,7 @@
                 {{-- Main Content --}}
                 <div class="lg:col-span-2 space-y-12">
                     <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[16/9] border-8 border-white bg-white">
-                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846" alt="Announcement Image" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846" alt="Thumbnail Pengumuman Resmi HMTIF UNPAS" class="w-full h-full object-cover">
                     </div>
                     
                     <div class="prose prose-lg max-w-none text-body leading-relaxed space-y-6">

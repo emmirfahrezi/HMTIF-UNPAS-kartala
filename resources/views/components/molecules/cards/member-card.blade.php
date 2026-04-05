@@ -23,9 +23,12 @@
 
 
             {{-- Member Image --}}
-    <div class="absolute inset-0 z-10 overflow-hidden">
+    <div class="absolute inset-0 z-10 overflow-hidden animate-shimmer">
         <img src="{{ $image }}" alt="{{ $name }}" 
-            class="h-full w-full object-cover object-top transition-all duration-1000 group-hover:scale-110">
+            class="relative h-full w-full object-cover object-top transition-all duration-1000 group-hover:scale-110"
+            loading="lazy"
+            width="400"
+            height="600">
         {{-- Elegant Fade Overlay --}}
     <div class="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent opacity-95 gr
            oup-hover:opacity-80 transition-opacity"></div>
@@ -42,10 +45,16 @@
     <div class="absolute inset-x-0 bottom-0 z-30 p-10">
         <div class="mb-3 flex items-center gap-3">
             <div class="h-[3px] w-10 bg-primary rounded-full transition-all duration-500 group-hover:w-16"></div>
-            <span class="text-xs font-black uppercase tracking-[0.3em] text-primary">{{ $position }}</span>
+            <div class="relative">
+                <div class="absolute inset-0 bg-gray-100 animate-shimmer rounded-md"></div>
+                <span class="relative z-10 text-xs font-black uppercase tracking-[0.3em] text-primary">{{ $position }}</span>
+            </div>
         </div>
-        <h3 class="font-black text-heading leading-none tracking-tighter italic {{ $textClasses }}">
-            {{ strtoupper($name) }}
-        </h3>
+        <div class="relative inline-block">
+            <div class="absolute inset-0 bg-gray-100 animate-shimmer rounded-lg translate-y-1"></div>
+            <h3 class="relative z-10 font-black text-heading leading-none tracking-tighter italic {{ $textClasses }}">
+                {{ strtoupper($name) }}
+            </h3>
+        </div>
     </div>
 </div>

@@ -1,23 +1,37 @@
-<x-layout title="Kirim Aspirasi" :transparent="false">
+<x-layout 
+    title="Kirim Aspirasi | HMTIF UNPAS" 
+    description="Sampaikan aspirasi, kritik, dan saran Anda untuk kemajuan HMTIF UNPAS. Suara mahasiswa Teknik Informatika sangat berarti bagi perbaikan kualitas organisasi."
+    keywords="Aspirasi Mahasiswa, Kritik Saran HMTIF, Suara Kartala, Teknik Informatika UNPAS"
+    :transparent="false"
+>
     {{-- Hero Section --}}
-    <section class="relative pt-28 pb-10 overflow-hidden bg-white">
-        <div class="absolute inset-0 z-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="currentColor" stroke-width="1"
-                    class="text-primary" />
-                <path d="M0 0 L100 100" stroke="currentColor" stroke-width="0.5" class="text-primary" />
-            </svg>
-        </div>
-        <div class="container mx-auto px-6 relative z-10 text-center">
-            <span
-                class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6 uppercase">Pusat
-                Aspirasi</span>
-            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
-                Suara <span class="text-primary">Kartala</span>
-            </h1>
-            <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">
-                pintu terbuka untuk ide, kritik, dan keluhan demi kemajuan bersama. teknik informatika progresif.
-            </p>
+    <x-molecules.sections.page-hero 
+        badge="Suara Mahasiswa"
+        title="Suara"
+        highlight="Kartala"
+        description="pintu terbuka untuk ide, kritik, dan keluhan demi kemajuan bersama. teknik informatika progresif."
+    />
+    
+    {{-- Track Aspiration (Mockup) --}}
+    <section class="py-12 bg-white relative">
+        <div class="mx-auto px-6 lg:px-8 max-w-4xl">
+            <div class="bg-primary-dark rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full opacity-10 -mr-32 -mt-32 blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-2xl font-black text-white italic uppercase tracking-tighter">Sudah Kirim <span class="text-primary-soft">Aspirasi?</span></h2>
+                        <p class="text-white/50 text-sm mt-2">Masukkan NIM kamu untuk memantau status tindak lanjut.</p>
+                    </div>
+                    <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+                         <input type="text" placeholder="Masukkan NIM kamu..." 
+                            class="px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all font-bold tracking-widest text-sm">
+                         <button class="px-8 py-4 bg-primary text-white rounded-2xl font-black text-sm hover:shadow-2xl hover:-translate-y-1 transition-all">
+                            Cek Status
+                         </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -46,6 +60,7 @@
                     </div>
 
                     <form action="#" method="POST" class="space-y-12">
+                        @csrf
                         {{-- Section 1: Identitas --}}
                         <div class="space-y-8">
                             <div class="flex items-center gap-3 mb-6">
@@ -136,4 +151,48 @@
             </div>
         </div>
     </div>
+    {{-- Weekly Aspiration Spotlight --}}
+    <section class="py-24 bg-white">
+        <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
+                <div class="max-w-2xl">
+                    <span class="inline-block px-4 py-1 bg-primary/10 rounded-full text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-4">Advokasi Kartala</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-heading italic uppercase tracking-tighter">Aspirasi <span class="text-primary underline decoration-primary/20">Pekan Ini</span></h2>
+                    <p class="text-gray-500 mt-6 text-lg">Topik-topik krusial yang sedang diperjuangkan oleh Tim Advokasi Himpunan berdasarkan suara terbanyak.</p>
+                </div>
+                <div class="shrink-0 flex items-center gap-3 px-6 py-3 bg-section rounded-2xl border border-border">
+                    <div class="w-3 h-3 rounded-full bg-red-500 animate-ping"></div>
+                    <span class="text-xs font-black text-heading uppercase tracking-widest italic">Live Advocacy Update</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach([
+                    ['title' => 'Perbaikan Fasilitas Lab', 'votes' => '124', 'status' => 'Sedang Diproses', 'icon' => 'server'],
+                    ['title' => 'Pengadaan Lisensi Software', 'votes' => '89', 'status' => 'Negosiasi Prodi', 'icon' => 'code-bracket'],
+                    ['title' => 'Beasiswa Internal Himpunan', 'votes' => '210', 'status' => 'Tahap Pengajuan', 'icon' => 'academic-cap'],
+                ] as $topik)
+                <div class="bg-section p-10 rounded-[3rem] border border-border hover:bg-white hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    <div class="flex items-center justify-between gap-4 mb-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl shadow-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all transform group-hover:rotate-12">
+                            <x-dynamic-component :component="'heroicon-o-' . $topik['icon']" class="size-7" />
+                        </div>
+                        <div class="text-right">
+                            <span class="text-3xl font-black text-heading tracking-tighter">{{ $topik['votes'] }}</span>
+                            <span class="text-[9px] text-gray-400 font-bold uppercase tracking-widest block">Suara Mendukung</span>
+                        </div>
+                    </div>
+
+                    <h4 class="text-2xl font-black text-heading mb-6 italic uppercase tracking-tighter group-hover:text-primary transition-colors leading-tight">{{ $topik['title'] }}</h4>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                        <span class="text-[10px] text-primary font-black uppercase tracking-widest">{{ $topik['status'] }}</span>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 </x-layout>

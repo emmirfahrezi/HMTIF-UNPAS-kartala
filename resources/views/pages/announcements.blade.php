@@ -1,4 +1,9 @@
-<x-layout title="Pengumuman" :transparent="false">
+<x-layout 
+    title="Pengumuman & Warta | HMTIF UNPAS" 
+    description="Pusat informasi resmi HMTIF UNPAS. Dapatkan update terbaru mengenai akademik, organisasi, dan berita penting lainnya bagi civitas Informatika."
+    keywords="Pengumuman HMTIF, Berita Informatika UNPAS, Warta Kartala, Info Akademik"
+    :transparent="false"
+>
     {{-- Hero Section --}}
     <section class="relative pt-28 pb-12 overflow-hidden bg-white">
         <div class="absolute inset-0 z-0 opacity-10">

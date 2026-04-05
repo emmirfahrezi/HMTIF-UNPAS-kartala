@@ -1,25 +1,35 @@
-<x-layout title="Daftar Pengurus" :transparent="false">
+<x-layout 
+    title="Daftar Pengurus | HMTIF UNPAS" 
+    description="Kenali jajaran pengurus HMTIF UNPAS Kabinet Kartala. Mengenal struktur organisasi, profil pimpinan, dan departemen yang bergerak untuk kemajuan Informatika."
+    keywords="Pengurus HMTIF, Struktur Organisasi HMTIF, Kabinet Kartala, Pimpinan HMTIF UNPAS"
+    :transparent="false"
+>
+    <x-slot:head>
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@@type": "ListItem",
+                "position": 1,
+                "name": "Beranda",
+                "item": "{{ url('/') }}"
+            },{
+                "@@type": "ListItem",
+                "position": 2,
+                "name": "Daftar Pengurus",
+                "item": "{{ url()->current() }}"
+            }]
+        }
+        </script>
+    </x-slot:head>
     {{-- Hero Section --}}
-    <section class="relative pt-28 pb-12 overflow-hidden bg-white">
-        <div class="absolute inset-0 z-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="currentColor" stroke-width="1"
-                    class="text-primary" />
-                <path d="M0 0 L100 100" stroke="currentColor" stroke-width="0.5" class="text-primary" />
-            </svg>
-        </div>
-        <div class="container mx-auto px-6 relative z-10 text-center">
-            <span
-                class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6 uppercase">Informasi
-                Struktur</span>
-            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
-                Kabinet <span class="text-primary">Kartala</span>
-            </h1>
-            <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">
-                membangun harmoni. menginspirasi perubahan. teknik informatika progresif.
-            </p>
-        </div>
-    </section>
+    <x-molecules.sections.page-hero 
+        badge="Informasi Struktur"
+        title="Kabinet"
+        highlight="Kartala"
+        description="membangun harmoni. menginspirasi perubahan. teknik informatika progresif."
+    />
 
     <div class="bg-white pt-10 pb-32">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">

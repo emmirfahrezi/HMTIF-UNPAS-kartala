@@ -1,23 +1,82 @@
-<x-layout title="Kegiatan & Program Kerja" :transparent="false">
+<x-layout 
+    title="Kegiatan & Program Kerja | HMTIF UNPAS" 
+    description="Jelajahi berbagai program kerja dan kegiatan inovatif HMTIF UNPAS. Dari kompetisi teknologi hingga pengabdian masyarakat untuk mahasiswa Informatika."
+    keywords="Kegiatan HMTIF, Proker HMTIF, Informatics Championship, Event Teknik Informatika"
+    :transparent="false"
+>
+    <x-slot:head>
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@@type": "ListItem",
+                "position": 1,
+                "name": "Beranda",
+                "item": "{{ url('/') }}"
+            },{
+                "@@type": "ListItem",
+                "position": 2,
+                "name": "Kegiatan",
+                "item": "{{ url()->current() }}"
+            }]
+        }
+        </script>
+    </x-slot:head>
     {{-- Hero Section --}}
-    <section class="relative pt-28 pb-12 overflow-hidden bg-white">
-        <div class="absolute inset-0 z-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="currentColor" stroke-width="1"
-                    class="text-primary" />
-                <path d="M0 0 L100 100" stroke="currentColor" stroke-width="0.5" class="text-primary" />
-            </svg>
-        </div>
-        <div class="container mx-auto px-6 relative z-10 text-center">
-            <span
-                class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6">Program
-                Kerja</span>
-            <h1 class="text-3xl md:text-5xl font-black text-heading mb-6 uppercase italic tracking-tighter">
-                Aksi <span class="text-primary">Kartala</span>
-            </h1>
-            <p class="text-body/40 max-w-2xl mx-auto text-lg lowercase tracking-widest font-light leading-relaxed">
-                eksplorasi rangkaian agenda dan inovasi program kerja hmtif unpas. teknik informatika progresif.
-            </p>
+    {{-- Hero Section --}}
+    <x-molecules.sections.page-hero 
+        badge="Informasi Program"
+        title="Aksi"
+        highlight="Kartala"
+        description="eksplorasi rangkaian agenda dan inovasi program kerja hmtif unpas. teknik informatika progresif."
+    />
+    
+    {{-- Upcoming Highlight Timeline --}}
+    <section class="py-16 bg-section/30 overflow-hidden">
+        <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
+            <div class="flex items-center gap-4 mb-10 overflow-hidden">
+                <span class="w-12 h-px bg-primary/20"></span>
+                <h2 class="text-xl font-black text-heading italic uppercase tracking-tighter">Timeline <span class="text-primary italic">Mendatang</span></h2>
+                <span class="flex-1 h-px bg-gray-100 italic font-black uppercase tracking-widest text-[10px]">Geser untuk melihat agenda >></span>
+            </div>
+
+            <div class="flex gap-6 overflow-x-auto pb-8 no-scrollbar -mx-4 px-4 snap-x snap-mandatory">
+                @foreach([
+                    ['month' => 'OKT', 'day' => '24', 'title' => 'Informatics Championship', 'status' => 'Main Event', 'color' => 'primary'],
+                    ['month' => 'NOV', 'day' => '05', 'title' => 'LDKM 2024: Kartala Generation', 'status' => 'Internal', 'color' => 'blue'],
+                    ['month' => 'DES', 'day' => '15', 'title' => 'Tech Talk: AI Evolution', 'status' => 'Webinar', 'color' => 'purple'],
+                    ['month' => 'JAN', 'day' => '12', 'title' => 'Informatics Care: Bakti Sosial', 'status' => 'Community', 'color' => 'red'],
+                ] as $timeline)
+                <div class="shrink-0 w-80 snap-center">
+                    <div class="group bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 w-32 h-32 bg-{{ $timeline['color'] == 'primary' ? 'primary' : $timeline['color'] . '-500' }}/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
+                         
+                         <div class="flex items-start justify-between mb-8">
+                             <div class="relative flex flex-col items-center">
+                                 <div class="absolute inset-x-0 -inset-y-1 bg-gray-50 animate-shimmer rounded-md"></div>
+                                 <span class="relative z-10 text-xs font-black text-primary uppercase tracking-widest">{{ $timeline['month'] }}</span>
+                                 <span class="relative z-10 text-4xl font-black text-heading tracking-tighter">{{ $timeline['day'] }}</span>
+                             </div>
+                             <span class="px-3 py-1 bg-gray-50 border border-gray-100 rounded-lg text-[9px] font-black uppercase tracking-widest text-gray-400 group-hover:bg-primary group-hover:text-white transition-all">
+                                 {{ $timeline['status'] }}
+                             </span>
+                         </div>
+                         
+                         <div class="flex flex-col gap-1 mb-4">
+                            <div class="relative">
+                                <div class="absolute inset-x-0 inset-y-1 bg-gray-50 animate-shimmer rounded-md"></div>
+                                <h2 class="relative z-10 font-bold text-heading text-lg group-hover:text-primary transition-colors line-clamp-1 leading-tight italic uppercase tracking-tighter">{{ $timeline['title'] }}</h2>
+                            </div>
+                         </div>
+                         <div class="flex items-center gap-2">
+                             <div class="w-2 h-2 rounded-full bg-{{ $timeline['color'] == 'primary' ? 'primary' : $timeline['color'] . '-500' }}"></div>
+                             <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest group-hover:text-gray-600 transition-colors">Terkonfirmasi</span>
+                         </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </section>
 
@@ -73,14 +132,23 @@
                     </div>
 
                     <div class="p-8 flex flex-col flex-1">
-                        <div class="flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-widest mb-3">
-                            <x-heroicon-s-calendar class="size-3" />
-                            {{ $item['date'] }}
+                        <div class="relative inline-flex items-center gap-2 mb-3">
+                            <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
+                            <div class="relative z-10 flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-widest leading-none">
+                                <x-heroicon-s-calendar class="size-3" />
+                                {{ $item['date'] }}
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-heading mb-4 group-hover:text-primary transition-colors leading-tight">{{ $item['title'] }}</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-1">
-                            Program strategis berskala {{ strtolower($item['type']) }} yang berfokus pada pengembangan mahasiswa Teknik Informatika UNPAS.
-                        </p>
+                        <div class="relative mb-4">
+                            <div class="absolute inset-x-0 inset-y-1 bg-gray-50 animate-shimmer rounded-md"></div>
+                            <h2 class="relative z-10 text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight">{{ $item['title'] }}</h2>
+                        </div>
+                        <div class="relative mb-6 flex-1">
+                            <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
+                            <p class="relative z-10 text-sm text-gray-500 leading-relaxed">
+                                Program strategis berskala {{ strtolower($item['type']) }} yang berfokus pada pengembangan mahasiswa Teknik Informatika UNPAS.
+                            </p>
+                        </div>
                         <a href="/activity-detail" class="inline-flex items-center gap-2 text-sm font-bold text-primary group/link">
                             <span class="relative">
                                 Selengkapnya

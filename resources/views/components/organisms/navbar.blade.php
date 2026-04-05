@@ -6,7 +6,7 @@
         <div class="flex lg:flex-1">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="p-2 transition-transform duration-300 group-hover:scale-110">
-                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600" alt="Logo"
+                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600" alt="Logo HMTIF UNPAS"
                         class="h-10 w-auto {{ $transparent ? 'filter grayscale brightness-200' : '' }}" id="nav-logo" />
                 </div>
                 <h1 class="font-extrabold text-xl tracking-tight {{ $transparent ? 'text-white' : 'text-gray-900' }} transition-colors duration-300"

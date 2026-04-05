@@ -1,7 +1,25 @@
-<x-layout title="Beranda" :transparent="true">
-    <x-slot:title>
-        Beranda
-    </x-slot:title>
+<x-layout 
+    title="Beranda | HMTIF UNPAS" 
+    description="Portal resmi HMTIF Universitas Pasundan Kabinet Kartala. Wadah aspirasi, informasi kegiatan, dan pengembangan potensi mahasiswa Teknik Informatika UNPAS."
+    keywords="HMTIF UNPAS, Teknik Informatika UNPAS, Kabinet Kartala, Universitas Pasundan, Himpunan Mahasiswa"
+    :transparent="true"
+>
+    <x-slot:head>
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Organization",
+            "name": "HMTIF UNPAS",
+            "url": "{{ url('/') }}",
+            "logo": "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600",
+            "description": "Himpunan Mahasiswa Teknik Informatika Universitas Pasundan Bandung.",
+            "sameAs": [
+                "https://www.instagram.com/hmtifunpas",
+                "https://github.com/hmtifunpas"
+            ]
+        }
+        </script>
+    </x-slot:head>
 
     <div
         class="relative isolate px-6 pt-14 mt-0 lg:px-8 min-h-screen flex items-center bg-[url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat z-0 transform">
@@ -58,11 +76,11 @@
                         <div class="absolute bottom-6 left-6 flex gap-3 p-3 bg-white/30 backdrop-blur-xl rounded-lg border border-white/40 shadow-lg">
                             <div class="swap-box w-14 h-14 rounded-lg cursor-pointer shadow-lg hover:scale-110 transition-all outline-none ring-2 ring-transparent hover:ring-primary overflow-hidden"
                                 data-img="https://images.unsplash.com/photo-1540575861501-7c00117fc9f3?q=80&w=900&auto=format&fit=crop">
-                                <img src="https://images.unsplash.com/photo-1540575861501-7c00117fc9f3?q=80&w=900&auto=format&fit=crop" class="w-full h-full object-cover" />
+                                <img src="https://images.unsplash.com/photo-1540575861501-7c00117fc9f3?q=80&w=900&auto=format&fit=crop" class="w-full h-full object-cover" alt="Suasana Kegiatan HMTIF" width="56" height="56" />
                             </div>
                             <div class="swap-box w-14 h-14 rounded-xl cursor-pointer shadow-inner hover:scale-110 transition-all outline-none ring-2 ring-transparent hover:ring-primary overflow-hidden"
                                 data-img="https://images.unsplash.com/photo-1522071823991-b9671f903f75?q=80&w=900&auto=format&fit=crop">
-                                <img src="https://images.unsplash.com/photo-1522071823991-b9671f903f75?q=80&w=900&auto=format&fit=crop" class="w-full h-full object-cover" />
+                                <img src="https://images.unsplash.com/photo-1522071823991-b9671f903f75?q=80&w=900&auto=format&fit=crop" class="w-full h-full object-cover" alt="Kolaborasi Mahasiswa Informatika" width="56" height="56" />
                             </div>
                         </div>
                     </div>
@@ -81,7 +99,7 @@
                 <div class="space-y-8">
                     <div>
                         <x-atoms.section-title>Identitas & Harapan</x-atoms.section-title>
-                        <h3 class="text-4xl font-extrabold text-heading mt-4 leading-tight">Himpunan Mahasiswa Teknik Informatika UNPAS</h3>
+                        <h2 class="text-4xl font-extrabold text-heading mt-4 leading-tight">Himpunan Mahasiswa Teknik Informatika UNPAS</h2>
                     </div>
                     <p class="text-gray-600 text-lg leading-relaxed">
                         HMTIF Universitas Pasundan bukan sekadar organisasi mahasiswa. Kami adalah laboratorium kehidupan, tempat di mana setiap mahasiswa Teknik Informatika menemukan potensi terbaiknya melalui kolaborasi, riset, dan semangat kekeluargaan yang telah terjaga selama puluhan tahun.
@@ -105,7 +123,7 @@
                 <div class="order-2 lg:order-1 space-y-8">
                     <div>
                         <x-atoms.section-title>Era Baru: Kartala</x-atoms.section-title>
-                        <h3 class="text-4xl font-extrabold text-heading mt-4 leading-tight uppercase italic tracking-tighter">Harmoni Dalam <span class="text-primary italic">Pergerakan Nyata</span></h3>
+                        <h2 class="text-4xl font-extrabold text-heading mt-4 leading-tight uppercase italic tracking-tighter">Harmoni Dalam <span class="text-primary italic">Pergerakan Nyata</span></h2>
                     </div>
                     <p class="text-gray-600 text-lg leading-relaxed">
                         Di bawah bendera <strong>Kabinet Kartala</strong>, kami berkomitmen untuk menghadirkan perubahan yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.
@@ -131,7 +149,13 @@
                 <!-- BAGIAN KANAN (FOTO) - URUTAN DIBALIK DI LAYOUT LG -->
                 <div class="order-1 lg:order-2 relative group">
                     <div class="absolute -inset-6 bg-primary-dark/5 rounded-full transform rotate-3 group-hover:rotate-0 transition-all duration-700 ease-out italic"></div>
-                    <div class="relative rounded-lg overflow-hidden shadow-2xl aspect-[4/3] bg-[url('https://images.unsplash.com/photo-1522071823991-b9671f903f75?auto=format&fit=crop&w=900&q=80')] bg-center bg-cover ring-1 ring-black/5 transform group-hover:scale-[1.02] transition-all duration-500">
+                    <div class="relative rounded-lg overflow-hidden shadow-2xl aspect-[4/3] transform group-hover:scale-[1.02] transition-all duration-500 animate-shimmer">
+                        <img src="https://images.unsplash.com/photo-1522071823991-b9671f903f75?auto=format&fit=crop&w=900&q=80" 
+                             alt="Kabinet Kartala Team" 
+                             class="relative w-full h-full object-cover" 
+                             loading="lazy"
+                             width="800"
+                             height="600">
                         <div class="absolute inset-0 bg-gradient-to-t from-primary-dark/40 to-transparent"></div>
                         <div class="absolute bottom-6 right-6">
                             <div class="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full text-white shadow-2xl">
@@ -146,7 +170,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 
@@ -207,9 +230,9 @@
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div class="max-w-2xl">
                     <x-atoms.section-title>Agenda Terdekat</x-atoms.section-title>
-                    <h3 class="text-3xl md:text-4xl font-extrabold text-heading mt-4 leading-tight uppercase italic tracking-tighter">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-heading mt-4 leading-tight uppercase italic tracking-tighter">
                         Jangan Lewatkan <span class="text-primary text-2xl md:text-4xl">Momentum Seru Kami</span>
-                    </h3>
+                    </h2>
                 </div>
                 <a href="/activities" class="group flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all">
                     Lihat Semua Kegiatan
@@ -224,8 +247,9 @@
                     ['title' => 'Abdi Masyarakat', 'date' => '15 Juli 2024', 'type' => 'Eksternal', 'image' => 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=2062&auto=format&fit=crop']
                 ] as $item)
                     <div class="group bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:-translate-y-2 transition-all duration-500">
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="{{ $item['image'] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="{{ $item['title'] }}">
+                        <div class="relative h-48 overflow-hidden animate-shimmer">
+                            <div class="absolute inset-0 animate-shimmer"></div>
+                            <img src="{{ $item['image'] }}" class="relative w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Poster Kegiatan: {{ $item['title'] }}" width="400" height="300">
                             <div class="absolute top-4 left-4">
                                 <span class="px-3 py-1 bg-white/90 backdrop-blur-md text-primary text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm border border-primary/10 italic">
                                     {{ $item['type'] }}
@@ -233,14 +257,22 @@
                             </div>
                         </div>
                         <div class="p-6">
-                            <div class="flex items-center gap-2 text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">
-                                <x-heroicon-o-calendar class="size-3" />
-                                {{ $item['date'] }}
+                            <div class="relative inline-flex items-center gap-2 mb-2">
+                                <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
+                                <div class="relative z-10 flex items-center gap-2 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
+                                    <x-heroicon-o-calendar class="size-3" />
+                                    {{ $item['date'] }}
+                                </div>
                             </div>
-                            <h4 class="text-xl font-bold text-heading group-hover:text-primary transition-colors italic uppercase tracking-tighter mb-4">{{ $item['title'] }}</h4>
-                            <a href="/activity-detail" class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all">
+                            <div class="relative">
+                                <div class="absolute inset-x-0 inset-y-1 bg-gray-50 animate-shimmer rounded-md"></div>
+                                <h3 class="relative z-10 text-xl font-bold text-heading group-hover:text-primary transition-colors italic uppercase tracking-tighter mb-4">
+                                    {{ $item['title'] }}
+                                </h3>
+                            </div>
+                            <a href="/activity-detail" class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all" aria-label="Lihat detail kegiatan {{ $item['title'] }}">
                                 Detail Info
-                                <x-heroicon-o-chevron-right class="size-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                                <x-heroicon-o-chevron-right class="size-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" aria-hidden="true" />
                             </a>
                         </div>
                     </div>
@@ -286,12 +318,12 @@
                                 </span>
                                 <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Terkonfirmasi</span>
                             </div>
-                            <h4 class="text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight mb-2 italic uppercase tracking-tighter">{{ $news['title'] }}</h4>
+                            <h3 class="text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight mb-2 italic uppercase tracking-tighter">{{ $news['title'] }}</h3>
                             <p class="text-sm text-gray-400 line-clamp-1">Klik untuk membaca rincian pengumuman secara lengkap...</p>
                         </div>
                         <div class="shrink-0">
-                            <a href="/announcement-detail" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
-                                <x-heroicon-o-arrow-right class="size-5" />
+                            <a href="/announcement-detail" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all" aria-label="Baca pengumuman: {{ $news['title'] }}">
+                                <x-heroicon-o-arrow-right class="size-5" aria-hidden="true" />
                             </a>
                         </div>
                     </div>

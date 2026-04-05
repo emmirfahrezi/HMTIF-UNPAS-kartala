@@ -1,4 +1,9 @@
-<x-layout title="Detail Produk" :transparent="false">
+<x-layout 
+    title="Detail Produk | HMTIF Store" 
+    description="Rincian produk resmi HMTIF UNPAS. Cek spesifikasi bahan, ukuran, dan harga merchandise eksklusif Kabinet Kartala. Pesan sekarang melalui WhatsApp."
+    keywords="Merchandise Informatika, Hoodie Kartala, Atribut HMTIF UNPAS, Jual Jaket Informatika"
+    :transparent="false"
+>
     {{-- Breadcrumb/Back Section --}}
     <section class="pt-20 pb-4 bg-white border-b border-gray-50">
         <div class="container mx-auto px-6">
