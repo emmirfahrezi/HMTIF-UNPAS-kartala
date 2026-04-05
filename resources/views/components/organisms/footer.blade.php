@@ -30,11 +30,11 @@
                 <h4 class="font-bold text-lg mb-6">Navigasi</h4>
                 <ul class="space-y-4 text-white/70">
                     <li><a href="/" class="hover:text-primary transition-colors">Beranda</a></li>
-                    <li><a href="/pengurus" class="hover:text-primary transition-colors">Pengurus</a></li>
-                    <li><a href="/kegiatan" class="hover:text-primary transition-colors">Kegiatan</a></li>
+                    <li><a href="/staff" class="hover:text-primary transition-colors">Pengurus</a></li>
+                    <li><a href="/activities" class="hover:text-primary transition-colors">Kegiatan</a></li>
                     <li><a href="/store" class="hover:text-primary transition-colors">Store</a></li>
-                    <li><a href="/pengumuman" class="hover:text-primary transition-colors">Pengumuman</a></li>
-                    <li><a href="/aspirasi" class="hover:text-primary transition-colors">Aspirasi</a></li>
+                    <li><a href="/announcements" class="hover:text-primary transition-colors">Pengumuman</a></li>
+                    <li><a href="/aspirations" class="hover:text-primary transition-colors">Aspirasi</a></li>
                 </ul>
             </div>
 

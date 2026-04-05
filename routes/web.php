@@ -6,31 +6,31 @@ Route::get('/', function () {
     return view('pages.home');
 });
 
-Route::get('/pengurus', function () {
-    return view('pages.pengurus');
+Route::get('/staff', function () {
+    return view('pages.staff');
 });
 
-Route::get('/kegiatan', function () {
-    return view('pages.kegiatan');
+Route::get('/activities', function () {
+    return view('pages.activities');
 });
 
 Route::get('/store', function () {
     return view('pages.store');
 });
 
-Route::get('/pengumuman', function () {
-    return view('pages.pengumuman');
+Route::get('/announcements', function () {
+    return view('pages.announcements');
 });
 
-Route::get('/detail-pengumuman', function () {
-    return view('pages.detail-pengumuman');
+Route::get('/announcement-detail', function () {
+    return view('pages.announcement-detail');
 });
 
-Route::get('/aspirasi', function () {
-    return view('pages.aspirasi');
+Route::get('/aspirations', function () {
+    return view('pages.aspirations');
 });
 
 // Dev/Styleguide
-Route::get('/dev/komponen', function () {
-    return view('dev.komponen');
+Route::get('/dev/components', function () {
+    return view('dev.components');
 });

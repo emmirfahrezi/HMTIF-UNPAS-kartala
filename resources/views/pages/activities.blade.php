@@ -81,7 +81,7 @@
                         <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-1">
                             Program strategis berskala {{ strtolower($item['type']) }} yang berfokus pada pengembangan mahasiswa Teknik Informatika UNPAS.
                         </p>
-                        <a href="/detail-kegiatan" class="inline-flex items-center gap-2 text-sm font-bold text-primary group/link">
+                        <a href="/activity-detail" class="inline-flex items-center gap-2 text-sm font-bold text-primary group/link">
                             <span class="relative">
                                 Selengkapnya
                                 <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/link:w-full transition-all duration-300"></span>

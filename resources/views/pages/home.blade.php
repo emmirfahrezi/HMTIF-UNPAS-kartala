@@ -211,7 +211,7 @@
                         Jangan Lewatkan <span class="text-primary text-2xl md:text-4xl">Momentum Seru Kami</span>
                     </h3>
                 </div>
-                <a href="/kegiatan" class="group flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all">
+                <a href="/activities" class="group flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all">
                     Lihat Semua Kegiatan
                     <x-heroicon-o-arrow-right class="size-5" />
                 </a>
@@ -238,7 +238,7 @@
                                 {{ $item['date'] }}
                             </div>
                             <h4 class="text-xl font-bold text-heading group-hover:text-primary transition-colors italic uppercase tracking-tighter mb-4">{{ $item['title'] }}</h4>
-                            <a href="/kegiatan" class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all">
+                            <a href="/activities" class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all">
                                 Detail Info
                                 <x-heroicon-o-chevron-right class="size-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                             </a>
@@ -290,7 +290,7 @@
                             <p class="text-sm text-gray-400 line-clamp-1">Klik untuk membaca rincian pengumuman secara lengkap...</p>
                         </div>
                         <div class="shrink-0">
-                            <a href="/pengumuman" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
+                            <a href="/announcements" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
                                 <x-heroicon-o-arrow-right class="size-5" />
                             </a>
                         </div>
@@ -299,7 +299,7 @@
             </div>
 
             <div class="mt-12 text-center">
-                <x-atoms.button variant="outline" class="group h-14 px-10 rounded-full border-gray-200 text-heading hover:border-primary hover:text-primary transition-all" onclick="window.location.href='/pengumuman'">
+                <x-atoms.button variant="outline" class="group h-14 px-10 rounded-full border-gray-200 text-heading hover:border-primary hover:text-primary transition-all" onclick="window.location.href='/announcements'">
                     <span>Lihat Seluruh Arsip</span>
                     <x-heroicon-o-document-duplicate class="size-5 opacity-50 group-hover:opacity-100 transition-opacity" />
                 </x-atoms.button>
