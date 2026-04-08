@@ -7,10 +7,10 @@ use App\Models\ProductCategory;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -22,6 +22,7 @@ class ProductCategoryResource extends Resource
     protected static string|\UnitEnum|null $navigationGroup = 'Store';
     protected static ?int $navigationSort = 2;
     protected static ?string $label = 'Kategori Produk';
+    protected static ?string $pluralLabel = 'Kategori Produk';
 
     public static function form(Schema $form): Schema
     {

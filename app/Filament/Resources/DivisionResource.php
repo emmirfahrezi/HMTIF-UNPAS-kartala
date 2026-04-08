@@ -8,10 +8,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -23,6 +23,7 @@ class DivisionResource extends Resource
     protected static string|\UnitEnum|null $navigationGroup = 'Organisasi';
     protected static ?int $navigationSort = 2;
     protected static ?string $label = 'Divisi';
+    protected static ?string $pluralLabel = 'Divisi';
 
     public static function form(Schema $form): Schema
     {
