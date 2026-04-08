@@ -10,23 +10,25 @@
                 </div>
 
                 <form id="login-form" class="space-y-5">
-                    <x-molecules.forms.form-field
-                        id="email"
-                        name="email"
-                        label="Email"
-                        type="email"
-                        placeholder="nama@email.com"
-                        required
-                    />
+                    <x-molecules.forms.form-field id="email" label="Email" :required="true">
+                        <x-atoms.input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="nama@email.com"
+                            required
+                        />
+                    </x-molecules.forms.form-field>
 
-                    <x-molecules.forms.form-field
-                        id="password"
-                        name="password"
-                        label="Password"
-                        type="password"
-                        placeholder="••••••••"
-                        required
-                    />
+                    <x-molecules.forms.form-field id="password" label="Password" :required="true">
+                        <x-atoms.input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="••••••••"
+                            required
+                        />
+                    </x-molecules.forms.form-field>
 
                     <div id="login-error" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3"></div>
 

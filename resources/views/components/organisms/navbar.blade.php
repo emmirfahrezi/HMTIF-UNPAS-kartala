@@ -71,7 +71,7 @@
 
             <div class="h-6 w-px {{ $transparent ? 'bg-white/20' : 'bg-gray-200' }}"></div>
 
-            <a href="#"
+            <a href="/admin/login"
                 class="inline-flex items-center gap-2 text-sm/6 font-bold {{ $transparent ? 'text-white' : 'text-gray-900' }} hover:text-primary transition-all group">
                 Log in
                 <x-heroicon-o-arrow-right class="size-4 transform group-hover:translate-x-1 transition-transform" />
@@ -125,7 +125,7 @@
                                 </a>
                             </div>
                             <div class="py-6">
-                                <a href="#"
+                                <a href="/admin/login"
                                     class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Log in
                                 </a>

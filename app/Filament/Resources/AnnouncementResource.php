@@ -12,10 +12,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -27,6 +27,8 @@ class AnnouncementResource extends Resource
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-megaphone';
     protected static string|\UnitEnum|null $navigationGroup = 'Konten';
     protected static ?int $navigationSort = 2;
+    protected static ?string $label = 'Pengumuman';
+    protected static ?string $pluralLabel = 'Pengumuman';
 
     public static function form(Schema $form): Schema
     {

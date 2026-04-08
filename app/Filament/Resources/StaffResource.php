@@ -11,10 +11,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -27,6 +27,7 @@ class StaffResource extends Resource
     protected static string|\UnitEnum|null $navigationGroup = 'Organisasi';
     protected static ?int $navigationSort = 1;
     protected static ?string $label = 'Pengurus';
+    protected static ?string $pluralLabel = 'Pengurus';
 
     public static function form(Schema $form): Schema
     {
