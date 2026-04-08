@@ -38,6 +38,10 @@ Route::get('/aspirations', function () {
     return view('pages.aspirations');
 });
 
+Route::get('/login', function () {
+    return view('pages.login');
+})->name('login');
+
 // Dev/Styleguide
 Route::get('/dev/components', function () {
     return view('dev.components');
