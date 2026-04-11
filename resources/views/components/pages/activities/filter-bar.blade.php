@@ -1,5 +1,5 @@
     {{-- Filter & Search Bar (Sticky & Refined) --}}
-    <section class="sticky top-[84px] z-30 bg-white/70 backdrop-blur-xl border-y border-gray-100 py-4 shadow-sm">
+    <section class="sticky top-(--nav-height) z-30 bg-white/70 backdrop-blur-xl border-y border-gray-100 py-4 shadow-sm">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar w-full md:w-auto">

@@ -1,57 +1,63 @@
 @props([
     'name',
     'position',
-    'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&h=600&auto=format&fit=crop',
+    'image' => '/images/placeholders/member.svg',
     'size' => 'normal', // xl, lg, normal
     'dept' => '',
 ])
 @php
     $sizeClasses = 'h-[500px] md:h-[600px]';
 
+    $fallbackImage = asset('images/placeholders/member.svg');
+    $imageSrc = blank($image) ? $fallbackImage : $image;
+
     $textClasses = match ($size) {
         'xl' => 'text-3xl md:text-5xl',
         'lg' => 'text-2xl md:text-4xl',
         'normal' => 'text-xl md:text-3xl',
-        default => 'text-xl'
+        default => 'text-xl',
     };
 @endphp
 
-<div class="group relative overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-700 hover:-translate-y-3 border border-gray-100 hover:border-primary reveal reveal-up {{ $sizeClasses }}">
-    
+<div
+    class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary reveal reveal-up {{ $sizeClasses }}">
+
     {{-- Intense Green Inner Shadow --}}
-    <div class="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_80px_rgba(36,130,50,0.25)] ring-1 ring-inset ring-primary/5 group-hover:shadow-[inset_0_0_100px_rgba(36,130,50,0.4)] transition-all duration-700"></div>
+    <div
+        class="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_40px_rgba(36,130,50,0.2)] ring-1 ring-inset ring-primary/5 md:group-hover:shadow-[inset_0_0_56px_rgba(36,130,50,0.3)] transition-all duration-700 delay-100 md:delay-0 md:group-hover:delay-0">
+    </div>
 
 
-            {{-- Member Image --}}
+    {{-- Member Image --}}
     <div class="absolute inset-0 z-10 overflow-hidden animate-shimmer">
-        <img src="{{ $image }}" alt="{{ $name }}" 
-            class="relative h-full w-full object-cover object-top transition-all duration-1000 group-hover:scale-110"
-            loading="lazy"
-            width="400"
-            height="600">
+        <img src="{{ $imageSrc }}" alt="{{ $name }}"
+            class="relative h-full w-full object-cover object-top transition-all duration-1000 md:group-hover:scale-110"
+            loading="lazy" decoding="async" fetchpriority="low" width="400" height="600"
+            onerror="this.onerror=null;this.src='{{ $fallbackImage }}';">
         {{-- Elegant Fade Overlay --}}
-    <div class="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent opacity-95 gr
-           oup-hover:opacity-80 transition-opacity"></div>
+        <div
+            class="absolute inset-0 bg-linear-to-t from-white via-white/20 to-transparent opacity-95 md:group-hover:opacity-80 transition-opacity">
+        </div>
     </div>
 
     {{-- Dept Vertical Label (Subtle Branding) --}}
     <div class="absolute top-10 right-6 z-20">
-        @if($dept)
-            <span class="text-6xl font-black text-primary/5 tracking-tighter uppercase select-none italic" style="writing-mode: vertical-rl;">{{ $dept }}</span>
+        @if ($dept)
+            <span class="text-6xl font-black text-primary/5 tracking-tighter uppercase select-none italic"
+                style="writing-mode: vertical-rl;">{{ $dept }}</span>
         @endif
     </div>
 
     {{-- Member Info --}}
     <div class="absolute inset-x-0 bottom-0 z-30 p-10">
         <div class="mb-3 flex items-center gap-3">
-            <div class="h-[3px] w-10 bg-primary rounded-full transition-all duration-500 group-hover:w-16"></div>
+            <div class="h-[3px] w-10 bg-primary rounded-full transition-all duration-500 md:group-hover:w-16"></div>
             <div class="relative">
-                <div class="absolute inset-0 bg-gray-100 animate-shimmer rounded-md"></div>
-                <span class="relative z-10 text-xs font-black uppercase tracking-[0.3em] text-primary">{{ $position }}</span>
+                <span
+                    class="relative z-10 text-xs font-black uppercase tracking-[0.3em] text-primary">{{ $position }}</span>
             </div>
         </div>
         <div class="relative inline-block">
-            <div class="absolute inset-0 bg-gray-100 animate-shimmer rounded-lg translate-y-1"></div>
             <h3 class="relative z-10 font-black text-heading leading-none tracking-tighter italic {{ $textClasses }}">
                 {{ strtoupper($name) }}
             </h3>

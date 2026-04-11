@@ -1,10 +1,10 @@
-<footer class="bg-gradient-to-br from-[#0a1f12] to-[#163a21] text-gray-300 py-16">
+<footer class="bg-linear-to-br from-[#0a1f12] to-[#163a21] text-gray-300 py-16">
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             {{-- Brand Section --}}
             <div class="md:col-span-2 space-y-6">
                 <a href="/" class="flex items-center gap-3">
-                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=400" alt="Logo HMTIF UNPAS"
+                    <img src="{{ asset('images/placeholders/logo.svg') }}" alt="Logo HMTIF UNPAS"
                         class="h-10 w-auto brightness-125" />
                     <h2 class="font-extrabold text-2xl tracking-tight text-white flex items-center gap-2">
                         HMTIF-UNPAS <span class="text-white/40 font-light prose-sm">|</span> <span

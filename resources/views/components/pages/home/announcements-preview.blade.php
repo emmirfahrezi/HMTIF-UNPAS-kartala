@@ -1,4 +1,13 @@
-<div class="py-24 bg-white relative overflow-hidden">
+<div class="py-24 bg-white relative overflow-hidden content-auto">
+    @php
+        $latestAnnouncements = \App\Models\Announcement::query()
+            ->with('category')
+            ->whereNotNull('published_at')
+            ->latest('published_at')
+            ->take(2)
+            ->get();
+    @endphp
+
     {{-- Decorative SVG --}}
     <div class="absolute top-0 right-0 h-full w-1/3 opacity-5 pointer-events-none">
         <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -19,27 +28,34 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             @php $delay = 1; @endphp
-            @foreach ([
-                ['title' => 'Pendaftaran Lomba Internal Kartala 2024 Telah Dibuka!', 'date' => '05 Apr 2024', 'cat' => 'Akademik', 'color' => 'blue'],
-                ['title' => 'Update Jadwal Rapat Pleno Kabinet Semester Genap', 'date' => '02 Apr 2024', 'cat' => 'Organisasi', 'color' => 'primary'],
-            ] as $news)
-                <div class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-[2rem] bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-2xl hover:border-primary/20 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}">
-                    <div class="shrink-0 w-20 h-20 bg-white rounded-2xl shadow-lg flex flex-col items-center justify-center border border-gray-50 group-hover:bg-primary group-hover:text-white transition-all transform group-hover:-rotate-6">
-                        <span class="text-2xl font-black italic">{{ explode(' ', $news['date'])[0] }}</span>
-                        <span class="text-[10px] uppercase font-bold tracking-widest">{{ explode(' ', $news['date'])[1] }}</span>
+            @foreach ($latestAnnouncements as $news)
+                <div
+                    class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-4xl bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-xl hover:border-primary/20 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}">
+                    <div
+                        class="shrink-0 w-20 h-20 bg-white rounded-2xl shadow-md flex flex-col items-center justify-center border border-gray-50 group-hover:bg-primary group-hover:text-white transition-all transform group-hover:-rotate-6">
+                        <span class="text-2xl font-black italic">{{ optional($news->published_at)->format('d') }}</span>
+                        <span
+                            class="text-[10px] uppercase font-bold tracking-widest">{{ optional($news->published_at)->format('M') }}</span>
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
-                            <span class="px-3 py-0.5 rounded-full bg-{{ $news['color'] === 'primary' ? 'primary' : 'blue-500' }}/10 text-{{ $news['color'] === 'primary' ? 'primary' : 'blue-600' }} text-[10px] font-bold uppercase tracking-widest border border-{{ $news['color'] === 'primary' ? 'primary' : 'blue-500' }}/10">
-                                {{ $news['cat'] }}
+                            <span
+                                class="px-3 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest border border-primary/10">
+                                {{ optional($news->category)->name ?? 'Umum' }}
                             </span>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wildest">Terkonfirmasi</span>
+                            <span
+                                class="text-[10px] text-gray-400 font-bold uppercase tracking-wildest">Terkonfirmasi</span>
                         </div>
-                        <h3 class="text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight mb-2 italic uppercase tracking-tighter">{{ $news['title'] }}</h3>
-                        <p class="text-sm text-gray-400 line-clamp-1">Klik untuk membaca rincian pengumuman secara lengkap...</p>
+                        <h3
+                            class="text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight mb-2 italic uppercase tracking-tighter">
+                            {{ $news->title }}</h3>
+                        <p class="text-sm text-gray-400 line-clamp-1">Klik untuk membaca rincian pengumuman secara
+                            lengkap...</p>
                     </div>
                     <div class="shrink-0">
-                        <a href="/announcement-detail" class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all" aria-label="Baca pengumuman: {{ $news['title'] }}">
+                        <a href="/announcement-detail"
+                            class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all"
+                            aria-label="Baca pengumuman: {{ $news->title }}">
                             <x-heroicon-o-arrow-right class="size-5" aria-hidden="true" />
                         </a>
                     </div>
@@ -47,8 +63,15 @@
             @endforeach
         </div>
 
+        @if ($latestAnnouncements->isEmpty())
+            <p class="text-sm text-body/60 mt-8 text-center">Belum ada pengumuman. Jalankan seeder untuk menampilkan
+                data.</p>
+        @endif
+
         <div class="mt-12 text-center">
-            <x-atoms.button variant="outline" class="group h-14 px-10 rounded-full border-gray-200 text-heading hover:border-primary hover:text-primary transition-all" onclick="window.location.href='/announcements'">
+            <x-atoms.button variant="outline"
+                class="group h-14 px-10 rounded-full border-gray-200 text-heading hover:border-primary hover:text-primary transition-all"
+                onclick="window.location.href='/announcements'">
                 <span>Lihat Seluruh Arsip</span>
                 <x-heroicon-o-document-duplicate class="size-5 opacity-50 group-hover:opacity-100 transition-opacity" />
             </x-atoms.button>

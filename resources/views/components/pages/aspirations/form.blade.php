@@ -1,6 +1,6 @@
 {{-- Form Section --}}
-<div class="pb-32 bg-section/30 min-h-screen">
-    <div class="mx-auto px-6 lg:px-8 max-w-5xl mt-8 relative z-20">
+<div class="pb-20 md:pb-24 bg-section/30">
+    <div class="mx-auto px-6 lg:px-8 max-w-5xl mt-6 md:mt-8 relative z-20">
         {{-- Form Card --}}
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative reveal reveal-up">
             {{-- Decorative Background Elements --}}
@@ -14,7 +14,7 @@
             {{-- Form Header Accent --}}
             <div class="h-2 w-full bg-primary"></div>
 
-            <div class="p-8 sm:p-16 relative z-10">
+            <div class="p-6 sm:p-10 lg:p-14 relative z-10">
                 <div
                     class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-gray-50 pb-8">
                     <div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <form action="#" method="POST" class="space-y-12">
+                <form action="#" method="POST" class="space-y-10 md:space-y-12">
                     @csrf
                     {{-- Section 1: Identitas --}}
                     <div class="space-y-8">
@@ -65,7 +65,8 @@
                             <label for="email"
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Email
                                 Mahasiswa</label>
-                            <x-atoms.input type="email" id="email" name="email" placeholder="nama@mail.unpas.ac.id"
+                            <x-atoms.input type="email" id="email" name="email"
+                                placeholder="nama@mail.unpas.ac.id"
                                 class="rounded-2xl py-4 border-gray-100 bg-section/50 focus:bg-white focus:ring-primary/20 transition-all" />
                         </div>
                     </div>
@@ -112,7 +113,7 @@
 
                     {{-- Submit Section --}}
                     <div
-                        class="pt-10 flex flex-col sm:flex-row items-center justify-between gap-8 border-t border-gray-50 mt-16">
+                        class="pt-8 md:pt-10 flex flex-col sm:flex-row items-center justify-between gap-6 md:gap-8 border-t border-gray-50 mt-12 md:mt-16">
                         <div class="flex items-start gap-4">
                             <div
                                 class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0">

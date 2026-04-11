@@ -1,49 +1,130 @@
     {{-- Main Content (Search & Grid) --}}
     <div class="lg:col-span-3">
+        @php
+            $search = trim((string) request('q', ''));
+
+            $news = \App\Models\Announcement::query()
+                ->select(['id', 'title', 'excerpt', 'body', 'thumbnail', 'published_at', 'category_id'])
+                ->with(['category:id,name'])
+                ->when($search !== '', function ($query) use ($search) {
+                    $query->where(function ($subQuery) use ($search) {
+                        $subQuery
+                            ->where('title', 'like', '%' . $search . '%')
+                            ->orWhere('excerpt', 'like', '%' . $search . '%')
+                            ->orWhere('body', 'like', '%' . $search . '%');
+                    });
+                })
+                ->whereNotNull('published_at')
+                ->orderByDesc('published_at')
+                ->orderByDesc('id')
+                ->cursorPaginate(6)
+                ->withQueryString();
+        @endphp
+
         {{-- Search & Title --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
             <div class="flex items-center gap-4">
                 <div class="h-8 w-2 bg-primary rounded-full"></div>
-                <h2 class="text-heading font-black text-3xl uppercase tracking-tighter italic">Pengumuman <span class="text-primary">Terbaru</span></h2>
+                <h2 class="text-heading font-black text-3xl uppercase tracking-tighter italic">Pengumuman <span
+                        class="text-primary">Terbaru</span></h2>
             </div>
-            
+
             <div class="w-full md:w-96">
-                <form action="" class="relative group">
-                    <input type="text" placeholder="Cari info kegiatan..." 
+                <form action="" method="GET" class="relative group">
+                    <input type="text" name="q" value="{{ $search }}" placeholder="Cari info kegiatan..."
                         class="w-full pl-12 pr-4 py-3.5 rounded-lg bg-white border border-gray-100 focus:ring-2 focus:ring-primary/20 text-sm transition-all shadow-sm group-hover:shadow-md">
-                    <x-heroicon-o-magnifying-glass class="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                    <x-heroicon-o-magnifying-glass
+                        class="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </form>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            @php
-                $news = [
-                    ['title' => 'Musyawarah Besar HMTIF 2026', 'date' => '15 APR 2026', 'img' => 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846'],
-                    ['title' => 'Open Recruitment Panitia Makrab', 'date' => '02 MEI 2026', 'img' => 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d'],
-                    ['title' => 'Workshop UI/UX bersama Google Developer', 'date' => '20 MEI 2026', 'img' => 'https://images.unsplash.com/photo-1542744094-24638eff58bb'],
-                    ['title' => 'Pendaftaran Lomba Coding Nasional', 'date' => '01 JUN 2026', 'img' => 'https://images.unsplash.com/photo-1516116216624-53e697fedbea'],
-                ];
-                $delay = 1;
-            @endphp
-
-            @foreach($news as $item)
-                <x-molecules.cards.news-card 
-                    :title="$item['title']" 
-                    :date="$item['date']" 
-                    :image="$item['img']"
-                    href="/announcement-detail"
-                    class="reveal-delay-{{ $delay++ }}"
-                    excerpt="Persiapkan dirimu untuk agenda besar HMTIF yang akan diselenggarakan bulan depan. Jangan sampai terlewatkan informasi penting ini." />
-            @endforeach
+        <div id="announcement-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            @php $delay = 1; @endphp
+            @forelse ($news as $item)
+                @php
+                    $thumbnail = (string) ($item->thumbnail ?? '');
+                    $isLocalThumbnail =
+                        $thumbnail !== '' &&
+                        \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
+                    $announcementImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/announcement.svg');
+                @endphp
+                <x-molecules.cards.news-card :title="$item->title" :date="optional($item->published_at)->translatedFormat('d M Y')" :image="$announcementImage" :href="'/announcement-detail'"
+                    class="reveal-delay-{{ $delay++ }}" :excerpt="$item->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($item->body), 120)" />
+            @empty
+                <div class="md:col-span-2 rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
+                    <p class="text-sm text-body/60">Belum ada pengumuman yang tersedia. Jalankan seeder untuk
+                        menampilkan data.</p>
+                </div>
+            @endforelse
         </div>
 
-        {{-- Pagination Placeholder --}}
-        <div class="mt-12 flex justify-center">
-            <nav class="flex gap-2">
-                <x-atoms.button variant="soft" class="w-10 h-10 p-0 text-sm">1</x-atoms.button>
-                <x-atoms.button variant="outline" class="w-10 h-10 p-0 text-sm">2</x-atoms.button>
-                <x-atoms.button variant="outline" class="w-10 h-10 p-0 text-sm">3</x-atoms.button>
-            </nav>
+        <div id="announcement-load-more-container" class="mt-12 flex justify-center">
+            @if ($news->hasMorePages())
+                <a id="announcement-load-more" href="{{ $news->nextPageUrl() }}"
+                    class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg border border-gray-200 bg-white text-heading font-bold text-sm hover:border-primary hover:text-primary transition-all shadow-sm">
+                    Muat Lebih Banyak
+                    <x-heroicon-o-arrow-down class="size-4" />
+                </a>
+            @elseif ($news->count() > 0)
+                <span class="text-xs font-bold uppercase tracking-widest text-body/50">Semua pengumuman sudah
+                    ditampilkan</span>
+            @endif
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const grid = document.getElementById('announcement-grid');
+                const container = document.getElementById('announcement-load-more-container');
+
+                if (!grid || !container) return;
+
+                const bindLoadMore = () => {
+                    const loadMore = document.getElementById('announcement-load-more');
+
+                    if (!loadMore) return;
+
+                    loadMore.addEventListener('click', async (event) => {
+                        event.preventDefault();
+
+                        const nextUrl = loadMore.getAttribute('href');
+                        if (!nextUrl) return;
+
+                        loadMore.classList.add('pointer-events-none', 'opacity-60');
+
+                        try {
+                            const response = await fetch(nextUrl, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                },
+                            });
+
+                            if (!response.ok) throw new Error('Failed to load more announcements');
+
+                            const html = await response.text();
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+
+                            const incomingCards = doc.querySelectorAll('#announcement-grid > *');
+                            incomingCards.forEach((card) => {
+                                grid.appendChild(card);
+                            });
+
+                            const incomingContainer = doc.getElementById(
+                                'announcement-load-more-container');
+                            if (incomingContainer) {
+                                container.innerHTML = incomingContainer.innerHTML;
+                                bindLoadMore();
+                            }
+                        } catch (error) {
+                            loadMore.classList.remove('pointer-events-none', 'opacity-60');
+                        }
+                    }, {
+                        once: true
+                    });
+                };
+
+                bindLoadMore();
+            });
+        </script>
     </div>
