@@ -1,36 +1,65 @@
-    {{-- 1. Pimpinan Utama (Ketum & Sekjend) & BPH --}}
-    <div class="mb-32">
-        <div class="flex items-center gap-4 mb-16">
-            <div class="h-8 w-2 bg-primary rounded-full"></div>
-            <h2 class="text-heading font-black text-4xl uppercase tracking-tighter italic">Badan Pengurus <span
-                    class="text-primary italic">Harian</span></h2>
-            <div class="h-px flex-1 bg-gradient-to-r from-primary/20 to-transparent"></div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-            <x-molecules.cards.member-card name="Fahreza Fauzan" position="Ketua Himpunan" size="xl"
-                dept="KARTALA" class="reveal-delay-1"
-                image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop" />
-            <x-molecules.cards.member-card name="Ahmad Jaelani" position="Sekretaris Jenderal" size="xl"
-                dept="KARTALA" class="reveal-delay-2"
-                image="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&auto=format&fit=crop" />
-        </div>
+@php
+    $leaders = \App\Models\Staff::query()
+        ->where('is_active', true)
+        ->whereIn('position', ['Ketua Umum', 'Sekretaris Jenderal'])
+        ->orderBy('order')
+        ->take(2)
+        ->get();
 
-        {{-- 2. BPH --}}
-        <div class="mt-16">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                <x-molecules.cards.member-card name="Siti Nurhaliza" position="Sekretaris Umum" size="normal"
-                    dept="SEC" class="reveal-delay-1" />
-                <x-molecules.cards.member-card name="Lestari Putri" position="Bendahara Umum" size="normal"
-                    dept="TRE" class="reveal-delay-2" />
-                <x-molecules.cards.member-card name="Cindy Clarissa" position="Kepala Bidang 1" size="normal"
-                    dept="KAB" class="reveal-delay-3" />
+    $bphMembers = \App\Models\Staff::query()
+        ->where('is_active', true)
+        ->where('is_bph', true)
+        ->whereNotIn('position', ['Ketua Umum', 'Sekretaris Jenderal'])
+        ->orderBy('order')
+        ->take(6)
+        ->get();
 
-                <x-molecules.cards.member-card name="Randi Kurnia" position="Wkl Sekretaris Umum" size="normal"
-                    dept="SEC" class="reveal-delay-1" />
-                <x-molecules.cards.member-card name="Dedi Wijaya" position="Wkl Bendahara Umum" size="normal"
-                    dept="TRE" class="reveal-delay-2" />
-                <x-molecules.cards.member-card name="Budi Santoso" position="Kepala Bidang 2" size="normal"
-                    dept="KAB" class="reveal-delay-3" />
-            </div>
-        </div>
+    $deptAbbr = [
+        'Ketua Umum' => 'KET',
+        'Sekretaris Jenderal' => 'SEKJEN',
+        'Sekretaris Umum' => 'SEKUM',
+        'Wakil Sekretaris Umum' => 'WASEKUM',
+        'Bendahara Umum' => 'BEND',
+        'Wakil Bendahara Umum' => 'WABEND',
+        'Kepala Bidang 1' => 'KAB 1',
+        'Kepala Bidang 2' => 'KAB 2',
+    ];
+@endphp
+
+<div class="mb-20 md:mb-24">
+    <div class="flex items-center gap-4 mb-12">
+        <div class="h-8 w-2 bg-primary rounded-full"></div>
+        <h2 class="text-heading font-black text-3xl md:text-4xl uppercase tracking-tighter italic">Pimpinan <span
+                class="text-primary italic">Utama</span></h2>
+        <div class="h-px flex-1 bg-linear-to-r from-primary/20 to-transparent"></div>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+        @foreach ($leaders as $index => $staff)
+            <x-molecules.cards.member-card :name="$staff->name" :position="$staff->position" size="xl" dept="KARTALA"
+                class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')" :href="'/detail-member?staff=' . $staff->id" />
+        @endforeach
+    </div>
+
+    <div class="flex items-center gap-4 mb-10 mt-14 md:mt-16">
+        <div class="h-8 w-2 bg-primary rounded-full"></div>
+        <h2 class="text-heading font-black text-3xl md:text-4xl uppercase tracking-tighter italic">Badan Pengurus <span
+                class="text-primary italic">Harian</span></h2>
+        <div class="h-px flex-1 bg-linear-to-r from-primary/20 to-transparent"></div>
+        <a href="/detail-division"
+            class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-secondary/50 text-heading text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
+            Detail Bidang
+            <x-heroicon-o-arrow-right class="size-4" />
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        @foreach ($bphMembers as $index => $staff)
+            <x-molecules.cards.member-card :name="$staff->name" :position="$staff->position" size="normal" :dept="$deptAbbr[$staff->position] ?? 'BPH'"
+                :href="'/detail-member?staff=' . $staff->id" class="reveal-delay-{{ ($index % 3) + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
+        @endforeach
+    </div>
+
+    @if ($leaders->isEmpty() && $bphMembers->isEmpty())
+        <p class="text-sm text-body/60 mt-8">Belum ada data pengurus. Jalankan seeder untuk menampilkan data.</p>
+    @endif
+</div>

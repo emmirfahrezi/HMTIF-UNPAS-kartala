@@ -1,24 +1,31 @@
 export function initReveal() {
-    const reveals = document.querySelectorAll('.reveal');
+  const reveals = document.querySelectorAll('.reveal');
 
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15 // Elemen akan terpicu saat 15% masuk ke viewport
-    };
+  if (!reveals.length) {
+    return;
+  }
 
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            } else {
-                // Mencopot class active saat elemen keluar dari layar agar bisa trigger ulang
-                entry.target.classList.remove('active');
-            }
-        });
-    }, observerOptions);
+  if (!('IntersectionObserver' in window)) {
+    reveals.forEach((reveal) => reveal.classList.add('active'));
+    return;
+  }
 
-    reveals.forEach(reveal => {
-        revealObserver.observe(reveal);
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -8% 0px',
+    threshold: 0.08, // Trigger sedikit lebih awal saat elemen masuk viewport
+  };
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        revealObserver.unobserve(entry.target);
+      }
     });
+  }, observerOptions);
+
+  reveals.forEach((reveal) => {
+    revealObserver.observe(reveal);
+  });
 }

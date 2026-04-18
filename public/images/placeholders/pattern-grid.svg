@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" role="img" aria-label="Pattern Grid">
+  <rect width="80" height="80" fill="none"/>
+  <path d="M0 0H80V80H0Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+  <path d="M40 0V80M0 40H80" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+</svg>
