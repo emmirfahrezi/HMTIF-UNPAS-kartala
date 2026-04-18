@@ -34,7 +34,7 @@
 
         @if ($description)
             <p
-                class="text-body/75 max-w-2xl mx-auto text-base md:text-lg lowercase tracking-[0.2em] md:tracking-widest font-normal leading-relaxed reveal reveal-up reveal-delay-3">
+                class="text-gray-700 max-w-2xl mx-auto text-[1rem] md:text-[1.125rem] lowercase tracking-[0.2em] md:tracking-widest font-normal leading-relaxed reveal reveal-up reveal-delay-3">
                 {{ $description }}
             </p>
         @endif

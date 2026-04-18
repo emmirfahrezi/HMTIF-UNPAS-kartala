@@ -6,7 +6,7 @@
             <span
                 class="inline-block px-4 py-1 bg-white/10 rounded-full text-primary-soft text-sm font-bold tracking-widest uppercase mb-4">Core
                 Values</span>
-            <h2 class="text-3xl sm:text-5xl font-extrabold mb-4">Visi & Misi Kabinet</h2>
+            <h2 class="text-3xl sm:text-5xl font-extrabold mb-4">Visi & Misi HMTIF</h2>
             <div class="w-24 h-1.5 bg-primary-soft mx-auto rounded-full"></div>
         </div>
 

@@ -36,7 +36,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
         @foreach ($leaders as $index => $staff)
             <x-molecules.cards.member-card :name="$staff->name" :position="$staff->position" size="xl" dept="KARTALA"
-                class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
+                class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')" :href="'/detail-member?staff=' . $staff->id" />
         @endforeach
     </div>
 
@@ -45,12 +45,17 @@
         <h2 class="text-heading font-black text-3xl md:text-4xl uppercase tracking-tighter italic">Badan Pengurus <span
                 class="text-primary italic">Harian</span></h2>
         <div class="h-px flex-1 bg-linear-to-r from-primary/20 to-transparent"></div>
+        <a href="/detail-division"
+            class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-secondary/50 text-heading text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
+            Detail Bidang
+            <x-heroicon-o-arrow-right class="size-4" />
+        </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         @foreach ($bphMembers as $index => $staff)
             <x-molecules.cards.member-card :name="$staff->name" :position="$staff->position" size="normal" :dept="$deptAbbr[$staff->position] ?? 'BPH'"
-                class="reveal-delay-{{ ($index % 3) + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
+                :href="'/detail-member?staff=' . $staff->id" class="reveal-delay-{{ ($index % 3) + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
         @endforeach
     </div>
 

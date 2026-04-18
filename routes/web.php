@@ -10,6 +10,14 @@ Route::get('/staff', function () {
     return view('pages.staff');
 });
 
+Route::get('/detail-member', function () {
+    return view('pages.detail-member');
+});
+
+Route::get('/detail-division', function () {
+    return view('pages.detail-division');
+});
+
 Route::get('/activities', function () {
     return view('pages.activities');
 });

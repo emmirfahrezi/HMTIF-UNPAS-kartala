@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <!-- SECTION 2: KABINET KARTALA (Foto Kanan) -->
+        <!-- SECTION 2: HMTIF UNPAS (Foto Kanan) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <!-- BAGIAN KIRI (CONTENT) -->
             <div class="order-2 lg:order-1 space-y-8 reveal reveal-left">
@@ -81,7 +81,7 @@
                         Harmoni Dalam <span class="text-primary italic">Pergerakan Nyata</span></h2>
                 </div>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    Di bawah bendera <strong>Kabinet Kartala</strong>, kami berkomitmen untuk menghadirkan perubahan
+                    Di bawah semangat <strong>HMTIF UNPAS</strong>, kami berkomitmen untuk menghadirkan perubahan
                     yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah
                     keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.
                 </p>
@@ -108,7 +108,7 @@
                 </div>
                 <div
                     class="relative rounded-lg overflow-hidden shadow-2xl aspect-4/3 transform group-hover:scale-[1.02] transition-all duration-500 animate-shimmer">
-                    <img src="{{ asset('images/placeholders/about-team.svg') }}" alt="Kabinet Kartala Team"
+                    <img src="{{ asset('images/placeholders/about-team.svg') }}" alt="Tim HMTIF UNPAS"
                         class="relative w-full h-full object-cover" loading="lazy" decoding="async" width="800"
                         height="600">
                     <div class="absolute inset-0 bg-linear-to-t from-primary-dark/40 to-transparent"></div>

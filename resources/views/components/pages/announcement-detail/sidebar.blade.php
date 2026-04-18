@@ -17,14 +17,14 @@
             @endforeach
         </div>
         <a href="/announcements"
-            class="block w-full mt-8 py-3 text-center text-sm font-bold text-gray-400 border border-gray-100 rounded-xl hover:bg-section transition-all">
+            class="block w-full mt-8 py-3 text-center text-sm font-bold text-heading border border-border rounded-xl hover:bg-primary hover:text-white hover:border-primary hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 transition-all">
             Lihat Semua Info
         </a>
     </div>
 
     <div class="bg-primary rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden group">
         <div
-            class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+            class="absolute inset-0 bg-linear-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
         </div>
         <h4 class="font-black text-xl mb-4 italic uppercase tracking-tighter">Butuh Bantuan?</h4>
         <p class="text-white/80 text-sm mb-6 leading-relaxed italic">Hubungi bidang Hubungan Masyarakat jika ada

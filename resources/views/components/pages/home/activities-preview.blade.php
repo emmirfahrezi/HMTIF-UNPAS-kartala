@@ -23,7 +23,7 @@
                 </h2>
             </div>
             <a href="/activities"
-                class="group flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all reveal reveal-right">
+                class="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border text-heading font-bold hover:bg-primary hover:text-white hover:border-primary hover:gap-3 transition-all reveal reveal-right">
                 Lihat Semua Kegiatan
                 <x-heroicon-o-arrow-right class="size-5" />
             </a>

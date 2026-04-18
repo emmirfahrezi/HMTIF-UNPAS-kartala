@@ -11,7 +11,7 @@
     {{-- Decorative SVG --}}
     <div class="absolute top-0 right-0 h-full w-1/3 opacity-5 pointer-events-none">
         <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M100 0 L100 100 L0 100 Z" fill="currentColor" class="text-primary" />
+            <path d="M100 0 L100 100 L0 100 Z" fill="currentColor" class="text-secondary" />
         </svg>
     </div>
 
@@ -69,8 +69,7 @@
         @endif
 
         <div class="mt-12 text-center">
-            <x-atoms.button variant="outline"
-                class="group h-14 px-10 rounded-full border-gray-200 text-heading hover:border-primary hover:text-primary transition-all"
+            <x-atoms.button variant="outline" class="group h-14 px-10 rounded-full transition-all"
                 onclick="window.location.href='/announcements'">
                 <span>Lihat Seluruh Arsip</span>
                 <x-heroicon-o-document-duplicate class="size-5 opacity-50 group-hover:opacity-100 transition-opacity" />

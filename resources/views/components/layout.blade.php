@@ -1,6 +1,6 @@
 @props([
     'title' => 'HMTIF UNPAS | Kartala',
-    'description' => 'Website Resmi HMTIF UNPAS Kabinet Kartala. Teknik Informatika Progresif.',
+    'description' => 'Website Resmi HMTIF UNPAS. Teknik Informatika Progresif.',
     'keywords' => 'HMTIF, UNPAS, Kartala, Informatika, Universitas Pasundan, Himpunan Mahasiswa',
     'image' => '/images/placeholders/hero-home.svg',
     'transparent' => false,

@@ -8,13 +8,6 @@
 
 {{-- Main Image & Description --}}
 <div class="lg:col-span-2 space-y-10 reveal reveal-up">
-    {{-- Back Button --}}
-    <a href="/activities"
-        class="inline-flex items-center gap-2 text-primary font-bold text-sm hover:translate-x-1 transition-transform group mb-4">
-        <x-heroicon-o-arrow-left class="size-4" />
-        Kembali ke Kegiatan
-    </a>
-
     <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-video border-8 border-white">
         <img src="{{ $activityImage }}" alt="Poster Utama Kegiatan HMTIF UNPAS" class="w-full h-full object-cover"
             onerror="this.onerror=null;this.src='{{ asset('images/placeholders/activity.svg') }}';">

@@ -13,7 +13,7 @@
                 </div>
                 <h1 class="font-extrabold text-base sm:text-lg xl:text-xl tracking-tight {{ $transparent ? 'text-white' : 'text-gray-900' }} transition-colors duration-300"
                     id="nav-title">
-                    HMTIF-UNPAS <span class="text-primary">| Kartala</span>
+                    HMTIF-UNPAS</span>
                 </h1>
             </a>
         </div>
@@ -94,33 +94,33 @@
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="space-y-2 py-6">
                                 <a href="/"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Beranda
                                 </a>
                                 <a href="/staff"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Pengurus
                                 </a>
                                 <a href="/activities"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Kegiatan
                                 </a>
                                 <a href="/store"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold {{ request()->is('store*', 'product*') ? 'text-primary' : 'text-heading' }} hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold {{ request()->is('store*', 'product*') ? 'text-primary' : 'text-heading' }} hover:bg-section hover:text-primary transition-colors">
                                     Store
                                 </a>
                                 <a href="/announcements"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Pengumuman
                                 </a>
                                 <a href="/aspirations"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Aspirasi
                                 </a>
                             </div>
                             <div class="py-6">
                                 <a href="/admin/login"
-                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Log in
                                 </a>
                             </div>

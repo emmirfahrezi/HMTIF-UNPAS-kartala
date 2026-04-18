@@ -76,28 +76,16 @@
                         <div class="flex items-center gap-3 mb-6">
                             <span
                                 class="flex items-center justify-center w-6 h-6 rounded bg-primary text-white text-[10px] font-black italic">02</span>
-                            <h3 class="text-xs font-black text-heading uppercase tracking-[0.2em]">Detail Aspirasi</h3>
+                            <h3 class="text-xs font-black text-heading uppercase tracking-[0.2em]">Suara Mahasiswa</h3>
                         </div>
 
-                        {{-- Tujuan --}}
+                        {{-- Perihal --}}
                         <div class="space-y-3">
-                            <label for="tujuan"
-                                class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Tujuan
-                                Aspirasi</label>
-                            <div class="relative group/select">
-                                <select id="tujuan"
-                                    class="w-full px-6 py-4 bg-section/50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-500 text-heading font-black italic uppercase tracking-tighter appearance-none cursor-pointer">
-                                    <option value="">Pilih Unit/Bidang...</option>
-                                    <option value="himpunan">Ketua Himpunan</option>
-                                    <option value="akademik">Bidang Akademik</option>
-                                    <option value="minat_bakat">Bidang Minat & Bakat</option>
-                                    <option value="sosial">Bidang Sosial & Komunikasi</option>
-                                </select>
-                                <div
-                                    class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 group-hover/select:text-primary transition-colors">
-                                    <x-heroicon-o-chevron-down class="size-5" />
-                                </div>
-                            </div>
+                            <label for="perihal"
+                                class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Perihal</label>
+                            <x-atoms.input id="perihal" name="perihal"
+                                placeholder="Contoh: Fasilitas Lab, Agenda Organisasi, Layanan Akademik"
+                                class="rounded-2xl py-4 border-gray-100 bg-section/50 focus:bg-white focus:ring-primary/20 transition-all" />
                         </div>
 
                         {{-- Pesan --}}

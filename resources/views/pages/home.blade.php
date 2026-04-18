@@ -1,7 +1,6 @@
 <x-layout title="Beranda | HMTIF UNPAS"
-    description="Portal resmi HMTIF Universitas Pasundan Kabinet Kartala. Wadah aspirasi, informasi kegiatan, dan pengembangan potensi mahasiswa Teknik Informatika UNPAS."
-    keywords="HMTIF UNPAS, Teknik Informatika UNPAS, Kabinet Kartala, Universitas Pasundan, Himpunan Mahasiswa"
-    :transparent="true">
+    description="Portal resmi HMTIF Universitas Pasundan. Wadah aspirasi, informasi kegiatan, dan pengembangan potensi mahasiswa Teknik Informatika UNPAS."
+    keywords="HMTIF UNPAS, Teknik Informatika UNPAS, Universitas Pasundan, Himpunan Mahasiswa" :transparent="true">
     <x-slot:head>
         <script type="application/ld+json">
         {

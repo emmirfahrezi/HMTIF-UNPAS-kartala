@@ -7,7 +7,7 @@
         <x-atoms.section-title align="center">
             Pergerakan Kami
         </x-atoms.section-title>
-        <h2 class="text-3xl sm:text-4xl font-bold text-heading mt-4">Kekuatan Kolektif Kabinet Kartala</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold text-heading mt-4">Kekuatan Kolektif HMTIF UNPAS</h2>
         <p class="text-gray-500 max-w-2xl mx-auto mt-6 text-lg">
             Melalui semangat "Kartala", kami bergerak bersama untuk menghadirkan perubahan nyata melalui program kerja
             yang terukur.

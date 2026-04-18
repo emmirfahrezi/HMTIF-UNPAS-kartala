@@ -25,7 +25,7 @@
             </div>
             <h4 class="font-bold text-lg mb-2">Ingin berkontribusi?</h4>
             <p class="text-white/80 text-sm mb-4 italic">Kirimkan aspirasimu melalui form resmi HMTIF UNPAS.</p>
-            <x-atoms.button variant="on-primary" onclick="window.location.href='/aspirations'"
+            <x-atoms.button variant="secondary" onclick="window.location.href='/aspirations'"
                 class="w-full py-2 text-sm">
                 Kirim Aspirasi
             </x-atoms.button>
