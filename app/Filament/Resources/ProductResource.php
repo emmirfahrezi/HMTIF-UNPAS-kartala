@@ -44,8 +44,17 @@ class ProductResource extends Resource
                 ->options(ProductCategory::pluck('name', 'id'))
                 ->searchable(),
             TextInput::make('price')->numeric()->required()->prefix('Rp'),
+            TextInput::make('phone_number')
+                ->label('No. Telepon Pemesanan')
+                ->tel()
+                ->placeholder('+6281234567890'),
             Toggle::make('is_available')->default(true)->label('Tersedia'),
             Textarea::make('description')->rows(4)->columnSpanFull(),
+            Textarea::make('order_text')
+                ->label('Teks Cara Order (tampil di halaman produk)')
+                ->rows(5)
+                ->columnSpanFull()
+                ->placeholder('Contoh: Hubungi admin via WhatsApp di nomor di atas...'),
             Repeater::make('images')
                 ->relationship()
                 ->schema([
@@ -53,6 +62,7 @@ class ProductResource extends Resource
                     TextInput::make('order')->numeric()->default(0),
                     Toggle::make('is_primary')->label('Gambar Utama'),
                 ])
+                ->reorderableWithDragAndDrop()
                 ->columnSpanFull()
                 ->label('Gambar Produk'),
         ]);

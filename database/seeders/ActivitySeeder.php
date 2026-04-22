@@ -1,0 +1,163 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Activity;
+use Illuminate\Database\Seeder;
+
+class ActivitySeeder extends Seeder
+{
+    public function run(): void
+    {
+        $activities = [
+            [
+                'title'            => 'Musyawarah Besar HMTIF 2026',
+                'slug'             => 'musyawarah-besar-hmtif-2026',
+                'description'      => 'Agenda tahunan tertinggi HMTIF UNPAS untuk evaluasi kepengurusan, perumusan AD/ART, dan pemilihan Ketua Umum baru.',
+                'body'             => '<p>Musyawarah Besar (MUBES) HMTIF UNPAS merupakan agenda tahunan tertinggi dalam organisasi yang bertujuan untuk mengevaluasi kinerja kepengurusan selama satu tahun periode, merumuskan AD/ART, serta memilih Ketua Umum baru untuk periode mendatang.</p><p>Penyampaian LPJ (Laporan Pertanggung Jawaban) dari setiap bidang akan menjadi fokus utama dalam rangkaian acara ini. Diskusi yang konstruktif diharapkan dapat melahirkan inovasi-inovasi baru bagi perkembangan mahasiswa Informatika UNPAS.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-05-15 08:00:00',
+                'end_date'         => '2026-05-15 17:00:00',
+                'location'         => 'Gedung Mandala, Kampus IV Universitas Pasundan',
+                'registration_url' => 'https://wa.me/6281234567890',
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'Informatics Championship 2026',
+                'slug'             => 'informatics-championship-2026',
+                'description'      => 'Kompetisi bergengsi tahunan HMTIF UNPAS yang mempertandingkan berbagai cabang IT seperti competitive programming dan desain UI/UX.',
+                'body'             => '<p>Informatics Championship adalah agenda unggulan HMTIF UNPAS yang menghadirkan kompetisi bergengsi di bidang teknologi informasi. Peserta akan bertanding dalam berbagai kategori seperti competitive programming, desain UI/UX, dan hackathon inovasi.</p><p>Terbuka untuk seluruh mahasiswa Teknik Informatika se-Jawa Barat dengan total hadiah jutaan rupiah.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-06-20 07:00:00',
+                'end_date'         => '2026-06-22 17:00:00',
+                'location'         => 'Aula Teknik, Kampus I Universitas Pasundan',
+                'registration_url' => 'https://wa.me/6281234567890',
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'LDKM 2026: Kartala Generation',
+                'slug'             => 'ldkm-2026-kartala-generation',
+                'description'      => 'Latihan Dasar Kepemimpinan Mahasiswa untuk membentuk karakter dan jiwa kepemimpinan anggota baru HMTIF UNPAS.',
+                'body'             => '<p>LDKM Kartala Generation adalah program pelatihan kepemimpinan yang dirancang untuk membentuk karakter pemimpin masa depan di lingkungan Teknik Informatika UNPAS. Program ini mencakup sesi materi, simulasi, dan refleksi diri.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-07-05 07:00:00',
+                'end_date'         => '2026-07-07 17:00:00',
+                'location'         => 'Bumi Perkemahan Rancaupas, Ciwidey',
+                'registration_url' => null,
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'Tech Talk: AI & Machine Learning Era',
+                'slug'             => 'tech-talk-ai-machine-learning-era',
+                'description'      => 'Webinar eksklusif menghadirkan praktisi AI dan ML terkemuka untuk berbagi wawasan tentang perkembangan kecerdasan buatan.',
+                'body'             => '<p>Tech Talk hadir kembali dengan tema "AI & Machine Learning Era". Sesi ini menghadirkan pembicara praktisi dari industri teknologi terkemuka yang akan berbagi pengalaman dan insight tentang implementasi AI di dunia nyata.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-07-20 13:00:00',
+                'end_date'         => '2026-07-20 16:00:00',
+                'location'         => 'Online (Zoom Webinar)',
+                'registration_url' => 'https://wa.me/6281234567890',
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'Informatics Care: Bakti Sosial',
+                'slug'             => 'informatics-care-bakti-sosial',
+                'description'      => 'Kegiatan pengabdian masyarakat HMTIF UNPAS berupa pemberian bimbingan teknologi dan donasi kepada masyarakat sekitar kampus.',
+                'body'             => '<p>Informatics Care adalah wujud nyata kepedulian HMTIF UNPAS terhadap masyarakat sekitar. Kegiatan ini mencakup bimbingan literasi digital, pelatihan komputer dasar, dan bakti sosial bagi warga yang membutuhkan.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-08-10 08:00:00',
+                'end_date'         => '2026-08-10 15:00:00',
+                'location'         => 'Kelurahan Tamansari, Bandung',
+                'registration_url' => null,
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'Workshop UI/UX Design Thinking',
+                'slug'             => 'workshop-ui-ux-design-thinking',
+                'description'      => 'Workshop intensif mengenai metodologi Design Thinking dalam proses perancangan antarmuka pengguna yang intuitif dan estetis.',
+                'body'             => '<p>Workshop ini akan membawa peserta menyelami dunia desain antarmuka dengan pendekatan Design Thinking. Peserta akan belajar mulai dari empathize, define, ideate, prototype, hingga test bersama mentor berpengalaman.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-09-05 09:00:00',
+                'end_date'         => '2026-09-05 16:00:00',
+                'location'         => 'Lab Komputer Teknik Informatika UNPAS',
+                'registration_url' => 'https://wa.me/6281234567890',
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'Internal Fun Match Olahraga',
+                'slug'             => 'internal-fun-match-olahraga',
+                'description'      => 'Pertandingan olahraga persahabatan antar divisi HMTIF UNPAS untuk mempererat kebersamaan dan semangat sportivitas.',
+                'body'             => '<p>Internal Fun Match adalah ajang olahraga persahabatan yang diikuti seluruh anggota HMTIF UNPAS. Pertandingan meliputi futsal, badminton, dan tenis meja untuk mempererat hubungan antar anggota himpunan.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2025-11-10 08:00:00',
+                'end_date'         => '2025-11-10 17:00:00',
+                'location'         => 'GOR Padjajaran, Bandung',
+                'registration_url' => null,
+                'status'           => 'past',
+            ],
+            [
+                'title'            => 'Project Showcase: Karya Digital Informatika',
+                'slug'             => 'project-showcase-karya-digital-informatika',
+                'description'      => 'Pameran karya proyek digital mahasiswa Teknik Informatika UNPAS sebagai wadah apresiasi dan networking antar mahasiswa.',
+                'body'             => '<p>Project Showcase adalah platform bagi mahasiswa Teknik Informatika UNPAS untuk memamerkan karya-karya digital terbaik mereka. Dari aplikasi mobile, website, hingga sistem berbasis AI — semua bisa ditampilkan dan diapresiasi.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2025-12-01 09:00:00',
+                'end_date'         => '2025-12-02 17:00:00',
+                'location'         => 'Lobby Gedung Teknik, Kampus I UNPAS',
+                'registration_url' => null,
+                'status'           => 'past',
+            ],
+            [
+                'title'            => 'Seminar Nasional Teknologi Informasi',
+                'slug'             => 'seminar-nasional-teknologi-informasi',
+                'description'      => 'Seminar nasional bertema perkembangan Teknologi Informasi di era digital yang menghadirkan pembicara dari akademisi dan industri.',
+                'body'             => '<p>Seminar Nasional Teknologi Informasi menghadirkan pemikiran-pemikiran segar dari akademisi dan praktisi industri tentang arah perkembangan TI ke depan. Event ini menjadi ajang pertukaran ilmu yang berharga bagi civitas Informatika UNPAS.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2025-10-15 08:00:00',
+                'end_date'         => '2025-10-15 17:00:00',
+                'location'         => 'Auditorium Olahraga UNPAS',
+                'registration_url' => null,
+                'status'           => 'past',
+            ],
+            [
+                'title'            => 'Hackathon Kartala: Build for Indonesia',
+                'slug'             => 'hackathon-kartala-build-for-indonesia',
+                'description'      => 'Kompetisi hackathon 24 jam membangun solusi digital inovatif untuk permasalahan nyata di Indonesia bersama tim lintas kampus.',
+                'body'             => '<p>Hackathon Kartala adalah kompetisi marathon coding 24 jam yang menantang peserta untuk menghasilkan solusi digital inovatif bagi permasalahan nyata Indonesia. Tim terbaik akan mendapatkan kesempatan inkubasi ide bersama mitra industri.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2025-09-20 08:00:00',
+                'end_date'         => '2025-09-21 08:00:00',
+                'location'         => 'Gedung Teknik Informatika, Kampus I UNPAS',
+                'registration_url' => null,
+                'status'           => 'past',
+            ],
+            [
+                'title'            => 'Open Recruitment Pengurus HMTIF 2026',
+                'slug'             => 'open-recruitment-pengurus-hmtif-2026',
+                'description'      => 'Pendaftaran terbuka bagi mahasiswa Teknik Informatika UNPAS yang ingin bergabung sebagai pengurus aktif HMTIF Kabinet Kartala.',
+                'body'             => '<p>Bergabunglah bersama HMTIF UNPAS Kabinet Kartala! Kami membuka rekrutmen pengurus untuk seluruh bidang. Ini kesempatanmu untuk berkontribusi, berkembang, dan membangun jaringan pertemanan yang luar biasa.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-08-25 08:00:00',
+                'end_date'         => '2026-09-01 17:00:00',
+                'location'         => 'Sekretariat HMTIF, Kampus I UNPAS',
+                'registration_url' => 'https://wa.me/6281234567890',
+                'status'           => 'upcoming',
+            ],
+            [
+                'title'            => 'Workshop Cybersecurity Fundamentals',
+                'slug'             => 'workshop-cybersecurity-fundamentals',
+                'description'      => 'Pelatihan dasar keamanan siber mencakup ethical hacking, penetration testing, dan keamanan jaringan untuk mahasiswa Informatika.',
+                'body'             => '<p>Workshop Cybersecurity Fundamentals akan membekali peserta dengan pemahaman dasar keamanan siber yang relevan di era digital ini. Materi mencakup konsep dasar networking security, ethical hacking, dan pengenalan tools penetration testing.</p>',
+                'thumbnail'        => 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop',
+                'start_date'       => '2026-10-11 09:00:00',
+                'end_date'         => '2026-10-11 17:00:00',
+                'location'         => 'Lab Jaringan Teknik Informatika UNPAS',
+                'registration_url' => 'https://wa.me/6281234567890',
+                'status'           => 'upcoming',
+            ],
+        ];
+
+        foreach ($activities as $data) {
+            Activity::updateOrCreate(['slug' => $data['slug']], $data);
+        }
+    }
+}

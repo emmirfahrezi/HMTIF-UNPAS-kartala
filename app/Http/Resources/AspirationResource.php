@@ -12,6 +12,7 @@ class AspirationResource extends JsonResource
         return [
             'id'               => $this->id,
             'name'             => $this->name,
+            'nim'              => $this->nim,
             'subject'          => $this->subject,
             'message'          => $this->message,
             'tracking_code'    => $this->tracking_code,
