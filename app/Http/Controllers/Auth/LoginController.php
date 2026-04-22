@@ -33,6 +33,22 @@ class LoginController extends Controller
         return ResponseResource::success($result, 'Login berhasil');
     }
 
+    public function loginWeb(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        try {
+            $this->loginService->execute($credentials);
+        } catch (AuthenticationException $e) {
+            return back()->withInput()->withErrors(['email' => $e->getMessage()]);
+        }
+
+        return redirect()->route('home');
+    }
+
     public function logout(Request $request): JsonResponse
     {
         $this->logoutService->execute($request->user());

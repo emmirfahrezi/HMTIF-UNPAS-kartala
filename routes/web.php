@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AspirationController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Services\Activity\GetActivityBySlugService;
 use App\Services\Activity\GetAllActivitiesService;
 use App\Services\Announcement\GetAllAnnouncementsService;
@@ -130,6 +132,25 @@ Route::post('/aspirations', [AspirationController::class, 'storeWeb'])->name('as
 Route::get('/login', function () {
     return view('pages.login');
 })->name('login');
+
+Route::post('/login', [LoginController::class, 'loginWeb'])
+    ->name('login.store');
+
+Route::post('/logout', function (Request $request) {
+    auth()->logout();
+    session()->invalidate();
+    return redirect()->route('login');
+})->name('logout')->middleware('auth');
+
+// Custom Dashboard Routes (Protected by session auth)
+Route::middleware('auth')->prefix('/dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/announcements', [DashboardController::class, 'announcements'])->name('dashboard.announcements');
+    Route::get('/activities', [DashboardController::class, 'activities'])->name('dashboard.activities');
+    Route::get('/products', [DashboardController::class, 'products'])->name('dashboard.products');
+    Route::get('/aspirations', [DashboardController::class, 'aspirations'])->name('dashboard.aspirations');
+    Route::get('/users', [DashboardController::class, 'users'])->name('dashboard.users');
+});
 
 // Dev/Styleguide
 Route::get('/dev/components', function () {
