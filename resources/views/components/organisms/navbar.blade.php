@@ -1,22 +1,24 @@
 @props(['transparent' => false])
 
-    <header id="navbar" data-transparent="{{ $transparent ? 'true' : 'false' }}"
-        class="fixed top-0 left-0 w-full z-50 transition-all duration-300 {{ $transparent ? 'bg-transparent' : 'bg-white shadow-md' }}">
-    <nav aria-label="Global" class="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-3 lg:px-8">
-        <div class="flex lg:flex-1">
+<header id="navbar" data-transparent="{{ $transparent ? 'true' : 'false' }}"
+    class="fixed top-0 left-0 w-full z-50 transition-all duration-300 {{ $transparent ? 'bg-transparent' : 'bg-white shadow-md' }}">
+    <nav aria-label="Global"
+        class="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-2.5 sm:px-6 xl:px-8">
+        <div class="flex xl:flex-1">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="p-2 transition-transform duration-300 group-hover:scale-110">
-                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600" alt="Logo HMTIF UNPAS"
-                        class="h-10 w-auto {{ $transparent ? 'filter grayscale brightness-200' : '' }}" id="nav-logo" />
+                    <img src="{{ asset('images/placeholders/logo.svg') }}" alt="Logo HMTIF UNPAS"
+                        class="h-8 sm:h-9 xl:h-10 w-auto {{ $transparent ? 'filter grayscale brightness-200' : '' }}"
+                        id="nav-logo" />
                 </div>
-                <h1 class="font-extrabold text-xl tracking-tight {{ $transparent ? 'text-white' : 'text-gray-900' }} transition-colors duration-300"
+                <h1 class="font-extrabold text-base sm:text-lg xl:text-xl tracking-tight {{ $transparent ? 'text-white' : 'text-gray-900' }} transition-colors duration-300"
                     id="nav-title">
-                    HMTIF-UNPAS <span class="text-primary">| Kartala</span>
+                    HMTIF-UNPAS</span>
                 </h1>
             </a>
         </div>
 
-        <div class="flex lg:hidden">
+        <div class="flex xl:hidden">
             <button type="button" command="show-modal" commandfor="mobile-menu"
                 class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 {{ $transparent ? 'text-white' : 'text-gray-900' }}"
                 id="mobile-menu-btn">
@@ -25,7 +27,7 @@
             </button>
         </div>
 
-        <div class="hidden lg:flex lg:gap-x-10 items-center">
+        <div class="hidden xl:flex xl:gap-x-8 items-center">
             <a href="/"
                 class="relative text-sm/6 font-bold {{ request()->is('/') ? 'text-primary' : ($transparent ? 'text-white' : 'text-gray-900') }} hover:text-primary transition-colors duration-300">
                 Beranda
@@ -68,26 +70,18 @@
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full"></span>
                 @endif
             </a>
-
-            <div class="h-6 w-px {{ $transparent ? 'bg-white/20' : 'bg-gray-200' }}"></div>
-
-            <a href="/admin/login"
-                class="inline-flex items-center gap-2 text-sm/6 font-bold {{ $transparent ? 'text-white' : 'text-gray-900' }} hover:text-primary transition-all group">
-                Log in
-                <x-heroicon-o-arrow-right class="size-4 transform group-hover:translate-x-1 transition-transform" />
-            </a>
         </div>
     </nav>
 
     <el-dialog shadow>
-        <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
+        <dialog id="mobile-menu" class="backdrop:bg-transparent xl:hidden">
             <div tabindex="0" class="fixed inset-0 focus:outline-none">
                 <el-dialog-panel
                     class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div class="flex items-center justify-between">
                         <a href="/" class="-m-1.5 p-1.5 flex items-center gap-2">
-                            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600"
-                                alt="Logo" class="h-8 w-auto filter grayscale opacity-50" />
+                            <img src="{{ asset('images/placeholders/logo.svg') }}" alt="Logo"
+                                class="h-8 w-auto filter grayscale opacity-50" />
                             <span class="font-bold text-heading">Kartala</span>
                         </a>
                         <button type="button" command="close" commandfor="mobile-menu"
@@ -100,33 +94,33 @@
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="space-y-2 py-6">
                                 <a href="/"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Beranda
                                 </a>
                                 <a href="/staff"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Pengurus
                                 </a>
                                 <a href="/activities"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Kegiatan
                                 </a>
                                 <a href="/store"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors text-primary">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold {{ request()->is('store*', 'product*') ? 'text-primary' : 'text-heading' }} hover:bg-section hover:text-primary transition-colors">
                                     Store
                                 </a>
                                 <a href="/announcements"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Pengumuman
                                 </a>
                                 <a href="/aspirations"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Aspirasi
                                 </a>
                             </div>
                             <div class="py-6">
                                 <a href="/admin/login"
-                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
+                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-[1rem] leading-7 font-bold text-heading hover:bg-section hover:text-primary transition-colors">
                                     Log in
                                 </a>
                             </div>

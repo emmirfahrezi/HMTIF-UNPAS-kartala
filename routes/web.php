@@ -45,8 +45,17 @@ Route::get('/staff', function (
     ]);
 })->name('staff');
 
-Route::get('/staff/{id}', function (int $id, GetStaffByIdService $getStaff) {
-    $staff = $getStaff->execute($id);
+Route::get('/detail-member', function () {
+    return view('pages.detail-member');
+});
+
+Route::get('/detail-division', function () {
+    return view('pages.detail-division');
+});
+
+Route::get('/activities', function () {
+    return view('pages.activities');
+});
 
     return view('pages.staff-detail', compact('staff'));
 })->name('staff.show')->where('id', '[0-9]+');

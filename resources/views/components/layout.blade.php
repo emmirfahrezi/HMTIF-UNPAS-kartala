@@ -1,9 +1,9 @@
 @props([
-    'title' => 'HMTIF UNPAS | Kartala', 
-    'description' => 'Website Resmi HMTIF UNPAS Kabinet Kartala. Teknik Informatika Progresif.',
+    'title' => 'HMTIF UNPAS | Kartala',
+    'description' => 'Website Resmi HMTIF UNPAS. Teknik Informatika Progresif.',
     'keywords' => 'HMTIF, UNPAS, Kartala, Informatika, Universitas Pasundan, Himpunan Mahasiswa',
-    'image' => 'https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=emerald&shade=600',
-    'transparent' => false
+    'image' => '/images/placeholders/hero-home.svg',
+    'transparent' => false,
 ])
 <!DOCTYPE html>
 <html lang="id">
@@ -12,7 +12,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    
+
     <!-- Primary Meta Tags -->
     <title>{{ $title }}</title>
     <meta name="title" content="{{ $title }}">
@@ -36,7 +36,7 @@
     <meta property="twitter:title" content="{{ $title }}">
     <meta property="twitter:description" content="{{ $description }}">
     <meta property="twitter:image" content="{{ $image }}">
-    
+
     <!-- SEO & Icons -->
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -47,7 +47,7 @@
 <body>
     <x-organisms.navbar :transparent="$transparent" />
 
-    <main class="{{ $transparent ? '' : 'pt-20' }}">
+    <main class="{{ $transparent ? '' : 'pt-(--nav-height)' }}">
         {{ $slot }}
     </main>
 

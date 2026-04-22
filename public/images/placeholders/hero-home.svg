@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Hero HMTIF">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a2815"/>
+      <stop offset="100%" stop-color="#248232"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1300" cy="120" r="260" fill="rgba(255,255,255,0.09)"/>
+  <circle cx="250" cy="820" r="210" fill="rgba(255,255,255,0.06)"/>
+  <rect x="140" y="340" width="680" height="34" rx="17" fill="rgba(255,255,255,0.85)"/>
+  <rect x="140" y="400" width="520" height="22" rx="11" fill="rgba(255,255,255,0.52)"/>
+  <text x="140" y="300" fill="#ffffff" font-size="56" font-family="Arial, sans-serif" font-weight="700">HMTIF UNPAS</text>
+</svg>
