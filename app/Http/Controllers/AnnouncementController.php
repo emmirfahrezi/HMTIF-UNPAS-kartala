@@ -22,7 +22,8 @@ class AnnouncementController extends Controller
     public function index(Request $request): JsonResponse
     {
         $announcements = $this->getAllAnnouncements->execute(
-            $request->query('category_id') ? (int) $request->query('category_id') : null
+            $request->query('category_id') ? (int) $request->query('category_id') : null,
+            $request->query('search')
         );
 
         return ResponseResource::paginated(

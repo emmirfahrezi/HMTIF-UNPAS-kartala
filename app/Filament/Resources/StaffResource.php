@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StaffResource\Pages;
 use App\Models\Division;
 use App\Models\Staff;
+use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -38,6 +39,12 @@ class StaffResource extends Resource
                 ->label('Divisi')
                 ->options(Division::pluck('name', 'id'))
                 ->required(),
+            Select::make('user_id')
+                ->label('Akun Login')
+                ->options(User::whereNull('staff_id')->orWhereColumn('id', 'staff_id')->pluck('email', 'id'))
+                ->searchable()
+                ->nullable()
+                ->helperText('Hubungkan pengurus ini dengan akun login yang sudah ada'),
             TextInput::make('photo')->label('URL Foto'),
             Textarea::make('bio')->rows(3),
             TextInput::make('instagram'),

@@ -6,6 +6,7 @@ use App\Filament\Resources\AnnouncementResource\Pages;
 use App\Models\Announcement;
 use App\Models\AnnouncementCategory;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -43,10 +44,15 @@ class AnnouncementResource extends Resource
                 ->label('Kategori')
                 ->options(AnnouncementCategory::pluck('name', 'id'))
                 ->searchable(),
-            DateTimePicker::make('published_at')->label('Publikasi'),
+            DateTimePicker::make('published_at')->label('Publikasi')->default(now()),
             Textarea::make('excerpt')->rows(3)->columnSpanFull(),
             RichEditor::make('body')->required()->columnSpanFull(),
-            TextInput::make('thumbnail'),
+            TextInput::make('thumbnail')->label('URL Thumbnail'),
+            FileUpload::make('file')
+                ->label('File Lampiran (PDF/Dokumen)')
+                ->directory('announcements/files')
+                ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                ->maxSize(10240),
         ]);
     }
 

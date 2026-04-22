@@ -9,7 +9,7 @@ class Announcement extends Model
 {
     protected $fillable = [
         'announcement_category_id', 'title', 'slug',
-        'excerpt', 'body', 'thumbnail', 'published_at',
+        'excerpt', 'body', 'thumbnail', 'file', 'published_at',
     ];
 
     protected $casts = [

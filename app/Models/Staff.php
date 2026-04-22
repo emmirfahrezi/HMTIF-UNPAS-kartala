@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Staff extends Model
 {
     protected $table = 'staffs';
 
     protected $fillable = [
-        'division_id', 'name', 'position', 'photo', 'bio',
+        'user_id', 'division_id', 'name', 'position', 'photo', 'bio',
         'instagram', 'linkedin', 'order', 'is_active', 'is_bph',
     ];
 
@@ -22,5 +23,10 @@ class Staff extends Model
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 }

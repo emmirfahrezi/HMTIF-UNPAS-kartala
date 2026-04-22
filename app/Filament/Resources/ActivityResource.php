@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ActivityResource\Pages;
 use App\Models\Activity;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -40,7 +41,12 @@ class ActivityResource extends Resource
             TextInput::make('slug')->required()->unique(ignoreRecord: true),
             RichEditor::make('description')->required()->columnSpanFull(),
             RichEditor::make('body')->columnSpanFull(),
-            TextInput::make('thumbnail'),
+            TextInput::make('thumbnail')->label('URL Thumbnail'),
+            FileUpload::make('file')
+                ->label('File Lampiran (PDF/Dokumen)')
+                ->directory('activities/files')
+                ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                ->maxSize(10240),
             DateTimePicker::make('start_date')->required(),
             DateTimePicker::make('end_date'),
             TextInput::make('location'),

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Aspiration extends Model
 {
     protected $fillable = [
-        'name', 'email', 'subject', 'message',
+        'name', 'nim', 'email', 'subject', 'message',
         'tracking_code', 'status', 'is_spotlight', 'spotlighted_week',
     ];
 
