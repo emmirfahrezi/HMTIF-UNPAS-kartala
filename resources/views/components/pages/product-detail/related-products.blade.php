@@ -1,7 +1,5 @@
     {{-- Related Products Component --}}
-    @php
-        $relatedProducts = \App\Models\Product::query()->with('primaryImage')->latest()->take(4)->get();
-    @endphp
+    @props(['products'])
 
     <section class="py-24 bg-section/30">
         <div class="container mx-auto px-6">
@@ -13,7 +11,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @php $delay = 1; @endphp
-                @foreach ($relatedProducts as $item)
+                @foreach ($products as $item)
                     @php
                         $primaryImage = (string) (optional($item->primaryImage)->image_path ?? '');
                         $isLocalImage =
@@ -42,7 +40,7 @@
                 @endforeach
             </div>
 
-            @if ($relatedProducts->isEmpty())
+            @if ($products->isEmpty())
                 <p class="text-sm text-body/60 mt-8">Belum ada produk terkait. Jalankan seeder untuk menampilkan data.
                 </p>
             @endif

@@ -1,12 +1,7 @@
     {{-- Program List Grid --}}
-    @php
-        $activities = \App\Models\Activity::query()
-            ->select(['id', 'title', 'slug', 'description', 'thumbnail', 'start_date', 'status'])
-            ->latest('start_date')
-            ->latest('id')
-            ->cursorPaginate(9)
-            ->withQueryString();
+    @props(['activities'])
 
+    @php
         $statusLabel = [
             'upcoming' => 'Mendatang',
             'ongoing' => 'Berjalan',

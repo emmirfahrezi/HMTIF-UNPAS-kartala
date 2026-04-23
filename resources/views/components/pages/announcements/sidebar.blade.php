@@ -1,7 +1,7 @@
     {{-- Sidebar Components --}}
-    @php
-        $categories = \App\Models\AnnouncementCategory::query()->orderBy('name')->pluck('name');
+    @props(['categories'])
 
+    @php
         if ($categories->isEmpty()) {
             $categories = collect(['Akademik', 'Organisasi', 'Kegiatan', 'Informasi']);
         }
@@ -13,7 +13,7 @@
             <ul class="space-y-3">
                 @foreach ($categories as $cat)
                     <li><a href="#" class="text-body hover:text-primary transition-colors flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span> {{ $cat }}
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span> {{ is_string($cat) ? $cat : $cat->name }}
                         </a></li>
                 @endforeach
             </ul>

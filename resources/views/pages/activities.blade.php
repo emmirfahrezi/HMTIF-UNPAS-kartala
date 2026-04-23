@@ -25,7 +25,7 @@
     </x-slot:head>
     {{-- Hero Section --}}
     <x-pages.activities.hero />
-    <x-pages.activities.upcoming-timeline />
+    <x-pages.activities.upcoming-timeline :activities="$upcomingActivities" />
     <x-pages.activities.filter-bar />
-    <x-pages.activities.program-grid />
+    <x-pages.activities.program-grid :activities="$activities" />
 </x-layout>

@@ -1,6 +1,4 @@
-    @php
-        $categories = \App\Models\ProductCategory::query()->orderBy('name')->pluck('name');
-    @endphp
+    @props(['categories'])
 
     <section
         class="sticky top-(--nav-height) z-30 bg-white/70 backdrop-blur-xl border-y border-gray-100 py-3 shadow-sm reveal reveal-left">
@@ -13,8 +11,8 @@
                     </button>
                     @foreach ($categories as $cat)
                         <button
-                            class="shrink-0 px-5 py-2 rounded-lg {{ $cat == 'Semua Produk' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-gray-50 text-gray-500 hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20' }} text-sm font-bold transition-all">
-                            {{ $cat }}
+                            class="shrink-0 px-5 py-2 rounded-lg {{ $cat->name == 'Semua Produk' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-gray-50 text-gray-500 hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20' }} text-sm font-bold transition-all">
+                            {{ $cat->name }}
                         </button>
                     @endforeach
                 </div>

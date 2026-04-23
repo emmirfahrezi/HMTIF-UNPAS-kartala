@@ -1,13 +1,6 @@
+@props(['staff' => null])
+
 @php
-    $staffId = request()->query('staff');
-
-    $staff = \App\Models\Staff::query()
-        ->with('division')
-        ->where('is_active', true)
-        ->when($staffId, fn($query) => $query->where('id', $staffId))
-        ->orderBy('order')
-        ->first();
-
     $fallbackImage = asset('images/placeholders/member.svg');
 @endphp
 

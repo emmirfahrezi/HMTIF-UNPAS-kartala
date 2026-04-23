@@ -1,5 +1,6 @@
+@props(['announcement'])
+
 @php
-    $announcement = \App\Models\Announcement::query()->latest('published_at')->first();
     $thumbnail = (string) ($announcement?->thumbnail ?? '');
     $isLocalThumbnail =
         $thumbnail !== '' && \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);

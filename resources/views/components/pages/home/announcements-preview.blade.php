@@ -1,12 +1,5 @@
 <div class="py-24 bg-white relative overflow-hidden content-auto">
-    @php
-        $latestAnnouncements = \App\Models\Announcement::query()
-            ->with('category')
-            ->whereNotNull('published_at')
-            ->latest('published_at')
-            ->take(2)
-            ->get();
-    @endphp
+    @props(['announcements'])
 
     {{-- Decorative SVG --}}
     <div class="absolute top-0 right-0 h-full w-1/3 opacity-5 pointer-events-none">
@@ -28,7 +21,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             @php $delay = 1; @endphp
-            @foreach ($latestAnnouncements as $news)
+            @foreach ($announcements as $news)
                 <div
                     class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-4xl bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-xl hover:border-primary/20 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}">
                     <div
@@ -63,7 +56,7 @@
             @endforeach
         </div>
 
-        @if ($latestAnnouncements->isEmpty())
+        @if ($announcements->isEmpty())
             <p class="text-sm text-body/60 mt-8 text-center">Belum ada pengumuman. Jalankan seeder untuk menampilkan
                 data.</p>
         @endif

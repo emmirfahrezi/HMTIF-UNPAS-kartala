@@ -1,7 +1,5 @@
 <div class="py-24 bg-section relative overflow-hidden content-auto">
-    @php
-        $stats = \App\Models\Stat::query()->orderBy('order')->take(3)->get();
-    @endphp
+    @props(['stats'])
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl text-center mb-20">
         <x-atoms.section-title align="center">

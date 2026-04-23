@@ -1,10 +1,8 @@
     {{-- Product Gallery Component --}}
+    @props(['product'])
+
     @php
-        $product = \App\Models\Product::query()
-            ->with(['images' => fn($query) => $query->orderBy('order')])
-            ->latest()
-            ->first();
-        $images = $product?->images?->pluck('image_path')->filter()->values()->all() ?? [];
+        $images = $product?->images?->sortBy('order')->pluck('image_path')->filter()->values()->all() ?? [];
 
         $images = collect($images)
             ->map(function (string $imagePath) {

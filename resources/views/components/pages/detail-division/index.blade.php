@@ -1,17 +1,4 @@
-@php
-    $divisionSlug = request()->query('division');
-
-    $division = \App\Models\Division::query()
-        ->where('name', '!=', 'Badan Pengurus Harian')
-        ->with([
-            'staffs' => function ($query) {
-                $query->where('is_active', true)->orderBy('order');
-            },
-        ])
-        ->when($divisionSlug, fn($query) => $query->where('slug', $divisionSlug))
-        ->orderBy('order')
-        ->first();
-@endphp
+@props(['division' => null])
 
 <section class="py-8 md:py-10">
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">

@@ -1,11 +1,7 @@
 <div class="py-24 bg-section/30 relative overflow-hidden content-auto">
-    @php
-        $activities = \App\Models\Activity::query()
-            ->orderByRaw("CASE status WHEN 'upcoming' THEN 1 WHEN 'ongoing' THEN 2 ELSE 3 END")
-            ->orderBy('start_date')
-            ->take(2)
-            ->get();
+    @props(['activities'])
 
+    @php
         $statusLabels = [
             'upcoming' => 'Mendatang',
             'ongoing' => 'Berjalan',

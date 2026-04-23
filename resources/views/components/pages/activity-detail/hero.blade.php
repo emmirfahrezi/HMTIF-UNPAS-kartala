@@ -1,6 +1,6 @@
-@php
-    $activity = \App\Models\Activity::query()->latest('start_date')->first();
+@props(['activity'])
 
+@php
     $statusLabel = match ($activity?->status) {
         'upcoming' => 'Mendatang',
         'ongoing' => 'Berjalan',

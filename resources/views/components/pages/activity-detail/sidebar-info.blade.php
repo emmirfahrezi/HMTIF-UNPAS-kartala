@@ -1,6 +1,4 @@
-@php
-    $activity = \App\Models\Activity::query()->latest('start_date')->first();
-@endphp
+@props(['activity'])
 
 {{-- Sidebar Info Component --}}
 <div class="space-y-8 reveal reveal-right">

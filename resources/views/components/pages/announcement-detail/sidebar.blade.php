@@ -1,6 +1,6 @@
-@php
-    $relatedAnnouncements = \App\Models\Announcement::query()->latest('published_at')->take(3)->get();
-@endphp
+@props(['announcements'])
+
+@php $relatedAnnouncements = $announcements; @endphp
 
 {{-- Detail Sidebar --}}
 <div class="space-y-8 reveal reveal-right">
