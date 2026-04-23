@@ -4,13 +4,13 @@
     keywords="Info Penting HMTIF, Warta Terbaru Informatika, Pengumuman Mahasiswa"
     :transparent="false"
 >
-    <x-pages.announcement-detail.hero />
+    <x-pages.announcement-detail.hero :announcement="$announcement" />
 
     <section class="pb-24 bg-section/30 min-h-screen">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
-                <x-pages.announcement-detail.article-content />
-                <x-pages.announcement-detail.sidebar />
+                <x-pages.announcement-detail.article-content :announcement="$announcement" />
+                <x-pages.announcement-detail.sidebar :announcements="$relatedAnnouncements" />
             </div>
         </div>
     </section>

@@ -1,11 +1,5 @@
     {{-- Product Grid --}}
-    @php
-        $products = \App\Models\Product::query()
-            ->with(['primaryImage', 'category'])
-            ->latest()
-            ->take(12)
-            ->get();
-    @endphp
+    @props(['products'])
 
     <section class="py-16 md:py-20 bg-section/30">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">

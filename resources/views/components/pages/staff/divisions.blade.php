@@ -1,4 +1,6 @@
     {{-- 3. Departemen / Divisi --}}
+    @props(['divisions'])
+
     @php
         $divisionOrder = [
             'kajian strategis dan advokasi',
@@ -8,18 +10,10 @@
             'minat dan bakat',
         ];
 
-        $divisions = \App\Models\Division::query()
+        $divisions = $divisions
             ->where('name', '!=', 'Badan Pengurus Harian')
-            ->with([
-                'staffs' => function ($query) {
-                    $query->where('is_active', true)->where('is_bph', false)->orderBy('order');
-                },
-            ])
-            ->orderBy('order')
-            ->get()
             ->sortBy(function ($division) use ($divisionOrder) {
                 $index = array_search(strtolower($division->name), $divisionOrder, true);
-
                 return $index === false ? 999 : $index;
             })
             ->values();

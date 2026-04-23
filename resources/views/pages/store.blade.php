@@ -21,7 +21,7 @@
         </script>
     </x-slot:head>
     <x-pages.store.hero />
-    <x-pages.store.category-strip />
-    <x-pages.store.product-grid />
+    <x-pages.store.category-strip :categories="$categories" />
+    <x-pages.store.product-grid :products="$products" />
     <x-pages.store.custom-cta />
 </x-layout>

@@ -23,39 +23,41 @@ use App\Services\Store\GetRelatedProductsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function (
-    GetHomeStatsService $getStats,
-    GetActivitiesPreviewService $getActivities,
-    GetAnnouncementsPreviewService $getAnnouncements,
-) {
+Route::get('/', function (GetHomeStatsService $getStats, GetActivitiesPreviewService $getActivities, GetAnnouncementsPreviewService $getAnnouncements, ) {
     return view('pages.home', [
-        'stats'         => $getStats->execute(),
-        'activities'    => $getActivities->execute(),
+        'stats' => $getStats->execute(),
+        'activities' => $getActivities->execute(),
         'announcements' => $getAnnouncements->execute(),
     ]);
 })->name('home');
 
-Route::get('/staff', function (
-    GetAllStaffsService $getStaffs,
-    GetDivisionsService $getDivisions,
-) {
+Route::get('/staff', function (GetAllStaffsService $getStaffs, GetDivisionsService $getDivisions, ) {
     return view('pages.staff', [
-        'staffs'    => $getStaffs->execute(),
+        'staffs' => $getStaffs->execute(),
         'divisions' => $getDivisions->execute(),
     ]);
 })->name('staff');
 
-Route::get('/detail-member', function () {
-    return view('pages.detail-member');
+Route::get('/detail-member', function (Request $request, GetStaffByIdService $getStaff) {
+    $staffId = $request->query('staff');
+    $staff = $staffId ? $getStaff->execute((int) $staffId) : null;
+
+    return view('pages.detail-member', compact('staff'));
 });
 
-Route::get('/detail-division', function () {
-    return view('pages.detail-division');
+Route::get('/detail-division', function (Request $request, GetDivisionBySlugService $getDivision) {
+    $divisionSlug = $request->query('division');
+    $division = $divisionSlug ? $getDivision->execute($divisionSlug) : null;
+
+    return view('pages.detail-division', compact('division'));
 });
 
 Route::get('/activities', function () {
     return view('pages.activities');
 });
+
+Route::get('/staff/{id}', function (string $id, GetStaffByIdService $getStaff) {
+    $staff = $getStaff->execute($id);
 
     return view('pages.staff-detail', compact('staff'));
 })->name('staff.show')->where('id', '[0-9]+');
@@ -66,17 +68,13 @@ Route::get('/divisi/{slug}', function (string $slug, GetDivisionBySlugService $g
     return view('pages.division-detail', compact('division'));
 })->name('divisions.show');
 
-Route::get('/activities', function (
-    Request $request,
-    GetAllActivitiesService $getActivities,
-    GetAllAnnouncementsService $getAnnouncements,
-) {
+Route::get('/activities', function (Request $request, GetAllActivitiesService $getActivities, GetAllAnnouncementsService $getAnnouncements, ) {
     $activities = $getActivities->execute($request->query('status'));
 
     return view('pages.activities', [
-        'activities'         => $activities,
+        'activities' => $activities,
         'upcomingActivities' => (new GetAllActivitiesService)->execute('upcoming'),
-        'announcements'      => $getAnnouncements->execute(),
+        'announcements' => $getAnnouncements->execute(),
     ]);
 })->name('activities');
 
@@ -90,29 +88,21 @@ Route::get('/store', function (Request $request, GetAllProductsService $getProdu
     $products = $getProducts->execute($request->query('category'));
 
     return view('pages.store', [
-        'products'   => $products,
+        'products' => $products,
         'categories' => $getCategories->execute(),
     ]);
 })->name('store');
 
-Route::get('/store/{slug}', function (
-    string $slug,
-    GetProductBySlugService $getProduct,
-    GetRelatedProductsService $getRelated,
-) {
+Route::get('/store/{slug}', function (string $slug, GetProductBySlugService $getProduct, GetRelatedProductsService $getRelated, ) {
     $product = $getProduct->execute($slug);
 
     return view('pages.product-detail', [
-        'product'  => $product,
-        'related'  => $getRelated->execute($product),
+        'product' => $product,
+        'related' => $getRelated->execute($product),
     ]);
 })->name('store.show');
 
-Route::get('/announcements', function (
-    Request $request,
-    GetAllAnnouncementsService $getAnnouncements,
-    GetAnnouncementCategoriesService $getCategories,
-) {
+Route::get('/announcements', function (Request $request, GetAllAnnouncementsService $getAnnouncements, GetAnnouncementCategoriesService $getCategories, ) {
     $announcements = $getAnnouncements->execute(
         $request->query('category_id') ? (int) $request->query('category_id') : null,
         $request->query('search')
@@ -120,14 +110,15 @@ Route::get('/announcements', function (
 
     return view('pages.announcements', [
         'announcements' => $announcements,
-        'categories'    => $getCategories->execute(),
+        'categories' => $getCategories->execute(),
     ]);
 })->name('announcements');
 
-Route::get('/announcements/{slug}', function (string $slug, GetAnnouncementBySlugService $getAnnouncement) {
+Route::get('/announcements/{slug}', function (string $slug, GetAnnouncementBySlugService $getAnnouncement, GetAllAnnouncementsService $getRelated) {
     $announcement = $getAnnouncement->execute($slug);
+    $relatedAnnouncements = $getRelated->execute(null, null);
 
-    return view('pages.announcement-detail', compact('announcement'));
+    return view('pages.announcement-detail', compact('announcement', 'relatedAnnouncements'));
 })->name('announcements.show');
 
 Route::get('/aspirations', function (GetWeeklySpotlightService $getSpotlight) {

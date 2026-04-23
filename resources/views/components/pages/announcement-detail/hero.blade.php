@@ -1,6 +1,4 @@
-@php
-    $announcement = \App\Models\Announcement::query()->with('category')->latest('published_at')->first();
-@endphp
+@props(['announcement'])
 
 {{-- Hero Section with Breadcrumb --}}
 <section class="relative pt-20 pb-6 overflow-hidden bg-white">

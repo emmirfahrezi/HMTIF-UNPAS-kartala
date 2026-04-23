@@ -1,10 +1,8 @@
     {{-- Upcoming Highlight Timeline --}}
+    @props(['activities'])
+
     @php
-        $timelineActivities = \App\Models\Activity::query()
-            ->where('status', 'upcoming')
-            ->orderBy('start_date')
-            ->take(4)
-            ->get();
+        $timelineActivities = $activities;
 
         $statusToColor = [
             'upcoming' => 'primary',

@@ -1,24 +1,10 @@
     {{-- Main Content (Search & Grid) --}}
     <div class="lg:col-span-3">
+        @props(['announcements'])
+
         @php
             $search = trim((string) request('q', ''));
-
-            $news = \App\Models\Announcement::query()
-                ->select(['id', 'title', 'excerpt', 'body', 'thumbnail', 'published_at', 'category_id'])
-                ->with(['category:id,name'])
-                ->when($search !== '', function ($query) use ($search) {
-                    $query->where(function ($subQuery) use ($search) {
-                        $subQuery
-                            ->where('title', 'like', '%' . $search . '%')
-                            ->orWhere('excerpt', 'like', '%' . $search . '%')
-                            ->orWhere('body', 'like', '%' . $search . '%');
-                    });
-                })
-                ->whereNotNull('published_at')
-                ->orderByDesc('published_at')
-                ->orderByDesc('id')
-                ->cursorPaginate(6)
-                ->withQueryString();
+            $news = $announcements;
         @endphp
 
         {{-- Search & Title --}}

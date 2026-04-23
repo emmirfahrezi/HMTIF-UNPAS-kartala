@@ -24,8 +24,8 @@
 
     <div class="bg-white pt-8 md:pt-10 pb-20 md:pb-24">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
-            <x-pages.staff.bph />
-            <x-pages.staff.divisions />
+            <x-pages.staff.bph :staffs="$staffs" />
+            <x-pages.staff.divisions :divisions="$divisions" />
         </div>
     </div>
 </x-layout>

@@ -6,11 +6,11 @@
     <section class="py-16 bg-white overflow-hidden">
         <div class="container mx-auto px-6 lg:px-8 max-w-screen-2xl">
             <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 items-start">
-                <x-pages.product-detail.gallery />
-                <x-pages.product-detail.product-info />
+                <x-pages.product-detail.gallery :product="$product" />
+                <x-pages.product-detail.product-info :product="$product" />
             </div>
         </div>
     </section>
 
-    <x-pages.product-detail.related-products />
+    <x-pages.product-detail.related-products :products="$related" />
 </x-layout>

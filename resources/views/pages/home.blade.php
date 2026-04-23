@@ -21,7 +21,7 @@
     <x-pages.home.hero />
     <x-pages.home.about />
     <x-pages.home.vision-mission />
-    <x-pages.home.activities-preview />
-    <x-pages.home.announcements-preview />
-    <x-pages.home.stats />
+    <x-pages.home.activities-preview :activities="$activities" />
+    <x-pages.home.announcements-preview :announcements="$announcements" />
+    <x-pages.home.stats :stats="$stats" />
 </x-layout>

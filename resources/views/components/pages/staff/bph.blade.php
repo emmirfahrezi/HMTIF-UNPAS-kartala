@@ -1,18 +1,16 @@
-@php
-    $leaders = \App\Models\Staff::query()
-        ->where('is_active', true)
-        ->whereIn('position', ['Ketua Umum', 'Sekretaris Jenderal'])
-        ->orderBy('order')
-        ->take(2)
-        ->get();
+@props(['staffs'])
 
-    $bphMembers = \App\Models\Staff::query()
-        ->where('is_active', true)
+@php
+    $leaders = $staffs
+        ->whereIn('position', ['Ketua Umum', 'Sekretaris Jenderal'])
+        ->sortBy('order')
+        ->take(2);
+
+    $bphMembers = $staffs
         ->where('is_bph', true)
         ->whereNotIn('position', ['Ketua Umum', 'Sekretaris Jenderal'])
-        ->orderBy('order')
-        ->take(6)
-        ->get();
+        ->sortBy('order')
+        ->take(6);
 
     $deptAbbr = [
         'Ketua Umum' => 'KET',

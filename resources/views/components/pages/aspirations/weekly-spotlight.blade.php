@@ -1,11 +1,5 @@
     {{-- Weekly Aspiration Spotlight --}}
-    @php
-        $spotlight = \App\Models\Aspiration::query()
-            ->where('is_spotlight', true)
-            ->orderByDesc('spotlighted_week')
-            ->take(3)
-            ->get();
-    @endphp
+    @props(['spotlight'])
 
     <section class="py-16 md:py-20 bg-white">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">

@@ -1,6 +1,4 @@
-@php
-    $product = \App\Models\Product::query()->with('category')->latest()->first();
-@endphp
+@props(['product'])
 
 {{-- Product Details Layout --}}
 <div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right">

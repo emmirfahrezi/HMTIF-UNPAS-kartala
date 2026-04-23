@@ -9,8 +9,8 @@
     <div class="bg-section/30 py-16">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
-                <x-pages.announcements.main-content />
-                <x-pages.announcements.sidebar />
+                <x-pages.announcements.main-content :announcements="$announcements" />
+                <x-pages.announcements.sidebar :categories="$categories" />
             </div>
         </div>
     </div>

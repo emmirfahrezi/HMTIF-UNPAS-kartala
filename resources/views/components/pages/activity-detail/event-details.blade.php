@@ -1,5 +1,6 @@
+@props(['activity'])
+
 @php
-    $activity = \App\Models\Activity::query()->latest('start_date')->first();
     $thumbnail = (string) ($activity?->thumbnail ?? '');
     $isLocalThumbnail =
         $thumbnail !== '' && \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
