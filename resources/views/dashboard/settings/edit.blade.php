@@ -1,11 +1,11 @@
-<x-dashboard-layout pageTitle="Edit Pengaturan" :breadcrumbs="[['label' => 'Pengaturan', 'href' => '/dashboard/settings'], ['label' => 'Edit']]">
+<x-layouts.dashboard pageTitle="Edit Pengaturan" :breadcrumbs="[['label' => 'Pengaturan', 'href' => '/dashboard/settings'], ['label' => 'Edit']]">
     <form method="POST" action="/dashboard/settings/{{ $setting->id }}">@csrf @method('PUT')
         <div class="space-y-6 max-w-4xl">
-            <x-dashboard.form-section title="Setting">
+            <x-molecules.dashboard.forms.form-section title="Setting">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <x-dashboard.form-input label="Key" name="key" :value="$setting->key" required />
-                    <x-dashboard.form-input label="Value" name="value" :value="$setting->value" required />
-                    <x-dashboard.form-input type="select" label="Group" name="group" :value="$setting->group"
+                    <x-molecules.dashboard.forms.form-input label="Key" name="key" :value="$setting->key" required />
+                    <x-molecules.dashboard.forms.form-input label="Value" name="value" :value="$setting->value" required />
+                    <x-molecules.dashboard.forms.form-input type="select" label="Group" name="group" :value="$setting->group"
                         :options="['general' => 'General', 'social' => 'Social Media', 'seo' => 'SEO', 'contact' => 'Kontak']" />
                 </div>
             </x-dashboard.form-section>
@@ -15,4 +15,4 @@
             </div>
         </div>
     </form>
-</x-dashboard-layout>
+</x-layouts.dashboard>

@@ -1,5 +1,5 @@
-<x-dashboard-layout pageTitle="Notulensi Rapat" :breadcrumbs="[['label' => 'Notulensi']]">
-    <x-dashboard.data-table
+<x-layouts.dashboard pageTitle="Notulensi Rapat" :breadcrumbs="[['label' => 'Notulensi']]">
+    <x-molecules.dashboard.cards.data-table
         :headers="[
             ['label' => 'Nomor'],
             ['label' => 'Perihal'],
@@ -39,10 +39,10 @@
 
         @if (isset($minutes) && method_exists($minutes, 'hasPages'))
             <x-slot:pagination>
-                <x-dashboard.pagination :paginator="$minutes" />
+                <x-molecules.dashboard.cards.pagination :paginator="$minutes" />
             </x-slot:pagination>
         @endif
     </x-dashboard.data-table>
 
-    <x-dashboard.modal-confirm />
-</x-dashboard-layout>
+    <x-molecules.dashboard.ui.modal-confirm />
+</x-layouts.dashboard>

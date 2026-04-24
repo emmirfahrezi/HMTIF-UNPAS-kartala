@@ -125,4 +125,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'logo_url' => env('APP_LOGO_URL', 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/logo-hmtif-rb.png'),
+
 ];

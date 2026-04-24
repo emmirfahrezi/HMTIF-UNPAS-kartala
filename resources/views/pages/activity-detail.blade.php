@@ -1,4 +1,4 @@
-<x-layout 
+<x-layouts.app 
     title="Detail Kegiatan | HMTIF UNPAS" 
     description="Lihat rincian lengkap kegiatan HMTIF UNPAS. Informasi waktu, lokasi, deskripsi acara, dan pendaftaran peserta untuk program kerja Informatika."
     keywords="Detail Acara HMTIF, Info Kegiatan Informatika, Event Mahasiswa UNPAS"
@@ -14,4 +14,4 @@
             </div>
         </div>
     </section>
-</x-layout>
+</x-layouts.app>

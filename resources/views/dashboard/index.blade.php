@@ -1,17 +1,17 @@
-<x-dashboard-layout pageTitle="Dashboard Overview">
+<x-layouts.dashboard pageTitle="Dashboard Overview">
     {{-- Stats Grid --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
-        <x-dashboard.stat-card label="Pengguna" :value="$counts['users'] ?? 0" icon="heroicon-o-user-circle"
+        <x-molecules.dashboard.cards.stat-card label="Pengguna" :value="$counts['users'] ?? 0" icon="heroicon-o-user-circle"
             color="primary" href="/dashboard/users" />
-        <x-dashboard.stat-card label="Pengumuman" :value="$counts['announcements'] ?? 0" icon="heroicon-o-megaphone"
+        <x-molecules.dashboard.cards.stat-card label="Pengumuman" :value="$counts['announcements'] ?? 0" icon="heroicon-o-megaphone"
             color="blue" href="/dashboard/announcements" />
-        <x-dashboard.stat-card label="Kegiatan" :value="$counts['activities'] ?? 0" icon="heroicon-o-calendar"
+        <x-molecules.dashboard.cards.stat-card label="Kegiatan" :value="$counts['activities'] ?? 0" icon="heroicon-o-calendar"
             color="emerald" href="/dashboard/activities" />
-        <x-dashboard.stat-card label="Produk" :value="$counts['products'] ?? 0" icon="heroicon-o-shopping-bag"
+        <x-molecules.dashboard.cards.stat-card label="Produk" :value="$counts['products'] ?? 0" icon="heroicon-o-shopping-bag"
             color="purple" href="/dashboard/products" />
-        <x-dashboard.stat-card label="Aspirasi" :value="$counts['aspirations'] ?? 0"
+        <x-molecules.dashboard.cards.stat-card label="Aspirasi" :value="$counts['aspirations'] ?? 0"
             icon="heroicon-o-chat-bubble-left-right" color="amber" href="/dashboard/aspirations" />
-        <x-dashboard.stat-card label="Pengurus" :value="$counts['staff'] ?? 0" icon="heroicon-o-users" color="rose"
+        <x-molecules.dashboard.cards.stat-card label="Pengurus" :value="$counts['staff'] ?? 0" icon="heroicon-o-users" color="rose"
             href="/dashboard/staffs" />
     </div>
 
@@ -95,4 +95,4 @@
             </ul>
         </div>
     </div>
-</x-dashboard-layout>
+</x-layouts.dashboard>

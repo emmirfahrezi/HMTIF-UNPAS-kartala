@@ -1,12 +1,12 @@
-<x-dashboard-layout pageTitle="Edit Stat" :breadcrumbs="[['label' => 'Statistik', 'href' => '/dashboard/stats'], ['label' => 'Edit']]">
+<x-layouts.dashboard pageTitle="Edit Stat" :breadcrumbs="[['label' => 'Statistik', 'href' => '/dashboard/stats'], ['label' => 'Edit']]">
     <form method="POST" action="/dashboard/stats/{{ $stat->id }}">@csrf @method('PUT')
         <div class="space-y-6 max-w-4xl">
-            <x-dashboard.form-section title="Data Statistik">
+            <x-molecules.dashboard.forms.form-section title="Data Statistik">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <x-dashboard.form-input label="Label" name="label" :value="$stat->label" required />
-                    <x-dashboard.form-input label="Nilai" name="value" :value="$stat->value" required />
-                    <x-dashboard.form-input label="Icon" name="icon" :value="$stat->icon" />
-                    <x-dashboard.form-input type="number" label="Urutan" name="order" :value="$stat->order" />
+                    <x-molecules.dashboard.forms.form-input label="Label" name="label" :value="$stat->label" required />
+                    <x-molecules.dashboard.forms.form-input label="Nilai" name="value" :value="$stat->value" required />
+                    <x-molecules.dashboard.forms.form-input label="Icon" name="icon" :value="$stat->icon" />
+                    <x-molecules.dashboard.forms.form-input type="number" label="Urutan" name="order" :value="$stat->order" />
                 </div>
             </x-dashboard.form-section>
             <div class="flex items-center gap-3">
@@ -15,4 +15,4 @@
             </div>
         </div>
     </form>
-</x-dashboard-layout>
+</x-layouts.dashboard>
