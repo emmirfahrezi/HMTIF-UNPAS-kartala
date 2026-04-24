@@ -30,7 +30,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada statistik" icon="heroicon-o-chart-bar"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada statistik" icon="heroicon-o-chart-bar"
                     createRoute="/dashboard/stats/create" />
             </x-slot:empty>
         @endforelse

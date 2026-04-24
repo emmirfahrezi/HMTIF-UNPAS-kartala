@@ -71,7 +71,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada pengguna" icon="heroicon-o-user-circle"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada pengguna" icon="heroicon-o-user-circle"
                     createRoute="/dashboard/users/create" />
             </x-slot:empty>
         @endforelse

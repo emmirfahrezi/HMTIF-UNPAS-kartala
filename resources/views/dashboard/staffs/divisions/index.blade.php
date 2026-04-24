@@ -41,7 +41,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada divisi" icon="heroicon-o-building-office"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada divisi" icon="heroicon-o-building-office"
                     onclick="toggleModal('quick-add-division')" />
             </x-slot:empty>
         @endforelse

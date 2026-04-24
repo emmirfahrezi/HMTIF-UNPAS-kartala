@@ -7,7 +7,7 @@
         </a>
     </x-slot:headerActions>
 
-    <x-dashboard.category-card 
+    <x-molecules.dashboard.cards.category-card 
         title="Kategori Produk"
         subtitle="Kelola kategori produk untuk toko HMTIF"
         addModalId="quick-add-category-product"
@@ -71,7 +71,7 @@
 
         <x-slot:empty>
             @if ($products->isEmpty())
-                <x-dashboard.empty-state title="Belum ada produk" icon="heroicon-o-shopping-bag"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada produk" icon="heroicon-o-shopping-bag"
                     createRoute="/dashboard/products/create" createLabel="Tambah Produk" />
             @endif
         </x-slot:empty>

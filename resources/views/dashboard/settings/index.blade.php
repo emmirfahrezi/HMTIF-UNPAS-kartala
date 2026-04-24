@@ -34,7 +34,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada pengaturan" icon="heroicon-o-cog-6-tooth"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada pengaturan" icon="heroicon-o-cog-6-tooth"
                     createRoute="/dashboard/settings/create" />
             </x-slot:empty>
         @endforelse

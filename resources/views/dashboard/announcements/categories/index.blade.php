@@ -39,7 +39,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada kategori" icon="heroicon-o-tag"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada kategori" icon="heroicon-o-tag"
                     onclick="toggleModal('quick-add-category')" />
             </x-slot:empty>
         @endforelse

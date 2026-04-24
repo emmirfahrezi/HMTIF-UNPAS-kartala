@@ -7,7 +7,7 @@
         </a>
     </x-slot:headerActions>
 
-    <x-dashboard.category-card 
+    <x-molecules.dashboard.cards.category-card 
         title="Manajemen Bidang / Divisi"
         subtitle="Kelola struktur organisasi dan divisi pengurus"
         addModalId="quick-add-division"

@@ -50,7 +50,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada aspirasi" icon="heroicon-o-chat-bubble-left-right"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada aspirasi" icon="heroicon-o-chat-bubble-left-right"
                     createRoute="/dashboard/aspirations/create" />
             </x-slot:empty>
         @endforelse

@@ -62,7 +62,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada kegiatan" icon="heroicon-o-calendar"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada kegiatan" icon="heroicon-o-calendar"
                     createRoute="/dashboard/activities/create" createLabel="Tambah Kegiatan" />
             </x-slot:empty>
         @endforelse
