@@ -7,7 +7,7 @@
         </a>
     </x-slot:headerActions>
 
-    <x-dashboard.category-card 
+    <x-molecules.dashboard.cards.category-card 
         title="Kategori Pengumuman"
         subtitle="Kelola kategori untuk membagi jenis pengumuman"
         addModalId="quick-add-category"
@@ -59,7 +59,7 @@
 
         <x-slot:empty>
             @if ($announcements->isEmpty())
-                <x-dashboard.empty-state title="Belum ada pengumuman" icon="heroicon-o-megaphone"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada pengumuman" icon="heroicon-o-megaphone"
                     createRoute="/dashboard/announcements/create" createLabel="Tambah Pengumuman" />
             @endif
         </x-slot:empty>

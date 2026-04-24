@@ -32,7 +32,7 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-dashboard.empty-state title="Belum ada notulensi" icon="heroicon-o-clipboard-document-list"
+                <x-molecules.dashboard.ui.empty-state title="Belum ada notulensi" icon="heroicon-o-clipboard-document-list"
                     createRoute="/dashboard/minutes/create" />
             </x-slot:empty>
         @endforelse
