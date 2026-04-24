@@ -1,5 +1,5 @@
-<x-dashboard-layout pageTitle="Aspirasi" :breadcrumbs="[['label' => 'Aspirasi']]">
-    <x-dashboard.data-table
+<x-layouts.dashboard pageTitle="Aspirasi" :breadcrumbs="[['label' => 'Aspirasi']]">
+    <x-molecules.dashboard.cards.data-table
         :headers="[
             ['label' => 'Subjek'],
             ['label' => 'Status'],
@@ -56,9 +56,9 @@
         @endforelse
 
         <x-slot:pagination>
-            <x-dashboard.pagination :paginator="$aspirations" />
+            <x-molecules.dashboard.cards.pagination :paginator="$aspirations" />
         </x-slot:pagination>
     </x-dashboard.data-table>
 
-    <x-dashboard.modal-confirm />
-</x-dashboard-layout>
+    <x-molecules.dashboard.ui.modal-confirm />
+</x-layouts.dashboard>

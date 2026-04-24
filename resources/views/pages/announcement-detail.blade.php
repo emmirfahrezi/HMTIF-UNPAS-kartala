@@ -1,4 +1,4 @@
-<x-layout 
+<x-layouts.app 
     title="Detail Pengumuman | HMTIF UNPAS" 
     description="Baca pengumuman resmi dan berita terbaru dari HMTIF UNPAS. Informasi terverifikasi mengenai akademik, organisasi, dan agenda penting."
     keywords="Info Penting HMTIF, Warta Terbaru Informatika, Pengumuman Mahasiswa"
@@ -14,4 +14,4 @@
             </div>
         </div>
     </section>
-</x-layout>
+</x-layouts.app>

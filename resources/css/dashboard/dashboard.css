@@ -1,0 +1,83 @@
+/* Quill-specific styles to match dashboard */
+.ql-container {
+    border-bottom-left-radius: 0.75rem !important;
+    border-bottom-right-radius: 0.75rem !important;
+    border-color: #e2e8f0 !important;
+    font-family: inherit !important;
+    font-size: 0.875rem !important;
+    background-color: white !important;
+}
+
+.ql-toolbar {
+    border-top-left-radius: 0.75rem !important;
+    border-top-right-radius: 0.75rem !important;
+    border-color: #e2e8f0 !important;
+    background-color: #f8fafc !important;
+}
+
+.ql-editor {
+    min-height: 200px !important;
+}
+
+.ql-container.ql-snow {
+    border-top: none !important;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+.ql-editor.ql-blank::before {
+    color: #94a3b8 !important;
+    font-style: normal !important;
+}
+
+/* Quill Table Styles */
+.ql-editor table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+}
+
+.ql-editor td {
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+}
+
+/* Dashboard-specific styles */
+.dash-sidebar {
+    width: 260px;
+    transition: transform 0.3s ease;
+}
+
+.dash-content {
+    margin-left: 260px;
+    transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+    .dash-sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 50;
+    }
+
+    .dash-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .dash-content {
+        margin-left: 0;
+    }
+}
+
+.dash-sidebar-overlay {
+    display: none;
+}
+
+.dash-sidebar-overlay.open {
+    display: block;
+}

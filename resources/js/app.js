@@ -1,11 +1,15 @@
-import { initNavbar } from './components/navbar';
-import { initImageSwap } from './components/image-swap';
-import { initProductGallery } from './components/product-gallery';
-import { initReveal } from './components/reveal';
+import { initGlobal } from './pages/global';
+import { initHome } from './pages/home';
+import { initProductDetail } from './pages/product-detail';
+import { initAnnouncements } from './pages/announcements';
+import { initActivities } from './pages/activities';
+import { initLogin } from './pages/login';
 
 document.addEventListener('DOMContentLoaded', () => {
-    initNavbar();
-    initImageSwap();
-    initProductGallery();
-    initReveal();
+    initGlobal();
+    initHome();
+    initProductDetail();
+    initAnnouncements();
+    initActivities();
+    initLogin();
 });

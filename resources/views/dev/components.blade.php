@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.app>
     <x-slot:title>Laboratorium Komponen | Kartala Styleguide</x-slot:title>
 
     <div class="py-12 bg-section min-h-screen pt-24 pb-32">
@@ -131,9 +131,9 @@
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">
                                 Buttons</h3>
                             <div class="flex flex-wrap gap-4">
-                                <x-atoms.button variant="primary">Primary Button</x-atoms.button>
-                                <x-atoms.button variant="secondary">Secondary</x-atoms.button>
-                                <x-atoms.button variant="outline">Outline</x-atoms.button>
+                                <x-atoms.pages.button variant="primary">Primary Button</x-atoms.button>
+                                <x-atoms.pages.button variant="secondary">Secondary</x-atoms.button>
+                                <x-atoms.pages.button variant="outline">Outline</x-atoms.button>
                             </div>
                         </div>
 
@@ -143,7 +143,7 @@
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">
                                 Titles & Typography</h3>
                             <div class="space-y-4">
-                                <x-atoms.section-title>Ini Contoh Judul Section</x-atoms.section-title>
+                                <x-atoms.pages.section-title>Ini Contoh Judul Section</x-atoms.section-title>
                             </div>
                         </div>
 
@@ -153,8 +153,8 @@
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">
                                 Form Inputs</h3>
                             <div class="space-y-4">
-                                <x-atoms.input placeholder="Placeholder text..." />
-                                <x-atoms.input value="Typed text example" />
+                                <x-atoms.pages.input placeholder="Placeholder text..." />
+                                <x-atoms.pages.input value="Typed text example" />
                             </div>
                         </div>
                     </div>
@@ -174,11 +174,11 @@
                             class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-8 border-b border-gray-50 pb-4 text-center sm:text-left">
                             Member & News Cards</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <x-molecules.cards.member-card name="Emmir Fahrezi" position="Ketua Himpunan" size="normal"
+                            <x-molecules.pages.cards.member-card name="Emmir Fahrezi" position="Ketua Himpunan" size="normal"
                                 dept="PSDM" />
-                            <x-molecules.cards.member-card name="Fauzan Ahmad" position="Sekretaris" size="normal"
+                            <x-molecules.pages.cards.member-card name="Fauzan Ahmad" position="Sekretaris" size="normal"
                                 dept="SEC" />
-                            <x-molecules.cards.news-card title="MUBES HMTIF 2026: Delegasi Terpilih" category="Penting"
+                            <x-molecules.pages.cards.news-card title="MUBES HMTIF 2026: Delegasi Terpilih" category="Penting"
                                 date="05 April 2026" :image="null" />
                         </div>
                     </div>
@@ -189,10 +189,10 @@
                             class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-8 border-b border-gray-50 pb-4 text-center sm:text-left">
                             Stat Cards</h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <x-molecules.stats.stat-card label="Pengurus" value="31+" />
-                            <x-molecules.stats.stat-card label="Anggota" value="300+" />
-                            <x-molecules.stats.stat-card label="KMPS" value="5" />
-                            <x-molecules.stats.stat-card label="Proker" value="12" />
+                            <x-molecules.pages.stats.stat-card label="Pengurus" value="31+" />
+                            <x-molecules.pages.stats.stat-card label="Anggota" value="300+" />
+                            <x-molecules.pages.stats.stat-card label="KMPS" value="5" />
+                            <x-molecules.pages.stats.stat-card label="Proker" value="12" />
                         </div>
                     </div>
                 </section>
@@ -253,6 +253,6 @@
 
     {{-- Footer Preview (In-place) --}}
     <div id="footer-preview" class="mt-12">
-        <x-organisms.footer />
+        <x-organisms.pages.footer />
     </div>
-</x-layout>
+</x-layouts.app>

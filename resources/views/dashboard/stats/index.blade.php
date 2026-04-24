@@ -1,5 +1,5 @@
-<x-dashboard-layout pageTitle="Statistik" :breadcrumbs="[['label' => 'Statistik']]">
-    <x-dashboard.data-table
+<x-layouts.dashboard pageTitle="Statistik" :breadcrumbs="[['label' => 'Statistik']]">
+    <x-molecules.dashboard.cards.data-table
         :headers="[
             ['label' => 'Label'],
             ['label' => 'Nilai'],
@@ -36,5 +36,5 @@
         @endforelse
     </x-dashboard.data-table>
 
-    <x-dashboard.modal-confirm />
-</x-dashboard-layout>
+    <x-molecules.dashboard.ui.modal-confirm />
+</x-layouts.dashboard>

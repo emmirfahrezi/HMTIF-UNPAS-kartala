@@ -1,10 +1,10 @@
-<x-layout title="Kirim Aspirasi | HMTIF UNPAS"
+<x-layouts.app title="Kirim Aspirasi | HMTIF UNPAS"
     description="Sampaikan aspirasi, kritik, dan saran Anda untuk kemajuan HMTIF UNPAS. Suara mahasiswa Teknik Informatika sangat berarti bagi perbaikan kualitas organisasi."
     keywords="Aspirasi Mahasiswa, Kritik Saran HMTIF, Suara Mahasiswa, Teknik Informatika UNPAS" :transparent="false">
-    <x-pages.aspirations.hero />
+    <x-organisms.pages.aspirations.hero />
 
     {{-- Track Aspiration (Mockup) --}}
-    <x-pages.aspirations.track-status />
-    <x-pages.aspirations.form />
-    {{-- <x-pages.aspirations.weekly-spotlight /> --}}
-</x-layout>
+    <x-organisms.pages.aspirations.track-status />
+    <x-organisms.pages.aspirations.form />
+    {{-- <x-organisms.pages.aspirations.weekly-spotlight /> --}}
+</x-layouts.app>

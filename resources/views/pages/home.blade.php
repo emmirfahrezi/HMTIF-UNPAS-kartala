@@ -1,4 +1,4 @@
-<x-layout title="Beranda | HMTIF UNPAS"
+<x-layouts.app title="Beranda | HMTIF UNPAS"
     description="Portal resmi HMTIF Universitas Pasundan. Wadah aspirasi, informasi kegiatan, dan pengembangan potensi mahasiswa Teknik Informatika UNPAS."
     keywords="HMTIF UNPAS, Teknik Informatika UNPAS, Universitas Pasundan, Himpunan Mahasiswa" :transparent="true">
     <x-slot:head>
@@ -8,7 +8,7 @@
             "@@type": "Organization",
             "name": "HMTIF UNPAS",
             "url": "{{ url('/') }}",
-            "logo": "{{ asset('images/placeholders/logo.svg') }}",
+            "logo": "https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png",
             "description": "Himpunan Mahasiswa Teknik Informatika Universitas Pasundan Bandung.",
             "sameAs": [
                 "https://www.instagram.com/hmtifunpas",
@@ -18,10 +18,10 @@
         </script>
     </x-slot:head>
 
-    <x-pages.home.hero />
-    <x-pages.home.about />
-    <x-pages.home.vision-mission />
-    <x-pages.home.activities-preview :activities="$activities" />
-    <x-pages.home.announcements-preview :announcements="$announcements" />
-    <x-pages.home.stats :stats="$stats" />
-</x-layout>
+    <x-organisms.pages.home.hero />
+    <x-organisms.pages.home.about />
+    <x-organisms.pages.home.vision-mission />
+    <x-organisms.pages.home.activities-preview :activities="$activities" />
+    <x-organisms.pages.home.announcements-preview :announcements="$announcements" />
+    <x-organisms.pages.home.stats :stats="$stats" />
+</x-layouts.app>
