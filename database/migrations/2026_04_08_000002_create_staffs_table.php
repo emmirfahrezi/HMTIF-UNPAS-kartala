@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('staffs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreignId('division_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('position');
@@ -21,6 +22,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('is_bph')->default(false);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 

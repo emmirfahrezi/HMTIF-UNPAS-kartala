@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
+            $table->string('phone_number')->nullable();
+            $table->text('order_text')->nullable();
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });

@@ -46,7 +46,7 @@ class LoginController extends Controller
             return back()->withInput()->withErrors(['email' => $e->getMessage()]);
         }
 
-        return redirect()->route('home');
+        return redirect()->route('dashboard');
     }
 
     public function logout(Request $request): JsonResponse

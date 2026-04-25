@@ -35,6 +35,8 @@ class ProductFactory extends Factory
             'slug' => Str::slug($name . '-' . fake()->unique()->numberBetween(10, 9999)),
             'description' => fake('id_ID')->paragraph(2),
             'price' => fake()->randomElement([15000, 35000, 45000, 65000, 95000, 155000, 185000, 225000]),
+            'phone_number' => fake()->e164PhoneNumber(),
+            'order_text' => fake('id_ID')->sentence(12),
             'is_available' => fake()->boolean(88),
         ];
     }
