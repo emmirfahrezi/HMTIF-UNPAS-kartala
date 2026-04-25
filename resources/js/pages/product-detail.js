@@ -7,9 +7,21 @@ export function initProductDetail() {
 
     if (!mainImg || thumbnails.length === 0) return;
 
+    const getSafeImageUrl = (target) => {
+        if (!target) return null;
+
+        try {
+            const url = new URL(target, window.location.origin);
+            return ['http:', 'https:'].includes(url.protocol) ? url.toString() : null;
+        } catch {
+            return null;
+        }
+    };
+
     thumbnails.forEach((thumb) => {
         thumb.addEventListener('click', () => {
-            const newSrc = thumb.getAttribute('data-full');
+            const newSrc = getSafeImageUrl(thumb.getAttribute('data-full'));
+            if (!newSrc) return;
             
             // Fade out effect
             mainImg.style.opacity = '0';

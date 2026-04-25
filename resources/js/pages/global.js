@@ -4,6 +4,9 @@
 export function initGlobal() {
     initNavbar();
     initReveal();
+    initSafeNavigation();
+    initSafeExternalLinks();
+    initImageFallbacks();
 }
 
 function initNavbar() {
@@ -69,4 +72,66 @@ function initReveal() {
     reveals.forEach((reveal) => {
         revealObserver.observe(reveal);
     });
+}
+
+function initSafeNavigation() {
+    document.querySelectorAll('[data-nav-target]').forEach((element) => {
+        element.addEventListener('click', () => {
+            const target = element.getAttribute('data-nav-target');
+            const safeTarget = getSafeNavigationUrl(target);
+
+            if (safeTarget) {
+                window.location.assign(safeTarget);
+            }
+        });
+    });
+}
+
+function initSafeExternalLinks() {
+    document.querySelectorAll('a[data-external-url]').forEach((element) => {
+        const safeUrl = getSafeExternalUrl(element.getAttribute('data-external-url'));
+
+        if (safeUrl) {
+            element.setAttribute('href', safeUrl);
+            return;
+        }
+
+        element.removeAttribute('href');
+        element.setAttribute('aria-disabled', 'true');
+        element.classList.add('pointer-events-none', 'opacity-60');
+    });
+}
+
+function initImageFallbacks() {
+    document.querySelectorAll('img[data-fallback-src]').forEach((image) => {
+        image.addEventListener('error', () => {
+            const fallbackSrc = image.getAttribute('data-fallback-src');
+            if (!fallbackSrc || image.dataset.fallbackApplied === 'true') return;
+
+            image.dataset.fallbackApplied = 'true';
+            image.src = fallbackSrc;
+        });
+    });
+}
+
+function getSafeNavigationUrl(target) {
+    if (!target) return null;
+
+    try {
+        const url = new URL(target, window.location.origin);
+        return url.origin === window.location.origin ? `${url.pathname}${url.search}${url.hash}` : null;
+    } catch {
+        return null;
+    }
+}
+
+function getSafeExternalUrl(target) {
+    if (!target) return null;
+
+    try {
+        const url = new URL(target, window.location.origin);
+        return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.toString() : null;
+    } catch {
+        return null;
+    }
 }

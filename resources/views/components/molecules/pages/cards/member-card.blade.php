@@ -39,7 +39,7 @@
     <img src="{{ $imageSrc }}" alt="{{ $name }}"
         class="relative h-full w-full object-cover object-top transition-all duration-1000 md:group-hover:scale-110"
         loading="lazy" decoding="async" fetchpriority="low" width="400" height="600"
-        onerror="this.onerror=null;this.src='{{ $fallbackImage }}';">
+        data-fallback-src="{{ $fallbackImage }}">
     {{-- Elegant Fade Overlay --}}
     <div
         class="absolute inset-0 bg-linear-to-t from-white via-white/20 to-transparent opacity-95 md:group-hover:opacity-80 transition-opacity">

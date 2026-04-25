@@ -1,5 +1,8 @@
 {{-- Track Aspiration (Mockup) --}}
 <section class="py-12 bg-white relative">
+    @php
+        $trackNim = trim((string) request('nim'));
+    @endphp
     <div class="mx-auto px-6 lg:px-8 max-w-5xl">
         <div
             class="bg-primary-dark rounded-[1rem] p-8 md:p-12 shadow-xl relative overflow-hidden group reveal reveal-up">
@@ -13,15 +16,19 @@
                             class="text-primary-soft">Aspirasi?</span></h2>
                     <p class="text-white/50 text-sm mt-2">Masukkan NIM kamu untuk memantau status tindak lanjut.</p>
                 </div>
-                <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
-                    <input type="text" placeholder="Masukkan NIM kamu..."
+                <form action="{{ route('aspirations') }}" method="GET" class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+                    <input type="text" name="nim" value="{{ $trackNim }}" placeholder="Masukkan NIM kamu..."
+                        inputmode="numeric" autocomplete="off"
                         class="px-6 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/30 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all font-bold tracking-widest text-sm">
-                    <button
+                    <button type="submit"
                         class="px-8 py-4 bg-primary text-white rounded-2xl font-black text-sm hover:shadow-2xl hover:-translate-y-1 transition-all">
                         Cek Status
                     </button>
-                </div>
+                </form>
             </div>
+            @if ($trackNim !== '')
+                <p class="relative z-10 mt-5 text-xs text-white/55">Pencarian NIM <span class="font-black text-white/80">{{ $trackNim }}</span> sudah dikirim. Tampilan hasil status masih menunggu integrasi data dari backend.</p>
+            @endif
         </div>
     </div>
 </section>

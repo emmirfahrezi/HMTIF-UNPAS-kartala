@@ -3,12 +3,13 @@
  */
 document.addEventListener('DOMContentLoaded', function() {
     const editors = document.querySelectorAll('.quill-editor');
-    
+
     editors.forEach(container => {
         const name = container.dataset.name;
         const placeholder = container.dataset.placeholder || '';
         const hiddenInput = document.getElementById(`${name}_hidden`);
-        
+        const initialContentElement = document.getElementById(`${name}_initial`);
+
         if (!hiddenInput) return;
 
         // Custom Icons for Undo/Redo
@@ -41,6 +42,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 history: { delay: 1000, maxStack: 100, userOnly: true }
             }
         });
+
+        if (initialContentElement?.textContent) {
+            try {
+                const initialContent = JSON.parse(initialContentElement.textContent);
+                const delta = quill.clipboard.convert({ html: initialContent || '' });
+                quill.setContents(delta, 'silent');
+            } catch (error) {
+                console.error('Failed to parse initial rich text content', error);
+            }
+        }
+
+        hiddenInput.value = quill.root.innerHTML;
 
         // Sync with hidden input
         quill.on('text-change', function() {

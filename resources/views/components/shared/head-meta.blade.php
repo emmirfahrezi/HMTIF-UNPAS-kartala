@@ -10,10 +10,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-{{-- 1. Security Headers (Meta Equivalents) --}}
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+{{-- 1. Browser Hints --}}
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="format-detection" content="telephone=no">
 
 {{-- 2. Indexing Control --}}
 @if (!$isSeo)

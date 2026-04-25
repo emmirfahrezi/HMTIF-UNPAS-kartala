@@ -6,12 +6,11 @@
     'href' => '#',
 ])
 
-<div onclick="window.location.href='{{ $href }}'"
+<a href="{{ $href }}"
     class="group relative bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-xl transition-all duration-700 flex flex-col overflow-hidden hover:-translate-y-2 cursor-pointer reveal reveal-up h-full">
     <div class="relative aspect-video bg-section/50 overflow-hidden">
         <img src="{{ $image }}" alt="{{ $title }}" width="600" height="338" loading="lazy" decoding="async"
-            fetchpriority="low"
-            onerror="this.onerror=null;this.src='{{ asset('images/placeholders/announcement.svg') }}';"
+            fetchpriority="low" data-fallback-src="{{ asset('images/placeholders/announcement.svg') }}"
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out">
         <div
             class="absolute inset-0 bg-linear-to-t from-primary-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -52,4 +51,4 @@
             <x-heroicon-o-arrow-long-right class="size-4 group-hover/link:translate-x-1 transition-transform" />
         </div>
     </div>
-</div>
+</a>

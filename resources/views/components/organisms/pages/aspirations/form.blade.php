@@ -30,7 +30,16 @@
                     </div>
                 </div>
 
-                <form action="#" method="POST" class="space-y-10 md:space-y-12">
+                @if (session('aspiration_success'))
+                    <div class="mb-8 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm text-green-800" role="status" aria-live="polite">
+                        Aspirasi berhasil dikirim dan sudah masuk ke antrian tindak lanjut.
+                        @if (session('tracking_code'))
+                            Kode tracking kamu: <span class="font-black">{{ session('tracking_code') }}</span>
+                        @endif
+                    </div>
+                @endif
+
+                <form action="{{ route('aspirations.store') }}" method="POST" class="space-y-10 md:space-y-12" novalidate>
                     @csrf
                     {{-- Section 1: Identitas --}}
                     <div class="space-y-8">
@@ -46,8 +55,13 @@
                                 <label for="nama"
                                     class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Nama
                                     Lengkap</label>
-                                <x-atoms.pages.input id="nama" name="nama" placeholder="Masukkan nama lengkap kamu"
+                                <x-atoms.pages.input id="nama" name="nama" value="{{ old('nama') }}"
+                                    placeholder="Masukkan nama lengkap kamu" autocomplete="name"
                                     class="rounded-2xl py-4 border-gray-100 bg-section/50 focus:bg-white focus:ring-primary/20 transition-all" />
+                                <p class="text-[11px] text-body/50 font-medium">Opsional, isi kalau kamu ingin kami mengenali identitas pengirim.</p>
+                                @error('nama')
+                                    <p class="text-xs font-medium text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             {{-- NIM --}}
@@ -55,8 +69,13 @@
                                 <label for="nim"
                                     class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">NIM
                                     Mahasiswa</label>
-                                <x-atoms.pages.input id="nim" name="nim" placeholder="Contoh: 213040001"
+                                <x-atoms.pages.input id="nim" name="nim" value="{{ old('nim') }}" placeholder="Contoh: 213040001"
+                                    inputmode="numeric" autocomplete="off"
                                     class="rounded-2xl py-4 border-gray-100 bg-section/50 focus:bg-white focus:ring-primary/20 transition-all" />
+                                <p class="text-[11px] text-body/50 font-medium">Isi NIM agar status aspirasi bisa lebih mudah dilacak.</p>
+                                @error('nim')
+                                    <p class="text-xs font-medium text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
@@ -66,8 +85,14 @@
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Email
                                 Mahasiswa</label>
                             <x-atoms.pages.input type="email" id="email" name="email"
+                                value="{{ old('email') }}"
+                                autocomplete="email"
                                 placeholder="nama@mail.unpas.ac.id"
                                 class="rounded-2xl py-4 border-gray-100 bg-section/50 focus:bg-white focus:ring-primary/20 transition-all" />
+                            <p class="text-[11px] text-body/50 font-medium">Opsional, dipakai kalau kamu ingin menerima kabar lanjutan lewat email.</p>
+                            @error('email')
+                                <p class="text-xs font-medium text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -81,11 +106,15 @@
 
                         {{-- Perihal --}}
                         <div class="space-y-3">
-                            <label for="perihal"
+                            <label for="tujuan"
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Perihal</label>
-                            <x-atoms.pages.input id="perihal" name="perihal"
+                            <x-atoms.pages.input id="tujuan" name="tujuan" value="{{ old('tujuan') }}"
                                 placeholder="Contoh: Fasilitas Lab, Agenda Organisasi, Layanan Akademik"
+                                required maxlength="200"
                                 class="rounded-2xl py-4 border-gray-100 bg-section/50 focus:bg-white focus:ring-primary/20 transition-all" />
+                            @error('tujuan')
+                                <p class="text-xs font-medium text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         {{-- Pesan --}}
@@ -93,9 +122,16 @@
                             <label for="pesan"
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-widest block pl-1">Isi
                                 Aspirasi</label>
-                            <textarea id="pesan" rows="6"
+                            <textarea id="pesan" name="pesan" rows="6" required
                                 class="w-full px-6 py-6 bg-section/50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all duration-500 placeholder:text-body/30 text-heading font-bold leading-relaxed shadow-inner"
-                                placeholder="Ceritakan aspirasimu secara detail di sini..."></textarea>
+                                maxlength="5000" placeholder="Ceritakan aspirasimu secara detail di sini...">{{ old('pesan') }}</textarea>
+                            <div class="flex items-center justify-between gap-4 text-[11px] text-body/50 font-medium">
+                                <span>Tulis sejelas mungkin agar tim advokasi bisa menindaklanjuti dengan cepat.</span>
+                                <span>Maks. 5000 karakter</span>
+                            </div>
+                            @error('pesan')
+                                <p class="text-xs font-medium text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -115,7 +151,7 @@
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                            <x-atoms.pages.button variant="primary"
+                            <x-atoms.pages.button variant="primary" type="submit"
                                 class="px-12 py-4 rounded-xl font-black text-base shadow-xl shadow-primary/20 transform hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
                                 Kirim Aspirasi
                                 <x-heroicon-o-paper-airplane class="size-4" />

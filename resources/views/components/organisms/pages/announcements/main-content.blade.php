@@ -3,7 +3,7 @@
         @props(['announcements'])
 
         @php
-            $search = trim((string) request('q', ''));
+            $search = trim((string) request('search', ''));
             $news = $announcements;
         @endphp
 
@@ -16,12 +16,32 @@
             </div>
 
             <div class="w-full md:w-96">
-                <form action="" method="GET" class="relative group">
-                    <input type="text" name="q" value="{{ $search }}" placeholder="Cari info kegiatan..."
+                <form action="{{ route('announcements') }}" method="GET" class="relative group" role="search">
+                    @if (request('category_id'))
+                        <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                    @endif
+                    <input type="search" name="search" value="{{ $search }}" placeholder="Cari pengumuman..."
                         class="w-full pl-12 pr-4 py-3.5 rounded-lg bg-white border border-gray-100 focus:ring-2 focus:ring-primary/20 text-sm transition-all shadow-sm group-hover:shadow-md">
                     <x-heroicon-o-magnifying-glass
                         class="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                 </form>
+                @if ($search !== '' || request('category_id'))
+                    <div class="mt-3 flex items-center justify-between gap-3 text-xs text-body/60">
+                        <span>
+                            Filter aktif:
+                            @if ($search !== '')
+                                pencarian <span class="font-bold text-heading">"{{ $search }}"</span>
+                            @endif
+                            @if ($search !== '' && request('category_id'))
+                                dan
+                            @endif
+                            @if (request('category_id'))
+                                kategori terpilih
+                            @endif
+                        </span>
+                        <a href="{{ route('announcements') }}" class="font-bold text-primary hover:underline">Reset</a>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -35,12 +55,17 @@
                         \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
                     $announcementImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/announcement.svg');
                 @endphp
-                <x-molecules.pages.cards.news-card :title="$item->title" :date="optional($item->published_at)->translatedFormat('d M Y')" :image="$announcementImage" :href="'/announcement-detail'"
+                <x-molecules.pages.cards.news-card :title="$item->title" :date="optional($item->published_at)->translatedFormat('d M Y')" :image="$announcementImage" :href="route('announcements.show', $item->slug)"
                     class="reveal-delay-{{ $delay++ }}" :excerpt="$item->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($item->body), 120)" />
             @empty
                 <div class="md:col-span-2 rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
-                    <p class="text-sm text-body/60">Belum ada pengumuman yang tersedia. Jalankan seeder untuk
-                        menampilkan data.</p>
+                    <p class="text-sm text-body/60">
+                        @if ($search !== '' || request('category_id'))
+                            Tidak ada pengumuman yang cocok dengan filter yang sedang aktif.
+                        @else
+                            Belum ada pengumuman yang tersedia. Jalankan seeder untuk menampilkan data.
+                        @endif
+                    </p>
                 </div>
             @endforelse
         </div>

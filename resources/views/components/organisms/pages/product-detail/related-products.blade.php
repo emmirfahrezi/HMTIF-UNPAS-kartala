@@ -25,8 +25,7 @@
                             class="relative aspect-square rounded-xl bg-section/50 mb-6 flex items-center justify-center overflow-hidden">
                             <img src="{{ $productImage }}"
                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                alt="{{ $item->name }}"
-                                onerror="this.onerror=null;this.src='{{ asset('images/placeholders/product.svg') }}';">
+                                alt="{{ $item->name }}" data-fallback-src="{{ asset('images/placeholders/product.svg') }}">
                             <div
                                 class="absolute inset-0 bg-primary-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             </div>
