@@ -1,6 +1,16 @@
 @props(['product'])
 
 {{-- Product Details Layout --}}
+@php
+    $orderPhone = preg_replace('/\D+/', '', (string) ($product?->phone_number ?? ''));
+    if ($orderPhone !== '' && str_starts_with($orderPhone, '0')) {
+        $orderPhone = '62' . substr($orderPhone, 1);
+    }
+
+    $orderMessage = trim((string) ($product?->order_text ?: 'Halo HMTIF Store, saya ingin memesan ' . ($product?->name ?? 'produk ini') . '.'));
+    $orderUrl = $orderPhone !== '' ? 'https://wa.me/' . $orderPhone . '?text=' . urlencode($orderMessage) : null;
+@endphp
+
 <div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right">
     <div class="flex flex-col gap-2 mb-8">
         <span class="text-primary font-black uppercase tracking-[0.3em] text-[10px]">Official Merchandise</span>
@@ -48,10 +58,11 @@
 
     {{-- CTA --}}
     <div class="flex flex-col sm:flex-row gap-4">
-        <a href="https://wa.me/#?text=Halo+HMTIF+Store,+saya+ingin+memesan+Hoodie+Kartala+Ukuran+L"
+        <a href="{{ $orderUrl ?: 'mailto:hmtif@unpas.ac.id?subject=Order%20HMTIF%20Store' }}"
+            data-external-url="{{ $orderUrl ?: 'mailto:hmtif@unpas.ac.id?subject=Order%20HMTIF%20Store' }}"
             class="flex-1 px-10 py-5 bg-primary text-white rounded-2xl font-black text-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
             <x-heroicon-o-chat-bubble-left-right class="size-6" />
-            Pesan via WhatsApp
+            {{ $orderUrl ? 'Pesan via WhatsApp' : 'Hubungi via Email' }}
         </a>
         <button
             class="px-8 py-5 rounded-2xl border border-gray-200 text-gray-400 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all">

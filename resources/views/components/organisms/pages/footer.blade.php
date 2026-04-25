@@ -16,22 +16,26 @@
                     Transparan, Inspiratif, dan Fokus.
                 </p>
                 <div class="flex gap-4">
-                    <a href="https://instagram.com"
+                    <a href="https://www.instagram.com/hmtifunpas"
+                        data-external-url="https://www.instagram.com/hmtifunpas"
                         class="p-2 bg-white/10 rounded-lg hover:bg-secondary hover:text-black transition-colors"
                         target="_blank" rel="noopener noreferrer">
                         <x-heroicon-s-camera class="h-5 w-5" />
                     </a>
-                    <a href="https://tiktok.com"
+                    <a href="mailto:hmtif@unpas.ac.id?subject=Media%20Sosial%20HMTIF"
+                        data-external-url="mailto:hmtif@unpas.ac.id?subject=Media%20Sosial%20HMTIF"
                         class="p-2 bg-white/10 rounded-lg hover:bg-secondary hover:text-black transition-colors"
                         target="_blank" rel="noopener noreferrer">
                         <x-heroicon-s-film class="h-5 w-5" />
                     </a>
-                    <a href="https://facebook.com"
+                    <a href="https://github.com/hmtifunpas"
+                        data-external-url="https://github.com/hmtifunpas"
                         class="p-2 bg-white/10 rounded-lg hover:bg-secondary hover:text-black transition-colors"
                         target="_blank" rel="noopener noreferrer">
                         <x-heroicon-s-users class="h-5 w-5" />
                     </a>
-                    <a href="https://youtube.com"
+                    <a href="mailto:hmtif@unpas.ac.id?subject=Kanal%20Video%20HMTIF"
+                        data-external-url="mailto:hmtif@unpas.ac.id?subject=Kanal%20Video%20HMTIF"
                         class="p-2 bg-white/10 rounded-lg hover:bg-secondary hover:text-black transition-colors"
                         target="_blank" rel="noopener noreferrer">
                         <x-heroicon-s-play class="h-5 w-5" />

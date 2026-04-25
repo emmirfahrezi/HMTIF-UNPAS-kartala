@@ -7,6 +7,11 @@ export function initAnnouncements() {
 
     if (!grid || !container) return;
 
+    const replaceContainerChildren = (target, source) => {
+        const nextChildren = Array.from(source.children).map((child) => child.cloneNode(true));
+        target.replaceChildren(...nextChildren);
+    };
+
     const bindLoadMore = () => {
         const loadMore = document.getElementById('announcement-load-more');
 
@@ -40,7 +45,7 @@ export function initAnnouncements() {
 
                 const incomingContainer = doc.getElementById('announcement-load-more-container');
                 if (incomingContainer) {
-                    container.innerHTML = incomingContainer.innerHTML;
+                    replaceContainerChildren(container, incomingContainer);
                     bindLoadMore();
                 }
             } catch (error) {

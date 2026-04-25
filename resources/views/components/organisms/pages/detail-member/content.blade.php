@@ -4,8 +4,7 @@
     <div class="lg:col-span-2 bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
         <div class="aspect-4/5 bg-section">
             <img src="{{ $staff->photo ?: $fallbackImage }}" alt="{{ $staff->name }}"
-                class="h-full w-full object-cover object-top"
-                onerror="this.onerror=null;this.src='{{ $fallbackImage }}';">
+                class="h-full w-full object-cover object-top" data-fallback-src="{{ $fallbackImage }}">
         </div>
     </div>
 

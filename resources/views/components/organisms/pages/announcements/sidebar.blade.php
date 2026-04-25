@@ -12,8 +12,14 @@
             <h4 class="font-bold text-heading mb-4 pb-2 border-b-2 border-primary-soft">Kategori</h4>
             <ul class="space-y-3">
                 @foreach ($categories as $cat)
-                    <li><a href="#" class="text-body hover:text-primary transition-colors flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span> {{ is_string($cat) ? $cat : $cat->name }}
+                    @php
+                        $categoryId = is_string($cat) ? null : $cat->id;
+                        $categoryName = is_string($cat) ? $cat : $cat->name;
+                        $isActive = $categoryId !== null && (int) request('category_id') === (int) $categoryId;
+                    @endphp
+                    <li><a href="{{ $categoryId ? route('announcements', ['category_id' => $categoryId, 'search' => request('search')]) : route('announcements', ['search' => request('search')]) }}"
+                            class="text-body hover:text-primary transition-colors flex items-center gap-2 {{ $isActive ? 'text-primary font-bold' : '' }}">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span> {{ $categoryName }}
                         </a></li>
                 @endforeach
             </ul>
@@ -25,7 +31,7 @@
             </div>
             <h4 class="font-bold text-lg mb-2">Ingin berkontribusi?</h4>
             <p class="text-white/80 text-sm mb-4 italic">Kirimkan aspirasimu melalui form resmi HMTIF UNPAS.</p>
-            <x-atoms.pages.button variant="secondary" onclick="window.location.href='/aspirations'"
+            <x-atoms.pages.button variant="secondary" data-nav-target="{{ route('aspirations') }}"
                 class="w-full py-2 text-sm">
                 Kirim Aspirasi
             </x-atoms.button>

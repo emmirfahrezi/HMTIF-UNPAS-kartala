@@ -12,9 +12,11 @@
                          </p>
                     </div>
                     <div class="shrink-0 flex items-center gap-4">
-                         <a href="https://wa.me/#" class="px-10 py-5 bg-primary text-white rounded-lg font-black text-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-3 group/wa">
+                         <a href="mailto:hmtif@unpas.ac.id?subject=Custom%20Merchandise%20HMTIF"
+                            data-external-url="mailto:hmtif@unpas.ac.id?subject=Custom%20Merchandise%20HMTIF"
+                            class="px-10 py-5 bg-primary text-white rounded-lg font-black text-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-3 group/wa">
                             <x-heroicon-o-chat-bubble-left-right class="size-6 group-hover/wa:rotate-12 transition-transform" />
-                            Pesan Custom Sekarang
+                            Hubungi Tim Store
                          </a>
                     </div>
                 </div>

@@ -41,8 +41,7 @@
                         <img src="{{ $activityImage }}"
                             class="relative w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                             alt="Poster Kegiatan: {{ $item->title }}" width="400" height="300" loading="lazy"
-                            decoding="async"
-                            onerror="this.onerror=null;this.src='{{ asset('images/placeholders/activity.svg') }}';">
+                            decoding="async" data-fallback-src="{{ asset('images/placeholders/activity.svg') }}">
                         <div class="absolute top-4 left-4">
                             <span
                                 class="px-3 py-1 bg-white/90 backdrop-blur-md text-primary text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm border border-primary/10 italic">
@@ -60,7 +59,7 @@
                             class="text-xl font-bold text-heading group-hover:text-primary transition-colors italic uppercase tracking-tighter mb-4">
                             {{ $item->title }}
                         </h3>
-                        <a href="/activity-detail"
+                        <a href="{{ route('activities.show', $item->slug) }}"
                             class="text-sm font-bold text-gray-400 group-hover:text-primary flex items-center gap-1 transition-all"
                             aria-label="Lihat detail kegiatan {{ $item->title }}">
                             Detail Info

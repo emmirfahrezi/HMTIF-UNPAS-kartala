@@ -32,7 +32,7 @@
 
             <img src="{{ $images[0] }}" alt="Main Product Image"
                 class="w-full h-full object-cover transition-opacity duration-500 ease-in-out" id="mainProductImage"
-                onerror="this.onerror=null;this.src='{{ asset('images/placeholders/product.svg') }}';">
+                data-fallback-src="{{ asset('images/placeholders/product.svg') }}">
 
             <div
                 class="absolute top-6 left-6 px-4 py-2 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded shadow-lg z-30">
@@ -47,7 +47,7 @@
                     data-full="{{ $img }}">
                     <img src="{{ $img }}"
                         class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
-                        onerror="this.onerror=null;this.src='{{ asset('images/placeholders/product.svg') }}';">
+                        data-fallback-src="{{ asset('images/placeholders/product.svg') }}">
                 </div>
             @endforeach
         </div>

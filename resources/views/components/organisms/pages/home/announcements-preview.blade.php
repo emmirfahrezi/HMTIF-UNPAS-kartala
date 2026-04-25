@@ -46,7 +46,7 @@
                             lengkap...</p>
                     </div>
                     <div class="shrink-0">
-                        <a href="/announcement-detail"
+                        <a href="{{ route('announcements.show', $news->slug) }}"
                             class="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all"
                             aria-label="Baca pengumuman: {{ $news->title }}">
                             <x-heroicon-o-arrow-right class="size-5" aria-hidden="true" />
@@ -63,7 +63,7 @@
 
         <div class="mt-12 text-center">
             <x-atoms.pages.button variant="outline" class="group h-14 px-10 rounded-full transition-all"
-                onclick="window.location.href='/announcements'">
+                data-nav-target="{{ route('announcements') }}">
                 <span>Lihat Seluruh Arsip</span>
                 <x-heroicon-o-document-duplicate class="size-5 opacity-50 group-hover:opacity-100 transition-opacity" />
             </x-atoms.button>

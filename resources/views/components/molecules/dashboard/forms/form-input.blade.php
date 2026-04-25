@@ -44,9 +44,9 @@
     @elseif ($type === 'richtext')
         <div class="richtext-wrapper">
             <input id="{{ $name }}_hidden" type="hidden" name="{{ $name }}" value="{{ old($name, $value) }}">
-            <div id="{{ $name }}_editor" class="quill-editor bg-white" data-name="{{ $name }}" data-placeholder="{{ $placeholder }}">
-                {!! old($name, $value) !!}
-            </div>
+            <script id="{{ $name }}_initial" type="application/json">@json(old($name, $value))</script>
+            <div id="{{ $name }}_editor" class="quill-editor bg-white" data-name="{{ $name }}"
+                data-placeholder="{{ $placeholder }}"></div>
         </div>
         @vite(['resources/js/dashboard/quill-config.js'])
     @elseif ($type === 'toggle')
