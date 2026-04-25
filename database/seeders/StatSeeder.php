@@ -13,25 +13,25 @@ class StatSeeder extends Seeder
             [
                 'label' => 'Pengurus Aktif',
                 'value' => '31+',
-                'icon'  => 'heroicon-o-user-group',
+                'icon'  => 'user-group',
                 'order' => 1,
             ],
             [
                 'label' => 'Agenda Proker',
                 'value' => '12+',
-                'icon'  => 'heroicon-o-calendar-days',
+                'icon'  => 'calendar-days',
                 'order' => 2,
             ],
             [
                 'label' => 'Departemen',
                 'value' => '5',
-                'icon'  => 'heroicon-o-building-office-2',
+                'icon'  => 'building-office-2',
                 'order' => 3,
             ],
             [
                 'label' => 'Anggota Himpunan',
                 'value' => '300+',
-                'icon'  => 'heroicon-o-users',
+                'icon'  => 'users',
                 'order' => 4,
             ],
         ];

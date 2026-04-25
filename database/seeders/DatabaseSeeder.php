@@ -23,6 +23,7 @@ use Database\Factories\ProductImageFactory;
 use Database\Factories\StaffFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,8 +34,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        AnnouncementCategory::query()->delete();
+        Schema::disableForeignKeyConstraints();
+
         Announcement::query()->delete();
+        AnnouncementCategory::query()->delete();
         ProductImage::query()->delete();
         Product::query()->delete();
         ProductCategory::query()->delete();
@@ -43,12 +46,17 @@ class DatabaseSeeder extends Seeder
         Activity::query()->delete();
         Aspiration::query()->delete();
         Stat::query()->delete();
+        User::query()->delete();
+
+        Schema::enableForeignKeyConstraints();
 
         User::updateOrCreate(
             ['email' => 'admin@hmtif.com'],
             [
                 'name' => 'admin',
                 'password' => bcrypt('admin1234'),
+                'role' => 'admin',
+                'user_id' => 'usr-admin-000001',
             ]
         );
 
@@ -157,10 +165,10 @@ class DatabaseSeeder extends Seeder
         AspirationFactory::new()->count(18)->create();
 
         collect([
-            ['label' => 'Pengurus Aktif', 'value' => '78+', 'icon' => 'users', 'order' => 1],
-            ['label' => 'Agenda Proker', 'value' => '14+', 'icon' => 'calendar', 'order' => 2],
-            ['label' => 'Departemen', 'value' => '5', 'icon' => 'puzzle', 'order' => 3],
-            ['label' => 'Anggota Himpunan', 'value' => '350+', 'icon' => 'academic', 'order' => 4],
+            ['label' => 'Pengurus Aktif', 'value' => '78+', 'icon' => 'user-group', 'order' => 1],
+            ['label' => 'Agenda Proker', 'value' => '14+', 'icon' => 'calendar-days', 'order' => 2],
+            ['label' => 'Departemen', 'value' => '5', 'icon' => 'building-office-2', 'order' => 3],
+            ['label' => 'Anggota Himpunan', 'value' => '350+', 'icon' => 'users', 'order' => 4],
         ])->each(fn(array $stat) => Stat::query()->create($stat));
     }
 }

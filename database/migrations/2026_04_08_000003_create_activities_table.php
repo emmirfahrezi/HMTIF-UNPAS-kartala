@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('description');
             $table->longText('body')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->string('file')->nullable();
             $table->datetime('start_date');
             $table->datetime('end_date')->nullable();
             $table->string('location')->nullable();
