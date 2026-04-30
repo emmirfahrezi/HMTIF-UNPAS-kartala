@@ -1,7 +1,7 @@
 @props([
     'image' => '/images/placeholders/announcement.svg',
     'title' => 'Judul Pengumuman',
-    'excerpt' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
+    'excerpt' => '',
     'date' => null,
     'href' => '#',
 ])
@@ -52,3 +52,4 @@
         </div>
     </div>
 </a>
+

@@ -4,7 +4,7 @@
     <section class="py-16 md:py-20 bg-section/30">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
             <h2 class="sr-only">Daftar Produk</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @php $delay = 1; @endphp
                 @foreach ($products as $product)
                     @php

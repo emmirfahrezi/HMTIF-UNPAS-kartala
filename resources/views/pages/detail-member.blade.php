@@ -4,3 +4,4 @@
     <x-organisms.pages.detail-member.hero />
     <x-organisms.pages.detail-member.index :staff="$staff" />
 </x-layouts.app>
+

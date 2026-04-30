@@ -1,5 +1,6 @@
+@props(['announcements'])
+
 <div class="py-24 bg-white relative overflow-hidden content-auto">
-    @props(['announcements'])
 
     {{-- Decorative SVG --}}
     <div class="absolute top-0 right-0 h-full w-1/3 opacity-5 pointer-events-none">
@@ -23,7 +24,8 @@
             @php $delay = 1; @endphp
             @foreach ($announcements as $news)
                 <div
-                    class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-4xl bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-xl hover:border-primary/20 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}">
+                    class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-4xl bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-xl hover:border-primary/20 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}"
+                >
                     <div
                         class="shrink-0 w-20 h-20 bg-white rounded-2xl shadow-md flex flex-col items-center justify-center border border-gray-50 group-hover:bg-primary group-hover:text-white transition-all transform group-hover:-rotate-6">
                         <span class="text-2xl font-black italic">{{ optional($news->published_at)->format('d') }}</span>
@@ -37,7 +39,7 @@
                                 {{ optional($news->category)->name ?? 'Umum' }}
                             </span>
                             <span
-                                class="text-[10px] text-gray-400 font-bold uppercase tracking-wildest">Terkonfirmasi</span>
+                                class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Terkonfirmasi</span>
                         </div>
                         <h3
                             class="text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight mb-2 italic uppercase tracking-tighter">
@@ -57,16 +59,15 @@
         </div>
 
         @if ($announcements->isEmpty())
-            <p class="text-sm text-body/60 mt-8 text-center">Belum ada pengumuman. Jalankan seeder untuk menampilkan
-                data.</p>
+            <p class="text-sm text-body/60 mt-8 text-center">Belum ada pengumuman. Jalankan seeder untuk menampilkan data.</p>
         @endif
 
         <div class="mt-12 text-center">
-            <x-atoms.pages.button variant="outline" class="group h-14 px-10 rounded-full transition-all"
+            <x-atoms.shared.button variant="outline" class="group h-14 px-10 rounded-full transition-all"
                 data-nav-target="{{ route('announcements') }}">
                 <span>Lihat Seluruh Arsip</span>
                 <x-heroicon-o-document-duplicate class="size-5 opacity-50 group-hover:opacity-100 transition-opacity" />
-            </x-atoms.button>
+            </x-atoms.shared.button>
         </div>
     </div>
 </div>

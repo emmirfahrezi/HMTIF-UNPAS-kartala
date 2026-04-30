@@ -137,9 +137,9 @@
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">
                                 Buttons</h3>
                             <div class="flex flex-wrap gap-4">
-                                <x-atoms.pages.button variant="primary">Primary Button</x-atoms.button>
-                                    <x-atoms.pages.button variant="secondary">Secondary</x-atoms.button>
-                                        <x-atoms.pages.button variant="outline">Outline</x-atoms.button>
+                                <x-atoms.shared.button variant="primary">Primary Button</x-atoms.button>
+                                    <x-atoms.shared.button variant="secondary">Secondary</x-atoms.button>
+                                        <x-atoms.shared.button variant="outline">Outline</x-atoms.button>
                             </div>
                         </div>
 
@@ -159,8 +159,8 @@
                                 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 border-b border-gray-50 pb-4">
                                 Form Inputs</h3>
                             <div class="space-y-4">
-                                <x-atoms.pages.input placeholder="Placeholder text..." />
-                                <x-atoms.pages.input value="Typed text example" />
+                                <x-atoms.shared.input placeholder="Placeholder text..." />
+                                <x-atoms.shared.input value="Typed text example" />
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                         <div class="max-w-md">
                             <x-molecules.pages.forms.form-field label="Label Contoh" id="example" required="true"
                                 error="Pesan kesalahan muncul di sini jika ada.">
-                                <x-atoms.pages.input id="example" placeholder="Masukkan teks..." />
+                                <x-atoms.shared.input id="example" placeholder="Masukkan teks..." />
                             </x-molecules.pages.forms.form-field>
                         </div>
                     </div>
@@ -337,23 +337,23 @@
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                             <div class="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
-                                <x-molecules.dashboard.forms.form-input label="Input Text" name="text"
+                                <x-molecules.shared.forms.form-input label="Input Text" name="text"
                                     placeholder="Ketik sesuatu..." required="true" />
-                                <x-molecules.dashboard.forms.form-input label="Select Option" name="select"
+                                <x-molecules.shared.forms.form-input label="Select Option" name="select"
                                     type="select" :options="['1' => 'Opsi A', '2' => 'Opsi B']" />
-                                <x-molecules.dashboard.forms.form-input label="Toggle Switch" name="toggle"
+                                <x-molecules.shared.forms.form-input label="Toggle Switch" name="toggle"
                                     type="toggle" placeholder="Aktifkan fitur ini" />
-                                <x-molecules.dashboard.forms.form-input label="Rich Text Editor" name="content"
+                                <x-molecules.shared.forms.form-input label="Rich Text Editor" name="content"
                                     type="richtext" placeholder="Tulis konten lengkap di sini..."
                                     value="<p>Ini adalah contoh konten <strong>Rich Text</strong>!</p>" />
                             </div>
                             <div class="space-y-6">
-                                <x-molecules.dashboard.forms.form-section title="Informasi Dasar"
+                                <x-molecules.shared.forms.form-section title="Informasi Dasar"
                                     description="Gunakan form section untuk membagi formulir yang panjang.">
                                     <div class="space-y-4">
-                                        <x-molecules.dashboard.forms.form-input label="Nama" name="name" />
+                                        <x-molecules.shared.forms.form-input label="Nama" name="name" />
                                     </div>
-                                </x-molecules.dashboard.forms.form-section>
+                                </x-molecules.shared.forms.form-section>
                             </div>
                         </div>
 
@@ -399,7 +399,7 @@
                                 </div>
                                 <div
                                     class="bg-white rounded-2xl border border-slate-100 overflow-hidden scale-90 origin-top-left">
-                                    <x-molecules.dashboard.ui.empty-state title="Tidak Ada Data"
+                                    <x-molecules.shared.empty-state title="Tidak Ada Data"
                                         description="Silakan tambah data baru." />
                                 </div>
                             </div>
@@ -407,7 +407,7 @@
                     </div>
 
                     {{-- Modal Definitions --}}
-                    <x-molecules.dashboard.ui.modal id="previewModal" title="Preview Modal">
+                    <x-molecules.shared.modal id="previewModal" title="Preview Modal">
                         <div class="space-y-4">
                             <p class="text-sm text-slate-500">Ini adalah contoh isi dari modal dashboard.</p>
                             <div class="flex justify-end">
@@ -415,9 +415,9 @@
                                     class="px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold">Mengerti</button>
                             </div>
                         </div>
-                    </x-molecules.dashboard.ui.modal>
+                    </x-molecules.shared.modal>
 
-                    <x-molecules.dashboard.ui.modal-confirm />
+                    <x-molecules.shared.modal-confirm />
                 </section>
 
                 <hr class="border-border my-16">
@@ -486,3 +486,4 @@
         </div>
     </div>
 </x-layouts.app>
+

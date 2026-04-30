@@ -9,7 +9,7 @@
     <x-shared.head-meta :title="$title" :is-seo="false" />
     
     {{-- Main Assets --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/error.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 antialiased overflow-hidden">
     <div class="min-h-screen flex items-center justify-center p-6 relative">
@@ -50,3 +50,4 @@
     </div>
 </body>
 </html>
+

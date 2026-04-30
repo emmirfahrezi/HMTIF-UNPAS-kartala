@@ -1,5 +1,6 @@
-<div class="py-24 bg-section/30 relative overflow-hidden content-auto">
-    @props(['activities'])
+@props(['activities'])
+
+<div id="activities" class="py-24 bg-section/30 relative overflow-hidden content-auto">
 
     @php
         $statusLabels = [

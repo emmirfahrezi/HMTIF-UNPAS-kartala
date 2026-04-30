@@ -1,37 +1,144 @@
-{{-- Shared Staff Form --}}
-<div class="space-y-6 max-w-6xl mx-auto">
-    <x-molecules.dashboard.forms.form-section title="Informasi Pengurus">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <x-molecules.dashboard.forms.form-input label="Nama" name="name" :value="$staff?->name" placeholder="Nama lengkap" required />
-            <x-molecules.dashboard.forms.form-input label="Jabatan" name="position" :value="$staff?->position" placeholder="Jabatan / posisi" required />
-            <x-molecules.dashboard.forms.form-input type="select" label="Divisi" name="division_id" :value="$staff?->division_id"
-                :options="$divisions ?? []" required />
-            <x-molecules.dashboard.forms.form-input type="select" label="Akun Login" name="user_id" :value="$staff?->user_id"
-                :options="$users ?? []" helper="Hubungkan pengurus ini dengan akun login" />
-        </div>
-    </x-dashboard.form-section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    {{-- Main Content --}}
+    <div class="lg:col-span-2 space-y-8">
+        {{-- Primary Information --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+            <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
+                <x-heroicon-o-user-group class="size-32" />
+            </div>
+            
+            <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <span class="size-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center">
+                    <x-heroicon-s-identification class="size-5" />
+                </span>
+                Informasi Pengurus
+            </h3>
 
-    <x-molecules.dashboard.forms.form-section title="Profil & Sosial Media">
-        <x-molecules.dashboard.forms.form-input label="URL Foto" name="photo" :value="$staff?->photo" placeholder="https://..." />
-        <x-molecules.dashboard.forms.form-input type="textarea" label="Bio" name="bio" :value="$staff?->bio" placeholder="Biodata singkat..." :rows="3" />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <x-molecules.dashboard.forms.form-input label="Instagram" name="instagram" :value="$staff?->instagram" placeholder="@username" />
-            <x-molecules.dashboard.forms.form-input label="LinkedIn" name="linkedin" :value="$staff?->linkedin" placeholder="URL profil LinkedIn" />
-        </div>
-    </x-dashboard.form-section>
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <x-molecules.shared.forms.form-input 
+                        label="Nama Lengkap" 
+                        name="name" 
+                        placeholder="Nama lengkap pengurus..."
+                        :value="$staff?->name ?? ''" 
+                        required />
 
-    <x-molecules.dashboard.forms.form-section title="Pengaturan">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <x-molecules.dashboard.forms.form-input type="number" label="Urutan" name="order" :value="$staff?->order ?? 0" />
-            <x-molecules.dashboard.forms.form-input type="toggle" name="is_active" :value="$staff?->is_active ?? true" placeholder="Aktif" />
-            <x-molecules.dashboard.forms.form-input type="toggle" name="is_bph" :value="$staff?->is_bph ?? false" placeholder="BPH (Badan Pengurus Harian)" />
-        </div>
-    </x-dashboard.form-section>
+                    <x-molecules.shared.forms.form-input 
+                        label="Jabatan" 
+                        name="position" 
+                        placeholder="Contoh: Ketua Umum"
+                        :value="$staff?->position ?? ''" 
+                        required />
+                </div>
 
-    <div class="flex items-center justify-end gap-3">
-        <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 shadow-lg shadow-primary/20 transition active:scale-95">
-            {{ $staff ? 'Simpan Perubahan' : 'Tambah Pengurus' }}
-        </button>
-        <a href="/dashboard/staffs" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-200 transition">Batal</a>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <x-molecules.shared.forms.form-input 
+                        label="Divisi" 
+                        name="division_id" 
+                        type="select"
+                        :value="$staff?->division_id ?? ''" 
+                        :options="$divisions ?? []"
+                        required />
+                    
+                    <x-molecules.shared.forms.form-input 
+                        label="Akun Login" 
+                        name="user_id" 
+                        type="select"
+                        :value="$staff?->user_id ?? ''" 
+                        :options="$users ?? []"
+                        helper="Hubungkan dengan akun login (opsional)" />
+                </div>
+            </div>
+        </div>
+
+        {{-- Biography & Social Media --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+            <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <span class="size-8 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center">
+                    <x-heroicon-s-hashtag class="size-5" />
+                </span>
+                Profil & Sosial Media
+            </h3>
+
+            <div class="space-y-6">
+                <x-molecules.shared.forms.form-input 
+                    label="Bio Singkat" 
+                    name="bio" 
+                    type="textarea"
+                    placeholder="Tuliskan biodata singkat..."
+                    :value="$staff?->bio ?? ''" 
+                    :rows="3" />
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <x-molecules.shared.forms.form-input 
+                        label="Instagram" 
+                        name="instagram" 
+                        placeholder="@username"
+                        :value="$staff?->instagram ?? ''" />
+
+                    <x-molecules.shared.forms.form-input 
+                        label="LinkedIn" 
+                        name="linkedin" 
+                        placeholder="URL profil LinkedIn..."
+                        :value="$staff?->linkedin ?? ''" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Sidebar Content --}}
+    <div class="space-y-8">
+        {{-- Photo & Status --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+            <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-primary pointer-events-none">
+                <x-heroicon-o-camera class="size-24" />
+            </div>
+            
+            <h3 class="text-xs font-black text-slate-800 dark:text-white mb-6 uppercase tracking-widest">Foto & Status</h3>
+            
+            <div class="space-y-6">
+                <x-molecules.shared.forms.form-input 
+                    label="URL Foto Profil" 
+                    name="photo" 
+                    placeholder="https://..."
+                    :value="$staff?->photo ?? ''" 
+                    helper="Gunakan URL foto dari internet" />
+
+                <div class="space-y-4 pt-4 border-t border-slate-50 dark:border-slate-800">
+                    <x-molecules.shared.forms.form-input 
+                        type="toggle" 
+                        label="Status Aktif"
+                        name="is_active" 
+                        :value="$staff?->is_active ?? true" />
+                    
+                    <x-molecules.shared.forms.form-input 
+                        type="toggle" 
+                        label="BPH (Inti)"
+                        name="is_bph" 
+                        :value="$staff?->is_bph ?? false" />
+                    
+                    <x-molecules.shared.forms.form-input 
+                        type="number" 
+                        label="Urutan Tampil"
+                        name="order" 
+                        :value="$staff?->order ?? 0" />
+                </div>
+            </div>
+        </div>
+
+        {{-- Info Card --}}
+        <div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/10 dark:border-primary/20 transition-colors duration-300">
+            <div class="flex gap-4">
+                <div class="size-10 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center shrink-0">
+                    <x-heroicon-s-light-bulb class="size-5" />
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-primary uppercase tracking-widest mb-1">Tips</h4>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                        Pengurus yang ditandai sebagai **BPH** akan muncul di posisi teratas pada halaman struktur organisasi.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

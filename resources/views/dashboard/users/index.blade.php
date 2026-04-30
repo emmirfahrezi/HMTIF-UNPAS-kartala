@@ -1,27 +1,41 @@
 <x-layouts.dashboard pageTitle="Pengguna" :breadcrumbs="[['label' => 'Pengguna']]">
     <x-slot:headerActions>
-        <a href="/dashboard/users/create"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all active:scale-95 shrink-0">
-            <x-heroicon-o-plus class="size-4" />
+        <x-atoms.shared.button 
+            href="/dashboard/users/create"
+            icon="heroicon-o-plus">
             Tambah Pengguna
-        </a>
+        </x-atoms.shared.button>
     </x-slot:headerActions>
 
     <x-molecules.dashboard.cards.filter-card 
         searchRoute="/dashboard/users" 
         searchPlaceholder="Cari pengguna...">
-        <div class="flex items-center gap-2 border-l border-slate-100 pl-3">
-            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Role</label>
-            <select name="role" onchange="this.form.submit()"
-                class="pl-3 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/20 transition cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236B7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
-                <option value="">Semua</option>
-                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="bph" {{ request('role') == 'bph' ? 'selected' : '' }}>BPH</option>
-                <option value="koordinator" {{ request('role') == 'koordinator' ? 'selected' : '' }}>Koordinator</option>
-                <option value="staff" {{ request('role') == 'staff' ? 'selected' : '' }}>Staff</option>
-            </select>
+        <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3">
+            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Urutkan</label>
+            <div class="w-44">
+                <x-molecules.shared.forms.form-input 
+                    type="select"
+                    name="sort"
+                    :value="request('sort', 'latest')"
+                    :options="['latest' => 'Terbaru', 'oldest' => 'Terlama', 'az' => 'Nama A-Z', 'za' => 'Nama Z-A']"
+                    @change="setTimeout(() => $el.closest('form').submit(), 50)"
+                />
+            </div>
         </div>
-    </x-dashboard.filter-card>
+
+        <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3">
+            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Role</label>
+            <div class="w-32">
+                <x-molecules.shared.forms.form-input 
+                    type="select"
+                    name="role"
+                    :value="request('role')"
+                    :options="['' => 'Semua', 'admin' => 'Admin', 'bph' => 'BPH', 'koordinator' => 'Koordinator', 'staff' => 'Staff']"
+                    @change="setTimeout(() => $el.closest('form').submit(), 50)"
+                />
+            </div>
+        </div>
+    </x-molecules.dashboard.cards.filter-card>
 
     <x-molecules.dashboard.cards.data-table
         :headers="[
@@ -29,49 +43,61 @@
             ['label' => 'Email'],
             ['label' => 'Role'],
             ['label' => 'Bergabung'],
-        ]">
+        ]"
+        bulkDeleteRoute="/dashboard/users/bulk-delete">
 
         @forelse ($users as $item)
             @php
                 $roleColors = [
-                    'admin' => 'bg-red-100 text-red-700',
-                    'bph' => 'bg-purple-100 text-purple-700',
-                    'koordinator' => 'bg-blue-100 text-blue-700',
-                    'staff' => 'bg-slate-100 text-slate-600',
+                    'admin' => 'bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-500',
+                    'bph' => 'bg-purple-100 dark:bg-purple-500/10 text-purple-700 dark:text-purple-500',
+                    'koordinator' => 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-500',
+                    'staff' => 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400',
                 ];
             @endphp
-            <tr class="hover:bg-slate-50 transition">
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition" data-row-id="{{ $item->id }}">
+                <td class="px-4 py-4 w-12">
+                    <x-atoms.shared.checkbox x-bind:checked="isSelected('{{ $item->id }}')" @change="toggleRow('{{ $item->id }}')" />
+                </td>
                 <td class="px-5 py-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary font-bold text-xs shrink-0">
                             {{ strtoupper(substr($item->name, 0, 1)) }}
                         </div>
-                        <span class="text-sm font-medium text-slate-700">{{ $item->name }}</span>
+                        <span class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ $item->name }}</span>
                     </div>
                 </td>
-                <td class="px-5 py-4 text-sm text-slate-500">{{ $item->email }}</td>
+                <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->email }}</td>
                 <td class="px-5 py-4">
                     <span class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $roleColors[$item->role] ?? 'bg-slate-100 text-slate-600' }}">
                         {{ $item->role }}
                     </span>
                 </td>
-                <td class="px-5 py-4 text-sm text-slate-500">{{ $item->created_at?->format('d M Y') }}</td>
+                <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->created_at?->format('d M Y') }}</td>
                 <td class="px-5 py-4 text-right">
                     <div class="flex items-center justify-end gap-1">
-                        <a href="/dashboard/users/{{ $item->id }}/edit"
-                            class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition" title="Edit">
-                            <x-heroicon-o-pencil-square class="size-4" />
-                        </a>
-                        <button onclick="openDeleteModal('/dashboard/users/{{ $item->id }}', 'Hapus pengguna &quot;{{ $item->name }}&quot;?')"
-                            class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Hapus">
-                            <x-heroicon-o-trash class="size-4" />
-                        </button>
+                        <x-atoms.shared.button 
+                            variant="ghost"
+                            size="sm"
+                            href="/dashboard/users/{{ $item->id }}/edit"
+                            class="size-9 !px-0"
+                            title="Edit">
+                            <x-heroicon-o-pencil-square class="size-5" />
+                        </x-atoms.shared.button>
+                        <x-atoms.shared.button 
+                            variant="ghost"
+                            size="sm"
+                            @click="openDeleteModal('/dashboard/users/{{ $item->id }}', 'Hapus pengguna &quot;{{ $item->name }}&quot;?')"
+                            class="size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
+                            title="Hapus">
+                            <x-heroicon-o-trash class="size-5" />
+                        </x-atoms.shared.button>
                     </div>
                 </td>
             </tr>
         @empty
             <x-slot:empty>
-                <x-molecules.dashboard.ui.empty-state title="Belum ada pengguna" icon="heroicon-o-user-circle"
+                <x-molecules.shared.empty-state title="Belum ada pengguna" icon="heroicon-o-user-circle"
                     createRoute="/dashboard/users/create" />
             </x-slot:empty>
         @endforelse
@@ -79,7 +105,8 @@
         <x-slot:pagination>
             <x-molecules.dashboard.cards.pagination :paginator="$users" />
         </x-slot:pagination>
-    </x-dashboard.data-table>
+    </x-molecules.dashboard.cards.data-table>
 
-    <x-molecules.dashboard.ui.modal-confirm />
+
 </x-layouts.dashboard>
+

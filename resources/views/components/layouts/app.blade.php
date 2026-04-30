@@ -24,19 +24,26 @@
     {{-- Custom Head Slot --}}
     {{ $head ?? '' }}
 
+    {{-- LCP Preload --}}
+    @if(isset($lcpImage))
+        <link rel="preload" as="image" href="{{ $lcpImage }}">
+    @endif
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-50 antialiased">
+    <x-molecules.shared.flash />
     <x-organisms.pages.navbar :transparent="$transparent" />
 
-    <main class="{{ $transparent ? '' : 'pt-(--nav-height)' }}">
+    <main class="{{ $transparent ? '' : 'pt-24' }}">
         {{ $slot }}
     </main>
 
     <x-organisms.pages.footer />
 
-
+    @stack('scripts')
 </body>
 
 </html>
+

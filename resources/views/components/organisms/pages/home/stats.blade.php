@@ -1,5 +1,6 @@
+@props(['stats'])
+
 <div class="py-24 bg-section relative overflow-hidden content-auto">
-    @props(['stats'])
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl text-center mb-20">
         <x-atoms.pages.section-title align="center">
@@ -26,3 +27,4 @@
         @endif
     </div>
 </div>
+

@@ -21,16 +21,16 @@
             dedikasi dan kerja nyata.
         </p>
         <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal reveal-up reveal-delay-4">
-            <x-atoms.pages.button variant="primary" data-nav-target="{{ route('activities') }}"
-                class="px-8 py-3 text-base shadow-xl shadow-primary/30 w-full sm:w-auto transform hover:-translate-y-1 transition-all group">
+            <x-atoms.shared.button variant="primary" href="{{ route('activities') }}"
+                class="px-8 py-3 text-base shadow-xl shadow-primary/30 w-full sm:w-auto transform hover:translate-y-1 transition-all group">
                 <span>Jelajahi Program</span>
                 <x-heroicon-o-rocket-launch class="size-5 group-hover:rotate-12 transition-transform" />
-            </x-atoms.button>
-            <x-atoms.pages.button variant="outline-secondary" data-nav-target="{{ route('staff') }}"
-                class="px-8 py-3 text-base w-full sm:w-auto transform hover:-translate-y-1 transition-all group rounded-lg">
+            </x-atoms.shared.button>
+            <x-atoms.shared.button variant="outline-secondary" href="#about"
+                class="px-8 py-3 text-base w-full sm:w-auto transform hover:translate-y-1 transition-all group">
                 <span>Tentang Kami</span>
                 <x-heroicon-o-information-circle class="size-5 group-hover:animate-bounce" />
-            </x-atoms.button>
+            </x-atoms.shared.button>
         </div>
     </div>
 

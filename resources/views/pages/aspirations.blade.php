@@ -8,3 +8,4 @@
     <x-organisms.pages.aspirations.form />
     {{-- <x-organisms.pages.aspirations.weekly-spotlight /> --}}
 </x-layouts.app>
+

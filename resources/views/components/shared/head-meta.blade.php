@@ -10,8 +10,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-{{-- 1. Browser Hints --}}
-<meta name="referrer" content="strict-origin-when-cross-origin">
+{{-- 1. Browser Hints & Security --}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+<meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="format-detection" content="telephone=no">
 
 {{-- 2. Indexing Control --}}
@@ -50,3 +54,4 @@
 {{-- 6. Favicons & Icons --}}
 <link rel="icon" type="image/png" href="{{ config('app.logo_url') }}">
 <link rel="apple-touch-icon" href="{{ config('app.logo_url') }}">
+

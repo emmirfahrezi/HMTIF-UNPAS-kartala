@@ -21,7 +21,7 @@
                     melihat agenda >></span>
             </div>
 
-            <div class="flex gap-6 overflow-x-auto pb-8 no-scrollbar -mx-4 px-4 snap-x snap-mandatory">
+            <div class="flex gap-6 overflow-x-auto pb-8 custom-scrollbar -mx-4 px-4 snap-x snap-mandatory">
                 @php $delay = 1; @endphp
                 @foreach ($timelineActivities as $timeline)
                     @php
@@ -31,7 +31,7 @@
                     @endphp
                     <div class="shrink-0 w-80 snap-center reveal reveal-up reveal-delay-{{ $delay++ }}">
                         <div
-                            class="group bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+                            class="group bg-white p-8 rounded-3xl border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
                             <div
                                 class="absolute top-0 right-0 w-32 h-32 bg-{{ $color == 'primary' ? 'primary' : $color . '-500' }}/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700">
                             </div>
@@ -78,3 +78,4 @@
             @endif
         </div>
     </section>
+

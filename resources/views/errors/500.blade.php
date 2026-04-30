@@ -7,3 +7,4 @@
 
     Oops! Terjadi masalah internal pada server kami. Kami telah mencatat kesalahan ini dan tim teknis sedang berusaha memperbaikinya segera.
 </x-layouts.error>
+
