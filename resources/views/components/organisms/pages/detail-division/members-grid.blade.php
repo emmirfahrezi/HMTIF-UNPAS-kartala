@@ -6,3 +6,4 @@
             :href="'/detail-member?staff=' . $member->id" :image="$member->photo ?: asset('images/placeholders/member.svg')" />
     @endforeach
 </div>
+

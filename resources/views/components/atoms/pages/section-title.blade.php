@@ -18,3 +18,4 @@
     </h2>
     <div class="h-1.5 w-12 bg-primary rounded-full transition-all duration-500 group-hover:w-24"></div>
 </div>
+

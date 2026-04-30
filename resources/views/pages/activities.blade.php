@@ -29,3 +29,4 @@
     <x-organisms.pages.activities.filter-bar />
     <x-organisms.pages.activities.program-grid :activities="$activities" />
 </x-layouts.app>
+

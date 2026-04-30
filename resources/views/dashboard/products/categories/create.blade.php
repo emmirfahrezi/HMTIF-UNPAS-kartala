@@ -1,18 +1,18 @@
-<x-layouts.dashboard pageTitle="Tambah Kategori" :breadcrumbs="[['label' => 'Produk', 'href' => '/dashboard/products'], ['label' => 'Tambah Kategori']]">
-    <form method="POST" action="/dashboard/products/categories">@csrf
-        <div class="space-y-6 max-w-4xl">
-            <x-molecules.dashboard.forms.form-section title="Kategori Produk">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <x-molecules.dashboard.forms.form-input label="Nama" name="name" required data-slug-source="slug" />
-                    <x-molecules.dashboard.forms.form-input label="Slug" name="slug" required />
-                </div>
-            </x-dashboard.form-section>
-            <div class="flex items-center gap-3">
-                <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 shadow-lg shadow-primary/20 transition active:scale-95">Tambah</button>
-                <a href="/dashboard/products" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-200 transition">Batal</a>
-            </div>
+<x-layouts.dashboard pageTitle="Tambah Kategori Produk" :breadcrumbs="[['label' => 'Produk', 'href' => '/dashboard/products'], ['label' => 'Kategori', 'href' => '/dashboard/products/categories'], ['label' => 'Tambah']]">
+    <form method="POST" action="/dashboard/products/categories">
+        @csrf
+        @include('dashboard.products.categories._form', ['category' => null])
+        
+        <div class="mt-12 flex items-center justify-end gap-3">
+            <x-atoms.shared.button 
+                variant="ghost"
+                href="/dashboard/products/categories">
+                Batal
+            </x-atoms.shared.button>
+            <x-atoms.shared.button 
+                type="submit">
+                Tambah Kategori
+            </x-atoms.shared.button>
         </div>
     </form>
-    @vite(['resources/js/dashboard/slug-helper.js'])
-
 </x-layouts.dashboard>

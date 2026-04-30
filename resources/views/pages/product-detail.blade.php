@@ -14,3 +14,4 @@
 
     <x-organisms.pages.product-detail.related-products :products="$related" />
 </x-layouts.app>
+

@@ -2,9 +2,7 @@
     @props(['categories'])
 
     @php
-        if ($categories->isEmpty()) {
-            $categories = collect(['Akademik', 'Organisasi', 'Kegiatan', 'Informasi']);
-        }
+        // $categories should be passed from the controller
     @endphp
 
     <div class="space-y-8 reveal reveal-right">
@@ -25,15 +23,16 @@
             </ul>
         </div>
 
+
         <div class="bg-primary p-6 rounded-2xl text-white shadow-lg shadow-primary/20 relative overflow-hidden group">
             <div
                 class="absolute inset-x-0 bottom-0 h-1 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
             </div>
             <h4 class="font-bold text-lg mb-2">Ingin berkontribusi?</h4>
             <p class="text-white/80 text-sm mb-4 italic">Kirimkan aspirasimu melalui form resmi HMTIF UNPAS.</p>
-            <x-atoms.pages.button variant="secondary" data-nav-target="{{ route('aspirations') }}"
+            <x-atoms.shared.button variant="secondary" data-nav-target="{{ route('aspirations') }}"
                 class="w-full py-2 text-sm">
                 Kirim Aspirasi
-            </x-atoms.button>
+            </x-atoms.shared.button>
         </div>
     </div>

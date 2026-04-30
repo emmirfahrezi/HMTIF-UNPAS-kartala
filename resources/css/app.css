@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -41,6 +42,10 @@
   /* Custom Reveal Animations */
   --reveal-duration: 0.8s;
   --reveal-timing: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 :root {
@@ -234,3 +239,236 @@
     filter: none !important;
   }
 }
+
+/* --- ANIMATIONS --- */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+/* --- FORM ERROR STATES --- */
+.has-error label {
+  color: #ef4444 !important; /* text-red-500 */
+}
+
+.has-error input {
+  border-color: #ef4444 !important;
+  --tw-ring-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.has-error .error-message {
+  display: block;
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.375rem;
+  font-weight: 500;
+}
+
+/* --- TOAST SYSTEM --- */
+.toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  min-width: 300px;
+  max-width: 400px;
+  background: white;
+  border: 1px border-slate-100;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transform: translateX(120%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.toast.active {
+  transform: translateX(0);
+}
+
+.dark .toast {
+  background: #0f172a;
+  border-color: #1e293b;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+.toast-success { border-left: 4px solid var(--color-primary); }
+.toast-error { border-left: 4px solid #ef4444; }
+.toast-info { border-left: 4px solid #3b82f6; }
+
+/* Error Page Specific Styles */
+.error-code {
+  background: linear-gradient(180deg, rgba(241, 245, 249, 1) 0%, rgba(241, 245, 249, 0) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+}
+
+[data-theme='dark'] .error-code {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 1) 0%, rgba(30, 41, 59, 0) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- DASHBOARD STYLES --- */
+.ql-container {
+  border-bottom-left-radius: 0.75rem !important;
+  border-bottom-right-radius: 0.75rem !important;
+  border-color: #e2e8f0 !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  background-color: white !important;
+}
+
+.dark .ql-container {
+  border-color: #1e293b !important;
+  background-color: #020617 !important;
+  color: white !important;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.75rem !important;
+  border-top-right-radius: 0.75rem !important;
+  border-color: #e2e8f0 !important;
+  background-color: #f8fafc !important;
+}
+
+.dark .ql-toolbar {
+  border-color: #1e293b !important;
+  background-color: #0f172a !important;
+}
+
+.ql-editor {
+  min-height: 200px !important;
+}
+
+.ql-container.ql-snow {
+  border-top: none !important;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.dark .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 1px solid #1e293b !important;
+}
+
+.dark .ql-snow .ql-stroke {
+  stroke: #94a3b8 !important;
+}
+
+.dark .ql-snow .ql-fill {
+  fill: #94a3b8 !important;
+}
+
+.dark .ql-snow .ql-picker {
+  color: #94a3b8 !important;
+}
+
+.ql-editor.ql-blank::before {
+  color: #94a3b8 !important;
+  font-style: normal !important;
+}
+
+.ql-editor table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .ql-editor table {
+  border-color: #1e293b;
+}
+
+.ql-editor td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem;
+}
+
+.dark .ql-editor td {
+  border-color: #1e293b;
+}
+
+.dash-sidebar {
+  width: 260px;
+  transition: transform 0.3s ease;
+}
+
+.dash-content {
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+  .dash-sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 50;
+  }
+
+  .dash-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .dash-content {
+    margin-left: 0;
+  }
+}
+
+.dash-sidebar-overlay {
+  display: none;
+}
+
+.dash-sidebar-overlay.open {
+  display: block;
+}
+
+/* --- CUSTOM SCROLLBAR --- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 121, 60, 0.2);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 121, 60, 0.5);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(102, 180, 138, 0.2);
+}
+

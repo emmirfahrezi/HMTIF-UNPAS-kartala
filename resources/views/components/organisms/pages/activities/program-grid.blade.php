@@ -45,7 +45,6 @@
 
                         <div class="p-8 flex flex-col flex-1">
                             <div class="relative inline-flex items-center gap-2 mb-3">
-                                <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
                                 <div
                                     class="relative z-10 flex items-center gap-2 text-[10px] text-primary font-bold uppercase tracking-widest leading-none">
                                     <x-heroicon-s-calendar class="size-3" />
@@ -53,18 +52,16 @@
                                 </div>
                             </div>
                             <div class="relative mb-4">
-                                <div class="absolute inset-x-0 inset-y-1 bg-gray-50 animate-shimmer rounded-md"></div>
                                 <h2
                                     class="relative z-10 text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight">
                                     {{ $item->title }}</h2>
                             </div>
                             <div class="relative mb-6 flex-1">
-                                <div class="absolute inset-0 bg-gray-50 animate-shimmer rounded-md"></div>
                                 <p class="relative z-10 text-sm text-gray-500 leading-relaxed">
                                     {{ \Illuminate\Support\Str::limit($item->description, 120) }}
                                 </p>
                             </div>
-                            <a href="/activity-detail"
+                            <a href="{{ route('activities.show', $item->slug) }}"
                                 class="inline-flex items-center gap-2 text-sm font-bold text-primary group/link">
                                 <span class="relative">
                                     Selengkapnya
@@ -80,25 +77,76 @@
             </div>
 
             @if ($activities->isEmpty())
-                <p class="text-sm text-body/60 mt-8">Belum ada kegiatan. Jalankan seeder untuk menampilkan data.</p>
+                <p class="text-sm text-body/60 mt-8 text-center">Belum ada kegiatan yang tersedia.</p>
             @endif
 
             {{-- Load More Section --}}
-            <div id="activity-load-more-container" class="mt-20 flex flex-col items-center">
-                <div class="h-px w-24 bg-gray-200 mb-8"></div>
-                @if ($activities->hasMorePages())
-                    <a id="activity-load-more" href="{{ $activities->nextPageUrl() }}"
-                        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg border border-gray-200 bg-white text-heading font-bold text-sm hover:border-primary hover:text-primary transition-all shadow-sm">
-                        Muat Lebih Banyak
-                        <x-heroicon-o-arrow-down class="size-4" />
-                    </a>
-                @elseif ($activities->count() > 0)
-                    <span class="text-xs font-bold uppercase tracking-widest text-body/50">Semua kegiatan sudah
-                        ditampilkan</span>
-                @endif
+            <div 
+                x-data="{ 
+                    loading: false, 
+                    nextUrl: '{{ $activities->nextPageUrl() }}',
+                    async loadMore() {
+                        if (!this.nextUrl || this.loading) return;
+                        this.loading = true;
+                        
+                        try {
+                            const response = await fetch(this.nextUrl);
+                            const html = await response.text();
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            
+                            const newItems = doc.querySelectorAll('#activity-grid > *');
+                            const nextBtn = doc.querySelector('#activity-load-more');
+                            const grid = document.getElementById('activity-grid');
+                            
+                            newItems.forEach(item => {
+                                item.classList.remove('active');
+                                grid.appendChild(item);
+                                
+                                if (window.IntersectionObserver) {
+                                    const observer = new IntersectionObserver((entries) => {
+                                        entries.forEach(entry => {
+                                            if (entry.isIntersecting) {
+                                                entry.target.classList.add('active');
+                                                observer.unobserve(entry.target);
+                                            }
+                                        });
+                                    }, { threshold: 0.1 });
+                                    observer.observe(item);
+                                }
+                            });
+
+                            this.nextUrl = nextBtn ? nextBtn.dataset.url : null;
+                        } catch (e) {
+                            console.error(e);
+                        } finally {
+                            this.loading = false;
+                        }
+                    }
+                }"
+                class="mt-20 flex flex-col items-center"
+            >
+                <div class="h-px w-24 bg-slate-200 mb-8"></div>
+                
+                <template x-if="nextUrl">
+                    <button 
+                        id="activity-load-more"
+                        :data-url="nextUrl"
+                        @click="loadMore()"
+                        class="inline-flex items-center gap-3 px-10 py-4 rounded-2xl border border-slate-200 bg-white text-slate-900 font-bold text-sm hover:border-primary hover:text-primary transition-all shadow-sm active:scale-95 disabled:opacity-50 group"
+                        :disabled="loading"
+                    >
+                        <span x-text="loading ? 'Memuat...' : 'Muat Lebih Banyak'"></span>
+                        <x-heroicon-o-arrow-down x-show="!loading" class="size-4 group-hover:translate-y-0.5 transition-transform" />
+                        <svg x-show="loading" class="animate-spin size-4" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </template>
+
+                <div x-show="!nextUrl && '{{ $activities->count() }}' > 0" class="text-xs font-bold uppercase tracking-widest text-slate-400">
+                    Semua kegiatan sudah ditampilkan
+                </div>
             </div>
-
-
-
         </div>
     </section>

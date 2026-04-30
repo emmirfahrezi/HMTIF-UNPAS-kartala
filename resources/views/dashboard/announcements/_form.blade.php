@@ -1,43 +1,129 @@
-{{-- Shared Announcement Form --}}
-<div class="space-y-6 max-w-6xl mx-auto">
-    <x-molecules.dashboard.forms.form-section title="Informasi Pengumuman">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <x-molecules.dashboard.forms.form-input label="Judul" name="title" :value="$announcement?->title" placeholder="Judul pengumuman" required data-slug-source="slug" />
-            <x-molecules.dashboard.forms.form-input label="Slug" name="slug" :value="$announcement?->slug" placeholder="auto-generated" required />
-        </div>
-        <x-molecules.dashboard.forms.form-input type="select" label="Kategori" name="announcement_category_id" :value="$announcement?->announcement_category_id"
-            :options="$categories ?? []" />
-        <x-molecules.dashboard.forms.form-input type="textarea" label="Ringkasan" name="excerpt" :value="$announcement?->excerpt" placeholder="Ringkasan singkat..." :rows="3" />
-        <x-molecules.dashboard.forms.form-input type="richtext" label="Konten" name="body" :value="$announcement?->body" placeholder="Isi pengumuman lengkap..." />
-    </x-dashboard.form-section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8" x-data="slugHelper(@js(old('title', $announcement?->title)), @js(old('slug', $announcement?->slug)))">
+    {{-- Main Content --}}
+    <div class="lg:col-span-2 space-y-8">
+        {{-- Primary Information --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+            <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
+                <x-heroicon-o-megaphone class="size-32" />
+            </div>
+            
+            <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <span class="size-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center">
+                    <x-heroicon-s-information-circle class="size-5" />
+                </span>
+                Informasi Pengumuman
+            </h3>
 
-    <x-molecules.dashboard.forms.form-section title="Media & Publikasi">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <x-molecules.dashboard.forms.form-input label="URL Thumbnail" name="thumbnail" :value="$announcement?->thumbnail" placeholder="https://..." />
-            <x-molecules.dashboard.forms.form-input type="datetime-local" label="Tanggal Publikasi" name="published_at"
-                :value="$announcement?->published_at?->format('Y-m-d\TH:i')" />
-        </div>
-        <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">File Lampiran</label>
-            <input type="file" name="file"
-                class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition cursor-pointer" />
-            @if ($announcement?->file)
-                <p class="text-xs text-slate-400 mt-1">File saat ini: {{ $announcement->file }}</p>
-            @endif
-        </div>
-    </x-dashboard.form-section>
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <x-molecules.shared.forms.form-input 
+                        label="Judul Pengumuman" 
+                        name="title" 
+                        placeholder="Masukan judul..."
+                        :value="$announcement?->title ?? ''" 
+                        x-model="sourceValue"
+                        required />
 
-    <div class="flex items-center justify-end gap-3">
-        <button type="submit"
-            class="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 shadow-lg shadow-primary/20 transition active:scale-95">
-            {{ $announcement ? 'Simpan Perubahan' : 'Tambah Pengumuman' }}
-        </button>
-        <a href="/dashboard/announcements"
-            class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-200 transition">
-            Batal
-        </a>
+                    <x-molecules.shared.forms.form-input 
+                        label="Slug (Auto)" 
+                        name="slug" 
+                        placeholder="auto-generated"
+                        :value="$announcement?->slug ?? ''" 
+                        x-model="slugValue"
+                        readonly
+                        required />
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <x-molecules.shared.forms.form-input 
+                        label="Kategori" 
+                        name="announcement_category_id" 
+                        type="select"
+                        :value="$announcement?->announcement_category_id ?? ''" 
+                        :options="$categories ?? []"
+                        required />
+                    
+                    <x-molecules.shared.forms.form-input 
+                        label="Tanggal Publikasi" 
+                        name="published_at" 
+                        type="datetime-local"
+                        :value="$announcement?->published_at?->format('Y-m-d\TH:i') ?? now()->format('Y-m-d\TH:i')" />
+                </div>
+
+                <x-molecules.shared.forms.form-input 
+                    label="Ringkasan Singkat" 
+                    name="excerpt" 
+                    type="textarea"
+                    placeholder="Tuliskan ringkasan singkat pengumuman..."
+                    :value="$announcement?->excerpt ?? ''" 
+                    :rows="3" />
+            </div>
+        </div>
+
+        {{-- Content Body --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+            <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <span class="size-8 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center">
+                    <x-heroicon-s-document-text class="size-5" />
+                </span>
+                Isi Pengumuman
+            </h3>
+
+            <x-molecules.shared.forms.form-input 
+                name="body" 
+                type="richtext"
+                placeholder="Tuliskan isi lengkap pengumuman di sini..."
+                :value="$announcement?->body ?? ''" 
+                required />
+        </div>
+
+    </div>
+
+    {{-- Sidebar Content --}}
+    <div class="space-y-8">
+        {{-- Media --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+            <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-primary pointer-events-none">
+                <x-heroicon-o-photo class="size-24" />
+            </div>
+            
+            <h3 class="text-xs font-black text-slate-800 dark:text-white mb-6 uppercase tracking-widest">Thumbnail & Lampiran</h3>
+            
+            <div class="space-y-6">
+                <x-molecules.shared.forms.form-input 
+                    label="URL Gambar Thumbnail" 
+                    name="thumbnail" 
+                    placeholder="https://..."
+                    :value="$announcement?->thumbnail ?? ''" 
+                    helper="Gunakan URL gambar dari internet (opsional)" />
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">File Lampiran</label>
+                    <input type="file" name="file"
+                        class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-primary/5 dark:file:bg-primary/20 file:text-primary hover:file:bg-primary/10 transition cursor-pointer" />
+                    @if ($announcement?->file)
+                        <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 mt-2">
+                            <x-heroicon-o-paper-clip class="size-4 text-slate-400 dark:text-slate-500" />
+                            <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 truncate">{{ $announcement->file }}</span>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- Publication Status Tip --}}
+        <div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/10 dark:border-primary/20 transition-colors duration-300">
+            <div class="flex gap-4">
+                <div class="size-10 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center shrink-0">
+                    <x-heroicon-s-light-bulb class="size-5" />
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-primary uppercase tracking-widest mb-1">Tips</h4>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                        Pengumuman yang dijadwalkan di masa depan tidak akan muncul di website sampai waktu tersebut tiba.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-@vite(['resources/js/dashboard/slug-helper.js'])
-

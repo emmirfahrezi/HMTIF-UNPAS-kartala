@@ -1,58 +1,42 @@
-/**
- * Activities Page Script (Load More)
- */
-export function initActivities() {
-    const grid = document.getElementById('activity-grid');
-    const container = document.getElementById('activity-load-more-container');
+import Alpine from 'alpinejs';
 
-    if (!grid || !container) return;
+Alpine.data('loadMore', (initialNextUrl) => ({
+    nextUrl: initialNextUrl,
+    loading: false,
 
-    const replaceContainerChildren = (target, source) => {
-        const nextChildren = Array.from(source.children).map((child) => child.cloneNode(true));
-        target.replaceChildren(...nextChildren);
-    };
+    async load() {
+        if (!this.nextUrl || this.loading) return;
+        
+        this.loading = true;
+        
+        try {
+            const response = await fetch(this.nextUrl, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
-    const bindLoadMore = () => {
-        const loadMore = document.getElementById('activity-load-more');
-        if (!loadMore) return;
+            if (!response.ok) throw new Error('Failed to load more');
 
-        loadMore.addEventListener('click', async (event) => {
-            event.preventDefault();
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
 
-            const nextUrl = loadMore.getAttribute('href');
-            if (!nextUrl) return;
+            const grid = document.getElementById('activity-grid');
+            const incomingItems = doc.querySelectorAll('#activity-grid > *');
+            
+            incomingItems.forEach((item) => {
+                // Manually trigger reveal for new items if they have x-reveal
+                grid.appendChild(item);
+            });
 
-            loadMore.classList.add('pointer-events-none', 'opacity-60');
+            const nextBtn = doc.querySelector('#activity-load-more');
+            this.nextUrl = nextBtn ? nextBtn.getAttribute('href') : null;
 
-            try {
-                const response = await fetch(nextUrl, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                });
-
-                if (!response.ok) throw new Error('Failed to load more activities');
-
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-
-                const incomingCards = doc.querySelectorAll('#activity-grid > *');
-                incomingCards.forEach((card) => {
-                    grid.appendChild(card);
-                });
-
-                const incomingContainer = doc.getElementById('activity-load-more-container');
-                if (incomingContainer) {
-                    replaceContainerChildren(container, incomingContainer);
-                    bindLoadMore();
-                }
-            } catch (error) {
-                console.error(error);
-                loadMore.classList.remove('pointer-events-none', 'opacity-60');
-            }
-        });
-    };
-
-    bindLoadMore();
-}
+        } catch (error) {
+            console.error('Load more error:', error);
+        } finally {
+            this.loading = false;
+        }
+    }
+}));

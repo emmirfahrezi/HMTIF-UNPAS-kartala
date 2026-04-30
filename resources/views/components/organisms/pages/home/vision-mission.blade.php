@@ -20,7 +20,8 @@
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
             {{-- Vision Panel --}}
             <article
-                class="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 p-7 shadow-2xl ring-1 ring-white/10 reveal reveal-left lg:col-span-5 lg:p-10">
+                class="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 p-7 shadow-2xl ring-1 ring-white/10 reveal reveal-left lg:col-span-5 lg:p-10"
+            >
                 <div
                     class="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-primary-dark shadow-lg shadow-black/20">
                     <x-heroicon-o-eye class="h-7 w-7" />
@@ -37,7 +38,8 @@
 
             {{-- Mission Panel --}}
             <article
-                class="relative overflow-hidden rounded-3xl border border-white/15 bg-primary-dark/35 p-7 shadow-2xl ring-1 ring-white/10 reveal reveal-right reveal-delay-2 lg:col-span-7 lg:p-10">
+                class="relative overflow-hidden rounded-3xl border border-white/15 bg-primary-dark/35 p-7 shadow-2xl ring-1 ring-white/10 reveal reveal-right reveal-delay-2 lg:col-span-7 lg:p-10"
+            >
                 <div
                     class="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-primary-dark shadow-lg shadow-black/20">
                     <x-heroicon-o-rocket-launch class="h-7 w-7" />
@@ -46,7 +48,7 @@
                 <div class="mt-3 h-1 w-24 rounded-full bg-primary-soft"></div>
 
                 <ol class="mt-8 space-y-5">
-                    @foreach (['Mengoptimalkan wadah aspirasi dan pengembangan minat bakat mahasiswa.', 'Membangun budaya organisasi yang berlandaskan kekeluargaan dan profesionalisme.', 'Meningkatkan kolaborasi internal dan eksternal demi kemajuan almamater.'] as $index => $misi)
+                    @foreach ($missions ?? [] as $index => $misi)
                         <li
                             class="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-secondary/60 hover:bg-white/10">
                             <span
@@ -59,10 +61,11 @@
         </div>
 
         <div class="mt-8 flex flex-wrap gap-3 reveal reveal-up reveal-delay-3">
-            @foreach (['Adaptif', 'Edukatif', 'Inspiratif', 'Kolaboratif'] as $value)
+            @foreach ($values ?? [] as $value)
                 <span
                     class="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-bold text-white/90">{{ $value }}</span>
             @endforeach
         </div>
     </div>
 </section>
+

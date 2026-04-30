@@ -1,71 +1,199 @@
-{{-- Shared Minute Form --}}
-<div class="space-y-6 max-w-4xl">
-    <x-molecules.dashboard.forms.form-section title="Informasi Rapat">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <x-molecules.dashboard.forms.form-input label="Nomor" name="nomor" :value="$minute?->nomor" required placeholder="001/NOT/HMTIF/2026" />
-            <x-molecules.dashboard.forms.form-input label="Perihal" name="perihal" :value="$minute?->perihal" required />
-            <x-molecules.dashboard.forms.form-input type="date" label="Tanggal" name="tanggal" :value="$minute?->tanggal?->format('Y-m-d')" required />
-            <x-molecules.dashboard.forms.form-input label="Tempat" name="tempat" :value="$minute?->tempat" />
-            <x-molecules.dashboard.forms.form-input type="time" label="Waktu Mulai" name="waktu_mulai" :value="$minute?->waktu_mulai" />
-            <x-molecules.dashboard.forms.form-input type="time" label="Waktu Selesai" name="waktu_selesai" :value="$minute?->waktu_selesai" />
-        </div>
-        <x-molecules.dashboard.forms.form-input label="Dipimpin Oleh" name="dipimpin_oleh" :value="$minute?->dipimpin_oleh" />
-    </x-dashboard.form-section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8" x-data="minutesForm(@js($minute->attendees ?? []))">
+    {{-- Main Content --}}
+    <div class="lg:col-span-2 space-y-8">
+        {{-- Meeting Information --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+            <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
+                <x-heroicon-o-information-circle class="size-32" />
+            </div>
+            
+            <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <span class="size-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center">
+                    <x-heroicon-s-information-circle class="size-5" />
+                </span>
+                Informasi Rapat
+            </h3>
 
-    <x-molecules.dashboard.forms.form-section title="Isi Rapat">
-        <x-molecules.dashboard.forms.form-input type="textarea" label="Agenda" name="agenda" :value="$minute?->agenda" :rows="4" />
-        <x-molecules.dashboard.forms.form-input type="textarea" label="Isi Rapat / Pembahasan" name="isi_rapat" :value="$minute?->isi_rapat" :rows="6" />
-        <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">File Dokumentasi</label>
-            <input type="file" name="dokumentasi_file"
-                class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition cursor-pointer" />
-            @if ($minute?->dokumentasi_file)
-                <p class="text-xs text-slate-400 mt-1">File saat ini: {{ $minute->dokumentasi_file }}</p>
-            @endif
-        </div>
-    </x-dashboard.form-section>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <x-molecules.shared.forms.form-input 
+                    label="Nomor Surat / Notulensi" 
+                    name="nomor" 
+                    placeholder="Contoh: 001/HMTIF/IV/2024"
+                    :value="$minute->nomor ?? ''" 
+                    required />
 
-    <x-molecules.dashboard.forms.form-section title="Daftar Hadir" description="Tambah peserta yang hadir dalam rapat.">
-        <div id="attendeeRepeater" class="space-y-3" data-count="{{ ($minute?->attendees?->count() ?? 0) }}">
-            @foreach ($minute?->attendees ?? [] as $i => $att)
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 attendee-row">
-                    <input type="hidden" name="attendees[{{ $i }}][id]" value="{{ $att->id }}" />
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                        <input type="text" name="attendees[{{ $i }}][name]" value="{{ $att->name }}" placeholder="Nama"
-                            class="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                        <input type="text" name="attendees[{{ $i }}][nim]" value="{{ $att->nim }}" placeholder="NIM"
-                            class="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                        <input type="text" name="attendees[{{ $i }}][jabatan]" value="{{ $att->jabatan }}" placeholder="Jabatan"
-                            class="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                        <select name="attendees[{{ $i }}][keterangan]"
-                            class="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white">
-                            <option value="hadir" {{ $att->keterangan === 'hadir' ? 'selected' : '' }}>Hadir</option>
-                            <option value="izin" {{ $att->keterangan === 'izin' ? 'selected' : '' }}>Izin</option>
-                            <option value="alpha" {{ $att->keterangan === 'alpha' ? 'selected' : '' }}>Alpha</option>
-                        </select>
-                        <div class="flex items-center gap-2">
-                            <input type="number" name="attendees[{{ $i }}][order]" value="{{ $att->order }}" placeholder="#"
-                                class="w-16 px-2 py-2 border border-slate-200 rounded-lg text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                            <button type="button" onclick="this.closest('.attendee-row').remove()"
-                                class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">✕</button>
+                <x-molecules.shared.forms.form-input 
+                    label="Perihal / Judul Rapat" 
+                    name="perihal" 
+                    placeholder="Contoh: Rapat Kerja Internal"
+                    :value="$minute->perihal ?? ''" 
+                    required />
+
+                <x-molecules.shared.forms.form-input 
+                    label="Tanggal Rapat" 
+                    name="tanggal" 
+                    type="date"
+                    :value="isset($minute) ? $minute->tanggal->format('Y-m-d') : date('Y-m-d')" 
+                    required />
+
+                <div class="grid grid-cols-2 gap-4">
+                    <x-molecules.shared.forms.form-input 
+                        label="Waktu Mulai" 
+                        name="waktu_mulai" 
+                        type="time"
+                        :value="$minute->waktu_mulai ?? '09:00'" 
+                        required />
+                    <x-molecules.shared.forms.form-input 
+                        label="Selesai" 
+                        name="waktu_selesai" 
+                        type="time"
+                        :value="$minute->waktu_selesai ?? ''" />
+                </div>
+
+                <x-molecules.shared.forms.form-input 
+                    label="Tempat" 
+                    name="tempat" 
+                    placeholder="Contoh: Sekretariat HMTIF"
+                    :value="$minute->tempat ?? ''" 
+                    required />
+
+                <x-molecules.shared.forms.form-input 
+                    label="Dipimpin Oleh" 
+                    name="dipimpin_oleh" 
+                    placeholder="Nama pimpinan rapat"
+                    :value="$minute->dipimpin_oleh ?? ''" 
+                    required />
+            </div>
+
+            <div class="mt-6">
+                <x-molecules.shared.forms.form-input 
+                    label="Agenda Rapat" 
+                    name="agenda" 
+                    type="textarea"
+                    placeholder="Sebutkan poin-poin agenda rapat..."
+                    :value="$minute->agenda ?? ''" 
+                    required />
+            </div>
+        </div>
+
+        {{-- Meeting Content --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+            <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <span class="size-8 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center">
+                    <x-heroicon-s-document-text class="size-5" />
+                </span>
+                Isi & Hasil Rapat
+            </h3>
+
+            <x-molecules.shared.forms.form-input 
+                name="isi_rapat" 
+                type="richtext"
+                placeholder="Tuliskan detail pembahasan dan hasil keputusan rapat di sini..."
+                :value="$minute->isi_rapat ?? ''" 
+                required />
+        </div>
+    </div>
+
+    {{-- Sidebar Content (Attendees) --}}
+    <div class="space-y-8">
+        {{-- Documentation --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+            <h3 class="text-sm font-black text-slate-800 dark:text-white mb-4 uppercase tracking-widest">Dokumentasi</h3>
+            <x-molecules.shared.forms.form-input 
+                name="dokumentasi_file" 
+                type="file"
+                helper="Format: JPG, PNG, atau PDF. Maks 5MB." />
+        </div>
+
+        {{-- Attendees List --}}
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col min-h-[400px] transition-colors duration-300">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest">Daftar Peserta</h3>
+                <x-atoms.shared.button 
+                    variant="soft" 
+                    size="sm"
+                    type="button" 
+                    @click="addAttendee()"
+                    class="!p-1.5 size-8 !rounded-lg"
+                    title="Tambah Peserta">
+                    <x-heroicon-o-plus-circle class="size-5" />
+                </x-atoms.shared.button>
+            </div>
+
+            <div class="space-y-4 flex-1 overflow-y-auto max-h-[600px] pr-2 custom-scrollbar">
+                <template x-for="(attendee, index) in attendees" :key="index">
+                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl relative group/item animate-in fade-in slide-in-from-right-4 duration-300">
+                        <button type="button" @click="removeAttendee(index)"
+                            class="absolute -top-2 -right-2 size-6 bg-white dark:bg-slate-950 text-red-500 border border-red-100 dark:border-red-900/50 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white shadow-sm transition opacity-0 group-hover/item:opacity-100">
+                            <x-heroicon-o-x-mark class="size-3.5" />
+                        </button>
+
+                        <div class="space-y-3">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Nama Peserta</label>
+                                <input type="text" :name="'attendees['+index+'][name]'" x-model="attendee.name" 
+                                    placeholder="Contoh: John Doe"
+                                    class="w-full px-3 py-2.5 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition shadow-sm" required />
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">NIM</label>
+                                    <input type="text" :name="'attendees['+index+'][nim]'" x-model="attendee.nim" 
+                                        placeholder="NIM"
+                                        class="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-bold dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
+                                </div>
+                                
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Keterangan</label>
+                                    <select :name="'attendees['+index+'][keterangan]'" x-model="attendee.keterangan"
+                                        class="w-full px-4 py-2 bg-white/50 dark:bg-slate-950/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[11px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%2364748b%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1rem_1rem] bg-[right_0.75rem_center] bg-no-repeat">
+                                        <option value="hadir" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Hadir</option>
+                                        <option value="izin" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Izin</option>
+                                        <option value="alpha" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Alpha</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Jabatan (Opsional)</label>
+                                <input type="text" :name="'attendees['+index+'][jabatan]'" x-model="attendee.jabatan" 
+                                    placeholder="Jabatan"
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-bold dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
-        <button type="button" onclick="addAttendeeRow()"
-            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-xl hover:bg-primary/20 transition">
-            <x-heroicon-o-plus class="size-4" /> Tambah Peserta
-        </button>
-    </x-dashboard.form-section>
+                </template>
 
-    <div class="flex items-center gap-3">
-        <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 shadow-lg shadow-primary/20 transition active:scale-95">
-            {{ $minute ? 'Simpan' : 'Tambah Notulensi' }}
-        </button>
-        <a href="/dashboard/minutes" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-semibold hover:bg-slate-200 transition">Batal</a>
+                <template x-if="attendees.length === 0">
+                    <div class="flex flex-col items-center justify-center py-12 text-center text-slate-400 dark:text-slate-600">
+                        <x-heroicon-o-users class="size-10 mb-2 opacity-20" />
+                        <p class="text-xs font-medium">Belum ada peserta.</p>
+                        <button type="button" @click="addAttendee()" class="text-[10px] font-bold text-primary mt-1 hover:underline uppercase tracking-widest">Klik Tambah</button>
+                    </div>
+                </template>
+            </div>
+        </div>
     </div>
 </div>
 
-@vite(['resources/js/dashboard/minute-form.js'])
-
+@push('scripts')
+<script>
+    function minutesForm(initialAttendees = []) {
+        return {
+            attendees: initialAttendees.length > 0 ? initialAttendees : [],
+            addAttendee() {
+                this.attendees.push({
+                    name: '',
+                    nim: '',
+                    jabatan: '',
+                    keterangan: 'hadir'
+                });
+            },
+            removeAttendee(index) {
+                this.attendees.splice(index, 1);
+            }
+        };
+    }
+</script>
+@endpush

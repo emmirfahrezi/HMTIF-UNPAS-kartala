@@ -1,6 +1,7 @@
 <x-layouts.app title="Beranda | HMTIF UNPAS"
     description="Portal resmi HMTIF Universitas Pasundan. Wadah aspirasi, informasi kegiatan, dan pengembangan potensi mahasiswa Teknik Informatika UNPAS."
-    keywords="HMTIF UNPAS, Teknik Informatika UNPAS, Universitas Pasundan, Himpunan Mahasiswa" :transparent="true">
+    keywords="HMTIF UNPAS, Teknik Informatika UNPAS, Universitas Pasundan, Himpunan Mahasiswa" :transparent="true"
+    lcpImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80">
     <x-slot:head>
         <script type="application/ld+json">
         {
@@ -25,3 +26,4 @@
     <x-organisms.pages.home.announcements-preview :announcements="$announcements" />
     <x-organisms.pages.home.stats :stats="$stats" />
 </x-layouts.app>
+

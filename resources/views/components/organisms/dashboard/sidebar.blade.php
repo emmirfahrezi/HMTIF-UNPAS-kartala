@@ -26,12 +26,16 @@
     ];
 @endphp
 
-<aside id="dashSidebar" class="dash-sidebar fixed top-0 left-0 h-screen bg-white border-r border-slate-200 flex flex-col overflow-y-auto">
+<aside id="dashSidebar" :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full lg:translate-x-0': !sidebarOpen }"
+    class="fixed top-0 left-0 h-screen w-[260px] bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-900 flex flex-col overflow-y-auto z-50 transition-all duration-300 ease-in-out">
 
     {{-- Logo --}}
-    <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-100 shrink-0">
-        <img src="{{ config('app.logo_url') }}" alt="Logo HMTIF" class="size-9 object-contain logo-remove-bg">
-        <span class="font-bold text-slate-800 text-sm tracking-tight">KARTALA</span>
+    <div class="h-16 flex items-center justify-between gap-3 px-6 border-b border-slate-100 dark:border-slate-900 shrink-0">
+        <div class="flex items-center gap-3">
+            <img src="{{ config('app.logo_url') }}" alt="Logo HMTIF" class="size-8 object-contain logo-remove-bg">
+            <span class="font-bold text-slate-800 dark:text-white text-sm tracking-tight">KARTALA</span>
+        </div>
+        <x-atoms.dashboard.dark-mode-toggle />
     </div>
 
     {{-- Menu --}}
@@ -39,28 +43,27 @@
         @foreach ($menuGroups as $group => $items)
             <div>
                 @if ($group !== 'Overview')
-                    <p class="px-3 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $group }}</p>
+                    <p class="px-3 mb-2 text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest">{{ $group }}</p>
                 @endif
 
                 <ul class="space-y-0.5">
                     @foreach ($items as $item)
-                        @php
-                            $isActive = $currentRoute === $item['match'] || str_starts_with($currentRoute, $item['match'] . '/');
-                            $isExactDashboard = $item['match'] === 'dashboard' && $currentRoute === 'dashboard';
-                            if ($item['match'] === 'dashboard' && $currentRoute !== 'dashboard') {
-                                $isActive = false;
-                            }
-                        @endphp
-                        <li>
-                            <a href="{{ $item['href'] }}"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
-                                    {{ $isActive
-                                        ? 'bg-primary/10 text-primary'
-                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}">
-                                <x-dynamic-component :component="$item['icon']" class="size-5 shrink-0" />
-                                <span>{{ $item['label'] }}</span>
-                            </a>
-                        </li>
+                            @php
+                                $isActive = $currentRoute === $item['match'] || str_starts_with($currentRoute, $item['match'] . '/');
+                                $isExactDashboard = $item['match'] === 'dashboard' && $currentRoute === 'dashboard';
+                                if ($item['match'] === 'dashboard' && $currentRoute !== 'dashboard') {
+                                    $isActive = false;
+                                }
+                            @endphp
+                            <li>
+                                <a href="{{ $item['href'] }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
+                                                {{ $isActive
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-800 dark:hover:text-slate-100' }}">
+                                    <x-dynamic-component :component="$item['icon']" class="size-5 shrink-0" />
+                                    <span>{{ $item['label'] }}</span>
+                                </a>
+                            </li>
                     @endforeach
                 </ul>
             </div>
@@ -68,9 +71,9 @@
     </nav>
 
     {{-- Bottom --}}
-    <div class="p-4 border-t border-slate-100 shrink-0">
+    <div class="p-4 border-t border-slate-100 dark:border-slate-900 shrink-0">
         <a href="/"
-            class="flex items-center gap-2 px-3 py-2 text-sm text-slate-500 hover:text-primary rounded-lg hover:bg-slate-50 transition-all">
+            class="flex items-center gap-2 px-3 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-all">
             <x-heroicon-o-arrow-left class="size-4" />
             <span>Kembali ke Website</span>
         </a>

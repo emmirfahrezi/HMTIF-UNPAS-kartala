@@ -49,7 +49,7 @@
     <div class="mb-10">
         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4">Pilih Ukuran</p>
         <div class="flex flex-wrap gap-3">
-            @foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size)
+            @foreach ($product->sizes ?? [] as $size)
                 <button
                     class="w-12 h-12 rounded-lg border {{ $size == 'L' ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-heading border-gray-100 hover:border-primary/40 transition-all' }} text-xs font-bold">{{ $size }}</button>
             @endforeach
@@ -70,3 +70,4 @@
         </button>
     </div>
 </div>
+

@@ -61,3 +61,4 @@
         <p class="text-sm text-body/60 mt-8">Belum ada data pengurus. Jalankan seeder untuk menampilkan data.</p>
     @endif
 </div>
+

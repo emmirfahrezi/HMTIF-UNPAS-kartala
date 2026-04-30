@@ -26,7 +26,7 @@
                 @php $delay = 1; @endphp
                 @foreach ($spotlight as $topik)
                     @php
-                        $voteCount = 60 + (($topik->id * 37) % 191);
+                        $voteCount = $topik->votes_count ?? 0;
                     @endphp
                     <div
                         class="bg-section p-10 rounded-[3rem] border border-border hover:bg-white hover:shadow-2xl transition-all duration-700 group relative overflow-hidden reveal reveal-up reveal-delay-{{ $delay++ }}">
@@ -69,3 +69,4 @@
             @endif
         </div>
     </section>
+

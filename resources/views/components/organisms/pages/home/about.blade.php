@@ -1,5 +1,5 @@
 <!-- about HMTIF -->
-<div class="py-24 bg-white relative overflow-hidden content-auto">
+<div id="about" class="py-24 bg-white relative overflow-hidden content-auto">
     {{-- Decorative background text --}}
     <div
         class="absolute -right-20 top-45 text-[12rem] font-black text-primary/5 -rotate-90 select-none pointer-events-none uppercase tracking-tighter">
@@ -61,7 +61,7 @@
                     keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.
                 </p>
                 <div class="space-y-4">
-                    @foreach ([['icon' => 'bolt', 'title' => 'Agile & Adaptif', 'desc' => 'Cepat merespon tantangan di era digital yang semakin dinamis.'], ['icon' => 'sparkles', 'title' => 'Inovasi Tanpa Batas', 'desc' => 'Menghadirkan program kerja kreatif yang berdampak luas bagi civitas.']] as $item)
+                    @foreach ($features ?? [] as $item)
                         <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors group">
                             <div
                                 class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
@@ -89,3 +89,4 @@
         </div>
     </div>
 </div>
+
