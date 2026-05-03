@@ -22,15 +22,16 @@ class DashboardStaffController extends Controller
 
     public function index(Request $request)
     {
-        $staffs = $this->getStaffs->execute($request);
+        $staffs    = $this->getStaffs->execute($request);
+        $divisions = Division::orderBy('order')->get();
 
-        return view('dashboard.staffs.index', compact('staffs'));
+        return view('dashboard.staffs.index', compact('staffs', 'divisions'));
     }
 
     public function create()
     {
-        $divisions = Division::orderBy('order')->get();
-        $users = User::orderBy('name')->get();
+        $divisions = Division::orderBy('order')->get()->pluck('name', 'id');
+        $users     = User::orderBy('name')->get()->pluck('name', 'id');
 
         return view('dashboard.staffs.create', compact('divisions', 'users'));
     }
@@ -58,8 +59,8 @@ class DashboardStaffController extends Controller
 
     public function edit(Staff $staff)
     {
-        $divisions = Division::orderBy('order')->get();
-        $users = User::orderBy('name')->get();
+        $divisions = Division::orderBy('order')->get()->pluck('name', 'id');
+        $users     = User::orderBy('name')->get()->pluck('name', 'id');
 
         return view('dashboard.staffs.edit', compact('staff', 'divisions', 'users'));
     }

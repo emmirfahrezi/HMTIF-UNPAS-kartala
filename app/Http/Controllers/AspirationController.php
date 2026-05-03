@@ -35,7 +35,6 @@ class AspirationController extends Controller
 
         $aspiration = $this->submitAspiration->execute($validated);
 
-        // Kirim notifikasi email ke admin (non-blocking)
         try {
             $this->mailService->sendAspirationNotification($aspiration->toArray());
         } catch (\Throwable) {}
@@ -95,7 +94,6 @@ class AspirationController extends Controller
             'message' => $validated['pesan'],
         ]);
 
-        // Kirim notifikasi email ke admin
         try {
             $this->mailService->sendAspirationNotification($aspiration->toArray());
         } catch (\Throwable) {}
