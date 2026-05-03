@@ -21,17 +21,19 @@ class DashboardProductController extends Controller
 
     public function index(Request $request)
     {
-        $products = $this->getProducts->execute($request);
+        $products   = $this->getProducts->execute($request);
+        $categories = ProductCategory::orderBy('name')->get();
 
-        return view('dashboard.products.index', compact('products'));
+        return view('dashboard.products.index', compact('products', 'categories'));
     }
 
     public function create()
     {
-        $categories = ProductCategory::orderBy('name')->get();
+        $categories = ProductCategory::orderBy('name')->get()->pluck('name', 'id');
 
         return view('dashboard.products.create', compact('categories'));
     }
+
 
     public function store(Request $request)
     {
@@ -58,7 +60,7 @@ class DashboardProductController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = ProductCategory::orderBy('name')->get();
+        $categories = ProductCategory::orderBy('name')->get()->pluck('name', 'id');
         $product->load('images');
 
         return view('dashboard.products.edit', compact('product', 'categories'));

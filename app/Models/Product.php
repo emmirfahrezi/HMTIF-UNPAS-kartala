@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\GeneratesId;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
+    use GeneratesId;
+
+    protected static string $idPrefix = 'prd';
+
     protected $fillable = [
         'product_category_id', 'name', 'slug',
         'description', 'price', 'phone_number', 'order_text', 'is_available',

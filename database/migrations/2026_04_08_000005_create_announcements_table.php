@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('announcements', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('announcement_category_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('id')->primary();
+            $table->string('announcement_category_id')->nullable();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('file')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('announcement_category_id')->references('id')->on('announcement_categories')->nullOnDelete();
         });
     }
 

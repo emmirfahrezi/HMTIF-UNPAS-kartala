@@ -10,10 +10,11 @@ use App\Http\Controllers\DashboardDivisionController;
 use App\Http\Controllers\DashboardMinuteController;
 use App\Http\Controllers\DashboardProductCategoryController;
 use App\Http\Controllers\DashboardProductController;
-use App\Http\Controllers\DashboardSettingController;
+use App\Http\Controllers\DashboardActivityLogController;
 use App\Http\Controllers\DashboardStaffController;
 use App\Http\Controllers\DashboardStatController;
 use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\DashboardHomeSectionController;
 use App\Services\Activity\GetActivityBySlugService;
 use App\Services\Activity\GetAllActivitiesService;
 use App\Services\Announcement\GetAllAnnouncementsService;
@@ -215,12 +216,17 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::put('/minutes/{minute}', [DashboardMinuteController::class, 'update'])->name('dashboard.minutes.update');
     Route::delete('/minutes/{minute}', [DashboardMinuteController::class, 'destroy'])->name('dashboard.minutes.destroy');
 
-    Route::get('/settings', [DashboardSettingController::class, 'index'])->name('dashboard.settings');
-    Route::get('/settings/create', [DashboardSettingController::class, 'create'])->name('dashboard.settings.create');
-    Route::post('/settings', [DashboardSettingController::class, 'store'])->name('dashboard.settings.store');
-    Route::get('/settings/{setting}/edit', [DashboardSettingController::class, 'edit'])->name('dashboard.settings.edit');
-    Route::put('/settings/{setting}', [DashboardSettingController::class, 'update'])->name('dashboard.settings.update');
-    Route::delete('/settings/{setting}', [DashboardSettingController::class, 'destroy'])->name('dashboard.settings.destroy');
+    Route::get('/home-sections', [DashboardHomeSectionController::class, 'index'])->name('dashboard.home-sections.index');
+    Route::get('/home-sections/{section}/edit', [DashboardHomeSectionController::class, 'edit'])->name('dashboard.home-sections.edit');
+    Route::put('/home-sections/{section}', [DashboardHomeSectionController::class, 'update'])->name('dashboard.home-sections.update');
+
+
+    Route::get('/activity-logs', [DashboardActivityLogController::class, 'index'])->name('dashboard.activity-logs');
+    Route::get('/activity-logs/create', [DashboardActivityLogController::class, 'create'])->name('dashboard.activity-logs.create');
+    Route::post('/activity-logs', [DashboardActivityLogController::class, 'store'])->name('dashboard.activity-logs.store');
+    Route::get('/activity-logs/{activityLog}/edit', [DashboardActivityLogController::class, 'edit'])->name('dashboard.activity-logs.edit');
+    Route::put('/activity-logs/{activityLog}', [DashboardActivityLogController::class, 'update'])->name('dashboard.activity-logs.update');
+    Route::delete('/activity-logs/{activityLog}', [DashboardActivityLogController::class, 'destroy'])->name('dashboard.activity-logs.destroy');
 
     Route::get('/users', [DashboardUserController::class, 'index'])->name('dashboard.users');
     Route::get('/users/create', [DashboardUserController::class, 'create'])->name('dashboard.users.create');

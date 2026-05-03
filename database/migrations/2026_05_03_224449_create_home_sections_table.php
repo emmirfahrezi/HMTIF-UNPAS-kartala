@@ -8,16 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('announcement_categories', function (Blueprint $table) {
+        Schema::create('home_sections', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('section');
+            $table->string('key');
+            $table->text('value')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
+
+            $table->unique(['section', 'key']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('announcement_categories');
+        Schema::dropIfExists('home_sections');
     }
 };

@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('staffs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreignId('division_id')->constrained()->cascadeOnDelete();
+       Schema::create('staffs', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('user_id')->nullable();
+            $table->string('division_id');
             $table->string('name');
             $table->string('position');
             $table->string('photo')->nullable();
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreign('division_id')->references('id')->on('divisions')->cascadeOnDelete();
         });
     }
 

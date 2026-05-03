@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('minute_attendees', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('minute_id')->constrained('minutes')->cascadeOnDelete();
+            $table->string('id')->primary();
+            $table->string('minute_id');
             $table->string('name');
             $table->string('nim', 20)->nullable();
             $table->string('jabatan')->nullable();
@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('paraf')->nullable();
             $table->integer('order')->default(0);
             $table->timestamps();
+
+            $table->foreign('minute_id')->references('id')->on('minutes')->cascadeOnDelete();
         });
     }
 
