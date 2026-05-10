@@ -17,7 +17,7 @@ function addAttendeeRow() {
             <option value="hadir">Hadir</option><option value="izin">Izin</option><option value="alpha">Alpha</option>
         </select>
         <div class="flex items-center gap-2">
-            <input type="number" name="attendees[${attIndex}][order]" value="0" placeholder="#" class="w-16 px-2 py-2 border border-slate-200 rounded-lg text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary/20" />
+            <input type="number" name="attendees[${attIndex}][order]" value="0" min="0" onkeydown="if(event.key === '-') event.preventDefault()" placeholder="#" class="w-16 px-2 py-2 border border-slate-200 rounded-lg text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary/20" />
             <button type="button" onclick="this.closest('.attendee-row').remove()" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">✕</button>
         </div>
     </div>`;

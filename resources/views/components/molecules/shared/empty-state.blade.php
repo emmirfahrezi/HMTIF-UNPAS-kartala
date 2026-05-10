@@ -2,6 +2,9 @@
     'title' => 'Tidak Ada Data',
     'description' => 'Maaf, data yang Anda cari tidak ditemukan atau belum tersedia.',
     'icon' => 'heroicon-o-folder-open',
+    'createRoute' => null,
+    'createLabel' => 'Tambah Data',
+    'createIcon' => 'heroicon-o-plus',
 ])
 
 <div {{ $attributes->merge(['class' => 'flex flex-col items-center justify-center py-16 px-4 text-center bg-white dark:bg-slate-900/50 rounded-[2rem] transition-colors duration-300']) }}>
@@ -17,6 +20,12 @@
     @if($slot->isNotEmpty())
         <div class="mt-8">
             {{ $slot }}
+        </div>
+    @elseif($createRoute)
+        <div class="mt-8">
+            <x-atoms.shared.button :href="$createRoute" :icon="$createIcon">
+                {{ $createLabel }}
+            </x-atoms.shared.button>
         </div>
     @endif
 </div>

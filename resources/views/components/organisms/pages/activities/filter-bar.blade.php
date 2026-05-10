@@ -77,7 +77,7 @@
                 return {
                     loading: false,
                     debounceTimer: null,
-                    gridSelector: '#program-grid',
+                    gridSelector: '#activity-grid',
                     filterBarSelector: '#activities-filter-bar',
                     init() {
                         window.addEventListener('keydown', (e) => {

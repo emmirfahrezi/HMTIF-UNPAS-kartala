@@ -28,7 +28,7 @@ function addImageRow() {
     row.innerHTML = `
         <input type="text" name="images[${imageIndex}][image_path]" placeholder="Path / URL gambar"
             class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
-        <input type="number" name="images[${imageIndex}][order]" value="0" placeholder="Urutan"
+        <input type="number" name="images[${imageIndex}][order]" value="0" min="0" onkeydown="if(event.key === '-') event.preventDefault()" placeholder="Urutan"
             class="w-20 px-3 py-2.5 border border-slate-200 rounded-xl text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary/20" />
         <label class="flex items-center gap-1.5 text-xs text-slate-500 shrink-0">
             <input type="checkbox" name="images[${imageIndex}][is_primary]" value="1"

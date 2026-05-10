@@ -1,7 +1,8 @@
 <x-layouts.dashboard pageTitle="Bidang / Divisi" :breadcrumbs="[['label' => 'Pengurus', 'href' => '/dashboard/staffs'], ['label' => 'Divisi']]">
     <x-slot:headerActions>
         <x-atoms.shared.button 
-            href="/dashboard/staffs/divisions/create"
+            type="button"
+            onclick="toggleModal('quick-add-division')"
             icon="heroicon-o-plus">
             Tambah Divisi
         </x-atoms.shared.button>
@@ -53,8 +54,11 @@
             </tr>
         @empty
             <x-slot:empty>
-                <x-molecules.shared.empty-state title="Belum ada divisi" icon="heroicon-o-building-office"
-                    createRoute="/dashboard/staffs/divisions/create" createLabel="Tambah Divisi" />
+                <x-molecules.shared.empty-state title="Belum ada divisi" icon="heroicon-o-building-office">
+                    <x-atoms.shared.button type="button" icon="heroicon-o-plus" onclick="toggleModal('quick-add-division')">
+                        Tambah Divisi
+                    </x-atoms.shared.button>
+                </x-molecules.shared.empty-state>
             </x-slot:empty>
         @endforelse
 

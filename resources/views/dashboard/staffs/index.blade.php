@@ -54,7 +54,6 @@
             </div>
 
             <x-molecules.dashboard.cards.data-table :headers="[
-                ['label' => '', 'width' => 'w-10'],
                 ['label' => 'Nama'],
                 ['label' => 'Jabatan'],
                 ['label' => 'BPH'],
@@ -69,12 +68,6 @@
                                 x-bind:checked="isSelected('{{ $item->id }}')"
                                 @change="toggleRow('{{ $item->id }}')"
                             />
-                        </td>
-                        <td class="px-3 py-4 w-10">
-                            <div
-                                class="cursor-grab active:cursor-grabbing text-slate-300 dark:text-slate-600 hover:text-slate-400 dark:hover:text-slate-400 transition sort-handle">
-                                <x-heroicon-s-bars-3-bottom-left class="size-5" />
-                            </div>
                         </td>
                         <td class="px-5 py-4">
                             <div class="flex items-center gap-3">
@@ -176,54 +169,4 @@
             </div>
         </form>
     </x-molecules.shared.modal>
-
-
-
-    @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const tables = document.querySelectorAll('tbody');
-
-                tables.forEach(table => {
-                    new Sortable(table, {
-                        handle: '.sort-handle',
-                        animation: 150,
-                        ghostClass: 'bg-primary/5',
-                        dragClass: 'opacity-0',
-                        onEnd: function (evt) {
-                            const rowIds = Array.from(table.querySelectorAll('tr[data-row-id]'))
-                                .map(tr => tr.getAttribute('data-row-id'));
-
-                            // Simulasi loading/toast
-                            if (window.showToast) {
-                                showToast('Menyimpan urutan baru...', 'info');
-                            }
-
-                            fetch('/dashboard/staffs/reorder', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                },
-                                body: JSON.stringify({ ids: rowIds })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success && window.showToast) {
-                                    showToast('Urutan berhasil disimpan!', 'success');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                if (window.showToast) {
-                                    showToast('Gagal menyimpan urutan', 'error');
-                                }
-                            });
-                        }
-                    });
-                });
-            });
-        </script>
-    @endpush
 </x-layouts.dashboard>

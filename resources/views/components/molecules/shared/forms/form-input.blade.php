@@ -176,6 +176,7 @@
             placeholder="{{ $placeholder }}"
             class="{{ $baseInputClass }}"
             {{ $required ? 'required' : '' }}
+            @if($type === 'number') min="0" onkeydown="if(event.key === '-') event.preventDefault()" @endif
             {{ $attributes }} />
     @endif
 

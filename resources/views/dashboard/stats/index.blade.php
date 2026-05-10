@@ -18,7 +18,7 @@
                     name="sort"
                     :value="request('sort', 'latest')"
                     :options="['latest' => 'Terbaru', 'oldest' => 'Terlama', 'az' => 'A - Z', 'za' => 'Z - A']"
-                    @change="window.liveFilterTable()"
+                    @change="setTimeout(() => $el.closest('form').submit(), 50)"
                 />
             </div>
         </div>

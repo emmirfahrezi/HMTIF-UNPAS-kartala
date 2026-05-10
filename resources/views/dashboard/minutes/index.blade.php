@@ -63,14 +63,6 @@
                         <x-atoms.shared.button 
                             variant="ghost"
                             size="sm"
-                            href="/dashboard/minutes/{{ $item->id }}"
-                            class="size-9 !px-0"
-                            title="Lihat">
-                            <x-heroicon-o-eye class="size-5" />
-                        </x-atoms.shared.button>
-                        <x-atoms.shared.button 
-                            variant="ghost"
-                            size="sm"
                             href="/dashboard/minutes/{{ $item->id }}/edit"
                             class="size-9 !px-0"
                             title="Edit">
