@@ -19,8 +19,8 @@
                             \Illuminate\Support\Str::startsWith($primaryImage, ['/', 'storage/', 'images/', url('/')]);
                         $productImage = $isLocalImage ? $primaryImage : asset('images/placeholders/product.svg');
                     @endphp
-                    <div
-                        class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-700 group reveal reveal-up reveal-delay-{{ $delay++ }}">
+                    <a href="{{ route('store.show', $item->slug) }}"
+                        class="block bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-700 group reveal reveal-up reveal-delay-{{ $delay++ }}">
                         <div
                             class="relative aspect-square rounded-xl bg-section/50 mb-6 flex items-center justify-center overflow-hidden">
                             <img src="{{ $productImage }}"
@@ -35,7 +35,7 @@
                             {{ $item->name }}</h5>
                         <p class="text-primary font-black text-lg tracking-tighter">Rp
                             {{ number_format((float) $item->price, 0, ',', '.') }}</p>
-                    </div>
+                    </a>
                 @endforeach
             </div>
 

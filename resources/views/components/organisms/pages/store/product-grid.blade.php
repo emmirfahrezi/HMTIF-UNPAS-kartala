@@ -50,7 +50,7 @@
                             {{-- Quick Action Overlay --}}
                             <div
                                 class="absolute inset-0 bg-primary-dark/75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-30">
-                                <a href="/product-detail"
+                                <a href="{{ route('store.show', $product->slug) }}"
                                     class="px-8 py-3 bg-white text-primary rounded-lg text-sm font-bold shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-500"
                                     aria-label="Lihat detail produk {{ $product->name }}">
                                     Lihat Produk
@@ -85,13 +85,13 @@
                                             {{ number_format((float) $product->price, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
-                                <button
+                                <a href="{{ route('store.show', $product->slug) }}"
                                     class="w-12 h-12 rounded-lg bg-gray-50 text-gray-400 hover:bg-primary hover:text-white transition-all shadow-sm flex items-center justify-center border border-gray-100 hover:border-primary group/cart"
-                                    aria-label="Tambah {{ $product->name }} ke keranjang">
+                                    aria-label="Lihat detail {{ $product->name }}">
                                     <x-heroicon-o-shopping-cart
                                         class="size-6 transform group-hover/cart:scale-110 transition-transform"
                                         aria-hidden="true" />
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
     'title' => null,
     'highlight' => null,
     'description' => null,
+    'icon' => null,
 ])
 
 <section class="relative pt-24 md:pt-28 pb-10 md:pb-12 overflow-hidden bg-white">
@@ -14,6 +15,20 @@
             <path d="M0 0 L100 100" stroke="currentColor" stroke-width="0.6" class="text-primary" />
         </svg>
     </div>
+
+    {{-- Decorative Background Icons --}}
+    @if ($icon)
+        <div class="absolute inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
+            {{-- Left icon --}}
+            <div class="absolute -left-6 md:-left-4 top-1/2 -translate-y-1/2 text-primary/[0.04]">
+                <x-dynamic-component :component="$icon" class="size-48 md:size-64 -rotate-12" />
+            </div>
+            {{-- Right icon --}}
+            <div class="absolute -right-6 md:-right-4 top-1/2 -translate-y-1/2 text-primary/[0.04]">
+                <x-dynamic-component :component="$icon" class="size-48 md:size-64 rotate-12" />
+            </div>
+        </div>
+    @endif
 
     <div class="container mx-auto px-6 relative z-10 text-center">
         @if ($badge)
@@ -49,4 +64,3 @@
         @endif
     </div>
 </section>
-

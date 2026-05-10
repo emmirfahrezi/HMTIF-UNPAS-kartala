@@ -22,7 +22,7 @@
                 $categoryName = 'Manajemen Organisasi';
             } elseif (str_contains($currentPath, '/products')) {
                 $categoryName = 'Manajemen Store';
-            } elseif (str_contains($currentPath, '/users') || str_contains($currentPath, '/settings') || str_contains($currentPath, '/stats')) {
+            } elseif (str_contains($currentPath, '/users') || str_contains($currentPath, '/stats') || str_contains($currentPath, '/activity-logs')) {
                 $categoryName = 'Manajemen Sistem';
             }
         @endphp
@@ -72,15 +72,10 @@
                     <p class="text-xs font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest">Akun Saya</p>
                 </div>
                 
-                <a href="/dashboard/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-all">
-                    <x-heroicon-o-user class="size-5 text-slate-400 dark:text-slate-600" />
-                    Profil
-                </a>
-                
-                <a href="/dashboard/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-all">
-                    <x-heroicon-o-cog-6-tooth class="size-5 text-slate-400 dark:text-slate-600" />
-                    Pengaturan
-                </a>
+                <div class="px-4 py-3 space-y-1">
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ auth()->user()?->email ?? 'admin@kartala.local' }}</p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500">Akses akun dikelola melalui modul pengguna.</p>
+                </div>
 
                 <div class="h-px bg-slate-50 dark:bg-slate-800 my-2"></div>
 

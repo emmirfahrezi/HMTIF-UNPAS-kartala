@@ -7,6 +7,7 @@
             ['label' => 'Dashboard', 'icon' => 'heroicon-o-squares-2x2', 'href' => '/dashboard', 'match' => 'dashboard'],
         ],
         'Konten' => [
+            ['label' => 'Halaman Utama', 'icon' => 'heroicon-o-home', 'href' => '/dashboard/home-sections', 'match' => 'dashboard/home-sections'],
             ['label' => 'Kegiatan', 'icon' => 'heroicon-o-calendar', 'href' => '/dashboard/activities', 'match' => 'dashboard/activities'],
             ['label' => 'Pengumuman', 'icon' => 'heroicon-o-megaphone', 'href' => '/dashboard/announcements', 'match' => 'dashboard/announcements'],
         ],
@@ -19,9 +20,9 @@
             ['label' => 'Produk', 'icon' => 'heroicon-o-shopping-bag', 'href' => '/dashboard/products', 'match' => 'dashboard/products'],
         ],
         'Pengaturan' => [
+            ['label' => 'Log Aktivitas', 'icon' => 'heroicon-o-document-text', 'href' => '/dashboard/activity-logs', 'match' => 'dashboard/activity-logs'],
             ['label' => 'Statistik', 'icon' => 'heroicon-o-chart-bar', 'href' => '/dashboard/stats', 'match' => 'dashboard/stats'],
             ['label' => 'Pengguna', 'icon' => 'heroicon-o-user-circle', 'href' => '/dashboard/users', 'match' => 'dashboard/users'],
-            ['label' => 'Pengaturan', 'icon' => 'heroicon-o-cog-6-tooth', 'href' => '/dashboard/settings', 'match' => 'dashboard/settings'],
         ],
     ];
 @endphp

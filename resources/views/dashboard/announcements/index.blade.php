@@ -95,40 +95,5 @@
             <x-molecules.dashboard.cards.pagination :paginator="$announcements" />
         </x-slot:pagination>
     </x-molecules.dashboard.cards.data-table>
-
-    <x-molecules.shared.modal id="quick-add-category" title="Tambah Kategori Pengumuman">
-        <form action="/dashboard/announcements/categories" method="POST" class="space-y-4" x-data="slugHelper(@js(old('name')), @js(old('slug')))">
-            @csrf
-            <x-molecules.shared.forms.form-input 
-                label="Nama Kategori"
-                name="name"
-                required
-                placeholder="Masukan nama kategori..."
-                x-model="sourceValue"
-            />
-            <x-molecules.shared.forms.form-input 
-                label="Slug"
-                name="slug"
-                readonly
-                placeholder="auto-generated"
-                x-model="slugValue"
-                helper="Slug akan terisi otomatis berdasarkan nama"
-            />
-            <div class="flex justify-end gap-3 mt-6">
-                <x-atoms.shared.button 
-                    variant="ghost"
-                    type="button"
-                    onclick="toggleModal('quick-add-category')">
-                    Batal
-                </x-atoms.shared.button>
-                <x-atoms.shared.button 
-                    type="submit">
-                    Simpan Kategori
-                </x-atoms.shared.button>
-            </div>
-        </form>
-    </x-molecules.shared.modal>
-
-
 </x-layouts.dashboard>
 

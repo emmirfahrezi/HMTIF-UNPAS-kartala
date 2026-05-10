@@ -201,7 +201,7 @@
                 <div class="w-24">
                     <div class="space-y-1.5">
                         <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 transition-colors duration-300">Urutan</label>
-                        <input type="number" name="images[\${count}][order]" value="0"
+                        <input type="number" name="images[\${count}][order]" value="0" min="0" onkeydown="if(event.key === '-') event.preventDefault()"
                             class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded-xl text-sm dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition">
                     </div>
                 </div>

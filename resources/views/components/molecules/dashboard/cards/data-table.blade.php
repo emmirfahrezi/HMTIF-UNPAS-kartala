@@ -2,6 +2,8 @@
 @props([
     'headers' => [],
     'bulkDeleteRoute' => '',
+    'bulkDeleteEnabled' => false,
+    'selectable' => true,
 ])
 
 <div 
@@ -38,7 +40,7 @@
 
     {{-- Bulk Action Bar (muncul di atas table, nyatu dengan card) --}}
     <div 
-        x-show="selectedIds.length > 0"
+        x-show="{{ $bulkDeleteEnabled ? 'true' : 'false' }} && selectedIds.length > 0"
         x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0 -translate-y-2"
         x-transition:enter-end="opacity-100 translate-y-0"
@@ -58,7 +60,7 @@
             >Batal pilih</button>
         </div>
 
-        @if($bulkDeleteRoute)
+        @if($bulkDeleteEnabled && $bulkDeleteRoute)
         <form method="POST" action="{{ $bulkDeleteRoute }}" id="bulkDeleteForm">
             @csrf
             @method('DELETE')
@@ -82,12 +84,14 @@
             <thead>
                 <tr class="bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 transition-colors">
                     {{-- Select All Checkbox --}}
+                    @if ($selectable)
                     <th class="px-4 py-4 w-12 text-center">
                         <x-atoms.shared.checkbox 
                             x-model="selectAll"
                             @change="toggleSelectAll()"
                         />
                     </th>
+                    @endif
                     @foreach ($headers as $header)
                         <th class="px-5 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap {{ $header['class'] ?? '' }}">
                             {{ $header['label'] }}
