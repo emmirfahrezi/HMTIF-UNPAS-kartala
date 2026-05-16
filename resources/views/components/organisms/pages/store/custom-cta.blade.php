@@ -5,7 +5,7 @@
                 <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-20 rounded-full -mr-48 -mt-48 blur-[100px] group-hover:opacity-40 transition-opacity"></div>
                 <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
                     <div class="text-center lg:text-left max-w-2xl">
-                         <span class="inline-block px-4 py-1 bg-primary/20 rounded-full text-primary-soft text-xs font-bold tracking-widest uppercase mb-4">Bespoke Production</span>
+                         <span class="inline-block px-4 py-1 bg-primary/20 rounded-full text-primary-soft text-xs font-bold tracking-widest uppercase mb-4">Produksi Kustom</span>
                          <h2 class="text-3xl md:text-5xl font-black text-white mb-6 italic italic uppercase tracking-tighter">Ide Kamu, <span class="text-primary-soft underline decoration-dashed underline-offset-8">Eksekusi Kami.</span></h2>
                          <p class="text-white/60 text-lg leading-relaxed">
                              Punya ide desain kaos angkatan atau jaket divisi? Tim HMTIF Store siap membantu mewujudkan produk impian kamu dengan kualitas produksi terbaik.

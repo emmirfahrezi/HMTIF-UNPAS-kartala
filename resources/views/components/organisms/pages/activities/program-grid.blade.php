@@ -4,7 +4,7 @@
     @php
         $statusLabel = [
             'upcoming' => 'Mendatang',
-            'ongoing' => 'Berjalan',
+            'ongoing' => 'Berlangsung',
             'past' => 'Selesai',
         ];
     @endphp
@@ -58,7 +58,7 @@
                             </div>
                             <div class="relative mb-6 flex-1">
                                 <p class="relative z-10 text-sm text-gray-500 leading-relaxed">
-                                    {{ \Illuminate\Support\Str::limit($item->description, 120) }}
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 120) }}
                                 </p>
                             </div>
                             <a href="{{ route('activities.show', $item->slug) }}"

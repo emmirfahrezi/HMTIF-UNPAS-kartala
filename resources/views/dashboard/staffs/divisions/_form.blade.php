@@ -26,7 +26,7 @@
                     <x-molecules.shared.forms.form-input 
                         label="Slug" 
                         name="slug" 
-                        placeholder="auto-generated"
+                        placeholder="dibuat otomatis"
                         :value="$division?->slug ?? ''" 
                         required 
                         x-model="slugValue" 
@@ -36,10 +36,9 @@
                 <x-molecules.shared.forms.form-input 
                     label="Deskripsi (Opsional)" 
                     name="description" 
-                    type="textarea"
+                    type="richtext"
                     placeholder="Tuliskan deskripsi atau tugas divisi ini..."
-                    :value="$division?->description ?? ''" 
-                    :rows="4" />
+                    :value="$division?->description ?? ''" />
             </div>
         </div>
     </div>

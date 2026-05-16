@@ -36,11 +36,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function (
-    GetHomeStatsService $getStats,
-    GetActivitiesPreviewService $getActivities,
-    GetAnnouncementsPreviewService $getAnnouncements,
-) {
+Route::get('/', function (GetHomeStatsService $getStats, GetActivitiesPreviewService $getActivities, GetAnnouncementsPreviewService $getAnnouncements, ) {
     return view('pages.home', [
         'stats' => $getStats->execute(),
         'activities' => $getActivities->execute(),
@@ -48,10 +44,7 @@ Route::get('/', function (
     ]);
 })->name('home');
 
-Route::get('/staff', function (
-    GetAllStaffsService $getStaffs,
-    GetDivisionsService $getDivisions,
-) {
+Route::get('/staff', function (GetAllStaffsService $getStaffs, GetDivisionsService $getDivisions, ) {
     return view('pages.staff', [
         'staffs' => $getStaffs->execute(),
         'divisions' => $getDivisions->execute(),
@@ -70,11 +63,7 @@ Route::get('/divisi/{slug}', function (string $slug, GetDivisionBySlugService $g
     return view('pages.division-detail', compact('division'));
 })->name('divisions.show');
 
-Route::get('/activities', function (
-    Request $request,
-    GetAllActivitiesService $getActivities,
-    GetAllAnnouncementsService $getAnnouncements,
-) {
+Route::get('/activities', function (Request $request, GetAllActivitiesService $getActivities, GetAllAnnouncementsService $getAnnouncements, ) {
     $activities = $getActivities->execute($request->query('status'));
 
     return view('pages.activities', [
@@ -99,11 +88,7 @@ Route::get('/store', function (Request $request, GetAllProductsService $getProdu
     ]);
 })->name('store');
 
-Route::get('/store/{slug}', function (
-    string $slug,
-    GetProductBySlugService $getProduct,
-    GetRelatedProductsService $getRelated,
-) {
+Route::get('/store/{slug}', function (string $slug, GetProductBySlugService $getProduct, GetRelatedProductsService $getRelated, ) {
     $product = $getProduct->execute($slug);
 
     return view('pages.product-detail', [
@@ -112,11 +97,7 @@ Route::get('/store/{slug}', function (
     ]);
 })->name('store.show');
 
-Route::get('/announcements', function (
-    Request $request,
-    GetAllAnnouncementsService $getAnnouncements,
-    GetAnnouncementCategoriesService $getCategories,
-) {
+Route::get('/announcements', function (Request $request, GetAllAnnouncementsService $getAnnouncements, GetAnnouncementCategoriesService $getCategories, ) {
     $announcements = $getAnnouncements->execute(
         $request->query('category_id') ? (int) $request->query('category_id') : null,
         $request->query('search')
@@ -143,10 +124,19 @@ Route::get('/aspirations', function (GetWeeklySpotlightService $getSpotlight) {
 Route::post('/aspirations', [AspirationController::class, 'storeWeb'])
     ->name('aspirations.store');
 
-Route::middleware('guest')->group(function () {
-    Route::view('/login', 'pages.login')->name('login');
-    Route::post('/login', [LoginController::class, 'loginWeb'])->name('login.store');
-});
+Route::get('/setup-password/{token}', function ($token) {
+    return view('mail.setup-password-form', ['token' => $token]);
+})->name('setup-password');
+
+Route::post('/setup-password', function () {
+    // BE: validate token, set password, redirect
+    return redirect()->route('setup-password.success', ['email' => request('email')]);
+})->name('setup-password.store');
+
+Route::get('/setup-password-success', function () {
+    return view('mail.setup-password-success', ['email' => request('email')]);
+})->name('setup-password.success');
+
 
 Route::post('/logout', function (Request $request) {
     Auth::logout();
@@ -234,8 +224,73 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::get('/users/{user}/edit', [DashboardUserController::class, 'edit'])->name('dashboard.users.edit');
     Route::put('/users/{user}', [DashboardUserController::class, 'update'])->name('dashboard.users.update');
     Route::delete('/users/{user}', [DashboardUserController::class, 'destroy'])->name('dashboard.users.destroy');
+
+    // Hardcoded Routes for missing endpoints
+    Route::post('/staffs/reorder', function () {
+        return response()->json(['success' => true]);
+    });
+
+    // Bulk Delete Routes
+    $bulkDeletePaths = [
+        'announcements',
+        'announcements/categories',
+        'activities',
+        'staffs',
+        'staffs/divisions',
+        'products',
+        'products/categories',
+        'stats',
+        'minutes',
+        'activity-logs',
+        'users',
+        'home-sections',
+        'settings'
+    ];
+
+    foreach ($bulkDeletePaths as $path) {
+        Route::delete("/{$path}/bulk-delete", function () {
+            return redirect()->back()->with('success', 'Data yang dipilih berhasil dihapus (Demo)');
+        });
+    }
+
+    // Settings (index only — create/edit removed)
+    Route::get('/settings', function () {
+        return view('dashboard.settings.index', ['settings' => collect()]);
+    })->name('dashboard.settings.index');
+
+    Route::post('/settings', function () {
+        return redirect('/dashboard/settings')->with('success', 'Setting berhasil ditambahkan (Demo)');
+    })->name('dashboard.settings.store');
+
+    Route::put('/settings/{setting}', function () {
+        return redirect('/dashboard/settings')->with('success', 'Setting berhasil diupdate (Demo)');
+    })->name('dashboard.settings.update');
+
+    Route::delete('/settings/{setting}', function () {
+        return redirect('/dashboard/settings')->with('success', 'Setting berhasil dihapus (Demo)');
+    })->name('dashboard.settings.destroy');
+
 });
 
 Route::get('/dev/components', function () {
     return view('dev.components');
+});
+
+Route::prefix('/dev/mail')->group(function () {
+    Route::get('/setup-password-form', function () {
+        return view('mail.setup-password-form', ['token' => 'dummy-token']);
+    });
+    Route::get('/setup-password-success', function () {
+        return view('mail.setup-password-success', ['email' => 'dummy@example.com']);
+    });
+    Route::get('/aspiration-feedback', function () {
+        return view('mail.aspiration-feedback', [
+            'aspiration' => (object) [
+                'tracking_code' => 'KARTALA-12345',
+                'subject' => 'Fasilitas Kampus',
+                'status' => 'reviewed',
+                'reply_message' => 'Terima kasih atas aspirasinya, sedang kami tindak lanjuti.'
+            ]
+        ]);
+    });
 });

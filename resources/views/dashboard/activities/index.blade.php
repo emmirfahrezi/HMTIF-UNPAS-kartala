@@ -30,7 +30,7 @@
                     type="select"
                     name="status"
                     :value="request('status')"
-                    :options="['' => 'Semua', 'upcoming' => 'Mendatang', 'ongoing' => 'Berjalan', 'past' => 'Selesai']"
+                    :options="['' => 'Semua', 'upcoming' => 'Mendatang', 'ongoing' => 'Berlangsung', 'past' => 'Selesai']"
                     @change="setTimeout(() => $el.closest('form').submit(), 50)"
                 />
             </div>

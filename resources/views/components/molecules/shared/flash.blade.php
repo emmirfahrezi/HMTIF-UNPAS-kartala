@@ -1,24 +1,23 @@
 {{-- Global Flash Message Component (Alpine.js Powered) --}}
-@if (session('success') || session('error') || session('warning') || session('aspiration_success'))
-    @php
-        $type = session('success') || session('aspiration_success') ? 'success' : (session('error') ? 'error' : 'warning');
-        $message = session('success') ?? session('error') ?? session('warning');
-        
-        if (session('aspiration_success')) {
-            $message = 'Aspirasi Anda berhasil dikirim! ' . (session('tracking_code') ? 'Kode Tracking: ' . session('tracking_code') : 'Terima kasih atas suaramu.');
-        }
-        
-        $icons = [
-            'success' => 'heroicon-o-check-circle',
-            'error' => 'heroicon-o-x-circle',
-            'warning' => 'heroicon-o-exclamation-circle',
-        ];
-        $colors = [
-            'success' => 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600',
-            'error' => 'bg-red-100 dark:bg-red-500/20 text-red-600',
-            'warning' => 'bg-amber-100 dark:bg-amber-500/20 text-amber-600',
-        ];
-    @endphp
+@php
+    $type = session('success') || session('aspiration_success') ? 'success' : (session('error') ? 'error' : 'warning');
+    $message = session('success') ?? session('error') ?? session('warning') ?? '';
+    
+    if (session('aspiration_success')) {
+        $message = 'Aspirasi Anda berhasil dikirim! ' . (session('tracking_code') ? 'Kode Tracking: ' . session('tracking_code') : 'Terima kasih atas suaramu.');
+    }
+    
+    $icons = [
+        'success' => 'heroicon-o-check-circle',
+        'error' => 'heroicon-o-x-circle',
+        'warning' => 'heroicon-o-exclamation-circle',
+    ];
+    $colors = [
+        'success' => 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600',
+        'error' => 'bg-red-100 dark:bg-red-500/20 text-red-600',
+        'warning' => 'bg-amber-100 dark:bg-amber-500/20 text-amber-600',
+    ];
+@endphp
 
     <div 
         x-data="{ 
@@ -69,9 +68,8 @@
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed" x-text="message"></p>
         </div>
 
-        <button @click="show = false" class="p-1 text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all shrink-0">
+        <button type="button" @click="show = false" class="p-1 text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all shrink-0">
             <x-heroicon-o-x-mark class="size-5" />
         </button>
     </div>
-@endif
 

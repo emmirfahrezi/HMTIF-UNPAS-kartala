@@ -5,7 +5,7 @@
     @php
         $statusLabels = [
             'upcoming' => 'Mendatang',
-            'ongoing' => 'Berjalan',
+            'ongoing' => 'Berlangsung',
             'past' => 'Selesai',
         ];
     @endphp

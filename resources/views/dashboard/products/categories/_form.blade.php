@@ -26,7 +26,7 @@
                     <x-molecules.shared.forms.form-input 
                         label="Slug" 
                         name="slug" 
-                        placeholder="auto-generated"
+                        placeholder="dibuat otomatis"
                         :value="$category?->slug ?? ''" 
                         required 
                         x-model="slugValue" 

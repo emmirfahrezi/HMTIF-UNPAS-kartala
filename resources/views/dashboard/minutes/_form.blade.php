@@ -69,7 +69,7 @@
                 <x-molecules.shared.forms.form-input 
                     label="Agenda Rapat" 
                     name="agenda" 
-                    type="textarea"
+                    type="richtext"
                     placeholder="Sebutkan poin-poin agenda rapat..."
                     :value="$minute->agenda ?? ''" 
                     required />
@@ -133,7 +133,7 @@
                                 <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Nama Peserta</label>
                                 <input type="text" :name="'attendees['+index+'][name]'" x-model="attendee.name" 
                                     placeholder="Contoh: John Doe"
-                                    class="w-full px-3 py-2.5 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition shadow-sm" required />
+                                    class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-xs font-bold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" required />
                             </div>
                             
                             <div class="grid grid-cols-2 gap-3">
@@ -141,13 +141,13 @@
                                     <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">NIM</label>
                                     <input type="text" :name="'attendees['+index+'][nim]'" x-model="attendee.nim" 
                                         placeholder="NIM"
-                                        class="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-bold dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
+                                        class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[10px] font-bold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" />
                                 </div>
                                 
                                 <div class="space-y-1">
                                     <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Keterangan</label>
                                     <select :name="'attendees['+index+'][keterangan]'" x-model="attendee.keterangan"
-                                        class="w-full px-4 py-2 bg-white/50 dark:bg-slate-950/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[11px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%2364748b%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1rem_1rem] bg-[right_0.75rem_center] bg-no-repeat">
+                                        class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[11px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 appearance-none cursor-pointer shadow-sm bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%2364748b%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1rem_1rem] bg-[right_0.75rem_center] bg-no-repeat">
                                         <option value="hadir" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Hadir</option>
                                         <option value="izin" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Izin</option>
                                         <option value="alpha" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Alpha</option>
@@ -159,7 +159,7 @@
                                 <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Jabatan (Opsional)</label>
                                 <input type="text" :name="'attendees['+index+'][jabatan]'" x-model="attendee.jabatan" 
                                     placeholder="Jabatan"
-                                    class="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-bold dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
+                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[10px] font-bold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" />
                             </div>
                         </div>
                     </div>
