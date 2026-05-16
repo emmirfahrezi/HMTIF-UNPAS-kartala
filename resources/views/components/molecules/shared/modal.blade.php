@@ -47,7 +47,7 @@ $maxWidthClass = [
             @if($title)
                 <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white">{{ $title }}</h3>
-                    <button @click="show = false" class="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors">
+                    <button type="button" @click="show = false" class="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors">
                         <x-heroicon-o-x-mark class="size-6" />
                     </button>
                 </div>

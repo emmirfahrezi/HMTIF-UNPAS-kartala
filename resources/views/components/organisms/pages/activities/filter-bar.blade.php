@@ -3,7 +3,7 @@
         $statusMap = [
             'Semua' => null,
             'Mendatang' => 'upcoming',
-            'Berjalan' => 'ongoing',
+            'Berlangsung' => 'ongoing',
             'Selesai' => 'past',
         ];
         $currentStatus = request('status');

@@ -27,7 +27,7 @@
                     <x-molecules.shared.forms.form-input 
                         label="Slug" 
                         name="slug" 
-                        placeholder="auto-generated"
+                        placeholder="dibuat otomatis"
                         :value="$product?->slug ?? ''" 
                         required 
                         x-model="slugValue" 
@@ -54,10 +54,9 @@
                 <x-molecules.shared.forms.form-input 
                     label="Deskripsi Produk" 
                     name="description" 
-                    type="textarea"
+                    type="richtext"
                     placeholder="Tuliskan spesifikasi produk, bahan, ukuran, dll..."
-                    :value="$product?->description ?? ''" 
-                    :rows="4" />
+                    :value="$product?->description ?? ''" />
 
                 <x-molecules.shared.forms.form-input 
                     label="Cara Pemesanan (Otomatis muncul di WhatsApp)" 
@@ -78,45 +77,137 @@
                 Gambar Produk
             </h3>
 
-            <div id="imageRepeater" class="space-y-4 mb-6" data-count="{{ ($product?->images?->count() ?? 0) }}">
+            @php
+                $imageCount = $product?->images?->count() ?? 0;
+            @endphp
+
+            <div id="imageRepeater" class="space-y-4 mb-6" data-count="{{ max($imageCount, 1) }}">
+                @if ($imageCount === 0)
+                    <div class="image-row rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/40 p-4 shadow-sm transition hover:border-primary/20 dark:hover:border-primary/30"
+                        x-data="{ source: 'url' }">
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Sumber Gambar</label>
+                                    <div class="inline-grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-950/60 p-1">
+                                        <button type="button" @click="source = 'url'"
+                                            :class="source === 'url' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                            class="rounded-xl px-5 py-2 text-xs font-bold transition">URL</button>
+                                        <button type="button" @click="source = 'file'"
+                                            :class="source === 'file' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                            class="rounded-xl px-5 py-2 text-xs font-bold transition">File</button>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap items-end gap-4 xl:justify-end">
+                                    <div class="w-28">
+                                        <x-molecules.shared.forms.form-input 
+                                            label="Urutan Tampil"
+                                            name="images[0][order]"
+                                            type="number"
+                                            value="0"
+                                        />
+                                    </div>
+
+                                    <div class="pb-3">
+                                        <x-atoms.shared.checkbox 
+                                            name="images[0][is_primary]" 
+                                            value="1"
+                                            label="Utama"
+                                        />
+                                    </div>
+    
+                                    <x-atoms.shared.button 
+                                        variant="ghost"
+                                        type="button"
+                                        onclick="this.closest('.image-row').remove()"
+                                        class="mb-2 size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10">
+                                        <x-heroicon-o-trash class="size-4" />
+                                    </x-atoms.shared.button>
+                                </div>
+                            </div>
+
+                            <div x-show="source === 'url'" x-cloak>
+                                <x-molecules.shared.forms.form-input 
+                                    label="URL / Path Gambar"
+                                    name="images[0][image_path]"
+                                    placeholder="https://..."
+                                />
+                            </div>
+
+                            <div x-show="source === 'file'" x-cloak class="space-y-2">
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">File Lokal</label>
+                                <input type="file"
+                                    accept="image/*"
+                                    class="w-full rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-white dark:bg-slate-950/45 px-4 py-3 text-sm text-slate-500 dark:text-slate-400 file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:text-primary hover:file:bg-primary/20 transition" />
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 @foreach ($product?->images ?? [] as $i => $img)
-                    <div class="group flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl image-row transition hover:bg-white dark:hover:bg-slate-800 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30">
+                    <div class="image-row rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/40 p-4 shadow-sm transition hover:border-primary/20 dark:hover:border-primary/30"
+                        x-data="{ source: 'url' }">
                         <input type="hidden" name="images[{{ $i }}][id]" value="{{ $img->id }}" />
-                        
-                        <div class="flex-1">
-                            <x-molecules.shared.forms.form-input 
-                                label="URL Gambar"
-                                name="images[{{ $i }}][image_path]"
-                                :value="$img->image_path"
-                                placeholder="https://..."
-                            />
-                        </div>
-                        <div class="w-24">
-                            <x-molecules.shared.forms.form-input 
-                                label="Urutan"
-                                name="images[{{ $i }}][order]"
-                                type="number"
-                                :value="$img->order"
-                            />
-                        </div>
 
-                        <div class="pt-6 shrink-0">
-                            <x-atoms.shared.checkbox 
-                                name="images[{{ $i }}][is_primary]" 
-                                value="1"
-                                :checked="$img->is_primary"
-                                label="Utama"
-                            />
-                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Sumber Gambar</label>
+                                    <div class="inline-grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-950/60 p-1">
+                                        <button type="button" @click="source = 'url'"
+                                            :class="source === 'url' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                            class="rounded-xl px-5 py-2 text-xs font-bold transition">URL</button>
+                                        <button type="button" @click="source = 'file'"
+                                            :class="source === 'file' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                            class="rounded-xl px-5 py-2 text-xs font-bold transition">File</button>
+                                    </div>
+                                </div>
 
-                        <div class="pt-6">
-                            <x-atoms.shared.button 
-                                variant="ghost"
-                                type="button"
-                                onclick="this.closest('.image-row').remove()"
-                                class="size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10">
-                                <x-heroicon-o-trash class="size-4" />
-                            </x-atoms.shared.button>
+                                <div class="flex flex-wrap items-end gap-4 xl:justify-end">
+                                    <div class="w-28">
+                                        <x-molecules.shared.forms.form-input 
+                                            label="Urutan Tampil"
+                                            name="images[{{ $i }}][order]"
+                                            type="number"
+                                            :value="$img->order"
+                                        />
+                                    </div>
+    
+                                    <div class="pb-3">
+                                        <x-atoms.shared.checkbox 
+                                            name="images[{{ $i }}][is_primary]" 
+                                            value="1"
+                                            :checked="$img->is_primary"
+                                            label="Utama"
+                                        />
+                                    </div>
+    
+                                    <x-atoms.shared.button 
+                                        variant="ghost"
+                                        type="button"
+                                        onclick="this.closest('.image-row').remove()"
+                                        class="mb-2 size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10">
+                                        <x-heroicon-o-trash class="size-4" />
+                                    </x-atoms.shared.button>
+                                </div>
+                            </div>
+
+                            <div x-show="source === 'url'" x-cloak>
+                                <x-molecules.shared.forms.form-input 
+                                    label="URL / Path Gambar"
+                                    name="images[{{ $i }}][image_path]"
+                                    :value="$img->image_path"
+                                    placeholder="https://..."
+                                />
+                            </div>
+
+                            <div x-show="source === 'file'" x-cloak class="space-y-2">
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">File Lokal</label>
+                                <input type="file"
+                                    accept="image/*"
+                                    class="w-full rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-white dark:bg-slate-950/45 px-4 py-3 text-sm text-slate-500 dark:text-slate-400 file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:text-primary hover:file:bg-primary/20 transition" />
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -130,6 +221,20 @@
                 class="w-full border border-primary/20 border-dashed py-4">
                 Tambah Gambar Baru
             </x-atoms.shared.button>
+
+            <div class="mt-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-5 dark:bg-indigo-500/10">
+                <div class="flex gap-4">
+                    <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-500 dark:bg-indigo-500/20">
+                        <x-heroicon-s-information-circle class="size-5" />
+                    </div>
+                    <div>
+                        <h4 class="mb-1 text-xs font-black uppercase tracking-widest text-indigo-500">Informasi Gambar</h4>
+                        <p class="text-[11px] font-medium leading-relaxed text-slate-600 dark:text-slate-400">
+                            Gunakan <strong>Utama</strong> untuk gambar cover produk. <strong>Urutan Tampil</strong> menentukan posisi gambar di galeri, mulai dari 0 sebagai gambar paling awal.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -190,44 +295,65 @@
         const count = parseInt(repeater.dataset.count);
         
         const html = `
-            <div class="group flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl image-row transition hover:bg-white dark:hover:bg-slate-800 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30 animate-in fade-in slide-in-from-top-2 duration-300">
-                <div class="flex-1">
-                    <div class="space-y-1.5">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 transition-colors duration-300">URL Gambar</label>
-                        <input type="text" name="images[\${count}][image_path]" placeholder="https://..." 
-                            class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded-xl text-sm dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition">
-                    </div>
-                </div>
-                <div class="w-24">
-                    <div class="space-y-1.5">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 transition-colors duration-300">Urutan</label>
-                        <input type="number" name="images[\${count}][order]" value="0" min="0" onkeydown="if(event.key === '-') event.preventDefault()"
-                            class="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded-xl text-sm dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition">
-                    </div>
-                </div>
-                <div class="pt-6 shrink-0">
-                    <label class="inline-flex items-center gap-2.5 cursor-pointer group/cb">
-                        <div class="relative flex items-center justify-center">
-                            <input type="checkbox" name="images[${count}][is_primary]" value="1"
-                                class="peer appearance-none size-5 rounded-lg border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 checked:bg-primary checked:border-primary transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/10" />
-                            <svg class="absolute size-3 text-white scale-50 opacity-0 peer-checked:scale-100 peer-checked:opacity-100 transition-all duration-300 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
+            <div class="image-row rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/40 p-4 shadow-sm transition hover:border-primary/20 dark:hover:border-primary/30 animate-in fade-in slide-in-from-top-2 duration-300"
+                x-data="{ source: 'url' }">
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Sumber Gambar</label>
+                            <div class="inline-grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-950/60 p-1">
+                                <button type="button" @click="source = 'url'"
+                                    :class="source === 'url' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                    class="rounded-xl px-5 py-2 text-xs font-bold transition">URL</button>
+                                <button type="button" @click="source = 'file'"
+                                    :class="source === 'file' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                    class="rounded-xl px-5 py-2 text-xs font-bold transition">File</button>
+                            </div>
                         </div>
-                        <span class="text-sm font-semibold text-slate-600 dark:text-slate-400 group-hover/cb:text-slate-900 dark:group-hover/cb:text-slate-200 transition-colors duration-300">Utama</span>
-                    </label>
-                </div>
-                <div class="pt-6">
-                    <button type="button" onclick="this.closest('.image-row').remove()"
-                        class="size-9 flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition shadow-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 active:scale-95 group/btn">
-                        <svg class="size-4 transition-transform group-hover/btn:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                    </button>
+
+                        <div class="flex flex-wrap items-end gap-4 xl:justify-end">
+                            <div class="space-y-1.5 w-28">
+                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 transition-colors duration-300">Urutan Tampil</label>
+                                <input type="number" name="images[\${count}][order]" value="0" min="0" onkeydown="if(event.key === '-') event.preventDefault()"
+                                    class="w-full px-4 py-3 border border-slate-200/50 dark:border-slate-800/50 bg-white dark:bg-slate-950/45 rounded-2xl text-sm text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm">
+                            </div>
+
+                            <label class="inline-flex items-center gap-2.5 cursor-pointer group/cb pb-3">
+                                <div class="relative flex items-center justify-center">
+                                    <input type="checkbox" name="images[\${count}][is_primary]" value="1"
+                                        class="peer appearance-none size-5 rounded-lg border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 checked:bg-primary checked:border-primary transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/10" />
+                                    <svg class="absolute size-3 text-white scale-50 opacity-0 peer-checked:scale-100 peer-checked:opacity-100 transition-all duration-300 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <span class="text-sm font-semibold text-slate-600 dark:text-slate-400 group-hover/cb:text-slate-900 dark:group-hover/cb:text-slate-200 transition-colors duration-300">Utama</span>
+                            </label>
+
+                            <button type="button" onclick="this.closest('.image-row').remove()"
+                                class="mb-2 size-9 flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition shadow-sm bg-white dark:bg-slate-950/45 border border-slate-200/50 dark:border-slate-800/50 active:scale-95 group/btn">
+                                <svg class="size-4 transition-transform group-hover/btn:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div x-show="source === 'url'" x-cloak class="space-y-1.5">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 transition-colors duration-300">URL / Path Gambar</label>
+                        <input type="text" name="images[\${count}][image_path]" placeholder="https://..."
+                            class="w-full px-4 py-3 border border-slate-200/50 dark:border-slate-800/50 bg-white dark:bg-slate-950/45 rounded-2xl text-sm text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm">
+                    </div>
+
+                    <div x-show="source === 'file'" x-cloak class="space-y-2">
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">File Lokal</label>
+                        <input type="file" accept="image/*"
+                            class="w-full rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-white dark:bg-slate-950/45 px-4 py-3 text-sm text-slate-500 dark:text-slate-400 file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:text-primary hover:file:bg-primary/20 transition">
+                    </div>
                 </div>
             </div>
         `;
         
         repeater.insertAdjacentHTML('beforeend', html);
         repeater.dataset.count = count + 1;
+        window.Alpine?.initTree(repeater.lastElementChild);
     }
 </script>
 @endpush

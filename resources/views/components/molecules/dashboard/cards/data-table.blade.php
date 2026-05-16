@@ -4,6 +4,7 @@
     'bulkDeleteRoute' => '',
     'bulkDeleteEnabled' => false,
     'selectable' => true,
+    'showActions' => true,
 ])
 
 <div 
@@ -97,7 +98,9 @@
                             {{ $header['label'] }}
                         </th>
                     @endforeach
-                    <th class="px-5 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Aksi</th>
+                    @if ($showActions)
+                        <th class="px-5 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800 transition-colors">

@@ -50,7 +50,7 @@
                     <li><a href="/" class="hover:text-secondary transition-colors">Beranda</a></li>
                     <li><a href="/staff" class="hover:text-secondary transition-colors">Pengurus</a></li>
                     <li><a href="/activities" class="hover:text-secondary transition-colors">Kegiatan</a></li>
-                    <li><a href="/store" class="hover:text-secondary transition-colors">Store</a></li>
+                    <li><a href="/store" class="hover:text-secondary transition-colors">Toko</a></li>
                     <li><a href="/announcements" class="hover:text-secondary transition-colors">Pengumuman</a></li>
                     <li><a href="/aspirations" class="hover:text-secondary transition-colors">Aspirasi</a></li>
                 </ul>

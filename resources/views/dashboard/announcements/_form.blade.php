@@ -27,7 +27,7 @@
                     <x-molecules.shared.forms.form-input 
                         label="Slug (Auto)" 
                         name="slug" 
-                        placeholder="auto-generated"
+                        placeholder="dibuat otomatis"
                         :value="$announcement?->slug ?? ''" 
                         x-model="slugValue"
                         readonly

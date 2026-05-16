@@ -23,11 +23,12 @@
             </h3>
             <form action="{{ $storeRoute }}" method="POST" class="space-y-4">
                 @csrf
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Nama</label>
-                    <input type="text" name="name" required placeholder="Nama..."
-                        class="w-full px-4 py-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
-                </div>
+                <x-molecules.shared.forms.form-input
+                    label="Nama"
+                    name="name"
+                    placeholder="Nama..."
+                    size="sm"
+                    required />
                 <button type="submit"
                     class="w-full py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition shadow-lg shadow-primary/10">
                     Simpan

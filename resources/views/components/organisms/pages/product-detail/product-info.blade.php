@@ -13,7 +13,7 @@
 
 <div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right">
     <div class="flex flex-col gap-2 mb-8">
-        <span class="text-primary font-black uppercase tracking-[0.3em] text-[10px]">Official Merchandise</span>
+        <span class="text-primary font-black uppercase tracking-[0.3em] text-[10px]">Merchandise Resmi</span>
         <h1 class="text-2xl md:text-4xl font-black text-heading italic uppercase tracking-tighter leading-none">
             {{ $product?->name ?? 'Merchandise HMTIF' }}</h1>
     </div>
@@ -24,9 +24,11 @@
     </div>
 
     <div class="prose prose-sm text-body/70 leading-relaxed mb-10">
-        <p>
-            {{ $product?->description ?: 'Merchandise resmi HMTIF UNPAS dengan kualitas terbaik untuk aktivitas kampus dan organisasi.' }}
-        </p>
+        @if ($product?->description)
+            {!! $product->description !!}
+        @else
+            <p>Merchandise resmi HMTIF UNPAS dengan kualitas terbaik untuk aktivitas kampus dan organisasi.</p>
+        @endif
     </div>
 
     {{-- Spec Table --}}

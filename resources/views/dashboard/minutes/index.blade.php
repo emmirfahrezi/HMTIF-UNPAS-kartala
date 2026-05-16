@@ -43,7 +43,7 @@
                 <td class="px-5 py-4">
                     <div class="flex flex-col">
                         <span class="text-sm font-bold text-slate-800 dark:text-white leading-tight mb-1">{{ $item->perihal }}</span>
-                        <p class="text-[11px] text-slate-400 dark:text-slate-500 line-clamp-1 italic">{{ $item->agenda }}</p>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 line-clamp-1 italic">{{ strip_tags($item->agenda) }}</p>
                     </div>
                 </td>
                 <td class="px-5 py-4">

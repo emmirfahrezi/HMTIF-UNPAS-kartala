@@ -23,6 +23,7 @@
             ['label' => 'Log Aktivitas', 'icon' => 'heroicon-o-document-text', 'href' => '/dashboard/activity-logs', 'match' => 'dashboard/activity-logs'],
             ['label' => 'Statistik', 'icon' => 'heroicon-o-chart-bar', 'href' => '/dashboard/stats', 'match' => 'dashboard/stats'],
             ['label' => 'Pengguna', 'icon' => 'heroicon-o-user-circle', 'href' => '/dashboard/users', 'match' => 'dashboard/users'],
+            ['label' => 'Sistem Settings', 'icon' => 'heroicon-o-cog-8-tooth', 'href' => '/dashboard/settings', 'match' => 'dashboard/settings'],
         ],
     ];
 @endphp

@@ -6,6 +6,4 @@
     {{-- Track Aspiration (Mockup) --}}
     <x-organisms.pages.aspirations.track-status />
     <x-organisms.pages.aspirations.form />
-    <x-organisms.pages.aspirations.weekly-spotlight :spotlight="$spotlight" />
 </x-layouts.app>
-

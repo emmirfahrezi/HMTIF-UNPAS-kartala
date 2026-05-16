@@ -2,22 +2,28 @@
 @props([
     'title' => '',
     'description' => '',
+    'icon' => 'heroicon-s-cube',
+    'bgIcon' => 'heroicon-o-cube',
 ])
 
-<div class="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md rounded-[2rem] border border-slate-200/60 dark:border-slate-800/60 p-8 lg:p-10 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 group/section">
+<div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+    <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
+        <x-dynamic-component :component="$bgIcon" class="size-32" />
+    </div>
+    
     @if ($title)
-        <div class="mb-8 relative">
-            <div class="flex items-center gap-4 mb-2">
-                <div class="h-8 w-1.5 bg-primary rounded-full group-hover/section:scale-y-110 transition-transform duration-300"></div>
-                <h3 class="text-xl font-black tracking-tight text-slate-800 dark:text-white uppercase">{{ $title }}</h3>
-            </div>
-            @if ($description)
-                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed ml-5.5">{{ $description }}</p>
-            @endif
-        </div>
+        <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3 relative z-10">
+            <span class="size-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center">
+                <x-dynamic-component :component="$icon" class="size-5" />
+            </span>
+            {{ $title }}
+        </h3>
+        @if ($description)
+            <p class="text-sm text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed mb-6 -mt-3 ml-11 relative z-10">{{ $description }}</p>
+        @endif
     @endif
 
-    <div class="space-y-6">
+    <div class="space-y-6 relative z-10">
         {{ $slot }}
     </div>
 </div>

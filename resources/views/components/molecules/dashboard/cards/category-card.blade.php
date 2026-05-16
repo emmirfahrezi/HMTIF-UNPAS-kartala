@@ -21,7 +21,7 @@
     @if ($showQuickAdd || ($showManage && $manageRoute))
     <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
         @if ($showQuickAdd && $addModalId)
-        <button onclick="toggleModal('{{ $addModalId }}')" 
+        <button type="button" @click="$dispatch('open-modal', { name: '{{ $addModalId }}' })" 
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary/10 dark:bg-primary/20 text-primary rounded-xl text-sm font-bold hover:bg-primary/20 dark:hover:bg-primary/30 transition active:scale-95">
             <x-heroicon-o-plus-circle class="size-4" />
             <span>Tambah Cepat</span>

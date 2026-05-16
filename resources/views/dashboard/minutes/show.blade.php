@@ -81,8 +81,8 @@
 
                     <div class="mb-12">
                         <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-4">Agenda Pembahasan</label>
-                        <div class="p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-medium whitespace-pre-line leading-relaxed italic">
-                            {{ $minute->agenda }}
+                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                            {!! $minute->agenda !!}
                         </div>
                     </div>
 

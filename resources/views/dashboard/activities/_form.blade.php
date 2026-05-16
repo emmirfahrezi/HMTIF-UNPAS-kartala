@@ -27,7 +27,7 @@
                     <x-molecules.shared.forms.form-input 
                         label="Slug (Auto)" 
                         name="slug" 
-                        placeholder="auto-generated"
+                        placeholder="dibuat otomatis"
                         :value="$activity?->slug ?? ''" 
                         x-model="slugValue"
                         readonly
@@ -37,10 +37,9 @@
                 <x-molecules.shared.forms.form-input 
                     label="Deskripsi Singkat" 
                     name="description" 
-                    type="textarea"
+                    type="richtext"
                     placeholder="Tuliskan deskripsi singkat kegiatan..."
                     :value="$activity?->description ?? ''" 
-                    :rows="3"
                     required />
             </div>
         </div>
@@ -116,7 +115,7 @@
                     name="status" 
                     type="select"
                     :value="$activity?->status ?? 'upcoming'" 
-                    :options="['upcoming' => 'Upcoming', 'ongoing' => 'Ongoing', 'past' => 'Past']"
+                    :options="['upcoming' => 'Mendatang', 'ongoing' => 'Berlangsung', 'past' => 'Selesai']"
                     required />
 
                 <x-molecules.shared.forms.form-input 
@@ -149,7 +148,7 @@
                 <div>
                     <h4 class="text-xs font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest mb-1">Status Kegiatan</h4>
                     <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                        Ubah status ke **Ongoing** jika kegiatan sedang berlangsung agar muncul di halaman depan.
+                        Ubah status ke **Berlangsung** jika kegiatan sedang berjalan agar muncul di halaman depan.
                     </p>
                 </div>
             </div>

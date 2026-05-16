@@ -1,10 +1,4 @@
 <x-layouts.dashboard pageTitle="Log Aktivitas" :breadcrumbs="[['label' => 'Log Aktivitas']]">
-    <x-slot:headerActions>
-        <x-atoms.shared.button href="/dashboard/activity-logs/create" icon="heroicon-o-plus">
-            Tambah Log
-        </x-atoms.shared.button>
-    </x-slot:headerActions>
-
     <x-molecules.dashboard.cards.filter-card 
         searchRoute="/dashboard/activity-logs" 
         searchPlaceholder="Cari judul atau pelaksana...">
@@ -25,6 +19,7 @@
 
     <x-molecules.dashboard.cards.data-table
         :selectable="false"
+        :showActions="true"
         :headers="[
             ['label' => 'Tanggal'],
             ['label' => 'Judul'],
@@ -40,7 +35,7 @@
                 <td class="px-5 py-4">
                     <div class="text-sm font-bold text-slate-800 dark:text-white">{{ $item->title }}</div>
                     @if($item->description)
-                        <div class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">{{ Str::limit($item->description, 50) }}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">{{ Str::limit(strip_tags($item->description), 50) }}</div>
                     @endif
                 </td>
                 <td class="px-5 py-4">
@@ -57,30 +52,21 @@
                     </div>
                 </td>
                 <td class="px-5 py-4 text-right">
-                    <div class="flex items-center justify-end gap-1">
-                        <x-atoms.shared.button 
-                            variant="ghost"
-                            size="sm"
-                            href="/dashboard/activity-logs/{{ $item->id }}/edit"
-                            class="size-9 !px-0"
-                            title="Edit">
-                            <x-heroicon-o-pencil-square class="size-5" />
-                        </x-atoms.shared.button>
-                        <x-atoms.shared.button 
-                            variant="ghost"
-                            size="sm"
-                            @click="openDeleteModal('/dashboard/activity-logs/{{ $item->id }}', 'Hapus log aktivitas &quot;{{ $item->title }}&quot;?')"
-                            class="size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
-                            title="Hapus">
-                            <x-heroicon-o-trash class="size-5" />
-                        </x-atoms.shared.button>
-                    </div>
+                    <button type="button"
+                        x-data
+                        @click="window.dispatchEvent(new CustomEvent('open-modal', { detail: { name: 'activity-log-detail-{{ $item->id }}' } }))"
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200/60 bg-white px-3 py-2 text-xs font-bold text-slate-500 transition hover:border-primary/30 hover:bg-primary/5 hover:text-primary dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400 dark:hover:bg-primary/10">
+                        <x-heroicon-o-eye class="size-4" />
+                        Detail
+                    </button>
                 </td>
             </tr>
         @empty
             <x-slot:empty>
-                <x-molecules.shared.empty-state title="Belum ada log aktivitas" icon="heroicon-o-document-text"
-                    createRoute="/dashboard/activity-logs/create" createLabel="Tambah Log" />
+                <x-molecules.shared.empty-state 
+                    title="Belum ada log aktivitas" 
+                    description="Aktivitas sistem akan muncul otomatis setelah ada perubahan data."
+                    icon="heroicon-o-document-text" />
             </x-slot:empty>
         @endforelse
 
@@ -88,5 +74,44 @@
             <x-molecules.dashboard.cards.pagination :paginator="$logs" />
         </x-slot:pagination>
     </x-molecules.dashboard.cards.data-table>
+
+    @foreach ($logs ?? [] as $item)
+        <x-molecules.shared.modal id="activity-log-detail-{{ $item->id }}" title="Detail Log Aktivitas" maxWidth="lg">
+            <div class="space-y-6">
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Judul Aktivitas</p>
+                    <h3 class="mt-1 text-lg font-black text-slate-900 dark:text-white">{{ $item->title }}</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div class="rounded-2xl border border-slate-200/60 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Tanggal</p>
+                        <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
+                            {{ \Carbon\Carbon::parse($item->date)->translatedFormat('d M Y H:i') }}
+                        </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200/60 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Kategori</p>
+                        <p class="mt-1 text-sm font-bold text-primary">{{ $item->category }}</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200/60 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Pelaksana</p>
+                        <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">{{ $item->performed_by }}</p>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Deskripsi</p>
+                    <div class="prose prose-sm prose-slate max-w-none rounded-2xl border border-slate-200/60 bg-slate-50 p-5 text-slate-600 dark:prose-invert dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300">
+                        @if ($item->description)
+                            {!! $item->description !!}
+                        @else
+                            <p>Tidak ada deskripsi tambahan.</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </x-molecules.shared.modal>
+    @endforeach
 
 </x-layouts.dashboard>

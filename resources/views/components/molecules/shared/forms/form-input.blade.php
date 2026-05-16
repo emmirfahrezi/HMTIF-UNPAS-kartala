@@ -16,7 +16,7 @@
 
 @php
     $errorClass = $errors->has($name) ? 'border-red-500/50 ring-4 ring-red-500/10' : 'border-slate-200/50 dark:border-slate-800/50 focus:border-primary focus:ring-4 focus:ring-primary/10';
-    $bgClass = $transparent ? 'bg-transparent dark:bg-transparent backdrop-blur-md' : 'bg-white dark:bg-slate-900 shadow-sm';
+    $bgClass = $transparent ? 'bg-transparent dark:bg-transparent backdrop-blur-md' : 'bg-white dark:bg-slate-950/45 shadow-sm';
     
     $paddingClass = $size === 'sm' ? 'px-3 py-2' : 'px-4 py-3';
     $roundedClass = $size === 'sm' ? 'rounded-xl' : 'rounded-2xl';
@@ -120,12 +120,134 @@
             {{ $required ? 'required' : '' }}
             {{ $attributes }}>{{ old($name, $value) }}</textarea>
     @elseif ($type === 'richtext')
-        <div class="richtext-wrapper relative">
+        <div class="richtext-wrapper relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/50 backdrop-blur-sm transition-all duration-300 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10">
             <input id="{{ $name }}_hidden" type="hidden" name="{{ $name }}" value="{{ old($name, $value) }}">
             <script id="{{ $name }}_initial" type="application/json">@json(old($name, $value))</script>
-            <div id="{{ $name }}_editor" class="quill-editor bg-white dark:bg-slate-950/50 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 transition-all duration-300 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 overflow-hidden" data-name="{{ $name }}"
+            <div id="{{ $name }}_editor" class="quill-editor bg-white dark:bg-slate-950/50" data-name="{{ $name }}"
                 data-placeholder="{{ $placeholder }}"></div>
         </div>
+        <x-molecules.shared.modal id="{{ $name }}_link_modal" title="Atur Link" maxWidth="md">
+            <div
+                x-data="{
+                    editorName: @js($name),
+                    url: '',
+                    text: '',
+                    hasExisting: false,
+                    init() {
+                        window.addEventListener('open-richtext-link-modal', (event) => {
+                            if (event.detail.name !== this.editorName) return;
+                            this.url = event.detail.url || '';
+                            this.text = event.detail.text || '';
+                            this.hasExisting = !!event.detail.hasExisting;
+                            this.$nextTick(() => this.$refs.urlInput?.focus());
+                        });
+                    },
+                    save() {
+                        window.richTextEditors?.[this.editorName]?.applyLink(this.url, this.text);
+                        window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: this.editorName + '_link_modal' } }));
+                    },
+                    remove() {
+                        window.richTextEditors?.[this.editorName]?.removeLink();
+                        window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: this.editorName + '_link_modal' } }));
+                    },
+                }"
+                class="space-y-6"
+            >
+                <div class="space-y-2">
+                    <label class="inline-block text-sm font-bold text-slate-700 dark:text-slate-300">Teks Link</label>
+                    <x-atoms.shared.input type="text" x-model="text" placeholder="Teks yang tampil..." />
+                </div>
+
+                <div class="space-y-2">
+                    <label class="inline-block text-sm font-bold text-slate-700 dark:text-slate-300">URL</label>
+                    <x-atoms.shared.input type="url" x-model="url" x-ref="urlInput" placeholder="https://..." />
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3">
+                        <button type="button"
+                            x-show="hasExisting"
+                            @click="remove"
+                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-red-500/80 transition hover:bg-red-500/10 hover:text-red-500">
+                            Hapus Link
+                        </button>
+                        <button type="button"
+                            @click="window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: editorName + '_link_modal' } }))"
+                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300">
+                            Batal
+                        </button>
+                        <button type="button"
+                            @click="save"
+                            class="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm font-bold text-primary transition hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/20">
+                            Simpan Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </x-molecules.shared.modal>
+        <x-molecules.shared.modal id="{{ $name }}_media_modal" title="Atur Media" maxWidth="md">
+            <div
+                x-data="{
+                    editorName: @js($name),
+                    type: 'image',
+                    url: '',
+                    hasExisting: false,
+                    get label() {
+                        return this.type === 'video' ? 'URL Video' : 'URL Gambar';
+                    },
+                    get placeholder() {
+                        return this.type === 'video' ? 'https://youtube.com/...' : 'https://...';
+                    },
+                    init() {
+                        window.addEventListener('open-richtext-media-modal', (event) => {
+                            if (event.detail.name !== this.editorName) return;
+                            this.type = event.detail.type || 'image';
+                            this.url = event.detail.url || '';
+                            this.hasExisting = !!event.detail.hasExisting;
+                            this.$nextTick(() => this.$refs.mediaUrlInput?.focus());
+                        });
+                    },
+                    save() {
+                        window.richTextEditors?.[this.editorName]?.applyMedia(this.type, this.url);
+                        window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: this.editorName + '_media_modal' } }));
+                    },
+                    remove() {
+                        window.richTextEditors?.[this.editorName]?.removeMedia();
+                        window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: this.editorName + '_media_modal' } }));
+                    },
+                }"
+                class="space-y-6"
+            >
+                <div class="space-y-2">
+                    <label class="inline-block text-sm font-bold text-slate-700 dark:text-slate-300" x-text="label"></label>
+                    <x-atoms.shared.input type="url" x-model="url" x-ref="mediaUrlInput" x-bind:placeholder="placeholder" />
+                    <p class="text-xs text-slate-400 dark:text-slate-500">
+                        Gunakan URL publik agar media dapat tampil di halaman.
+                    </p>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3">
+                        <button type="button"
+                            x-show="hasExisting"
+                            @click="remove"
+                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-red-500/80 transition hover:bg-red-500/10 hover:text-red-500">
+                            Hapus Media
+                        </button>
+                        <button type="button"
+                            @click="window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: editorName + '_media_modal' } }))"
+                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300">
+                            Batal
+                        </button>
+                        <button type="button"
+                            @click="save"
+                            class="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm font-bold text-primary transition hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/20">
+                            Simpan Media
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </x-molecules.shared.modal>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var container = document.getElementById('{{ $name }}_editor');
@@ -137,14 +259,213 @@
                     placeholder: container.dataset.placeholder || '',
                     modules: {
                         toolbar: [
-                            [{ 'header': [1, 2, 3, false] }],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'size': ['small', false, 'large', 'huge'] }],
                             ['bold', 'italic', 'underline', 'strike'],
-                            ['link', 'blockquote', 'code-block'],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'script': 'sub' }, { 'script': 'super' }],
                             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                            [{ 'align': [] }],
+                            ['blockquote', 'code-block'],
+                            ['link', 'image', 'video'],
                             ['clean']
                         ]
                     }
                 });
+                var toolbar = quill.getModule('toolbar');
+                var editorName = '{{ $name }}';
+                var savedRange = null;
+                var currentLinkRange = null;
+                var currentMediaRange = null;
+
+                function openLinkModal() {
+                    var range = quill.getSelection(true);
+                    if (!range) return;
+
+                    var format = quill.getFormat(range);
+                    if (!range.length && !format.link) {
+                        if (typeof window.toast === 'function') {
+                            window.toast('Blok teks terlebih dahulu sebelum menambahkan link.', 'warning');
+                        } else {
+                            window.dispatchEvent(new CustomEvent('toast', {
+                                detail: {
+                                    message: 'Blok teks terlebih dahulu sebelum menambahkan link.',
+                                    type: 'warning'
+                                }
+                            }));
+                        }
+                        return;
+                    }
+
+                    var text = range.length ? quill.getText(range.index, range.length) : '';
+                    savedRange = range;
+                    currentLinkRange = range.length ? range : null;
+
+                    window.dispatchEvent(new CustomEvent('open-richtext-link-modal', {
+                        detail: {
+                            name: editorName,
+                            url: format.link || '',
+                            text: text.trim(),
+                            hasExisting: !!format.link
+                        }
+                    }));
+                    window.dispatchEvent(new CustomEvent('open-modal', {
+                        detail: { name: editorName + '_link_modal' }
+                    }));
+                }
+
+                function openMediaModal(type, url, existingRange) {
+                    var range = quill.getSelection(true);
+                    if (!range) return;
+
+                    savedRange = range;
+                    currentMediaRange = existingRange || null;
+
+                    window.dispatchEvent(new CustomEvent('open-richtext-media-modal', {
+                        detail: {
+                            name: editorName,
+                            type: type,
+                            url: url || '',
+                            hasExisting: !!url
+                        }
+                    }));
+                    window.dispatchEvent(new CustomEvent('open-modal', {
+                        detail: { name: editorName + '_media_modal' }
+                    }));
+                }
+
+                if (toolbar) {
+                    toolbar.addHandler('link', openLinkModal);
+                    toolbar.addHandler('image', function() {
+                        openMediaModal('image');
+                    });
+                    toolbar.addHandler('video', function() {
+                        openMediaModal('video');
+                    });
+                }
+
+                container.addEventListener('click', function(event) {
+                    var link = event.target.closest('a');
+                    var image = event.target.closest('img');
+                    var video = event.target.closest('iframe');
+
+                    if (link && container.contains(link)) {
+                        event.preventDefault();
+                        var linkBlot = Quill.find(link);
+                        var linkIndex = quill.getIndex(linkBlot);
+                        var linkLength = linkBlot.length();
+                        quill.setSelection(linkIndex, linkLength, 'user');
+                        savedRange = { index: linkIndex, length: linkLength };
+                        currentLinkRange = savedRange;
+
+                        window.dispatchEvent(new CustomEvent('open-richtext-link-modal', {
+                            detail: {
+                                name: editorName,
+                                url: link.getAttribute('href') || '',
+                                text: link.textContent.trim(),
+                                hasExisting: true
+                            }
+                        }));
+                        window.dispatchEvent(new CustomEvent('open-modal', {
+                            detail: { name: editorName + '_link_modal' }
+                        }));
+                        return;
+                    }
+
+                    if (image && container.contains(image)) {
+                        event.preventDefault();
+                        var imageBlot = Quill.find(image);
+                        var imageIndex = quill.getIndex(imageBlot);
+                        quill.setSelection(imageIndex, 1, 'user');
+                        savedRange = { index: imageIndex, length: 1 };
+                        currentMediaRange = savedRange;
+                        openMediaModal('image', image.getAttribute('src') || '', savedRange);
+                        return;
+                    }
+
+                    if (video && container.contains(video)) {
+                        event.preventDefault();
+                        var videoBlot = Quill.find(video);
+                        var videoIndex = quill.getIndex(videoBlot);
+                        quill.setSelection(videoIndex, 1, 'user');
+                        savedRange = { index: videoIndex, length: 1 };
+                        currentMediaRange = savedRange;
+                        openMediaModal('video', video.getAttribute('src') || '', savedRange);
+                    }
+                });
+
+                window.richTextEditors = window.richTextEditors || {};
+                window.richTextEditors[editorName] = {
+                    applyLink: function(url, text) {
+                        var cleanUrl = (url || '').trim();
+                        var cleanText = (text || '').trim();
+                        var range = savedRange || quill.getSelection(true);
+
+                        if (!range) return;
+                        quill.focus();
+                        quill.setSelection(range.index, range.length, 'silent');
+
+                        if (!cleanUrl) {
+                            this.removeLink();
+                            return;
+                        }
+
+                        if (cleanText && range.length) {
+                            quill.deleteText(range.index, range.length, 'user');
+                            quill.insertText(range.index, cleanText, { link: cleanUrl }, 'user');
+                            quill.setSelection(range.index + cleanText.length, 0, 'silent');
+                        } else if (cleanText) {
+                            quill.insertText(range.index, cleanText, { link: cleanUrl }, 'user');
+                            quill.setSelection(range.index + cleanText.length, 0, 'silent');
+                        } else {
+                            quill.format('link', cleanUrl, 'user');
+                        }
+
+                        hiddenInput.value = quill.root.innerHTML;
+                    },
+                    removeLink: function() {
+                        var range = currentLinkRange || savedRange || quill.getSelection(true);
+                        if (!range) return;
+
+                        quill.focus();
+                        if (range.length) {
+                            quill.formatText(range.index, range.length, 'link', false, 'user');
+                        } else {
+                            quill.format('link', false, 'user');
+                        }
+                        hiddenInput.value = quill.root.innerHTML;
+                    },
+                    applyMedia: function(type, url) {
+                        var cleanUrl = (url || '').trim();
+                        var mediaType = type === 'video' ? 'video' : 'image';
+                        var range = currentMediaRange || savedRange || quill.getSelection(true);
+
+                        if (!range) return;
+                        quill.focus();
+
+                        if (!cleanUrl) {
+                            this.removeMedia();
+                            return;
+                        }
+
+                        if (range.length) {
+                            quill.deleteText(range.index, range.length, 'user');
+                        }
+
+                        quill.insertEmbed(range.index, mediaType, cleanUrl, 'user');
+                        quill.setSelection(range.index + 1, 0, 'silent');
+                        hiddenInput.value = quill.root.innerHTML;
+                    },
+                    removeMedia: function() {
+                        var range = currentMediaRange;
+                        if (!range) return;
+
+                        quill.focus();
+                        quill.deleteText(range.index, 1, 'user');
+                        hiddenInput.value = quill.root.innerHTML;
+                    }
+                };
                 if (initialEl && initialEl.textContent) {
                     try {
                         var content = JSON.parse(initialEl.textContent);
