@@ -6,7 +6,7 @@ use App\Models\Staff;
 
 class GetStaffByIdService
 {
-    public function execute(int $id): Staff
+    public function execute(string $id): Staff
     {
         return Staff::with('division')->findOrFail($id);
     }

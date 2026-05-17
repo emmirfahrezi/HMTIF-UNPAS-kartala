@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Division;
 use App\Models\Staff;
 use App\Models\User;
@@ -39,20 +40,22 @@ class DashboardStaffController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
+            'position'    => 'required|string|max:255',
             'division_id' => 'required|exists:divisions,id',
-            'user_id' => 'nullable|exists:users,id',
-            'photo' => 'nullable|url|max:1024',
-            'bio' => 'nullable|string',
-            'instagram' => 'nullable|string|max:255',
-            'linkedin' => 'nullable|string|max:1024',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean',
-            'is_bph' => 'boolean',
+            'user_id'     => 'nullable|exists:users,id',
+            'photo'       => 'nullable|url|max:1024',
+            'bio'         => 'nullable|string',
+            'instagram'   => 'nullable|string|max:255',
+            'linkedin'    => 'nullable|string|max:1024',
+            'order'       => 'nullable|integer',
+            'is_active'   => 'boolean',
+            'is_bph'      => 'boolean',
         ]);
 
-        $this->createStaff->execute($validated);
+        $staff = $this->createStaff->execute($validated);
+
+        ActivityLog::record('created', $staff, "Menambahkan pengurus: {$staff->name}");
 
         return redirect()->route('dashboard.staffs')->with('success', 'Pengurus berhasil ditambahkan.');
     }
@@ -68,26 +71,31 @@ class DashboardStaffController extends Controller
     public function update(Request $request, Staff $staff)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
+            'position'    => 'required|string|max:255',
             'division_id' => 'required|exists:divisions,id',
-            'user_id' => 'nullable|exists:users,id',
-            'photo' => 'nullable|url|max:1024',
-            'bio' => 'nullable|string',
-            'instagram' => 'nullable|string|max:255',
-            'linkedin' => 'nullable|string|max:1024',
-            'order' => 'nullable|integer',
-            'is_active' => 'boolean',
-            'is_bph' => 'boolean',
+            'user_id'     => 'nullable|exists:users,id',
+            'photo'       => 'nullable|url|max:1024',
+            'bio'         => 'nullable|string',
+            'instagram'   => 'nullable|string|max:255',
+            'linkedin'    => 'nullable|string|max:1024',
+            'order'       => 'nullable|integer',
+            'is_active'   => 'boolean',
+            'is_bph'      => 'boolean',
         ]);
 
         $this->updateStaff->execute($staff, $validated);
+
+        ActivityLog::record('updated', $staff, "Memperbarui pengurus: {$staff->name}");
 
         return redirect()->route('dashboard.staffs')->with('success', 'Staff berhasil diperbarui.');
     }
 
     public function destroy(Staff $staff)
     {
+        $name = $staff->name;
+        ActivityLog::record('deleted', $staff, "Menghapus pengurus: {$name}");
+
         $this->deleteStaff->execute($staff);
 
         return redirect()->route('dashboard.staffs')->with('success', 'Staff berhasil dihapus.');

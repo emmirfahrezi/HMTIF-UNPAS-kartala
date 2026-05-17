@@ -1,32 +1,26 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('description');
-            $table->longText('body')->nullable();
-            $table->string('thumbnail')->nullable();
-            $table->string('file')->nullable();
-            $table->datetime('start_date');
-            $table->datetime('end_date')->nullable();
-            $table->string('location')->nullable();
-            $table->string('registration_url')->nullable();
-            $table->enum('status', ['upcoming', 'ongoing', 'past'])->default('upcoming');
-            $table->timestamps();
+        Schema::create('activity_logs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('action'); 
+            $table->string('model_type')->nullable(); 
+            $table->unsignedBigInteger('model_id')->nullable(); 
+            $table->text('description'); 
+            $table->timestamps(); 
+            
+            $table->index(['model_type', 'model_id']);
+            $table->index('user_id');
         });
     }
 
-    public function down(): void
-    {
-        Schema::dropIfExists('activities');
+    public function down(): void {
+        Schema::dropIfExists('activity_logs');
     }
 };
