@@ -15,6 +15,7 @@ use App\Http\Controllers\DashboardStaffController;
 use App\Http\Controllers\DashboardStatController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\DashboardHomeSectionController;
+use App\Http\Controllers\DashboardSettingController;
 use App\Services\Activity\GetActivityBySlugService;
 use App\Services\Activity\GetAllActivitiesService;
 use App\Services\Announcement\GetAllAnnouncementsService;
@@ -256,22 +257,12 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
         });
     }
 
-    // Settings (index only — create/edit removed)
-    Route::get('/settings', function () {
-        return view('dashboard.settings.index', ['settings' => collect()]);
-    })->name('dashboard.settings.index');
-
-    Route::post('/settings', function () {
-        return redirect('/dashboard/settings')->with('success', 'Setting berhasil ditambahkan (Demo)');
-    })->name('dashboard.settings.store');
-
-    Route::put('/settings/{setting}', function () {
-        return redirect('/dashboard/settings')->with('success', 'Setting berhasil diupdate (Demo)');
-    })->name('dashboard.settings.update');
-
-    Route::delete('/settings/{setting}', function () {
-        return redirect('/dashboard/settings')->with('success', 'Setting berhasil dihapus (Demo)');
-    })->name('dashboard.settings.destroy');
+    // Settings (Sistem Settings — Role & Permission Management)
+    Route::get('/settings', [DashboardSettingController::class, 'index'])->name('dashboard.settings.index');
+    Route::post('/settings', [DashboardSettingController::class, 'store'])->name('dashboard.settings.store');
+    Route::put('/settings/{role}', [DashboardSettingController::class, 'update'])->name('dashboard.settings.update');
+    Route::patch('/settings/{role}/menu', [DashboardSettingController::class, 'updateMenuAccess'])->name('dashboard.settings.menu-access');
+    Route::delete('/settings/{role}', [DashboardSettingController::class, 'destroy'])->name('dashboard.settings.destroy');
 
 });
 
