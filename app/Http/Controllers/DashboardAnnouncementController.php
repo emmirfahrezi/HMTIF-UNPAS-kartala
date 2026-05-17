@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Announcement;
 use App\Models\AnnouncementCategory;
 use App\Services\Announcement\CreateAnnouncementService;
@@ -47,7 +48,9 @@ class DashboardAnnouncementController extends Controller
             'file' => 'nullable|file|max:10240',
         ]);
 
-        $this->createAnnouncement->execute($validated, $request->file('file'));
+        $announcement = $this->createAnnouncement->execute($validated, $request->file('file'));
+
+        ActivityLog::record('created', $announcement, "Menambahkan pengumuman: {$announcement->title}");
 
         return redirect()->route('dashboard.announcements')->with('success', 'Pengumuman berhasil ditambahkan.');
     }
@@ -74,11 +77,16 @@ class DashboardAnnouncementController extends Controller
 
         $this->updateAnnouncement->execute($announcement, $validated, $request->file('file'));
 
+        ActivityLog::record('updated', $announcement, "Memperbarui pengumuman: {$announcement->title}");
+
         return redirect()->route('dashboard.announcements')->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
     public function destroy(Announcement $announcement)
     {
+        $title = $announcement->title;
+        ActivityLog::record('deleted', $announcement, "Menghapus pengumuman: {$title}");
+
         $this->deleteAnnouncement->execute($announcement);
 
         return redirect()->route('dashboard.announcements')->with('success', 'Pengumuman berhasil dihapus.');

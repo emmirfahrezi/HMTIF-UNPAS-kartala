@@ -12,6 +12,7 @@ class GetDivisionsDashboardService
         return Division::withCount('staffs')
             ->when($request->search, fn($q) => $q->where('name', 'like', "%{$request->search}%"))
             ->orderBy('order')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
     }
 }

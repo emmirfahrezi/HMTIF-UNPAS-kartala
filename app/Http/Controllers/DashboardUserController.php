@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Staff;
 use App\Models\User;
 use App\Services\User\CreateUserService;
@@ -22,28 +23,28 @@ class DashboardUserController extends Controller
     public function index(Request $request)
     {
         $users = $this->getUsers->execute($request);
-
         return view('dashboard.users.index', compact('users'));
     }
 
     public function create()
     {
         $staffOptions = Staff::orderBy('name')->get()->mapWithKeys(fn ($staff) => [$staff->id => $staff->name])->toArray();
-
         return view('dashboard.users.create', compact('staffOptions'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
-            'role' => 'required|string|in:admin,bph,koordinator,staff',
+            'role'     => 'required|string|in:admin,bph,koordinator,staff',
             'staff_id' => 'nullable|exists:staffs,id',
         ]);
 
-        $this->createUser->execute($validated);
+        $user = $this->createUser->execute($validated);
+
+        ActivityLog::record('created', $user, "Menambahkan pengguna: {$user->name}");
 
         return redirect()->route('dashboard.users')->with('success', 'Pengguna berhasil ditambahkan.');
     }
@@ -51,27 +52,31 @@ class DashboardUserController extends Controller
     public function edit(User $user)
     {
         $staffOptions = Staff::orderBy('name')->get()->mapWithKeys(fn ($staff) => [$staff->id => $staff->name])->toArray();
-
         return view('dashboard.users.edit', compact('user', 'staffOptions'));
     }
 
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => "required|email|max:255|unique:users,email,{$user->id}",
+            'name'     => 'required|string|max:255',
+            'email'    => "required|email|max:255|unique:users,email,{$user->id}",
             'password' => 'nullable|string|min:8',
-            'role' => 'required|string|in:admin,bph,koordinator,staff',
+            'role'     => 'required|string|in:admin,bph,koordinator,staff',
             'staff_id' => 'nullable|exists:staffs,id',
         ]);
 
         $this->updateUser->execute($user, $validated);
+
+        ActivityLog::record('updated', $user, "Memperbarui pengguna: {$user->name}");
 
         return redirect()->route('dashboard.users')->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     public function destroy(User $user)
     {
+        $name = $user->name;
+        ActivityLog::record('deleted', $user, "Menghapus pengguna: {$name}");
+
         $this->deleteUser->execute($user);
 
         return redirect()->route('dashboard.users')->with('success', 'Pengguna berhasil dihapus.');

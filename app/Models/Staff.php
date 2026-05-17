@@ -22,6 +22,7 @@ class Staff extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_bph'    => 'boolean',
+        'order'     => 'integer',
     ];
 
     public function division(): BelongsTo

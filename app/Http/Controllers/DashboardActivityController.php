@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ActivityLog;
 use App\Services\Activity\CreateActivityService;
 use App\Services\Activity\DeleteActivityService;
 use App\Services\Activity\GetActivitiesDashboardService;
@@ -46,7 +47,9 @@ class DashboardActivityController extends Controller
             'file' => 'nullable|file|max:10240',
         ]);
 
-        $this->createActivity->execute($validated, $request->file('file'));
+        $activity = $this->createActivity->execute($validated, $request->file('file'));
+
+        ActivityLog::record('created', $activity, "Menambahkan kegiatan: {$activity->title}");
 
         return redirect()->route('dashboard.activities')->with('success', 'Kegiatan berhasil ditambahkan.');
     }
@@ -74,11 +77,16 @@ class DashboardActivityController extends Controller
 
         $this->updateActivity->execute($activity, $validated, $request->file('file'));
 
+        ActivityLog::record('updated', $activity, "Memperbarui kegiatan: {$activity->title}");
+
         return redirect()->route('dashboard.activities')->with('success', 'Kegiatan berhasil diperbarui.');
     }
 
     public function destroy(Activity $activity)
     {
+        $title = $activity->title;
+        ActivityLog::record('deleted', $activity, "Menghapus kegiatan: {$title}");
+
         $this->deleteActivity->execute($activity);
 
         return redirect()->route('dashboard.activities')->with('success', 'Kegiatan berhasil dihapus.');

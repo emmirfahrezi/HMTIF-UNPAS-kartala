@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\Product\CreateProductService;
@@ -30,30 +31,30 @@ class DashboardProductController extends Controller
     public function create()
     {
         $categories = ProductCategory::orderBy('name')->get()->pluck('name', 'id');
-
         return view('dashboard.products.create', compact('categories'));
     }
-
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug',
+            'name'                => 'required|string|max:255',
+            'slug'                => 'required|string|max:255|unique:products,slug',
             'product_category_id' => 'nullable|exists:product_categories,id',
-            'price' => 'required|numeric|min:0',
-            'phone_number' => 'nullable|string|max:255',
-            'order_text' => 'nullable|string',
-            'is_available' => 'boolean',
-            'description' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*.id' => 'nullable|integer',
+            'price'               => 'required|numeric|min:0',
+            'phone_number'        => 'nullable|string|max:255',
+            'order_text'          => 'nullable|string',
+            'is_available'        => 'boolean',
+            'description'         => 'nullable|string',
+            'images'              => 'nullable|array',
+            'images.*.id'         => 'nullable|integer',
             'images.*.image_path' => 'nullable|string|max:1024',
-            'images.*.order' => 'nullable|integer',
+            'images.*.order'      => 'nullable|integer',
             'images.*.is_primary' => 'sometimes|boolean',
         ]);
 
-        $this->createProduct->execute($validated);
+        $product = $this->createProduct->execute($validated);
+
+        ActivityLog::record('created', $product, "Menambahkan produk: {$product->name}");
 
         return redirect()->route('dashboard.products')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -69,28 +70,33 @@ class DashboardProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => "required|string|max:255|unique:products,slug,{$product->id}",
+            'name'                => 'required|string|max:255',
+            'slug'                => "required|string|max:255|unique:products,slug,{$product->id}",
             'product_category_id' => 'nullable|exists:product_categories,id',
-            'price' => 'required|numeric|min:0',
-            'phone_number' => 'nullable|string|max:255',
-            'order_text' => 'nullable|string',
-            'is_available' => 'boolean',
-            'description' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*.id' => 'nullable|integer',
+            'price'               => 'required|numeric|min:0',
+            'phone_number'        => 'nullable|string|max:255',
+            'order_text'          => 'nullable|string',
+            'is_available'        => 'boolean',
+            'description'         => 'nullable|string',
+            'images'              => 'nullable|array',
+            'images.*.id'         => 'nullable|integer',
             'images.*.image_path' => 'nullable|string|max:1024',
-            'images.*.order' => 'nullable|integer',
+            'images.*.order'      => 'nullable|integer',
             'images.*.is_primary' => 'sometimes|boolean',
         ]);
 
         $this->updateProduct->execute($product, $validated);
+
+        ActivityLog::record('updated', $product, "Memperbarui produk: {$product->name}");
 
         return redirect()->route('dashboard.products')->with('success', 'Produk berhasil diperbarui.');
     }
 
     public function destroy(Product $product)
     {
+        $name = $product->name;
+        ActivityLog::record('deleted', $product, "Menghapus produk: {$name}");
+
         $this->deleteProduct->execute($product);
 
         return redirect()->route('dashboard.products')->with('success', 'Produk berhasil dihapus.');

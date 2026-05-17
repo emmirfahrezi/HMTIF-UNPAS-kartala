@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Stat;
 use App\Services\Stat\CreateStatService;
 use App\Services\Stat\DeleteStatService;
@@ -21,7 +22,6 @@ class DashboardStatController extends Controller
     public function index(Request $request)
     {
         $stats = $this->getStats->execute($request);
-
         return view('dashboard.stats.index', compact('stats'));
     }
 
@@ -35,11 +35,13 @@ class DashboardStatController extends Controller
         $validated = $request->validate([
             'label' => 'required|string|max:255',
             'value' => 'required|string|max:255',
-            'icon' => 'nullable|string|max:255',
+            'icon'  => 'nullable|string|max:255',
             'order' => 'nullable|integer',
         ]);
 
-        $this->createStat->execute($validated);
+        $stat = $this->createStat->execute($validated);
+
+        ActivityLog::record('created', $stat, "Menambahkan statistik: {$stat->label}");
 
         return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil ditambahkan.');
     }
@@ -54,17 +56,22 @@ class DashboardStatController extends Controller
         $validated = $request->validate([
             'label' => 'required|string|max:255',
             'value' => 'required|string|max:255',
-            'icon' => 'nullable|string|max:255',
+            'icon'  => 'nullable|string|max:255',
             'order' => 'nullable|integer',
         ]);
 
         $this->updateStat->execute($stat, $validated);
+
+        ActivityLog::record('updated', $stat, "Memperbarui statistik: {$stat->label}");
 
         return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil diperbarui.');
     }
 
     public function destroy(Stat $stat)
     {
+        $label = $stat->label;
+        ActivityLog::record('deleted', $stat, "Menghapus statistik: {$label}");
+
         $this->deleteStat->execute($stat);
 
         return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil dihapus.');

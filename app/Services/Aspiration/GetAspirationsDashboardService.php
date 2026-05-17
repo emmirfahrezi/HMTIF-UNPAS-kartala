@@ -9,9 +9,14 @@ class GetAspirationsDashboardService
 {
     public function execute(Request $request)
     {
-        return Aspiration::query()
-            ->when($request->search, fn($q) => $q->where('subject', 'like', "%{$request->search}%"))
-            ->latest('created_at')
-            ->paginate(10);
+        $query = Aspiration::query()
+            ->when($request->search, fn($q) => $q->where('subject', 'like', "%{$request->search}%"));
+
+        match ($request->sort) {
+            'oldest' => $query->oldest('created_at'),
+            default  => $query->latest('created_at'),
+        };
+
+        return $query->paginate(10)->withQueryString();
     }
 }

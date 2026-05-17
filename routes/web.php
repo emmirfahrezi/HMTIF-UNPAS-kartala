@@ -15,6 +15,7 @@ use App\Http\Controllers\DashboardStaffController;
 use App\Http\Controllers\DashboardStatController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\DashboardHomeSectionController;
+use App\Http\Controllers\DashboardSettingController;
 use App\Services\Activity\GetActivityBySlugService;
 use App\Services\Activity\GetAllActivitiesService;
 use App\Services\Announcement\GetAllAnnouncementsService;
@@ -51,11 +52,11 @@ Route::get('/staff', function (GetAllStaffsService $getStaffs, GetDivisionsServi
     ]);
 })->name('staff');
 
-Route::get('/staff/{id}', function (int $id, GetStaffByIdService $getStaff) {
+Route::get('/staff/{id}', function (string $id, GetStaffByIdService $getStaff) {
     $staff = $getStaff->execute($id);
 
     return view('pages.staff-detail', compact('staff'));
-})->name('staff.show')->where('id', '[0-9]+');
+})->name('staff.show');
 
 Route::get('/divisi/{slug}', function (string $slug, GetDivisionBySlugService $getDivision) {
     $division = $getDivision->execute($slug);
@@ -129,7 +130,6 @@ Route::get('/setup-password/{token}', function ($token) {
 })->name('setup-password');
 
 Route::post('/setup-password', function () {
-    // BE: validate token, set password, redirect
     return redirect()->route('setup-password.success', ['email' => request('email')]);
 })->name('setup-password.store');
 
@@ -137,6 +137,14 @@ Route::get('/setup-password-success', function () {
     return view('mail.setup-password-success', ['email' => request('email')]);
 })->name('setup-password.success');
 
+
+Route::get('/login', function () {
+    return view('pages.login');
+})->middleware('guest')->name('login');
+
+Route::post('/login', [LoginController::class, 'loginWeb'])
+    ->middleware('guest')
+    ->name('login.store');
 
 Route::post('/logout', function (Request $request) {
     Auth::logout();
@@ -171,6 +179,7 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::delete('/staffs/{staff}', [DashboardStaffController::class, 'destroy'])->name('dashboard.staffs.destroy');
 
     Route::get('/staffs/divisions', [DashboardDivisionController::class, 'index'])->name('dashboard.staffs.divisions');
+    Route::get('/staffs/divisions/create', [DashboardDivisionController::class, 'create'])->name('dashboard.staffs.divisions.create');
     Route::post('/staffs/divisions', [DashboardDivisionController::class, 'store'])->name('dashboard.staffs.divisions.store');
     Route::get('/staffs/divisions/{division}/edit', [DashboardDivisionController::class, 'edit'])->name('dashboard.staffs.divisions.edit');
     Route::put('/staffs/divisions/{division}', [DashboardDivisionController::class, 'update'])->name('dashboard.staffs.divisions.update');
@@ -212,11 +221,6 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
 
 
     Route::get('/activity-logs', [DashboardActivityLogController::class, 'index'])->name('dashboard.activity-logs');
-    Route::get('/activity-logs/create', [DashboardActivityLogController::class, 'create'])->name('dashboard.activity-logs.create');
-    Route::post('/activity-logs', [DashboardActivityLogController::class, 'store'])->name('dashboard.activity-logs.store');
-    Route::get('/activity-logs/{activityLog}/edit', [DashboardActivityLogController::class, 'edit'])->name('dashboard.activity-logs.edit');
-    Route::put('/activity-logs/{activityLog}', [DashboardActivityLogController::class, 'update'])->name('dashboard.activity-logs.update');
-    Route::delete('/activity-logs/{activityLog}', [DashboardActivityLogController::class, 'destroy'])->name('dashboard.activity-logs.destroy');
 
     Route::get('/users', [DashboardUserController::class, 'index'])->name('dashboard.users');
     Route::get('/users/create', [DashboardUserController::class, 'create'])->name('dashboard.users.create');
@@ -253,22 +257,12 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
         });
     }
 
-    // Settings (index only — create/edit removed)
-    Route::get('/settings', function () {
-        return view('dashboard.settings.index', ['settings' => collect()]);
-    })->name('dashboard.settings.index');
-
-    Route::post('/settings', function () {
-        return redirect('/dashboard/settings')->with('success', 'Setting berhasil ditambahkan (Demo)');
-    })->name('dashboard.settings.store');
-
-    Route::put('/settings/{setting}', function () {
-        return redirect('/dashboard/settings')->with('success', 'Setting berhasil diupdate (Demo)');
-    })->name('dashboard.settings.update');
-
-    Route::delete('/settings/{setting}', function () {
-        return redirect('/dashboard/settings')->with('success', 'Setting berhasil dihapus (Demo)');
-    })->name('dashboard.settings.destroy');
+    // Settings (Sistem Settings — Role & Permission Management)
+    Route::get('/settings', [DashboardSettingController::class, 'index'])->name('dashboard.settings.index');
+    Route::post('/settings', [DashboardSettingController::class, 'store'])->name('dashboard.settings.store');
+    Route::put('/settings/{role}', [DashboardSettingController::class, 'update'])->name('dashboard.settings.update');
+    Route::patch('/settings/{role}/menu', [DashboardSettingController::class, 'updateMenuAccess'])->name('dashboard.settings.menu-access');
+    Route::delete('/settings/{role}', [DashboardSettingController::class, 'destroy'])->name('dashboard.settings.destroy');
 
 });
 
