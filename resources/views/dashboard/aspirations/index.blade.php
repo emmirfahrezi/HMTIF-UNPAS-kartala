@@ -55,7 +55,16 @@
                 </td>
                 <td class="px-5 py-4 text-xs font-mono text-primary">{{ $item->tracking_code ?: '-' }}</td>
                 <td class="px-5 py-4 text-right">
-                    <span class="text-xs text-slate-400 dark:text-slate-500">Hanya lihat</span>
+                    <div class="flex items-center justify-end gap-1">
+                        <x-atoms.shared.button 
+                            variant="ghost"
+                            size="sm"
+                            href="/dashboard/aspirations/{{ $item->id }}"
+                            class="size-9 !px-0"
+                            title="Detail Aspirasi">
+                            <x-heroicon-o-eye class="size-5 text-slate-400 hover:text-primary transition-colors" />
+                        </x-atoms.shared.button>
+                    </div>
                 </td>
             </tr>
         @empty

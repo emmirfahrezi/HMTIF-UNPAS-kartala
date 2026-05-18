@@ -18,7 +18,7 @@
             <a href="/" class="flex items-center gap-3 group">
                 <div
                     class="p-2 bg-white/10 backdrop-blur-md rounded-xl transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20 border border-white/10 shadow-sm">
-                    <img src="{{ config('app.logo_url') }}" alt="Logo HMTIF UNPAS"
+                    <img src="{{ config('app.logo_url') }}" alt="Logo HMTIF-UNPAS"
                         class="h-9 sm:h-10 w-auto object-contain logo-remove-bg" />
                 </div>
                 <h1 class="font-black text-xl tracking-tighter uppercase italic transition-colors duration-500"

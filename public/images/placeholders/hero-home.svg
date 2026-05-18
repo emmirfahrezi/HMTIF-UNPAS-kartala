@@ -10,5 +10,5 @@
   <circle cx="250" cy="820" r="210" fill="rgba(255,255,255,0.06)"/>
   <rect x="140" y="340" width="680" height="34" rx="17" fill="rgba(255,255,255,0.85)"/>
   <rect x="140" y="400" width="520" height="22" rx="11" fill="rgba(255,255,255,0.52)"/>
-  <text x="140" y="300" fill="#ffffff" font-size="56" font-family="Arial, sans-serif" font-weight="700">HMTIF UNPAS</text>
+  <text x="140" y="300" fill="#ffffff" font-size="56" font-family="Arial, sans-serif" font-weight="700">HMTIF-UNPAS</text>
 </svg>

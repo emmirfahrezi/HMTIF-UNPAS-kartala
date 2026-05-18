@@ -6,7 +6,7 @@
             <div class="md:col-span-2 space-y-6">
                 <a href="/" class="flex items-center gap-3">
                     <img src="{{ config('app.logo_url') }}"
-                        alt="Logo HMTIF UNPAS" class="h-10 w-auto object-contain logo-remove-bg brightness-125" />
+                        alt="Logo HMTIF-UNPAS" class="h-10 w-auto object-contain logo-remove-bg brightness-125" />
                     <h2 class="font-extrabold text-2xl tracking-tight text-white flex items-center gap-2">
                         HMTIF-UNPAS
                     </h2>

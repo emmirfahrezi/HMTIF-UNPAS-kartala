@@ -7,14 +7,14 @@
     </div>
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl relative z-10 space-y-32">
-        <!-- SECTION 1: HMTIF UNPAS (Foto Kiri) -->
+        <!-- SECTION 1: HMTIF-UNPAS (Foto Kiri) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center content-auto">
             <!-- BAGIAN KIRI (FOTO) -->
             <div class="relative group reveal reveal-left">
                 <div
                     class="relative mx-auto aspect-square w-full max-w-96 lg:max-w-120 overflow-hidden rounded-full transition-all duration-700 ease-in-out group-hover:-translate-y-1">
                     <img src="https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png"
-                        alt="Logo HMTIF UNPAS"
+                        alt="Logo HMTIF-UNPAS"
                         class="relative z-10 h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.01]"
                         width="960" height="960" loading="lazy" decoding="async" />
                 </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <!-- SECTION 2: HMTIF UNPAS (Foto Kanan) -->
+        <!-- SECTION 2: HMTIF-UNPAS (Foto Kanan) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <!-- BAGIAN KIRI (CONTENT) -->
             <div class="order-2 lg:order-1 space-y-8 reveal reveal-left">
@@ -56,7 +56,7 @@
                         Harmoni Dalam <span class="text-primary italic">Pergerakan Nyata</span></h2>
                 </div>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    Di bawah semangat <strong>HMTIF UNPAS</strong>, kami berkomitmen untuk menghadirkan perubahan
+                    Di bawah semangat <strong>HMTIF-UNPAS</strong>, kami berkomitmen untuk menghadirkan perubahan
                     yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah
                     keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.
                 </p>
@@ -81,7 +81,7 @@
                 <div
                     class="relative mx-auto aspect-square w-full max-w-96 lg:max-w-120 overflow-hidden rounded-full transform transition-all duration-700 ease-out group-hover:scale-[1.01] group-hover:-translate-y-1">
                     <img src="https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png"
-                        alt="Logo HMTIF UNPAS"
+                        alt="Logo HMTIF-UNPAS"
                         class="relative z-10 h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.01]"
                         loading="lazy" decoding="async" width="960" height="960">
                 </div>

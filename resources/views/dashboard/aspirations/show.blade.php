@@ -1,5 +1,6 @@
 <x-layouts.dashboard pageTitle="Detail Aspirasi" :breadcrumbs="[['label' => 'Aspirasi', 'href' => '/dashboard/aspirations'], ['label' => 'Detail']]">
-    <div class="max-w-5xl mx-auto space-y-6">
+    <div x-data="{ feedbackModalOpen: false }" class="max-w-5xl mx-auto space-y-6">
+        
         {{-- Header Card --}}
         <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300">
             <div class="flex items-center gap-4">
@@ -7,7 +8,7 @@
                     <x-heroicon-o-chat-bubble-left-right class="size-7" />
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-slate-900 dark:text-white">{{ $aspiration->subject }}</h2>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white break-words">{{ $aspiration->subject }}</h2>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Dikirim pada {{ $aspiration->created_at->format('d F Y, H:i') }} WIB</p>
                 </div>
             </div>
@@ -70,12 +71,14 @@
                     <h3 class="text-sm font-bold mb-4">Aksi Cepat</h3>
                     <div class="grid grid-cols-1 gap-3">
                         <x-atoms.shared.button 
-                            variant="on-primary"
-                            href="/dashboard/aspirations/{{ $aspiration->id }}/edit"
-                            icon="heroicon-o-pencil-square"
+                            type="button"
+                            variant="primary"
+                            @click="feedbackModalOpen = true"
+                            icon="heroicon-o-chat-bubble-left-right"
                             class="w-full">
-                            Ubah Status
+                            Balas & Feedback
                         </x-atoms.shared.button>
+                        
                         <x-atoms.shared.button 
                             variant="danger"
                             @click="openDeleteModal('/dashboard/aspirations/{{ $aspiration->id }}')"
@@ -87,16 +90,17 @@
                 </div>
             </div>
 
-            {{-- Right Column: Message Content --}}
-            <div class="lg:col-span-2">
-                <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-8 shadow-sm border border-slate-100 dark:border-slate-800 min-h-[400px] flex flex-col transition-colors duration-300">
+            {{-- Right Column: Message Content & Feedback History --}}
+            <div class="lg:col-span-2 space-y-6">
+                {{-- Aspiration Message Card --}}
+                <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-8 shadow-sm border border-slate-100 dark:border-slate-800 min-h-[300px] flex flex-col transition-colors duration-300">
                     <div class="flex items-center gap-2 text-slate-400 dark:text-slate-500 mb-6">
                         <x-heroicon-o-document-text class="size-5" />
                         <span class="text-xs font-bold uppercase tracking-widest">Isi Aspirasi</span>
                     </div>
                     
                     <div class="prose dark:prose-invert prose-slate max-w-none flex-1">
-                        <p class="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line text-lg italic font-serif">
+                        <p class="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line text-lg italic font-serif break-words">
                             "{{ $aspiration->message }}"
                         </p>
                     </div>
@@ -104,7 +108,7 @@
                     <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <img src="{{ config('app.logo_url') }}" class="size-8 opacity-20 grayscale dark:invert" alt="Logo">
-                            <span class="text-[10px] text-slate-300 dark:text-slate-600 font-bold uppercase tracking-widest">HMTIF UNPAS • Kartala Dashboard</span>
+                            <span class="text-[10px] text-slate-300 dark:text-slate-600 font-bold uppercase tracking-widest">HMTIF-UNPAS • Kartala Dashboard</span>
                         </div>
                         <x-atoms.shared.button 
                             variant="ghost" 
@@ -115,9 +119,34 @@
                         </x-atoms.shared.button>
                     </div>
                 </div>
+
+                {{-- Feedback Reply Card (If exists) --}}
+                @if (!empty($aspiration->admin_feedback))
+                    <div class="bg-white dark:bg-slate-900/50 rounded-3xl p-8 shadow-sm border border-slate-100 dark:border-slate-800 transition-colors duration-300">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="size-10 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
+                                    <x-heroicon-o-check-badge class="size-6" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-black text-slate-850 dark:text-white">Tanggapan Resmi Pengurus</h3>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500">Dikirim oleh Admin HMTIF-UNPAS</p>
+                                </div>
+                            </div>
+                            <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">
+                                {{ $aspiration->feedback_sent_at ? \Carbon\Carbon::parse($aspiration->feedback_sent_at)->format('d F Y, H:i') : now()->format('d F Y, H:i') }} WIB
+                            </span>
+                        </div>
+
+                        <div class="bg-indigo-50/50 dark:bg-indigo-500/5 border border-indigo-100/50 dark:border-indigo-500/10 rounded-2xl p-5 text-sm leading-relaxed text-slate-700 dark:text-slate-300 break-words">
+                            {{ $aspiration->admin_feedback }}
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
+
+        @include('dashboard.aspirations._show-feedback-modal')
+
     </div>
-
-
 </x-layouts.dashboard>

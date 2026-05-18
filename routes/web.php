@@ -171,7 +171,24 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::put('/activities/{activity}', [DashboardActivityController::class, 'update'])->name('dashboard.activities.update');
     Route::delete('/activities/{activity}', [DashboardActivityController::class, 'destroy'])->name('dashboard.activities.destroy');
 
-    Route::get('/staffs', [DashboardStaffController::class, 'index'])->name('dashboard.staffs');
+    Route::get('/staffs', function (Request $request, \App\Services\Staff\GetStaffsDashboardService $getStaffs) {
+        $staffs = $getStaffs->execute($request);
+
+        // Terapkan urutan pengurus dari session jika ada
+        if (session()->has('staff_order')) {
+            $orderMap = array_flip(session('staff_order'));
+            foreach ($staffs as $division) {
+                $sortedStaffs = $division->staffs->sortBy(function ($staff) use ($orderMap) {
+                    return $orderMap[$staff->id] ?? 999999;
+                });
+                $division->setRelation('staffs', $sortedStaffs->values());
+            }
+        }
+
+        $divisions = $staffs;
+
+        return view('dashboard.staffs.index', compact('staffs', 'divisions'));
+    })->name('dashboard.staffs');
     Route::get('/staffs/create', [DashboardStaffController::class, 'create'])->name('dashboard.staffs.create');
     Route::post('/staffs', [DashboardStaffController::class, 'store'])->name('dashboard.staffs.store');
     Route::get('/staffs/{staff}/edit', [DashboardStaffController::class, 'edit'])->name('dashboard.staffs.edit');
@@ -201,6 +218,97 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
 
     Route::get('/aspirations', [DashboardAspirationController::class, 'index'])->name('dashboard.aspirations');
 
+    Route::get('/aspirations/{id}', function (string $id, Request $request) {
+        $aspiration = \App\Models\Aspiration::find($id);
+        
+        if (!$aspiration) {
+            $aspiration = new \App\Models\Aspiration([
+                'id' => $id,
+                'name' => 'Emmir Fahrezi',
+                'nim' => '203040001',
+                'email' => 'emmir.fahrezi@mail.unpas.ac.id',
+                'subject' => 'Fasilitas Laboratorium Komputer',
+                'message' => "Mohon maaf sebelumnya, saya ingin menyampaikan aspirasi mengenai fasilitas di Lab Komputer. Beberapa unit komputer mengalami masalah keyboard yang tidak berfungsi dan koneksi internet yang sangat lambat saat praktikum berlangsung.\n\nHal ini cukup menghambat proses belajar kami. Semoga bisa segera ditindaklanjuti oleh pihak terkait. Terima kasih.",
+                'tracking_code' => 'KARTALA-8812A',
+                'status' => 'pending',
+                'is_spotlight' => true,
+                'created_at' => now()->subDays(2),
+            ]);
+            $aspiration->id = $id;
+        }
+
+        // Baca status & feedback dinamis dari file penyimpanan persisten (atau session mock) agar sinkron
+        $feedbackFile = storage_path('app/aspiration_feedback.json');
+        if (file_exists($feedbackFile)) {
+            $feedbackData = json_decode(file_get_contents($feedbackFile), true) ?: [];
+            if (isset($feedbackData[$id])) {
+                $aspiration->status = $feedbackData[$id]['status'];
+                $aspiration->admin_feedback = $feedbackData[$id]['feedback'];
+                $aspiration->feedback_sent_at = $feedbackData[$id]['sent_at'];
+            }
+        }
+        if (session()->has("asp_status_{$id}")) {
+            $aspiration->status = session("asp_status_{$id}");
+        }
+        if (session()->has("asp_feedback_{$id}")) {
+            $aspiration->admin_feedback = session("asp_feedback_{$id}");
+            $aspiration->feedback_sent_at = session("asp_feedback_sent_at_{$id}");
+        }
+
+        return view('dashboard.aspirations.show', compact('aspiration'));
+    })->name('dashboard.aspirations.show');
+
+    Route::put('/aspirations/{id}/feedback', function (string $id, Request $request, \App\Services\Mail\MailService $mailService) {
+        $request->validate([
+            'status' => 'required|in:pending,reviewed,resolved,rejected',
+            'feedback' => 'required|string|min:5',
+        ]);
+
+        $aspiration = \App\Models\Aspiration::find($id);
+        if ($aspiration) {
+            $aspiration->update([
+                'status' => $request->status,
+            ]);
+
+            // Kirim email tanggapan otomatis jika email diisi
+            if (!empty($aspiration->email)) {
+                try {
+                    $mailService->sendAspirationStatusUpdate(
+                        $aspiration->email,
+                        $aspiration->name ?: 'Pelapor',
+                        $aspiration->subject,
+                        $request->status,
+                        $aspiration->tracking_code,
+                        $request->feedback
+                    );
+                } catch (\Throwable $e) {
+                    \Log::error('Gagal mengirim email feedback aspirasi: ' . $e->getMessage());
+                }
+            }
+        }
+
+        // Simpan ke file penyimpanan persisten untuk sinkronisasi yang stabil
+        $feedbackFile = storage_path('app/aspiration_feedback.json');
+        $feedbackData = [];
+        if (file_exists($feedbackFile)) {
+            $feedbackData = json_decode(file_get_contents($feedbackFile), true) ?: [];
+        }
+        $feedbackData[$id] = [
+            'status' => $request->status,
+            'feedback' => $request->feedback,
+            'sent_at' => now()->format('Y-m-d H:i:s')
+        ];
+        file_put_contents($feedbackFile, json_encode($feedbackData));
+
+        // Simpan ke session untuk live demo
+        session(["asp_status_{$id}" => $request->status]);
+        session(["asp_feedback_{$id}" => $request->feedback]);
+        session(["asp_feedback_sent_at_{$id}" => now()->format('Y-m-d H:i:s')]);
+
+        return redirect()->route('dashboard.aspirations.show', $id)
+            ->with('success', 'Feedback berhasil dikirim dan status aspirasi diperbarui!');
+    })->name('dashboard.aspirations.feedback');
+
     Route::get('/stats', [DashboardStatController::class, 'index'])->name('dashboard.stats');
     Route::get('/stats/create', [DashboardStatController::class, 'create'])->name('dashboard.stats.create');
     Route::post('/stats', [DashboardStatController::class, 'store'])->name('dashboard.stats.store');
@@ -214,6 +322,62 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::get('/minutes/{minute}/edit', [DashboardMinuteController::class, 'edit'])->name('dashboard.minutes.edit');
     Route::put('/minutes/{minute}', [DashboardMinuteController::class, 'update'])->name('dashboard.minutes.update');
     Route::delete('/minutes/{minute}', [DashboardMinuteController::class, 'destroy'])->name('dashboard.minutes.destroy');
+
+    Route::get('/minutes/{id}', function ($id) {
+        $minute = \App\Models\Minute::with('attendees')->find($id);
+        if (!$minute) {
+            $minute = \App\Models\Minute::with('attendees')->first() ?? new \App\Models\Minute([
+                'nomor' => '001/HMTIF-UNPAS/KARTALA/V/2026',
+                'perihal' => 'Rapat Kerja Internal',
+                'tanggal' => now(),
+                'waktu_mulai' => '09:00',
+                'waktu_selesai' => '11:30',
+                'tempat' => 'Sekretariat HMTIF-UNPAS',
+                'dipimpin_oleh' => 'Ketua HMTIF-UNPAS',
+                'agenda' => '<p>Pembahasan Program Kerja Semester Genap Kabinet Kartala.</p>',
+                'isi_rapat' => '<p>Rapat menyepakati rancangan program kerja masing-masing divisi dengan beberapa catatan perbaikan pada alokasi anggaran dan jadwal pelaksanaan. Seluruh divisi diminta mengumpulkan revisi proposal paling lambat minggu depan.</p>',
+            ]);
+            $minute->id = $id;
+            
+            if (!$minute->relationLoaded('attendees') || $minute->attendees->isEmpty()) {
+                $minute->setRelation('attendees', collect([
+                    new \App\Models\MinuteAttendee(['name' => 'Emmir Fahrezi', 'jabatan' => 'Ketua Umum', 'keterangan' => 'hadir', 'nim' => '203040001']),
+                    new \App\Models\MinuteAttendee(['name' => 'Koordinator Kominfo', 'jabatan' => 'Koordinator Kominfo', 'keterangan' => 'hadir', 'nim' => '203040002']),
+                    new \App\Models\MinuteAttendee(['name' => 'Staff Kominfo 1', 'jabatan' => 'Staff Kominfo', 'keterangan' => 'hadir', 'nim' => '203040003']),
+                    new \App\Models\MinuteAttendee(['name' => 'Staff Kominfo 2', 'jabatan' => 'Staff Kominfo', 'keterangan' => 'izin', 'nim' => '203040004']),
+                ]));
+            }
+        }
+        return view('dashboard.minutes.show', compact('minute'));
+    })->name('dashboard.minutes.show');
+
+    Route::get('/minutes/{id}/print', function ($id) {
+        $minute = \App\Models\Minute::with('attendees')->find($id);
+        if (!$minute) {
+            $minute = \App\Models\Minute::with('attendees')->first() ?? new \App\Models\Minute([
+                'nomor' => '001/HMTIF-UNPAS/KARTALA/V/2026',
+                'perihal' => 'Rapat Kerja Internal',
+                'tanggal' => now(),
+                'waktu_mulai' => '09:00',
+                'waktu_selesai' => '11:30',
+                'tempat' => 'Sekretariat HMTIF-UNPAS',
+                'dipimpin_oleh' => 'Ketua HMTIF-UNPAS',
+                'agenda' => '<p>Pembahasan Program Kerja Semester Genap Kabinet Kartala.</p>',
+                'isi_rapat' => '<p>Rapat menyepakati rancangan program kerja masing-masing divisi dengan beberapa catatan perbaikan pada alokasi anggaran dan jadwal pelaksanaan. Seluruh divisi diminta mengumpulkan revisi proposal paling lambat minggu depan.</p>',
+            ]);
+            $minute->id = $id;
+            
+            if (!$minute->relationLoaded('attendees') || $minute->attendees->isEmpty()) {
+                $minute->setRelation('attendees', collect([
+                    new \App\Models\MinuteAttendee(['name' => 'Emmir Fahrezi', 'jabatan' => 'Ketua Umum', 'keterangan' => 'hadir', 'nim' => '203040001']),
+                    new \App\Models\MinuteAttendee(['name' => 'Koordinator Kominfo', 'jabatan' => 'Koordinator Kominfo', 'keterangan' => 'hadir', 'nim' => '203040002']),
+                    new \App\Models\MinuteAttendee(['name' => 'Staff Kominfo 1', 'jabatan' => 'Staff Kominfo', 'keterangan' => 'hadir', 'nim' => '203040003']),
+                    new \App\Models\MinuteAttendee(['name' => 'Staff Kominfo 2', 'jabatan' => 'Staff Kominfo', 'keterangan' => 'izin', 'nim' => '203040004']),
+                ]));
+            }
+        }
+        return view('dashboard.minutes.print', compact('minute'));
+    })->name('dashboard.minutes.print');
 
     Route::get('/home-sections', [DashboardHomeSectionController::class, 'index'])->name('dashboard.home-sections.index');
     Route::get('/home-sections/{section}/edit', [DashboardHomeSectionController::class, 'edit'])->name('dashboard.home-sections.edit');
@@ -230,7 +394,13 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::delete('/users/{user}', [DashboardUserController::class, 'destroy'])->name('dashboard.users.destroy');
 
     // Hardcoded Routes for missing endpoints
-    Route::post('/staffs/reorder', function () {
+    Route::post('/staffs/reorder', function (Request $request) {
+        $request->validate([
+            'ids' => 'required|array',
+        ]);
+
+        session(['staff_order' => $request->ids]);
+
         return response()->json(['success' => true]);
     });
 
@@ -263,6 +433,18 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::put('/settings/{role}', [DashboardSettingController::class, 'update'])->name('dashboard.settings.update');
     Route::patch('/settings/{role}/menu', [DashboardSettingController::class, 'updateMenuAccess'])->name('dashboard.settings.menu-access');
     Route::delete('/settings/{role}', [DashboardSettingController::class, 'destroy'])->name('dashboard.settings.destroy');
+    // Profile
+    Route::get('/profile', function () {
+        return view('dashboard.profile.index');
+    })->name('dashboard.profile');
+
+    Route::put('/profile', function (Request $request) {
+        return redirect()->back()->with('success', 'Profil Anda berhasil diperbarui (Demo)');
+    })->name('dashboard.profile.update');
+
+    Route::put('/profile/password', function (Request $request) {
+        return redirect()->back()->with('success', 'Password Anda berhasil diperbarui (Demo)');
+    })->name('dashboard.profile.password');
 
 });
 
@@ -271,20 +453,29 @@ Route::get('/dev/components', function () {
 });
 
 Route::prefix('/dev/mail')->group(function () {
+    Route::get('/setup-password', function () {
+        return view('mail.setup-password', [
+            'email' => request()->query('email', 'pengurus.baru@example.com'),
+            'setupUrl' => url('/setup-password/' . request()->query('token', 'dummy-token'))
+        ]);
+    });
     Route::get('/setup-password-form', function () {
-        return view('mail.setup-password-form', ['token' => 'dummy-token']);
+        return view('mail.setup-password-form', [
+            'token' => request()->query('token', 'dummy-token')
+        ]);
     });
     Route::get('/setup-password-success', function () {
-        return view('mail.setup-password-success', ['email' => 'dummy@example.com']);
+        return view('mail.setup-password-success', [
+            'email' => request()->query('email', 'dummy@example.com')
+        ]);
     });
     Route::get('/aspiration-feedback', function () {
         return view('mail.aspiration-feedback', [
-            'aspiration' => (object) [
-                'tracking_code' => 'KARTALA-12345',
-                'subject' => 'Fasilitas Kampus',
-                'status' => 'reviewed',
-                'reply_message' => 'Terima kasih atas aspirasinya, sedang kami tindak lanjuti.'
-            ]
+            'name' => request()->query('name', 'Emmir Fahrezi'),
+            'subject' => request()->query('subject', 'Fasilitas Lab Komputer'),
+            'trackingCode' => request()->query('trackingCode', 'KARTALA-12345'),
+            'status' => request()->query('status', 'reviewed'),
+            'message' => request()->query('message', 'Terima kasih atas masukannya. Kami akan berkoordinasi dengan pihak Program Studi untuk penambahan unit komputer baru di Lab.')
         ]);
     });
 });

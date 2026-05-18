@@ -47,7 +47,7 @@
                             Bidang {{ $divisionCode }}</p>
                     </div>
                 </div>
-                <a href="/detail-division?division={{ $div->slug }}"
+                <a href="{{ route('divisions.show', $div->slug) }}"
                     class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-secondary/50 text-heading text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
                     Detail Bidang
                     <x-heroicon-o-arrow-right class="size-4" />
@@ -61,7 +61,7 @@
                     <div
                         class="min-w-[82%] sm:min-w-[58%] md:min-w-0 md:col-span-1 lg:col-span-1 snap-start reveal reveal-up reveal-delay-1">
                         <x-molecules.pages.cards.member-card :name="$coordinator->name" :position="$coordinator->position" size="normal"
-                            :dept="$divisionCode" :image="$coordinator->photo ?: asset('images/placeholders/member.svg')" :href="'/detail-member?staff=' . $coordinator->id" />
+                            :dept="$divisionCode" :image="$coordinator->photo ?: asset('images/placeholders/member.svg')" :href="route('staff.show', $coordinator->id)" />
                     </div>
                 @endif
                 {{-- Members --}}
@@ -69,7 +69,7 @@
                     <div
                         class="min-w-[82%] sm:min-w-[58%] md:min-w-0 snap-start reveal reveal-up reveal-delay-{{ ($index % 4) + 2 }}">
                         <x-molecules.pages.cards.member-card :name="$member->name" :position="$member->position" size="normal"
-                            :dept="$divisionCode" :image="$member->photo ?: asset('images/placeholders/member.svg')" :href="'/detail-member?staff=' . $member->id" />
+                            :dept="$divisionCode" :image="$member->photo ?: asset('images/placeholders/member.svg')" :href="route('staff.show', $member->id)" />
                     </div>
                 @endforeach
             </div>

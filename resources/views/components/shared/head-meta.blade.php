@@ -1,6 +1,6 @@
 @props([
-    'title' => config('app.name', 'HMTIF UNPAS'),
-    'description' => 'Website Resmi HMTIF UNPAS. Teknik Informatika Progresif.',
+    'title' => config('app.name', 'HMTIF-UNPAS'),
+    'description' => 'Website Resmi HMTIF-UNPAS. Teknik Informatika Progresif.',
     'keywords' => 'HMTIF, UNPAS, Kartala, Informatika, Universitas Pasundan, Himpunan Mahasiswa',
     'image' => asset('images/og-image.jpg'), // Default OG Image
     'isSeo' => true, // Matikan ini untuk Dashboard/Error
@@ -31,7 +31,7 @@
 <title>{{ $title }}</title>
 <meta name="title" content="{{ $title }}">
 <meta name="description" content="{{ $description }}">
-<meta name="author" content="HMTIF UNPAS">
+<meta name="author" content="HMTIF-UNPAS">
 
 @if ($isSeo)
     <meta name="keywords" content="{{ $keywords }}">

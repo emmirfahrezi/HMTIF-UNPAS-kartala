@@ -29,7 +29,7 @@
                 class="absolute inset-x-0 bottom-0 h-1 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
             </div>
             <h4 class="font-bold text-lg mb-2">Ingin berkontribusi?</h4>
-            <p class="text-white/80 text-sm mb-4 italic">Kirimkan aspirasimu melalui form resmi HMTIF UNPAS.</p>
+            <p class="text-white/80 text-sm mb-4 italic">Kirimkan aspirasimu melalui form resmi HMTIF-UNPAS.</p>
             <x-atoms.shared.button variant="secondary" data-nav-target="{{ route('aspirations') }}"
                 class="w-full py-2 text-sm">
                 Kirim Aspirasi

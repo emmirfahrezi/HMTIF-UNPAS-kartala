@@ -20,12 +20,42 @@
             ['label' => 'Produk', 'icon' => 'heroicon-o-shopping-bag', 'href' => '/dashboard/products', 'match' => 'dashboard/products'],
         ],
         'Pengaturan' => [
+            ['label' => 'Profil Saya', 'icon' => 'heroicon-o-user', 'href' => '/dashboard/profile', 'match' => 'dashboard/profile'],
             ['label' => 'Log Aktivitas', 'icon' => 'heroicon-o-document-text', 'href' => '/dashboard/activity-logs', 'match' => 'dashboard/activity-logs'],
             ['label' => 'Statistik', 'icon' => 'heroicon-o-chart-bar', 'href' => '/dashboard/stats', 'match' => 'dashboard/stats'],
             ['label' => 'Pengguna', 'icon' => 'heroicon-o-user-circle', 'href' => '/dashboard/users', 'match' => 'dashboard/users'],
             ['label' => 'Sistem Settings', 'icon' => 'heroicon-o-cog-8-tooth', 'href' => '/dashboard/settings', 'match' => 'dashboard/settings'],
         ],
     ];
+
+    // Filter menu groups based on role permissions
+    $user = auth()->user();
+    $roleNameMap = [
+        'admin' => 'Superadmin',
+        'bph' => 'BPH',
+        'koordinator' => 'Koordinator',
+        'staff' => 'Staff'
+    ];
+    $roleName = $roleNameMap[$user->role ?? ''] ?? ($user->role ?? '');
+    $role = \App\Models\Role::where('name', $roleName)->first();
+
+    $hasFullAccess = !$role || is_null($role->menu_access) || $roleName === 'Superadmin';
+    $allowedMenus = $role ? ($role->menu_access ?? []) : [];
+
+    foreach ($menuGroups as $group => $items) {
+        $filteredItems = [];
+        foreach ($items as $item) {
+            $menuKey = str_replace('dashboard/', '', $item['match']);
+            if ($hasFullAccess || in_array($menuKey, $allowedMenus)) {
+                $filteredItems[] = $item;
+            }
+        }
+        if (empty($filteredItems)) {
+            unset($menuGroups[$group]);
+        } else {
+            $menuGroups[$group] = $filteredItems;
+        }
+    }
 @endphp
 
 <aside id="dashSidebar" :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full lg:translate-x-0': !sidebarOpen }"

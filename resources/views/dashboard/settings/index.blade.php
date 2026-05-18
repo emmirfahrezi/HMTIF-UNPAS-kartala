@@ -1,13 +1,51 @@
+@php
+    $menuItems = collect($menuItems)->toArray();
+    
+    $hasAnnCat = false;
+    $hasProdCat = false;
+    foreach ($menuItems as $item) {
+        if ($item['key'] === 'announcements/categories') $hasAnnCat = true;
+        if ($item['key'] === 'products/categories') $hasProdCat = true;
+    }
+    
+    if (!$hasAnnCat) {
+        $newMenuItems = [];
+        foreach ($menuItems as $item) {
+            $newMenuItems[] = $item;
+            if ($item['key'] === 'announcements') {
+                $newMenuItems[] = ['key' => 'announcements/categories', 'label' => 'Kategori Pengumuman', 'type' => 'item', 'parent' => 'announcements'];
+            }
+        }
+        $menuItems = $newMenuItems;
+    }
+    
+    if (!$hasProdCat) {
+        $newMenuItems = [];
+        foreach ($menuItems as $item) {
+            $newMenuItems[] = $item;
+            if ($item['key'] === 'products') {
+                $newMenuItems[] = ['key' => 'products/categories', 'label' => 'Kategori Produk', 'type' => 'item', 'parent' => 'products'];
+            }
+        }
+        $menuItems = $newMenuItems;
+    }
+    
+    $hasProfile = false;
+    foreach ($menuItems as $item) {
+        if ($item['key'] === 'profile') $hasProfile = true;
+    }
+    if (!$hasProfile) {
+        $newMenuItems = [];
+        foreach ($menuItems as $item) {
+            $newMenuItems[] = $item;
+            if ($item['key'] === 'dashboard') {
+                $newMenuItems[] = ['key' => 'profile', 'label' => 'Profil Saya', 'type' => 'item', 'parent' => null];
+            }
+        }
+        $menuItems = $newMenuItems;
+    }
+@endphp
 <x-layouts.dashboard pageTitle="Sistem Settings" :breadcrumbs="[['label' => 'Sistem Settings']]">
-
-    @php
-        $roles = [
-            ['name' => 'Superadmin', 'c' => true, 'r' => true, 'u' => true, 'd' => true],
-            ['name' => 'BPH', 'c' => true, 'r' => true, 'u' => true, 'd' => true],
-            ['name' => 'Koordinator', 'c' => true, 'r' => true, 'u' => true, 'd' => false],
-            ['name' => 'Staff', 'c' => true, 'r' => true, 'u' => false, 'd' => false]
-        ];
-    @endphp
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 

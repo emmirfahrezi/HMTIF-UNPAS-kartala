@@ -1,4 +1,4 @@
-<x-layouts.app :title="$announcement->title . ' | HMTIF UNPAS'" :description="$announcement->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($announcement->body), 160)"
+<x-layouts.app :title="$announcement->title . ' | HMTIF-UNPAS'" :description="$announcement->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($announcement->body), 160)"
     keywords="Info Penting HMTIF, Warta Terbaru Informatika, Pengumuman Mahasiswa" :transparent="false">
     @php
         $thumbnail = (string) ($announcement->thumbnail ?? '');
@@ -42,7 +42,7 @@
                     {{ $announcement->title }}
                 </h1>
                 <p class="mt-5 text-base md:text-lg text-body/70 leading-relaxed">
-                    {{ $announcement->excerpt ?: 'Pengumuman resmi HMTIF UNPAS.' }}
+                    {{ $announcement->excerpt ?: 'Pengumuman resmi HMTIF-UNPAS.' }}
                 </p>
             </div>
         </div>

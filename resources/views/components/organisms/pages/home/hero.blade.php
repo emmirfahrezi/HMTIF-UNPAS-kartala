@@ -9,11 +9,11 @@
                     class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
             </span>
-            Selamat Datang di Portal Resmi HMTIF UNPAS
+            Selamat Datang di Portal Resmi HMTIF-UNPAS
         </div>
         <h1
             class="text-4xl font-extrabold tracking-tight text-white sm:text-7xl mb-6 drop-shadow-2xl reveal reveal-up reveal-delay-2">
-            HMTIF UNPAS <br>
+            HMTIF-UNPAS <br>
         </h1>
         <p
             class="mt-4 text-[1rem] font-medium text-white/90 leading-relaxed max-w-2xl mx-auto sm:text-[1.125rem] reveal reveal-up reveal-delay-3">

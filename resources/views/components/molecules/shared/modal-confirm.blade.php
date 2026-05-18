@@ -12,9 +12,14 @@
         isBulk: false,
         count: 0,
         targetFormId: null,
-
+        callback: null,
+ 
         submit() {
-            if (this.isBulk && this.targetFormId) {
+            if (this.callback) {
+                this.callback();
+                this.show = false;
+                this.callback = null;
+            } else if (this.isBulk && this.targetFormId) {
                 document.getElementById(this.targetFormId).submit();
             } else {
                 this.$refs.confirmForm.submit();
@@ -26,16 +31,17 @@
         show = true; 
         title = $event.detail.title;
         message = $event.detail.message;
-        action = $event.detail.action;
-        method = $event.detail.method;
+        action = $event.detail.action || '';
+        method = $event.detail.method || 'POST';
         confirmLabel = $event.detail.confirmLabel;
         variant = $event.detail.variant;
         icon = $event.detail.icon;
         isBulk = $event.detail.isBulk;
         count = $event.detail.count;
         targetFormId = $event.detail.targetFormId;
+        callback = $event.detail.callback || null;
     "
-    x-on:keydown.escape.window="show = false"
+    x-on:keydown.escape.window="show = false; callback = null"
     style="display: none;"
     class="fixed inset-0 z-[100] overflow-y-auto"
 >
@@ -49,7 +55,7 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
-        @click="show = false"
+        @click="show = false; callback = null"
     ></div>
 
     {{-- Modal Content --}}
@@ -104,7 +110,7 @@
                     </template>
 
                     <div class="grid grid-cols-2 gap-3">
-                        <button type="button" @click="show = false" 
+                        <button type="button" @click="show = false; callback = null" 
                             class="px-6 py-3.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition">
                             Batal
                         </button>

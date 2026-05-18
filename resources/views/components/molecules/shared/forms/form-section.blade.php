@@ -6,7 +6,7 @@
     'bgIcon' => 'heroicon-o-cube',
 ])
 
-<div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+<div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
     <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
         <x-dynamic-component :component="$bgIcon" class="size-32" />
     </div>

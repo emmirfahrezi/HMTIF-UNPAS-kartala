@@ -1,4 +1,4 @@
-<x-layouts.app :title="$activity->title . ' | HMTIF UNPAS'" :description="strip_tags($activity->description ?: 'Lihat rincian lengkap kegiatan HMTIF UNPAS.')"
+<x-layouts.app :title="$activity->title . ' | HMTIF-UNPAS'" :description="strip_tags($activity->description ?: 'Lihat rincian lengkap kegiatan HMTIF-UNPAS.')"
     keywords="Detail Acara HMTIF, Info Kegiatan Informatika, Event Mahasiswa UNPAS" :transparent="false">
     @php
         $thumbnail = (string) ($activity->thumbnail ?? '');
@@ -35,7 +35,7 @@
                     @if ($activity->description)
                         {!! $activity->description !!}
                     @else
-                        <p>Informasi detail kegiatan HMTIF UNPAS.</p>
+                        <p>Informasi detail kegiatan HMTIF-UNPAS.</p>
                     @endif
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <x-layouts.app title="HMTIF Store | Official Merch"
-    description="Dapatkan atribut resmi dan merchandise eksklusif HMTIF UNPAS. Dukung identitas almamater dengan produk berkualitas dari Niaga Kartala."
+    description="Dapatkan atribut resmi dan merchandise eksklusif HMTIF-UNPAS. Dukung identitas almamater dengan produk berkualitas dari Niaga Kartala."
     keywords="HMTIF Store, Merchandise Informatika, Jaket HMTIF, Atribut Teknik Informatika" :transparent="false">
     <x-slot:head>
         <script type="application/ld+json">

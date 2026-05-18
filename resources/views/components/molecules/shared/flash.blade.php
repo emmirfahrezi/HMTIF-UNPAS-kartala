@@ -35,17 +35,21 @@
                 warning: 'bg-amber-100 dark:bg-amber-500/20 text-amber-600',
             },
             init() {
-                if (this.message) {
+                if (this.message && this.message.trim() !== '') {
                     this.show = true;
                     setTimeout(() => this.show = false, 5000);
+                } else {
+                    this.show = false;
                 }
             }
         }" 
         x-on:toast.window="
-            message = $event.detail.message;
-            type = $event.detail.type || 'success';
-            show = true;
-            setTimeout(() => show = false, 5000);
+            if ($event.detail && $event.detail.message) {
+                message = $event.detail.message;
+                type = $event.detail.type || 'success';
+                show = true;
+                setTimeout(() => show = false, 5000);
+            }
         "
         x-show="show" 
         x-transition:enter="transition ease-out duration-500"
@@ -54,7 +58,7 @@
         x-transition:leave="transition ease-in duration-300"
         x-transition:leave-start="opacity-100 translate-x-0"
         x-transition:leave-end="opacity-0 translate-x-12"
-        class="fixed top-6 right-6 z-[100] max-w-sm w-full bg-white dark:bg-slate-900 rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-black/50 border border-slate-100 dark:border-slate-800 p-4 flex items-start gap-4 pointer-events-auto transition-all duration-300"
+        class="fixed top-6 right-6 z-[100] max-w-sm w-full bg-white dark:bg-slate-950 rounded-2xl shadow-[0_20px_50px_rgba(15,23,42,0.15)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] border border-slate-200/60 dark:border-slate-800/80 p-5 flex items-start gap-4 pointer-events-auto transition-all duration-300 transform"
         role="alert"
     >
         <div class="p-2 rounded-xl shrink-0" :class="colors[type]">

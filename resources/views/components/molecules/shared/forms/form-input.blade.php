@@ -491,6 +491,20 @@
             </div>
             <span class="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover/toggle:text-slate-900 dark:group-hover/toggle:text-white transition-colors">{{ $placeholder ?: $label }}</span>
         </label>
+    @elseif ($type === 'password')
+        <div x-data="{ show: false }" class="relative flex items-center w-full">
+            <input :type="show ? 'text' : 'password'" name="{{ $name }}" id="{{ $name }}"
+                value="{{ old($name, $value) }}"
+                placeholder="{{ $placeholder }}"
+                class="{{ $baseInputClass }} pr-12"
+                {{ $required ? 'required' : '' }}
+                {{ $attributes }} />
+            <button type="button" @click="show = !show"
+                class="absolute right-4 text-slate-400 hover:text-primary transition-colors duration-200">
+                <span x-show="!show"><x-heroicon-o-eye class="size-5" /></span>
+                <span x-show="show" style="display: none;"><x-heroicon-o-eye-slash class="size-5" /></span>
+            </button>
+        </div>
     @else
         <input type="{{ $type }}" name="{{ $name }}" id="{{ $name }}"
             value="{{ old($name, $value) }}"

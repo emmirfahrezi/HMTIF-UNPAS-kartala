@@ -1,8 +1,12 @@
 {{--
-Email: Setup Password untuk Akun Baru
+Email: Notifikasi Aspirasi Baru untuk Admin
 Variables yang dibutuhkan BE:
-- $email : string (Email penerima)
-- $setupUrl : string (URL lengkap ke halaman setup password, termasuk token)
+- $name : string (Nama pengirim)
+- $nim : string|null (NIM pengirim)
+- $email : string|null (Email pengirim)
+- $subject : string (Subjek/Tujuan aspirasi)
+- $message : string (Pesan aspirasi)
+- $trackingCode : string (Kode tracking)
 --}}
 
 <!DOCTYPE html>
@@ -11,7 +15,7 @@ Variables yang dibutuhkan BE:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Password — HMTIF-UNPAS</title>
+    <title>Aspirasi Baru Masuk — HMTIF-UNPAS</title>
 </head>
 
 <body
@@ -49,25 +53,64 @@ Variables yang dibutuhkan BE:
                                         {{-- Greeting --}}
                                         <h1
                                             style="margin: 0 0 8px; font-size: 22px; font-weight: 800; color: #0f172a; line-height: 1.3;">
-                                            Selamat Datang! 🎉
+                                            Aspirasi Baru Masuk! 📥
                                         </h1>
                                         <p style="margin: 0 0 28px; font-size: 15px; color: #64748b; line-height: 1.6;">
-                                            Akun dashboard HMTIF-UNPAS telah dibuat untuk Anda. Silakan klik tombol di
-                                            bawah untuk mengatur password akun Anda.
+                                            Halo Admin HMTIF, ada aspirasi baru yang masuk melalui website HMTIF UNPAS. Berikut detail lengkapnya:
                                         </p>
 
-                                        {{-- Account Info Box --}}
+                                        {{-- Aspiration Detail Box --}}
                                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
-                                            style="background-color: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 28px;">
+                                            style="background-color: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 24px;">
                                             <tr>
                                                 <td style="padding: 20px 24px;">
+                                                    {{-- Tracking Code --}}
                                                     <p
                                                         style="margin: 0 0 4px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;">
-                                                        Email Akun</p>
+                                                        Kode Tracking</p>
                                                     <p
-                                                        style="margin: 0; font-size: 15px; font-weight: 700; color: #1e293b;">
-                                                        {{ $email }}
-                                                    </p>
+                                                        style="margin: 0 16px 16px 0; font-size: 14px; font-weight: 600; color: #1e293b; font-family: 'Courier New', monospace; background: #e2e8f0; display: inline-block; padding: 4px 12px; border-radius: 6px;">
+                                                        {{ $trackingCode }}</p>
+
+                                                    {{-- Name --}}
+                                                    <p
+                                                        style="margin: 0 0 4px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;">
+                                                        Nama Pengirim</p>
+                                                    <p
+                                                        style="margin: 0 0 16px; font-size: 15px; font-weight: 700; color: #1e293b;">
+                                                        {{ $name ?: 'Anonim' }}</p>
+
+                                                    {{-- NIM --}}
+                                                    <p
+                                                        style="margin: 0 0 4px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;">
+                                                        NIM</p>
+                                                    <p
+                                                        style="margin: 0 0 16px; font-size: 15px; font-weight: 600; color: #334155;">
+                                                        {{ $nim ?: '-' }}</p>
+
+                                                    {{-- Email --}}
+                                                    <p
+                                                        style="margin: 0 0 4px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;">
+                                                        Email</p>
+                                                    <p
+                                                        style="margin: 0 0 16px; font-size: 15px; font-weight: 600; color: #334155;">
+                                                        {{ $email ?: '-' }}</p>
+
+                                                    {{-- Subject --}}
+                                                    <p
+                                                        style="margin: 0 0 4px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;">
+                                                        Perihal</p>
+                                                    <p
+                                                        style="margin: 0 0 16px; font-size: 15px; font-weight: 700; color: #1e293b;">
+                                                        {{ $subject }}</p>
+
+                                                    {{-- Message --}}
+                                                    <p
+                                                        style="margin: 0 0 4px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;">
+                                                        Pesan</p>
+                                                    <p
+                                                        style="margin: 0; font-size: 14px; color: #334155; line-height: 1.7; white-space: pre-line;">
+                                                        {{ $message }}</p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -77,28 +120,10 @@ Variables yang dibutuhkan BE:
                                             style="margin-bottom: 28px;">
                                             <tr>
                                                 <td align="center">
-                                                    <a href="{{ $setupUrl }}"
+                                                    <a href="{{ url('/admin') }}"
                                                         style="display: inline-block; padding: 14px 36px; background-color: #166534; color: #ffffff; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);">
-                                                        🔐 Atur Password Sekarang
+                                                        💼 Buka Dashboard Admin
                                                     </a>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                        {{-- Alternative URL --}}
-                                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
-                                            style="background-color: #fffbeb; border-radius: 12px; border: 1px solid #fef08a; margin-bottom: 24px;">
-                                            <tr>
-                                                <td style="padding: 16px 20px;">
-                                                    <p
-                                                        style="margin: 0 0 6px; font-size: 11px; font-weight: 800; color: #a16207; text-transform: uppercase; letter-spacing: 1.5px;">
-                                                        ⚠️ Tombol tidak berfungsi?</p>
-                                                    <p
-                                                        style="margin: 0; font-size: 12px; color: #78716c; line-height: 1.6; word-break: break-all;">
-                                                        Salin dan tempel link berikut di browser Anda:<br>
-                                                        <span
-                                                            style="color: #166534; font-weight: 600;">{{ $setupUrl }}</span>
-                                                    </p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -108,8 +133,7 @@ Variables yang dibutuhkan BE:
 
                                         {{-- Footer Note --}}
                                         <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.6;">
-                                            Jika Anda merasa tidak mendaftar di HMTIF-UNPAS, abaikan email ini. Link ini
-                                            tidak memiliki batas kadaluarsa.
+                                            Silakan segera lakukan peninjauan dan berikan tanggapan terbaik Anda demi kemajuan HMTIF-UNPAS. 💚
                                         </p>
 
                                     </td>
@@ -126,7 +150,7 @@ Variables yang dibutuhkan BE:
                                 &copy; {{ date('Y') }} HMTIF-UNPAS.
                             </p>
                             <p style="margin: 0; font-size: 11px; color: #cbd5e1;">
-                                Email ini dikirim secara otomatis. Mohon jangan membalas email ini.
+                                Email ini dikirim secara otomatis ke alamat admin yang terdaftar.
                             </p>
                         </td>
                     </tr>

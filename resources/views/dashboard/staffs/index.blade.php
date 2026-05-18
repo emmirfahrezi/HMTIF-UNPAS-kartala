@@ -1,15 +1,40 @@
+@php
+    $role = \App\Models\Role::where('name', [
+        'admin' => 'Superadmin', 'bph' => 'BPH', 'koordinator' => 'Koordinator', 'staff' => 'Staff'
+    ][auth()->user()->role] ?? auth()->user()->role)->first();
+    $canRead = $role ? (bool)$role->can_read : true;
+    $canCreate = $role ? (bool)$role->can_create : true;
+    $canUpdate = $role ? (bool)$role->can_update : true;
+    $canDelete = $role ? (bool)$role->can_delete : true;
+    if (auth()->user()->role === 'admin') {
+        $canRead = $canCreate = $canUpdate = $canDelete = true;
+    }
+@endphp
 <x-layouts.dashboard pageTitle="Pengurus" :breadcrumbs="[['label' => 'Pengurus']]">
-    <x-slot:headerActions>
-        <x-atoms.shared.button 
-            href="/dashboard/staffs/create"
-            icon="heroicon-o-plus">
-            Tambah Pengurus
-        </x-atoms.shared.button>
-    </x-slot:headerActions>
+    @if (!$canRead)
+        <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
+            <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6 shadow-inner animate-pulse">
+                <x-heroicon-o-lock-closed class="size-8" />
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-800 dark:text-white mb-2 tracking-tight text-center">Akses Terbatas</h2>
+            <p class="text-sm text-slate-400 dark:text-slate-500 max-w-md text-center leading-relaxed">Anda tidak memiliki izin untuk melihat data pada halaman ini. Silakan hubungi Administrator jika ini merupakan kesalahan.</p>
+        </div>
+    @else
+        @if ($canCreate)
+        <x-slot:headerActions>
+            <x-atoms.shared.button 
+                href="/dashboard/staffs/create"
+                icon="heroicon-o-plus">
+                Tambah Pengurus
+            </x-atoms.shared.button>
+        </x-slot:headerActions>
+        @endif
 
+    @if ($canCreate)
     <x-molecules.dashboard.cards.category-card title="Manajemen Bidang / Divisi"
         subtitle="Kelola struktur organisasi dan divisi pengurus" addModalId="quick-add-division"
         manageRoute="/dashboard/staffs/divisions" />
+    @endif
 
     <x-molecules.dashboard.cards.filter-card searchRoute="/dashboard/staffs" searchPlaceholder="Cari pengurus...">
         <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3 transition-colors duration-300">
@@ -53,29 +78,42 @@
                 </span>
             </div>
 
-            <x-molecules.dashboard.cards.data-table :headers="[
-                ['label' => '', 'width' => 'w-10'],
-                ['label' => 'Nama'],
-                ['label' => 'Jabatan'],
-                ['label' => 'BPH'],
-                ['label' => 'Status'],
-            ]"
+            @php
+                $headers = [];
+                if ($canUpdate) {
+                    $headers[] = ['label' => '', 'width' => 'w-10'];
+                }
+                $headers = array_merge($headers, [
+                    ['label' => 'Nama'],
+                    ['label' => 'Jabatan'],
+                    ['label' => 'BPH'],
+                    ['label' => 'Status'],
+                ]);
+            @endphp
+            <x-molecules.dashboard.cards.data-table :headers="$headers"
+                :selectable="$canDelete"
+                :bulkDeleteEnabled="$canDelete"
+                :showActions="$canUpdate || $canDelete"
                 bulkDeleteRoute="/dashboard/staffs/bulk-delete">
 
                 @forelse ($division->staffs as $item)
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200 group/row" data-row-id="{{ $item->id }}">
+                        @if ($canDelete)
                         <td class="px-4 py-4 w-12 text-center">
                             <x-atoms.shared.checkbox 
                                 x-bind:checked="isSelected('{{ $item->id }}')"
                                 @change="toggleRow('{{ $item->id }}')"
                             />
                         </td>
+                        @endif
+                        @if ($canUpdate)
                         <td class="px-3 py-4 w-10">
                             <div
                                 class="cursor-grab active:cursor-grabbing text-slate-300 dark:text-slate-600 hover:text-slate-400 dark:hover:text-slate-400 transition sort-handle">
                                 <x-heroicon-s-bars-3-bottom-left class="size-5" />
                             </div>
                         </td>
+                        @endif
                         <td class="px-5 py-4">
                             <div class="flex items-center gap-3">
                                 <div
@@ -106,8 +144,10 @@
                                     class="inline-flex items-center gap-1 text-[10px] font-black text-slate-400 dark:text-slate-600 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 px-2.5 py-0.5 rounded-full uppercase tracking-tight">Nonaktif</span>
                             @endif
                         </td>
+                        @if ($canUpdate || $canDelete)
                         <td class="px-5 py-4 text-right">
                             <div class="flex items-center justify-end gap-1">
+                                @if ($canUpdate)
                                 <x-atoms.shared.button 
                                     variant="ghost"
                                     size="sm"
@@ -116,6 +156,8 @@
                                     title="Edit">
                                     <x-heroicon-o-pencil-square class="size-5" />
                                 </x-atoms.shared.button>
+                                @endif
+                                @if ($canDelete)
                                 <x-atoms.shared.button 
                                     variant="ghost"
                                     size="sm"
@@ -124,8 +166,10 @@
                                     title="Hapus">
                                     <x-heroicon-o-trash class="size-5" />
                                 </x-atoms.shared.button>
+                                @endif
                             </div>
                         </td>
+                        @endif
                     </tr>
                 @empty
                     <x-slot:empty>
@@ -176,13 +220,15 @@
             </div>
         </form>
     </x-molecules.shared.modal>
+    @endif
 
+    @if ($canUpdate)
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const tables = document.querySelectorAll('tbody');
-
+ 
                 tables.forEach(table => {
                     new Sortable(table, {
                         handle: '.sort-handle',
@@ -192,12 +238,12 @@
                         onEnd: function (evt) {
                             const rowIds = Array.from(table.querySelectorAll('tr[data-row-id]'))
                                 .map(tr => tr.getAttribute('data-row-id'));
-
+ 
                             // Simulasi loading/toast
-                            if (window.showToast) {
-                                showToast('Menyimpan urutan baru...', 'info');
+                            if (window.toast) {
+                                window.toast('Menyimpan urutan baru...', 'info');
                             }
-
+ 
                             fetch('/dashboard/staffs/reorder', {
                                 method: 'POST',
                                 headers: {
@@ -208,14 +254,14 @@
                             })
                             .then(response => response.json())
                             .then(data => {
-                                if (data.success && window.showToast) {
-                                    showToast('Urutan berhasil disimpan!', 'success');
+                                if (data.success && window.toast) {
+                                    window.toast('Urutan berhasil disimpan!', 'success');
                                 }
                             })
                             .catch(error => {
                                 console.error('Error:', error);
-                                if (window.showToast) {
-                                    showToast('Gagal menyimpan urutan', 'error');
+                                if (window.toast) {
+                                    window.toast('Gagal menyimpan urutan', 'error');
                                 }
                             });
                         }
@@ -224,4 +270,5 @@
             });
         </script>
     @endpush
+    @endif
 </x-layouts.dashboard>

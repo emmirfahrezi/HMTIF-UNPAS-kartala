@@ -27,7 +27,7 @@
         @if ($product?->description)
             {!! $product->description !!}
         @else
-            <p>Merchandise resmi HMTIF UNPAS dengan kualitas terbaik untuk aktivitas kampus dan organisasi.</p>
+            <p>Merchandise resmi HMTIF-UNPAS dengan kualitas terbaik untuk aktivitas kampus dan organisasi.</p>
         @endif
     </div>
 

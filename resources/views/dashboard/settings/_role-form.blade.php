@@ -14,7 +14,7 @@
         Tambah Role Akses
     </h3>
 
-    <form action="#" method="POST" class="space-y-5 relative z-10" x-data="{ roleName: '' }">
+    <form action="{{ route('dashboard.settings.store') }}" method="POST" class="space-y-5 relative z-10" x-data="{ roleName: '' }">
         @csrf
         <div>
             <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1.5">Nama
@@ -48,10 +48,9 @@
         </div>
 
         <div class="pt-2">
-            <x-atoms.shared.button type="button"
+            <x-atoms.shared.button type="submit"
                 class="w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-                x-bind:disabled="!roleName.trim()"
-                @click="toast('Role baru berhasil ditambahkan (Demo)', 'success')">
+                x-bind:disabled="!roleName.trim()">
                 Simpan Role
             </x-atoms.shared.button>
         </div>
