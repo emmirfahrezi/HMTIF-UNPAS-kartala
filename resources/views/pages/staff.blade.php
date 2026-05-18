@@ -1,6 +1,6 @@
-<x-layouts.app title="Daftar Pengurus | HMTIF UNPAS"
-    description="Kenali jajaran pengurus HMTIF UNPAS. Mengenal struktur organisasi, profil pimpinan, dan departemen yang bergerak untuk kemajuan Informatika."
-    keywords="Pengurus HMTIF, Struktur Organisasi HMTIF, Pimpinan HMTIF UNPAS" :transparent="false">
+<x-layouts.app title="Daftar Pengurus | HMTIF-UNPAS"
+    description="Kenali jajaran pengurus HMTIF-UNPAS. Mengenal struktur organisasi, profil pimpinan, dan departemen yang bergerak untuk kemajuan Informatika."
+    keywords="Pengurus HMTIF, Struktur Organisasi HMTIF, Pimpinan HMTIF-UNPAS" :transparent="false">
     <x-slot:head>
         <script type="application/ld+json">
         {

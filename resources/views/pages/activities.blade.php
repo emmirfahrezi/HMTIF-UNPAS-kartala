@@ -1,6 +1,6 @@
 <x-layouts.app 
-    title="Kegiatan & Program Kerja | HMTIF UNPAS" 
-    description="Jelajahi berbagai program kerja dan kegiatan inovatif HMTIF UNPAS. Dari kompetisi teknologi hingga pengabdian masyarakat untuk mahasiswa Informatika."
+    title="Kegiatan & Program Kerja | HMTIF-UNPAS" 
+    description="Jelajahi berbagai program kerja dan kegiatan inovatif HMTIF-UNPAS. Dari kompetisi teknologi hingga pengabdian masyarakat untuk mahasiswa Informatika."
     keywords="Kegiatan HMTIF, Proker HMTIF, Informatics Championship, Event Teknik Informatika"
     :transparent="false"
 >

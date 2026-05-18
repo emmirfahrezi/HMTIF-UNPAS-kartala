@@ -29,7 +29,7 @@
                 <h3 class="text-2xl font-extrabold">Visi Utama</h3>
                 <div class="mt-3 h-1 w-20 rounded-full bg-secondary"></div>
                 <blockquote class="mt-8 border-l-4 border-secondary pl-5 text-xl leading-relaxed text-white/90 italic">
-                    "Mewujudkan HMTIF UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun
+                    "Mewujudkan HMTIF-UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun
                     harmoni serta kemajuan Teknik Informatika."
                 </blockquote>
                 <p class="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-primary-soft">Vision First, Impact

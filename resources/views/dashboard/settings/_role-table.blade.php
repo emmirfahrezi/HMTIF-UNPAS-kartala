@@ -49,46 +49,113 @@
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
                 @foreach ($roles as $role)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200">
+                    <tr x-data="{ 
+                        roleId: '{{ $role->id }}',
+                        roleName: '{{ $role->name }}',
+                        menuAccess: {{ json_encode($role->menu_access ?? []) }},
+                        canCreate: {{ $role->can_create ? 'true' : 'false' }}, 
+                        canRead: {{ $role->can_read ? 'true' : 'false' }}, 
+                        canUpdate: {{ $role->can_update ? 'true' : 'false' }}, 
+                        canDelete: {{ $role->can_delete ? 'true' : 'false' }},
+                        async toggle(field, currentVal) {
+                            const newVal = !currentVal;
+                            try {
+                                const res = await fetch(`/dashboard/settings/${this.roleId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({ field: field, value: newVal })
+                                });
+                                const data = await res.json();
+                                if (data.success) {
+                                    if (field === 'can_create') this.canCreate = newVal;
+                                    if (field === 'can_read') this.canRead = newVal;
+                                    if (field === 'can_update') this.canUpdate = newVal;
+                                    if (field === 'can_delete') this.canDelete = newVal;
+                                    toast('Izin berhasil diperbarui!', 'success');
+                                } else {
+                                    toast('Gagal memperbarui izin.', 'error');
+                                }
+                            } catch (err) {
+                                toast('Terjadi kesalahan koneksi.', 'error');
+                            }
+                        },
+                        confirmToggle(field, label, currentVal) {
+                            const actionWord = currentVal ? 'mencabut' : 'memberikan';
+                            window.dispatchEvent(new CustomEvent('open-confirm-modal', {
+                                detail: {
+                                    title: 'Konfirmasi Perizinan',
+                                    message: `Apakah Anda yakin ingin ${actionWord} izin '${label}' untuk role '${this.roleName}'?`,
+                                    confirmLabel: 'Ya, Lanjutkan',
+                                    variant: 'warning',
+                                    icon: 'warning',
+                                    callback: () => this.toggle(field, currentVal)
+                                }
+                            }));
+                        }
+                    }" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200">
                         <td class="px-6 py-5">
                             <div class="flex items-center gap-3">
                                 <div
-                                    class="w-1.5 h-1.5 rounded-full {{ $role['r'] ? 'bg-emerald-500' : 'bg-slate-300' }}">
+                                    class="w-1.5 h-1.5 rounded-full transition-colors duration-300"
+                                    :class="canRead ? 'bg-emerald-500' : 'bg-slate-300'">
                                 </div>
                                 <span
-                                    class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">{{ $role['name'] }}</span>
+                                    class="text-sm font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">{{ $role->name }}</span>
                             </div>
                         </td>
 
                         {{-- Toggles --}}
-                        @foreach (['c', 'r', 'u', 'd'] as $action)
-                            <td class="px-2 sm:px-4 py-5 text-center">
-                                <label class="relative inline-flex items-center cursor-pointer"
-                                    title="{{ ucfirst($action) }}">
-                                    <input type="checkbox" class="sr-only peer"
-                                        {{ $role[$action] ? 'checked' : '' }}>
-                                    <div
-                                        class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner">
-                                    </div>
-                                </label>
-                            </td>
-                        @endforeach
+                        <td class="px-2 sm:px-4 py-5 text-center">
+                            <label class="relative inline-flex items-center cursor-pointer" title="Create">
+                                <input type="checkbox" class="sr-only peer" :checked="canCreate" @change="$el.checked = canCreate; confirmToggle('can_create', 'Create', canCreate)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            </label>
+                        </td>
+                        <td class="px-2 sm:px-4 py-5 text-center">
+                            <label class="relative inline-flex items-center cursor-pointer" title="Read">
+                                <input type="checkbox" class="sr-only peer" :checked="canRead" @change="$el.checked = canRead; confirmToggle('can_read', 'Read', canRead)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            </label>
+                        </td>
+                        <td class="px-2 sm:px-4 py-5 text-center">
+                            <label class="relative inline-flex items-center cursor-pointer" title="Update">
+                                <input type="checkbox" class="sr-only peer" :checked="canUpdate" @change="$el.checked = canUpdate; confirmToggle('can_update', 'Update', canUpdate)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            </label>
+                        </td>
+                        <td class="px-2 sm:px-4 py-5 text-center">
+                            <label class="relative inline-flex items-center cursor-pointer" title="Delete">
+                                <input type="checkbox" class="sr-only peer" :checked="canDelete" @change="$el.checked = canDelete; confirmToggle('can_delete', 'Delete', canDelete)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            </label>
+                        </td>
 
                         <td class="px-6 py-5 text-center">
                             <div
-                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-                                <x-heroicon-o-check class="size-4" />
+                                class="inline-flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300"
+                                :class="canRead ? 'bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 dark:text-slate-500'">
+                                <x-heroicon-o-check class="size-4" x-show="canRead" />
+                                <x-heroicon-o-x-mark class="size-4" x-show="!canRead" style="display: none;" />
                             </div>
                         </td>
                         <td class="px-6 py-5 text-right">
                             <div class="flex items-center justify-end gap-1 sm:gap-2">
                                 <x-atoms.shared.button variant="ghost" size="sm"
-                                    @click="$dispatch('open-modal', { name: 'role-menu-settings' })"
+                                    @click="$dispatch('open-modal', { 
+                                        name: 'role-menu-settings', 
+                                        roleId: roleId, 
+                                        roleName: roleName, 
+                                        menuAccess: menuAccess 
+                                    })"
                                     class="size-8 sm:size-9 !px-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/10"
                                     title="Atur Menu">
                                     <x-heroicon-o-cog-8-tooth class="size-4 sm:size-5" />
                                 </x-atoms.shared.button>
                                 <x-atoms.shared.button variant="ghost" size="sm"
+                                    @click="openDeleteModal('/dashboard/settings/{{ $role->id }}', 'Hapus role &quot;{{ $role->name }}&quot;?')"
                                     class="size-8 sm:size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                                     title="Hapus Role">
                                     <x-heroicon-o-trash class="size-4 sm:size-5" />

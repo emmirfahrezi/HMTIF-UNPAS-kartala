@@ -7,7 +7,7 @@
     $bphRoles = [
         [
             'title' => 'Ketua Umum',
-            'desc' => 'Pemimpin tertinggi yang bertanggung jawab penuh atas seluruh arah kebijakan, program kerja, dan keharmonisan internal HMTIF UNPAS. Menjadi representasi utama himpunan di pihak eksternal maupun internal kampus.',
+            'desc' => 'Pemimpin tertinggi yang bertanggung jawab penuh atas seluruh arah kebijakan, program kerja, dan keharmonisan internal HMTIF-UNPAS. Menjadi representasi utama himpunan di pihak eksternal maupun internal kampus.',
             'icon' => 'star',
         ],
         [

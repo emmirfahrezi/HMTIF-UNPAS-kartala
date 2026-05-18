@@ -30,7 +30,7 @@
         <h2 class="text-heading font-black text-3xl md:text-4xl uppercase tracking-tighter italic">Ketua <span
                 class="text-primary italic">Umum</span></h2>
         <div class="h-px flex-1 bg-linear-to-r from-primary/20 to-transparent"></div>
-        <a href="/detail-division?division=bph"
+        <a href="{{ route('divisions.show', 'bph') }}"
             class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-secondary/50 text-heading text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
             Detail Bidang
             <x-heroicon-o-arrow-right class="size-4" />
@@ -40,7 +40,7 @@
         @foreach ($leaders as $index => $staff)
             <x-molecules.pages.cards.member-card :name="$staff->name" :position="$staff->position" size="xl" dept="KARTALA"
                 class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')"
-                :href="'/detail-member?staff=' . $staff->id" />
+                :href="route('staff.show', $staff->id)" />
         @endforeach
     </div>
 
@@ -49,7 +49,7 @@
         <h2 class="text-heading font-black text-3xl md:text-4xl uppercase tracking-tighter italic">Badan Pengurus <span
                 class="text-primary italic">Harian</span></h2>
         <div class="h-px flex-1 bg-linear-to-r from-primary/20 to-transparent"></div>
-        <a href="/detail-division?division=bph"
+        <a href="{{ route('divisions.show', 'bph') }}"
             class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-secondary/50 text-heading text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
             Detail Bidang
             <x-heroicon-o-arrow-right class="size-4" />
@@ -60,7 +60,7 @@
         @foreach ($bphMembers as $index => $staff)
             <div class="w-full max-w-[400px] mx-auto reveal-delay-{{ ($index % 3) + 1 }}">
                 <x-molecules.pages.cards.member-card :name="$staff->name" :position="$staff->position" size="normal"
-                    :dept="$deptAbbr[$staff->position] ?? 'BPH'" :href="'/detail-member?staff=' . $staff->id"
+                    :dept="$deptAbbr[$staff->position] ?? 'BPH'" :href="route('staff.show', $staff->id)"
                     :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
             </div>
         @endforeach

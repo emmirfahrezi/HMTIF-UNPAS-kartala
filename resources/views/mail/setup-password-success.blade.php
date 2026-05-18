@@ -1,4 +1,10 @@
-<x-layouts.app title="Password Berhasil Diatur | HMTIF UNPAS">
+{{--
+Halaman: Sukses Atur Password Baru
+Variables yang dibutuhkan BE:
+- $email : string (Email penerima untuk ditampilkan di panel info)
+--}}
+
+<x-layouts.app title="Password Berhasil Diatur | HMTIF-UNPAS">
     <main class="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden py-12 px-4">
         {{-- Decorative Elements --}}
         <div class="absolute -top-24 -right-24 size-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
@@ -15,25 +21,31 @@
             </div>
 
             {{-- Success Card --}}
-            <div class="bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-2xl shadow-slate-200/50 p-8 border border-white/20 text-center">
+            <div
+                class="bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-2xl shadow-slate-200/50 p-8 border border-white/20 text-center">
 
                 {{-- Success Icon --}}
-                <div class="mx-auto size-20 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center mb-6 animate-bounce-once">
-                    <svg class="size-10 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                <div
+                    class="mx-auto size-20 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center mb-6 animate-bounce-once">
+                    <svg class="size-10 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                 </div>
 
                 {{-- Message --}}
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight mb-2">Password Berhasil Diatur! 🎉</h1>
                 <p class="text-slate-500 font-medium text-sm leading-relaxed mb-8">
-                    Akun Anda sudah aktif dan siap digunakan. Silakan login menggunakan email dan password yang baru saja Anda buat.
+                    Akun Anda sudah aktif dan siap digunakan. Silakan login menggunakan email dan password yang baru
+                    saja Anda buat.
                 </p>
 
                 {{-- Account Info --}}
                 <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-8 text-left">
                     <div class="flex items-center gap-3">
-                        <div class="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <div
+                            class="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                             <x-heroicon-s-envelope class="size-4" />
                         </div>
                         <div>
@@ -53,18 +65,32 @@
 
             {{-- Footer --}}
             <p class="text-center mt-8 text-sm text-slate-400 font-medium italic">
-                &copy; {{ date('Y') }} HMTIF UNPAS. Departemen PTI.
+                &copy; {{ date('Y') }} HMTIF-UNPAS.
             </p>
         </div>
     </main>
 
     <style>
         @keyframes bounce-once {
-            0%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-12px); }
-            50% { transform: translateY(-4px); }
-            70% { transform: translateY(-8px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-12px);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+
+            70% {
+                transform: translateY(-8px);
+            }
         }
+
         .animate-bounce-once {
             animation: bounce-once 0.8s ease-out 0.3s both;
         }

@@ -1,6 +1,6 @@
 <x-layouts.app 
-    title="Pengumuman & Warta | HMTIF UNPAS" 
-    description="Pusat informasi resmi HMTIF UNPAS. Dapatkan update terbaru mengenai akademik, organisasi, dan berita penting lainnya bagi civitas Informatika."
+    title="Pengumuman & Warta | HMTIF-UNPAS" 
+    description="Pusat informasi resmi HMTIF-UNPAS. Dapatkan update terbaru mengenai akademik, organisasi, dan berita penting lainnya bagi civitas Informatika."
     keywords="Pengumuman HMTIF, Berita Informatika UNPAS, Warta Kartala, Info Akademik"
     :transparent="false"
 >
