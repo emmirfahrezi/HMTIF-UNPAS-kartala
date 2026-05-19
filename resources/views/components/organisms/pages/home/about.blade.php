@@ -1,3 +1,21 @@
+@php
+    use App\Models\HomeSection;
+    
+    // Section 1: Identity
+    $identityTitle = HomeSection::get('identity', 'title', 'Identitas & Harapan');
+    $identitySubtitle = HomeSection::get('identity', 'subtitle', 'Himpunan Mahasiswa Teknik Informatika UNPAS');
+    $identityDesc = HomeSection::get('identity', 'description', 'HMTIF Universitas Pasundan bukan sekadar organisasi mahasiswa. Kami adalah laboratorium kehidupan, tempat di mana setiap mahasiswa Teknik Informatika menemukan potensi terbaiknya melalui kolaborasi, riset, dan semangat kekeluargaan yang telah terjaga selama puluhan tahun.');
+    $point1Title = HomeSection::get('identity', 'point_1_title', 'Pusat Riset');
+    $point1Desc = HomeSection::get('identity', 'point_1_desc', 'Mengembangkan solusi teknologi inovatif.');
+    $point2Title = HomeSection::get('identity', 'point_2_title', 'Wadah Solutif');
+    $point2Desc = HomeSection::get('identity', 'point_2_desc', 'Menampung aspirasi setiap anggota.');
+
+    // Section 2: Era
+    $eraLabel = HomeSection::get('era', 'label', 'Era Baru: Kartala');
+    $eraTitle = HomeSection::get('era', 'title', 'HARMONI DALAM PERGERAKAN NYATA');
+    $eraDesc = HomeSection::get('era', 'description', 'Di bawah semangat HMTIF UNPAS, kami berkomitmen untuk menghadirkan perubahan yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.');
+@endphp
+
 <!-- about HMTIF -->
 <div id="about" class="py-24 bg-white relative overflow-hidden content-auto">
     {{-- Decorative background text --}}
@@ -7,7 +25,7 @@
     </div>
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl relative z-10 space-y-32">
-        <!-- SECTION 1: HMTIF-UNPAS (Foto Kiri) -->
+        <!-- SECTION 1: HMTIF-UNPAS (Foto Kinar) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center content-auto">
             <!-- BAGIAN KIRI (FOTO) -->
             <div class="relative group reveal reveal-left">
@@ -23,23 +41,20 @@
             <!-- BAGIAN KANAN (CONTENT) -->
             <div class="space-y-8 reveal reveal-right">
                 <div>
-                    <x-atoms.pages.section-title>Identitas & Harapan</x-atoms.section-title>
-                    <h2 class="text-4xl font-extrabold text-heading mt-4 leading-tight">Himpunan Mahasiswa Teknik
-                        Informatika UNPAS</h2>
+                    <x-atoms.pages.section-title>{{ $identityTitle }}</x-atoms.pages.section-title>
+                    <h2 class="text-4xl font-extrabold text-heading mt-4 leading-tight">{{ $identitySubtitle }}</h2>
                 </div>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    HMTIF Universitas Pasundan bukan sekadar organisasi mahasiswa. Kami adalah laboratorium kehidupan,
-                    tempat di mana setiap mahasiswa Teknik Informatika menemukan potensi terbaiknya melalui kolaborasi,
-                    riset, dan semangat kekeluargaan yang telah terjaga selama puluhan tahun.
+                    {{ $identityDesc }}
                 </p>
                 <div class="grid grid-cols-2 gap-6">
                     <div class="p-4 rounded-xl bg-gray-50 border-l-4 border-primary">
-                        <h4 class="font-bold text-heading">Pusat Riset</h4>
-                        <p class="text-xs text-gray-500 mt-1">Mengembangkan solusi teknologi inovatif.</p>
+                        <h4 class="font-bold text-heading">{{ $point1Title }}</h4>
+                        <p class="text-xs text-gray-500 mt-1">{{ $point1Desc }}</p>
                     </div>
                     <div class="p-4 rounded-xl bg-gray-50 border-l-4 border-primary">
-                        <h4 class="font-bold text-heading">Wadah Solutif</h4>
-                        <p class="text-xs text-gray-500 mt-1">Menampung aspirasi setiap anggota.</p>
+                        <h4 class="font-bold text-heading">{{ $point2Title }}</h4>
+                        <p class="text-xs text-gray-500 mt-1">{{ $point2Desc }}</p>
                     </div>
                 </div>
             </div>
@@ -50,15 +65,18 @@
             <!-- BAGIAN KIRI (CONTENT) -->
             <div class="order-2 lg:order-1 space-y-8 reveal reveal-left">
                 <div>
-                    <x-atoms.pages.section-title>Era Baru: Kartala</x-atoms.section-title>
+                    <x-atoms.pages.section-title>{{ $eraLabel }}</x-atoms.pages.section-title>
                     <h2
                         class="text-4xl font-extrabold text-heading mt-4 leading-tight uppercase italic tracking-tighter">
-                        Harmoni Dalam <span class="text-primary italic">Pergerakan Nyata</span></h2>
+                        @if(stripos($eraTitle, 'pergerakan') !== false)
+                            {!! str_ireplace('pergerakan nyata', '<span class="text-primary italic">pergerakan nyata</span>', e($eraTitle)) !!}
+                        @else
+                            {{ $eraTitle }}
+                        @endif
+                    </h2>
                 </div>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    Di bawah semangat <strong>HMTIF-UNPAS</strong>, kami berkomitmen untuk menghadirkan perubahan
-                    yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah
-                    keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.
+                    {{ $eraDesc }}
                 </p>
                 <div class="space-y-4">
                     @foreach ($features ?? [] as $item)

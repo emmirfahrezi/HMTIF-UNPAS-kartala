@@ -1,3 +1,12 @@
+@php
+    use App\Models\HomeSection;
+    $tagline = HomeSection::get('hero', 'tagline', 'Selamat Datang di Portal Resmi HMTIF-UNPAS');
+    $title = HomeSection::get('hero', 'title', 'HMTIF-UNPAS');
+    $subtitle = HomeSection::get('hero', 'description', 'Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui dedikasi dan kerja nyata.');
+    $btnPrimary = HomeSection::get('hero', 'btn_primary', 'Jelajahi Program');
+    $btnSecondary = HomeSection::get('hero', 'btn_secondary', 'Tentang Kami');
+@endphp
+
 <div
     class="relative isolate px-6 pt-14 mt-0 lg:px-8 min-h-screen flex items-center bg-[url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center bg-no-repeat z-0 transform">
     <div class="absolute inset-0 bg-linear-to-b from-black via-black/45 to-transparent z-0"></div>
@@ -9,26 +18,25 @@
                     class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
             </span>
-            Selamat Datang di Portal Resmi HMTIF-UNPAS
+            {{ $tagline }}
         </div>
         <h1
             class="text-4xl font-extrabold tracking-tight text-white sm:text-7xl mb-6 drop-shadow-2xl reveal reveal-up reveal-delay-2">
-            HMTIF-UNPAS <br>
+            {{ $title }} <br>
         </h1>
         <p
             class="mt-4 text-[1rem] font-medium text-white/90 leading-relaxed max-w-2xl mx-auto sm:text-[1.125rem] reveal reveal-up reveal-delay-3">
-            Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui
-            dedikasi dan kerja nyata.
+            {{ $subtitle }}
         </p>
         <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal reveal-up reveal-delay-4">
             <x-atoms.shared.button variant="primary" href="{{ route('activities') }}"
                 class="px-8 py-3 text-base shadow-xl shadow-primary/30 w-full sm:w-auto transform hover:translate-y-1 transition-all group">
-                <span>Jelajahi Program</span>
+                <span>{{ $btnPrimary }}</span>
                 <x-heroicon-o-rocket-launch class="size-5 group-hover:rotate-12 transition-transform" />
             </x-atoms.shared.button>
             <x-atoms.shared.button variant="outline-secondary" href="#about"
                 class="px-8 py-3 text-base w-full sm:w-auto transform hover:translate-y-1 transition-all group">
-                <span>Tentang Kami</span>
+                <span>{{ $btnSecondary }}</span>
                 <x-heroicon-o-information-circle class="size-5 group-hover:animate-bounce" />
             </x-atoms.shared.button>
         </div>

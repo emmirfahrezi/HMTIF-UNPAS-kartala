@@ -5,8 +5,8 @@
             {{-- Brand Section --}}
             <div class="md:col-span-2 space-y-6">
                 <a href="/" class="flex items-center gap-3">
-                    <img src="{{ config('app.logo_url') }}"
-                        alt="Logo HMTIF-UNPAS" class="h-10 w-auto object-contain logo-remove-bg brightness-125" />
+                    <img src="{{ config('app.logo_url') }}" alt="Logo HMTIF-UNPAS"
+                        class="h-10 w-auto object-contain logo-remove-bg brightness-125" />
                     <h2 class="font-extrabold text-2xl tracking-tight text-white flex items-center gap-2">
                         HMTIF-UNPAS
                     </h2>
@@ -28,8 +28,7 @@
                         target="_blank" rel="noopener noreferrer">
                         <x-heroicon-s-film class="h-5 w-5" />
                     </a>
-                    <a href="https://github.com/hmtifunpas"
-                        data-external-url="https://github.com/hmtifunpas"
+                    <a href="https://github.com/hmtifunpas" data-external-url="https://github.com/hmtifunpas"
                         class="p-2 bg-white/10 rounded-lg hover:bg-secondary hover:text-black transition-colors"
                         target="_blank" rel="noopener noreferrer">
                         <x-heroicon-s-users class="h-5 w-5" />
@@ -79,9 +78,8 @@
             <p class="flex items-center gap-1.5">
                 Dibuat dengan
                 <x-heroicon-s-heart class="size-3.5 text-red-500 animate-pulse" />
-                oleh Tim IT Kartala
+                oleh Tim Komunikasi dan Informasi HMTIF-UNPAS
             </p>
         </div>
     </div>
 </footer>
-

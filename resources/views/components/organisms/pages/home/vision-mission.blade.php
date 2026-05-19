@@ -1,3 +1,41 @@
+@php
+    use App\Models\HomeSection;
+    
+    // Fetch fields
+    $vmLabel = HomeSection::get('vision_mission', 'label', 'Arah Gerak Organisasi');
+    $vmTitle = HomeSection::get('vision_mission', 'title', 'Visi & Misi HMTIF');
+    $vmDesc = HomeSection::get('vision_mission', 'description', 'Fondasi nilai yang membentuk cara kami berpikir, bergerak, dan berkontribusi untuk mahasiswa Teknik Informatika UNPAS.');
+    $visionTitle = HomeSection::get('vision_mission', 'vision_title', 'Visi Utama');
+    $visionText = HomeSection::get('vision_mission', 'vision_text', 'Mewujudkan HMTIF UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun harmoni serta kemajuan Teknik Informatika.');
+    $visionTagline = HomeSection::get('vision_mission', 'vision_tagline', 'VISION FIRST, IMPACT FOLLOWS');
+    $missionTitle = HomeSection::get('vision_mission', 'mission_title', 'Misi Strategis');
+    $missionText = HomeSection::get('vision_mission', 'mission_text', '');
+
+    // Parse missions intelligently from plain/HTML text
+    $missions = [];
+    if (!empty($missionText)) {
+        if (str_contains($missionText, '<p>') || str_contains($missionText, '<li>')) {
+            preg_match_all('/(?:<p>|<li>)(.*?)(?:<\/p>|<\/li>)/is', $missionText, $matches);
+            if (!empty($matches[1])) {
+                $missions = array_map('strip_tags', $matches[1]);
+            }
+        }
+        if (empty($missions)) {
+            $cleaned = strip_tags($missionText);
+            $missions = array_filter(array_map('trim', explode("\n", $cleaned)));
+        }
+    }
+    
+    // Fallback premium jika data kosong di seeder/database
+    if (empty($missions)) {
+        $missions = [
+            'Menyelenggarakan kegiatan akademis dan non-akademis yang inovatif guna meningkatkan kompetensi mahasiswa Teknik Informatika.',
+            'Membangun budaya kolaborasi yang harmonis dan aktif baik di internal himpunan maupun eksternal kampus.',
+            'Menyediakan wadah aspirasi yang responsif, solutif, dan transparan untuk seluruh civitas akademika Teknik Informatika UNPAS.'
+        ];
+    }
+@endphp
+
 <section
     class="relative overflow-hidden py-24 lg:py-28 bg-linear-to-br from-primary-dark via-[#005f33] to-primary text-white content-auto">
     <div class="absolute inset-0 opacity-10 bg-repeat"
@@ -8,12 +46,12 @@
     <div class="relative z-10 mx-auto max-w-screen-2xl px-6 lg:px-8">
         <div class="mx-auto mb-14 max-w-3xl text-center reveal reveal-up">
             <span
-                class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-black tracking-[0.25em] uppercase text-secondary">Arah
-                Gerak Organisasi</span>
-            <h2 class="mt-5 text-3xl font-black leading-tight sm:text-5xl">Visi & Misi HMTIF</h2>
+                class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-black tracking-[0.25em] uppercase text-secondary">
+                {{ $vmLabel }}
+            </span>
+            <h2 class="mt-5 text-3xl font-black leading-tight sm:text-5xl">{{ $vmTitle }}</h2>
             <p class="mt-5 text-sm leading-relaxed text-white/80 sm:text-base lg:text-lg">
-                Fondasi nilai yang membentuk cara kami berpikir, bergerak, dan berkontribusi untuk mahasiswa Teknik
-                Informatika UNPAS.
+                {{ $vmDesc }}
             </p>
         </div>
 
@@ -26,14 +64,14 @@
                     class="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-primary-dark shadow-lg shadow-black/20">
                     <x-heroicon-o-eye class="h-7 w-7" />
                 </div>
-                <h3 class="text-2xl font-extrabold">Visi Utama</h3>
+                <h3 class="text-2xl font-extrabold">{{ $visionTitle }}</h3>
                 <div class="mt-3 h-1 w-20 rounded-full bg-secondary"></div>
                 <blockquote class="mt-8 border-l-4 border-secondary pl-5 text-xl leading-relaxed text-white/90 italic">
-                    "Mewujudkan HMTIF-UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun
-                    harmoni serta kemajuan Teknik Informatika."
+                    "{{ strip_tags($visionText) }}"
                 </blockquote>
-                <p class="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-primary-soft">Vision First, Impact
-                    Follows</p>
+                <p class="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-primary-soft">
+                    {{ $visionTagline }}
+                </p>
             </article>
 
             {{-- Mission Panel --}}
@@ -44,11 +82,11 @@
                     class="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-primary-dark shadow-lg shadow-black/20">
                     <x-heroicon-o-rocket-launch class="h-7 w-7" />
                 </div>
-                <h3 class="text-2xl font-extrabold">Misi Strategis</h3>
+                <h3 class="text-2xl font-extrabold">{{ $missionTitle }}</h3>
                 <div class="mt-3 h-1 w-24 rounded-full bg-primary-soft"></div>
 
                 <ol class="mt-8 space-y-5">
-                    @foreach ($missions ?? [] as $index => $misi)
+                    @foreach ($missions as $index => $misi)
                         <li
                             class="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-secondary/60 hover:bg-white/10">
                             <span

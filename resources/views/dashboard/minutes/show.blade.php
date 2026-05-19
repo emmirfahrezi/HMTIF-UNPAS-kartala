@@ -87,8 +87,8 @@
                     </div>
 
                     <div>
-                        <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-6">Isi & Hasil Keputusan Rapat</label>
-                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm sm:prose-base font-medium leading-relaxed text-slate-700 dark:text-slate-300">
+                        <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-4">Isi & Hasil Keputusan Rapat</label>
+                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm sm:prose-base p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 font-medium leading-relaxed text-slate-700 dark:text-slate-300">
                             {!! $minute->isi_rapat !!}
                         </div>
                     </div>

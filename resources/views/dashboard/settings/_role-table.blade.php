@@ -109,27 +109,27 @@
 
                         {{-- Toggles --}}
                         <td class="px-2 sm:px-4 py-5 text-center">
-                            <label class="relative inline-flex items-center cursor-pointer" title="Create">
-                                <input type="checkbox" class="sr-only peer" :checked="canCreate" @change="$el.checked = canCreate; confirmToggle('can_create', 'Create', canCreate)">
-                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            <label class="relative inline-flex items-center" :class="roleName.toLowerCase() === 'superadmin' ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'" title="Create">
+                                <input type="checkbox" class="sr-only peer" :checked="canCreate" :disabled="roleName.toLowerCase() === 'superadmin'" @change="if(roleName.toLowerCase() === 'superadmin') return; $el.checked = canCreate; confirmToggle('can_create', 'Create', canCreate)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300 peer-disabled:opacity-50"></div>
                             </label>
                         </td>
                         <td class="px-2 sm:px-4 py-5 text-center">
-                            <label class="relative inline-flex items-center cursor-pointer" title="Read">
-                                <input type="checkbox" class="sr-only peer" :checked="canRead" @change="$el.checked = canRead; confirmToggle('can_read', 'Read', canRead)">
-                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            <label class="relative inline-flex items-center" :class="roleName.toLowerCase() === 'superadmin' ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'" title="Read">
+                                <input type="checkbox" class="sr-only peer" :checked="canRead" :disabled="roleName.toLowerCase() === 'superadmin'" @change="if(roleName.toLowerCase() === 'superadmin') return; $el.checked = canRead; confirmToggle('can_read', 'Read', canRead)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300 peer-disabled:opacity-50"></div>
                             </label>
                         </td>
                         <td class="px-2 sm:px-4 py-5 text-center">
-                            <label class="relative inline-flex items-center cursor-pointer" title="Update">
-                                <input type="checkbox" class="sr-only peer" :checked="canUpdate" @change="$el.checked = canUpdate; confirmToggle('can_update', 'Update', canUpdate)">
-                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            <label class="relative inline-flex items-center" :class="roleName.toLowerCase() === 'superadmin' ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'" title="Update">
+                                <input type="checkbox" class="sr-only peer" :checked="canUpdate" :disabled="roleName.toLowerCase() === 'superadmin'" @change="if(roleName.toLowerCase() === 'superadmin') return; $el.checked = canUpdate; confirmToggle('can_update', 'Update', canUpdate)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300 peer-disabled:opacity-50"></div>
                             </label>
                         </td>
                         <td class="px-2 sm:px-4 py-5 text-center">
-                            <label class="relative inline-flex items-center cursor-pointer" title="Delete">
-                                <input type="checkbox" class="sr-only peer" :checked="canDelete" @change="$el.checked = canDelete; confirmToggle('can_delete', 'Delete', canDelete)">
-                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300"></div>
+                            <label class="relative inline-flex items-center" :class="roleName.toLowerCase() === 'superadmin' ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'" title="Delete">
+                                <input type="checkbox" class="sr-only peer" :checked="canDelete" :disabled="roleName.toLowerCase() === 'superadmin'" @change="if(roleName.toLowerCase() === 'superadmin') return; $el.checked = canDelete; confirmToggle('can_delete', 'Delete', canDelete)">
+                                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600 dark:peer-checked:bg-emerald-500 shadow-inner animate-all duration-300 peer-disabled:opacity-50"></div>
                             </label>
                         </td>
 
@@ -144,19 +144,21 @@
                         <td class="px-6 py-5 text-right">
                             <div class="flex items-center justify-end gap-1 sm:gap-2">
                                 <x-atoms.shared.button variant="ghost" size="sm"
-                                    @click="$dispatch('open-modal', { 
+                                    ::disabled="roleName.toLowerCase() === 'superadmin'"
+                                    @click="if(roleName.toLowerCase() === 'superadmin') return; $dispatch('open-modal', { 
                                         name: 'role-menu-settings', 
                                         roleId: roleId, 
                                         roleName: roleName, 
                                         menuAccess: menuAccess 
                                     })"
-                                    class="size-8 sm:size-9 !px-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/10"
+                                    class="size-8 sm:size-9 !px-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                                     title="Atur Menu">
                                     <x-heroicon-o-cog-8-tooth class="size-4 sm:size-5" />
                                 </x-atoms.shared.button>
                                 <x-atoms.shared.button variant="ghost" size="sm"
-                                    @click="openDeleteModal('/dashboard/settings/{{ $role->id }}', 'Hapus role &quot;{{ $role->name }}&quot;?')"
-                                    class="size-8 sm:size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
+                                    ::disabled="roleName.toLowerCase() === 'superadmin'"
+                                    @click="if(roleName.toLowerCase() === 'superadmin') return; openDeleteModal('/dashboard/settings/' + roleId, 'Hapus role &quot;' + roleName + '&quot;?')"
+                                    class="size-8 sm:size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                                     title="Hapus Role">
                                     <x-heroicon-o-trash class="size-4 sm:size-5" />
                                 </x-atoms.shared.button>

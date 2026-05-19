@@ -1,15 +1,21 @@
 @props(['stats'])
 
+@php
+    use App\Models\HomeSection;
+    $statsLabel = HomeSection::get('stats', 'label', 'Pergerakan Kami');
+    $statsTitle = HomeSection::get('stats', 'title', 'Kekuatan Kolektif HMTIF-UNPAS');
+    $statsDesc = HomeSection::get('stats', 'description', 'Melalui semangat "Kartala", kami bergerak bersama untuk menghadirkan perubahan nyata melalui program kerja yang terukur.');
+@endphp
+
 <div class="py-24 bg-section relative overflow-hidden content-auto">
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl text-center mb-20">
         <x-atoms.pages.section-title align="center">
-            Pergerakan Kami
+            {{ $statsLabel }}
         </x-atoms.section-title>
-        <h2 class="text-3xl sm:text-4xl font-bold text-heading mt-4">Kekuatan Kolektif HMTIF-UNPAS</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold text-heading mt-4">{{ $statsTitle }}</h2>
         <p class="text-gray-500 max-w-2xl mx-auto mt-6 text-lg">
-            Melalui semangat "Kartala", kami bergerak bersama untuk menghadirkan perubahan nyata melalui program kerja
-            yang terukur.
+            {{ $statsDesc }}
         </p>
     </div>
 
