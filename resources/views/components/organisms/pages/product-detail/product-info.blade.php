@@ -7,11 +7,35 @@
         $orderPhone = '62' . substr($orderPhone, 1);
     }
 
-    $orderMessage = trim((string) ($product?->order_text ?: 'Halo HMTIF Store, saya ingin memesan ' . ($product?->name ?? 'produk ini') . '.'));
-    $orderUrl = $orderPhone !== '' ? 'https://wa.me/' . $orderPhone . '?text=' . urlencode($orderMessage) : null;
+    // Detect if product needs size options (e.g. if category is 'pakaian' / apparel, or if it's clothing)
+    $categorySlug = $product?->category?->slug ?? '';
+    $showSizes = ($categorySlug === 'pakaian') || in_array($product?->slug, ['hoodie-kabinet-kartala-2026', 't-shirt-oversize-hmtif', 'polo-shirt-resmi-hmtif-unpas', 'buckethat-special-edition-kartala']);
+    $availableSizes = $showSizes ? ['S', 'M', 'L', 'XL', 'XXL'] : [];
 @endphp
 
-<div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right">
+<div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right"
+    x-data="{
+        selectedSize: '{{ $showSizes ? 'L' : '' }}',
+        phone: '{{ $orderPhone ?: '628123456789' }}',
+        productName: '{{ addslashes(e($product?->name ?? '')) }}',
+        baseMessage: '{{ addslashes(e($product?->order_text ?: 'Halo HMTIF Store, saya ingin memesan [PRODUCT_NAME] dengan ukuran [SIZE].')) }}',
+        getWhatsAppUrl() {
+            let message = this.baseMessage;
+            if (message.includes('[PRODUCT_NAME]')) {
+                message = message.replace('[PRODUCT_NAME]', this.productName);
+            }
+            if (this.selectedSize) {
+                if (message.includes('[SIZE]')) {
+                    message = message.replace('[SIZE]', this.selectedSize);
+                } else {
+                    message = message + ' (Ukuran: ' + this.selectedSize + ')';
+                }
+            } else {
+                message = message.replace(' dengan ukuran [SIZE]', '').replace('[SIZE]', '');
+            }
+            return 'https://wa.me/' + this.phone + '?text=' + encodeURIComponent(message);
+        }
+    }">
     <div class="flex flex-col gap-2 mb-8">
         <span class="text-primary font-black uppercase tracking-[0.3em] text-[10px]">Merchandise Resmi</span>
         <h1 class="text-2xl md:text-4xl font-black text-heading italic uppercase tracking-tighter leading-none">
@@ -47,24 +71,33 @@
         </div>
     </div>
 
-    {{-- Size Selector Mockup --}}
-    <div class="mb-10">
-        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4">Pilih Ukuran</p>
-        <div class="flex flex-wrap gap-3">
-            @foreach ($product->sizes ?? [] as $size)
-                <button
-                    class="w-12 h-12 rounded-lg border {{ $size == 'L' ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-heading border-gray-100 hover:border-primary/40 transition-all' }} text-xs font-bold">{{ $size }}</button>
-            @endforeach
+    {{-- Size Selector --}}
+    @if ($showSizes)
+        <div class="mb-10">
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4">Pilih Ukuran</p>
+            <div class="flex flex-wrap gap-3">
+                @foreach ($availableSizes as $size)
+                    <button
+                        type="button"
+                        @click="selectedSize = '{{ $size }}'"
+                        :class="selectedSize === '{{ $size }}'
+                            ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
+                            : 'bg-white text-heading border-gray-100 hover:border-primary/40 transition-all'"
+                        class="w-12 h-12 rounded-lg border text-xs font-bold transition-all">
+                        {{ $size }}
+                    </button>
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endif
 
     {{-- CTA --}}
     <div class="flex flex-col sm:flex-row gap-4">
-        <a href="{{ $orderUrl ?: 'mailto:hmtif@unpas.ac.id?subject=Order%20HMTIF%20Store' }}"
-            data-external-url="{{ $orderUrl ?: 'mailto:hmtif@unpas.ac.id?subject=Order%20HMTIF%20Store' }}"
+        <a :href="getWhatsAppUrl()"
+            :data-external-url="getWhatsAppUrl()"
             class="flex-1 px-10 py-5 bg-primary text-white rounded-2xl font-black text-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
             <x-heroicon-o-chat-bubble-left-right class="size-6" />
-            {{ $orderUrl ? 'Pesan via WhatsApp' : 'Hubungi via Email' }}
+            Pesan via WhatsApp
         </a>
         <button
             class="px-8 py-5 rounded-2xl border border-gray-200 text-gray-400 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all">
