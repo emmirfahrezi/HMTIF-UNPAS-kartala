@@ -91,4 +91,17 @@ class DashboardActivityController extends Controller
 
         return redirect()->route('dashboard.activities')->with('success', 'Kegiatan berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $activities = Activity::whereIn('id', $ids)->get();
+        foreach ($activities as $activity) {
+            ActivityLog::record('deleted', $activity, "Menghapus kegiatan: {$activity->title}");
+            $this->deleteActivity->execute($activity);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' kegiatan berhasil dihapus.');
+    }
 }

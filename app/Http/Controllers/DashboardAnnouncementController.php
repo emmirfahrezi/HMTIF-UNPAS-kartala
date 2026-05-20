@@ -91,4 +91,25 @@ class DashboardAnnouncementController extends Controller
 
         return redirect()->route('dashboard.announcements')->with('success', 'Pengumuman berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $announcements = Announcement::whereIn('id', $ids)->get();
+        foreach ($announcements as $announcement) {
+            ActivityLog::record('deleted', $announcement, "Menghapus pengumuman: {$announcement->title}");
+            $this->deleteAnnouncement->execute($announcement);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' pengumuman berhasil dihapus.');
+    }
+
+    public function bulkDestroyCat(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'integer'])['ids'];
+        AnnouncementCategory::whereIn('id', $ids)->delete();
+
+        return redirect()->back()->with('success', count($ids) . ' kategori pengumuman berhasil dihapus.');
+    }
 }

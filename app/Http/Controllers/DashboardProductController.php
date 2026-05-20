@@ -101,4 +101,17 @@ class DashboardProductController extends Controller
 
         return redirect()->route('dashboard.products')->with('success', 'Produk berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $products = Product::whereIn('id', $ids)->get();
+        foreach ($products as $product) {
+            ActivityLog::record('deleted', $product, "Menghapus produk: {$product->name}");
+            $this->deleteProduct->execute($product);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' produk berhasil dihapus.');
+    }
 }

@@ -33,10 +33,11 @@ class DashboardDivisionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'slug'        => 'nullable|string|max:255|unique:divisions,slug',
-            'description' => 'nullable|string',
-            'order'       => 'nullable|integer',
+            'name'         => 'required|string|max:255',
+            'slug'         => 'nullable|string|max:255|unique:divisions,slug',
+            'abbreviation' => 'nullable|string|max:20',
+            'description'  => 'nullable|string',
+            'order'        => 'nullable|integer',
         ]);
 
         $division = $this->createDivision->execute($validated);
@@ -54,10 +55,11 @@ class DashboardDivisionController extends Controller
     public function update(Request $request, Division $division)
     {
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'slug'        => "required|string|max:255|unique:divisions,slug,{$division->id}",
-            'description' => 'nullable|string',
-            'order'       => 'nullable|integer',
+            'name'         => 'required|string|max:255',
+            'slug'         => "required|string|max:255|unique:divisions,slug,{$division->id}",
+            'abbreviation' => 'nullable|string|max:20',
+            'description'  => 'nullable|string',
+            'order'        => 'nullable|integer',
         ]);
 
         $this->updateDivision->execute($division, $validated);
@@ -75,5 +77,18 @@ class DashboardDivisionController extends Controller
         $this->deleteDivision->execute($division);
 
         return redirect()->route('dashboard.staffs.divisions')->with('success', 'Divisi berhasil dihapus.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $divisions = Division::whereIn('id', $ids)->get();
+        foreach ($divisions as $division) {
+            ActivityLog::record('deleted', $division, "Menghapus divisi: {$division->name}");
+            $this->deleteDivision->execute($division);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' divisi berhasil dihapus.');
     }
 }

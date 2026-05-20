@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         $this->call([
+            RoleSeeder::class,
             DivisionSeeder::class,
             AnnouncementCategorySeeder::class,
             ProductCategorySeeder::class,
@@ -53,10 +54,9 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'hmtif2526@gmail.com'],
             [
-                'name'     => 'admin',
-                'password' => bcrypt('kartala2526'),
-                'role'     => 'admin',
-                'email_verified_at'  => now(),
+                'password'          => bcrypt('kartala2526'),
+                'role'              => 'admin',
+                'email_verified_at' => now(),
             ]
         );
     }

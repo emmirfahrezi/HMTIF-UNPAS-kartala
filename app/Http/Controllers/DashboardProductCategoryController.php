@@ -65,4 +65,16 @@ class DashboardProductCategoryController extends Controller
 
         return redirect()->route('dashboard.products.categories')->with('success', 'Kategori produk berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $categories = ProductCategory::whereIn('id', $ids)->get();
+        foreach ($categories as $category) {
+            $this->deleteProductCategory->execute($category);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' kategori produk berhasil dihapus.');
+    }
 }

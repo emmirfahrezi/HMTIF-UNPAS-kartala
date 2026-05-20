@@ -7,24 +7,27 @@ use Illuminate\Http\Request;
 
 class DashboardSettingController extends Controller
 {
-    const MENU_ITEMS = [
-        ['key' => 'dashboard',        'label' => 'Dashboard',      'type' => 'root'],
-        ['key' => 'konten',           'label' => 'Konten',         'type' => 'category'],
-        ['key' => 'home-sections',    'label' => 'Halaman Utama',  'type' => 'item', 'parent' => 'konten'],
-        ['key' => 'activities',       'label' => 'Kegiatan',       'type' => 'item', 'parent' => 'konten'],
-        ['key' => 'announcements',    'label' => 'Pengumuman',     'type' => 'item', 'parent' => 'konten'],
-        ['key' => 'organisasi',       'label' => 'Organisasi',     'type' => 'category'],
-        ['key' => 'staffs',           'label' => 'Pengurus',       'type' => 'item', 'parent' => 'organisasi'],
-        ['key' => 'staffs/divisions', 'label' => 'Divisi',         'type' => 'item', 'parent' => 'staffs'],
-        ['key' => 'aspirations',      'label' => 'Aspirasi',       'type' => 'item', 'parent' => 'organisasi'],
-        ['key' => 'minutes',          'label' => 'Notulensi',      'type' => 'item', 'parent' => 'organisasi'],
-        ['key' => 'store',            'label' => 'Store',          'type' => 'category'],
-        ['key' => 'products',         'label' => 'Produk',         'type' => 'item', 'parent' => 'store'],
-        ['key' => 'pengaturan',       'label' => 'Pengaturan',     'type' => 'category'],
-        ['key' => 'activity-logs',    'label' => 'Log Aktivitas',  'type' => 'item', 'parent' => 'pengaturan'],
-        ['key' => 'stats',            'label' => 'Statistik',      'type' => 'item', 'parent' => 'pengaturan'],
-        ['key' => 'users',            'label' => 'Pengguna',       'type' => 'item', 'parent' => 'pengaturan'],
-        ['key' => 'settings',         'label' => 'Sistem Settings','type' => 'item', 'parent' => 'pengaturan'],
+    public const MENU_ITEMS = [
+        ['key' => 'dashboard',                'label' => 'Dashboard',             'type' => 'root'],
+        ['key' => 'profile',                  'label' => 'Profil Saya',           'type' => 'item', 'parent' => 'dashboard'],
+        ['key' => 'konten',                   'label' => 'Konten',                'type' => 'category'],
+        ['key' => 'home-sections',            'label' => 'Halaman Utama',         'type' => 'item', 'parent' => 'konten'],
+        ['key' => 'activities',               'label' => 'Kegiatan',              'type' => 'item', 'parent' => 'konten'],
+        ['key' => 'announcements',            'label' => 'Pengumuman',            'type' => 'item', 'parent' => 'konten'],
+        ['key' => 'announcements/categories', 'label' => 'Kategori Pengumuman',   'type' => 'item', 'parent' => 'announcements'],
+        ['key' => 'organisasi',               'label' => 'Organisasi',            'type' => 'category'],
+        ['key' => 'staffs',                   'label' => 'Pengurus',              'type' => 'item', 'parent' => 'organisasi'],
+        ['key' => 'staffs/divisions',         'label' => 'Divisi',                'type' => 'item', 'parent' => 'staffs'],
+        ['key' => 'aspirations',              'label' => 'Aspirasi',              'type' => 'item', 'parent' => 'organisasi'],
+        ['key' => 'minutes',                  'label' => 'Notulensi',             'type' => 'item', 'parent' => 'organisasi'],
+        ['key' => 'store',                    'label' => 'Store',                 'type' => 'category'],
+        ['key' => 'products',                 'label' => 'Produk',                'type' => 'item', 'parent' => 'store'],
+        ['key' => 'products/categories',      'label' => 'Kategori Produk',       'type' => 'item', 'parent' => 'products'],
+        ['key' => 'pengaturan',               'label' => 'Pengaturan',            'type' => 'category'],
+        ['key' => 'activity-logs',            'label' => 'Log Aktivitas',         'type' => 'item', 'parent' => 'pengaturan'],
+        ['key' => 'stats',                    'label' => 'Statistik',             'type' => 'item', 'parent' => 'pengaturan'],
+        ['key' => 'users',                    'label' => 'Pengguna',              'type' => 'item', 'parent' => 'pengaturan'],
+        ['key' => 'settings',                 'label' => 'Sistem Settings',       'type' => 'item', 'parent' => 'pengaturan'],
     ];
 
     public function index()
@@ -81,5 +84,13 @@ class DashboardSettingController extends Controller
         $role->delete();
 
         return redirect()->route('dashboard.settings.index')->with('success', 'Role berhasil dihapus.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'integer'])['ids'];
+        Role::whereIn('id', $ids)->delete();
+
+        return redirect()->back()->with('success', count($ids) . ' role berhasil dihapus.');
     }
 }

@@ -102,4 +102,17 @@ class DashboardMinuteController extends Controller
 
         return redirect()->route('dashboard.minutes')->with('success', 'Notulensi berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $minutes = Minute::whereIn('id', $ids)->get();
+        foreach ($minutes as $minute) {
+            ActivityLog::record('deleted', $minute, "Menghapus notulensi: {$minute->perihal}");
+            $this->deleteMinute->execute($minute);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' notulensi berhasil dihapus.');
+    }
 }
