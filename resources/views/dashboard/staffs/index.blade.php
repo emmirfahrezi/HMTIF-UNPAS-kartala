@@ -1,14 +1,9 @@
 @php
-    $role = \App\Models\Role::where('name', [
-        'admin' => 'Superadmin', 'bph' => 'BPH', 'koordinator' => 'Koordinator', 'staff' => 'Staff'
-    ][auth()->user()->role] ?? auth()->user()->role)->first();
-    $canRead = $role ? (bool)$role->can_read : true;
-    $canCreate = $role ? (bool)$role->can_create : true;
-    $canUpdate = $role ? (bool)$role->can_update : true;
-    $canDelete = $role ? (bool)$role->can_delete : true;
-    if (auth()->user()->role === 'admin') {
-        $canRead = $canCreate = $canUpdate = $canDelete = true;
-    }
+    $permissions = $permissions ?? [];
+    $canRead = (bool) ($permissions['read'] ?? true);
+    $canCreate = (bool) ($permissions['create'] ?? true);
+    $canUpdate = (bool) ($permissions['update'] ?? true);
+    $canDelete = (bool) ($permissions['delete'] ?? true);
 @endphp
 <x-layouts.dashboard pageTitle="Pengurus" :breadcrumbs="[['label' => 'Pengurus']]">
     @if (!$canRead)

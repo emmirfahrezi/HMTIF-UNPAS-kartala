@@ -19,11 +19,11 @@
         </script>
     </x-slot:head>
 
-    <x-organisms.pages.home.hero />
-    <x-organisms.pages.home.about />
-    <x-organisms.pages.home.vision-mission />
+    <x-organisms.pages.home.hero :home-sections="$homeSections ?? []" />
+    <x-organisms.pages.home.about :home-sections="$homeSections ?? []" />
+    <x-organisms.pages.home.vision-mission :home-sections="$homeSections ?? []" />
     <x-organisms.pages.home.activities-preview :activities="$activities" />
     <x-organisms.pages.home.announcements-preview :announcements="$announcements" />
-    <x-organisms.pages.home.stats :stats="$stats" />
+    <x-organisms.pages.home.stats :stats="$stats" :home-sections="$homeSections ?? []" />
 </x-layouts.app>
 

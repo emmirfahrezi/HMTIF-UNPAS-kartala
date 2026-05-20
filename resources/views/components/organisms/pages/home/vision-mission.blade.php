@@ -1,15 +1,14 @@
+@props(['homeSections' => []])
+
 @php
-    use App\Models\HomeSection;
-    
-    // Fetch fields
-    $vmLabel = HomeSection::get('vision_mission', 'label', 'Arah Gerak Organisasi');
-    $vmTitle = HomeSection::get('vision_mission', 'title', 'Visi & Misi HMTIF');
-    $vmDesc = HomeSection::get('vision_mission', 'description', 'Fondasi nilai yang membentuk cara kami berpikir, bergerak, dan berkontribusi untuk mahasiswa Teknik Informatika UNPAS.');
-    $visionTitle = HomeSection::get('vision_mission', 'vision_title', 'Visi Utama');
-    $visionText = HomeSection::get('vision_mission', 'vision_text', 'Mewujudkan HMTIF UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun harmoni serta kemajuan Teknik Informatika.');
-    $visionTagline = HomeSection::get('vision_mission', 'vision_tagline', 'VISION FIRST, IMPACT FOLLOWS');
-    $missionTitle = HomeSection::get('vision_mission', 'mission_title', 'Misi Strategis');
-    $missionText = HomeSection::get('vision_mission', 'mission_text', '');
+    $vmLabel = data_get($homeSections, 'vision_mission.label', 'Arah Gerak Organisasi');
+    $vmTitle = data_get($homeSections, 'vision_mission.title', 'Visi & Misi HMTIF');
+    $vmDesc = data_get($homeSections, 'vision_mission.description', 'Fondasi nilai yang membentuk cara kami berpikir, bergerak, dan berkontribusi untuk mahasiswa Teknik Informatika UNPAS.');
+    $visionTitle = data_get($homeSections, 'vision_mission.vision_title', 'Visi Utama');
+    $visionText = data_get($homeSections, 'vision_mission.vision_text', 'Mewujudkan HMTIF UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun harmoni serta kemajuan Teknik Informatika.');
+    $visionTagline = data_get($homeSections, 'vision_mission.vision_tagline', 'VISION FIRST, IMPACT FOLLOWS');
+    $missionTitle = data_get($homeSections, 'vision_mission.mission_title', 'Misi Strategis');
+    $missionText = data_get($homeSections, 'vision_mission.mission_text', '');
 
     // Parse missions intelligently from plain/HTML text
     $missions = [];

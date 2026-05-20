@@ -1,29 +1,8 @@
 {{-- Track Aspiration (Official Brand Theme) --}}
 <section class="py-12 relative">
     @php
-        use App\Models\Aspiration;
         $trackCode = strtoupper(trim((string) request('code')));
-        $aspiration = $trackCode ? Aspiration::where('tracking_code', $trackCode)->first() : null;
-        
-        if ($aspiration) {
-            $id = $aspiration->id;
-            // Baca dari persistent JSON file agar sinkron lintas session/browser
-            $feedbackFile = storage_path('app/aspiration_feedback.json');
-            if (file_exists($feedbackFile)) {
-                $feedbackData = json_decode(file_get_contents($feedbackFile), true) ?: [];
-                if (isset($feedbackData[$id])) {
-                    $aspiration->status = $feedbackData[$id]['status'];
-                    $aspiration->admin_feedback = $feedbackData[$id]['feedback'];
-                }
-            }
-            // Fallback ke session mock jika ada
-            if (session()->has("asp_status_{$id}")) {
-                $aspiration->status = session("asp_status_{$id}");
-            }
-            if (session()->has("asp_feedback_{$id}")) {
-                $aspiration->admin_feedback = session("asp_feedback_{$id}");
-            }
-        }
+        $aspiration = $trackedAspiration ?? null;
         
         $statusMap = [
             'pending'  => ['label' => 'Aspirasi Masuk', 'step' => 1],

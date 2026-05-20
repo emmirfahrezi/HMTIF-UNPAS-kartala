@@ -1,19 +1,19 @@
+@props(['homeSections' => []])
+
 @php
-    use App\Models\HomeSection;
-    
     // Section 1: Identity
-    $identityTitle = HomeSection::get('identity', 'title', 'Identitas & Harapan');
-    $identitySubtitle = HomeSection::get('identity', 'subtitle', 'Himpunan Mahasiswa Teknik Informatika UNPAS');
-    $identityDesc = HomeSection::get('identity', 'description', 'HMTIF Universitas Pasundan bukan sekadar organisasi mahasiswa. Kami adalah laboratorium kehidupan, tempat di mana setiap mahasiswa Teknik Informatika menemukan potensi terbaiknya melalui kolaborasi, riset, dan semangat kekeluargaan yang telah terjaga selama puluhan tahun.');
-    $point1Title = HomeSection::get('identity', 'point_1_title', 'Pusat Riset');
-    $point1Desc = HomeSection::get('identity', 'point_1_desc', 'Mengembangkan solusi teknologi inovatif.');
-    $point2Title = HomeSection::get('identity', 'point_2_title', 'Wadah Solutif');
-    $point2Desc = HomeSection::get('identity', 'point_2_desc', 'Menampung aspirasi setiap anggota.');
+    $identityTitle = data_get($homeSections, 'identity.title', 'Identitas & Harapan');
+    $identitySubtitle = data_get($homeSections, 'identity.subtitle', 'Himpunan Mahasiswa Teknik Informatika UNPAS');
+    $identityDesc = data_get($homeSections, 'identity.description', 'HMTIF Universitas Pasundan bukan sekadar organisasi mahasiswa. Kami adalah laboratorium kehidupan, tempat di mana setiap mahasiswa Teknik Informatika menemukan potensi terbaiknya melalui kolaborasi, riset, dan semangat kekeluargaan yang telah terjaga selama puluhan tahun.');
+    $point1Title = data_get($homeSections, 'identity.point_1_title', 'Pusat Riset');
+    $point1Desc = data_get($homeSections, 'identity.point_1_desc', 'Mengembangkan solusi teknologi inovatif.');
+    $point2Title = data_get($homeSections, 'identity.point_2_title', 'Wadah Solutif');
+    $point2Desc = data_get($homeSections, 'identity.point_2_desc', 'Menampung aspirasi setiap anggota.');
 
     // Section 2: Era
-    $eraLabel = HomeSection::get('era', 'label', 'Era Baru: Kartala');
-    $eraTitle = HomeSection::get('era', 'title', 'HARMONI DALAM PERGERAKAN NYATA');
-    $eraDesc = HomeSection::get('era', 'description', 'Di bawah semangat HMTIF UNPAS, kami berkomitmen untuk menghadirkan perubahan yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.');
+    $eraLabel = data_get($homeSections, 'era.label', 'Era Baru: Kartala');
+    $eraTitle = data_get($homeSections, 'era.title', 'HARMONI DALAM PERGERAKAN NYATA');
+    $eraDesc = data_get($homeSections, 'era.description', 'Di bawah semangat HMTIF UNPAS, kami berkomitmen untuk menghadirkan perubahan yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.');
 @endphp
 
 <!-- about HMTIF -->

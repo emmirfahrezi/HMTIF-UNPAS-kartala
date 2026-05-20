@@ -485,7 +485,7 @@
                                 <div class="kop-surat" style="padding-top: 5mm;">
                                     <div class="kop-row">
                                         <img src="{{ config('app.logo_unpas_url') }}" alt="Logo UNPAS" class="kop-logo"
-                                            onerror="this.src='https://via.placeholder.com/100x100?text=UNPAS'">
+                                            onerror="this.src='{{ asset('images/placeholders/logo.svg') }}'">
                                         <div class="kop-text">
                                             <h1>HIMPUNAN MAHASISWA TEKNIK INFORMATIKA</h1>
                                             <h2>FAKULTAS TEKNIK</h2>
@@ -614,7 +614,7 @@
                                 <div class="kop-surat" style="padding-top: 5mm;">
                                     <div class="kop-row">
                                         <img src="{{ config('app.logo_unpas_url') }}" alt="Logo UNPAS" class="kop-logo"
-                                            onerror="this.src='https://via.placeholder.com/100x100?text=UNPAS'">
+                                            onerror="this.src='{{ asset('images/placeholders/logo.svg') }}'">
                                         <div class="kop-text">
                                             <h1>HIMPUNAN MAHASISWA TEKNIK INFORMATIKA</h1>
                                             <h2>FAKULTAS TEKNIK</h2>

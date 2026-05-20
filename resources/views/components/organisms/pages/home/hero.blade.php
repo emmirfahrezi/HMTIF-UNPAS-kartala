@@ -1,10 +1,11 @@
+@props(['homeSections' => []])
+
 @php
-    use App\Models\HomeSection;
-    $tagline = HomeSection::get('hero', 'tagline', 'Selamat Datang di Portal Resmi HMTIF-UNPAS');
-    $title = HomeSection::get('hero', 'title', 'HMTIF-UNPAS');
-    $subtitle = HomeSection::get('hero', 'description', 'Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui dedikasi dan kerja nyata.');
-    $btnPrimary = HomeSection::get('hero', 'btn_primary', 'Jelajahi Program');
-    $btnSecondary = HomeSection::get('hero', 'btn_secondary', 'Tentang Kami');
+    $tagline = data_get($homeSections, 'hero.tagline', 'Selamat Datang di Portal Resmi HMTIF-UNPAS');
+    $title = data_get($homeSections, 'hero.title', 'HMTIF-UNPAS');
+    $subtitle = data_get($homeSections, 'hero.description', 'Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui dedikasi dan kerja nyata.');
+    $btnPrimary = data_get($homeSections, 'hero.btn_primary', 'Jelajahi Program');
+    $btnSecondary = data_get($homeSections, 'hero.btn_secondary', 'Tentang Kami');
 @endphp
 
 <div

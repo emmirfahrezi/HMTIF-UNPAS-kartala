@@ -13,10 +13,8 @@
         'staff' => 'Staff'
     ];
     $roleName = $roleNameMap[$user->role ?? ''] ?? ($user->role ?? '');
-    $role = \App\Models\Role::where('name', $roleName)->first();
-
-    $hasFullAccess = !$role || is_null($role->menu_access) || $roleName === 'Superadmin';
-    $allowedMenus = $role ? ($role->menu_access ?? []) : [];
+    $hasFullAccess = (bool) ($hasFullAccess ?? true);
+    $allowedMenus = $allowedMenus ?? [];
 
     $cleanPath = preg_replace('/^dashboard\/?/', '', $currentRoute);
     if (str_starts_with($cleanPath, 'staffs/divisions')) {
@@ -24,10 +22,6 @@
     } else {
         $pathParts = explode('/', $cleanPath);
         $pageKey = !empty($pathParts[0]) ? $pathParts[0] : 'dashboard';
-    }
-
-    if (!$hasFullAccess && !in_array($pageKey, $allowedMenus)) {
-        abort(403, 'Anda tidak memiliki hak akses untuk halaman ini.');
     }
 
     // Determine visual skeleton structure based on route

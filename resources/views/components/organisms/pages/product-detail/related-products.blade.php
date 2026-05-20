@@ -40,7 +40,7 @@
             </div>
 
             @if ($products->isEmpty())
-                <p class="text-sm text-body/60 mt-8">Belum ada produk terkait. Jalankan seeder untuk menampilkan data.
+                <p class="text-sm text-body/60 mt-8">Belum ada produk terkait.
                 </p>
             @endif
         </div>

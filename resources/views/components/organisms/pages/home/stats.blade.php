@@ -1,10 +1,9 @@
-@props(['stats'])
+@props(['stats', 'homeSections' => []])
 
 @php
-    use App\Models\HomeSection;
-    $statsLabel = HomeSection::get('stats', 'label', 'Pergerakan Kami');
-    $statsTitle = HomeSection::get('stats', 'title', 'Kekuatan Kolektif HMTIF-UNPAS');
-    $statsDesc = HomeSection::get('stats', 'description', 'Melalui semangat "Kartala", kami bergerak bersama untuk menghadirkan perubahan nyata melalui program kerja yang terukur.');
+    $statsLabel = data_get($homeSections, 'stats.label', 'Pergerakan Kami');
+    $statsTitle = data_get($homeSections, 'stats.title', 'Kekuatan Kolektif HMTIF-UNPAS');
+    $statsDesc = data_get($homeSections, 'stats.description', 'Melalui semangat "Kartala", kami bergerak bersama untuk menghadirkan perubahan nyata melalui program kerja yang terukur.');
 @endphp
 
 <div class="py-24 bg-section relative overflow-hidden content-auto">
@@ -28,7 +27,7 @@
         </div>
 
         @if ($stats->isEmpty())
-            <p class="text-sm text-body/60 mt-8 text-center">Belum ada statistik. Jalankan seeder untuk menampilkan data.
+            <p class="text-sm text-body/60 mt-8 text-center">Belum ada statistik yang tersedia.
             </p>
         @endif
     </div>
