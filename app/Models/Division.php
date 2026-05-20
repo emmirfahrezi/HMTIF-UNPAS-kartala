@@ -12,7 +12,7 @@ class Division extends Model
 
     protected static string $idPrefix = 'div';
 
-    protected $fillable = ['name', 'slug', 'description', 'order'];
+    protected $fillable = ['name', 'slug', 'abbreviation', 'description', 'order'];
 
     public function staffs(): HasMany
     {

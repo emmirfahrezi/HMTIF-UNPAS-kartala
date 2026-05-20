@@ -76,4 +76,17 @@ class DashboardStatController extends Controller
 
         return redirect()->route('dashboard.stats')->with('success', 'Statistik berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $stats = Stat::whereIn('id', $ids)->get();
+        foreach ($stats as $stat) {
+            ActivityLog::record('deleted', $stat, "Menghapus statistik: {$stat->label}");
+            $this->deleteStat->execute($stat);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' statistik berhasil dihapus.');
+    }
 }

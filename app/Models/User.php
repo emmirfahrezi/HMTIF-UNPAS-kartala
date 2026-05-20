@@ -20,8 +20,13 @@ class User extends Authenticatable
     public function isKoordinator(): bool { return in_array($this->role, ['admin', 'bph', 'koordinator']); }
 
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'staff_id',
+        'email', 'password', 'role', 'staff_id',
     ];
+
+    public function getNameAttribute(): string
+    {
+        return $this->staff?->name ?? $this->email;
+    }
 
     protected $hidden = [
         'password', 'remember_token',

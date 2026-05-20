@@ -24,15 +24,15 @@ class DashboardStaffController extends Controller
     public function index(Request $request)
     {
         $staffs    = $this->getStaffs->execute($request);
-        $divisions = Division::orderBy('order')->get();
+        $divisions = Division::orderBy('order', 'asc')->get();
 
         return view('dashboard.staffs.index', compact('staffs', 'divisions'));
     }
 
     public function create()
     {
-        $divisions = Division::orderBy('order')->get()->pluck('name', 'id');
-        $users     = User::orderBy('name')->get()->pluck('name', 'id');
+        $divisions = Division::orderBy('order', 'asc')->get()->pluck('name', 'id');
+        $users     = User::orderBy('email', 'asc')->get()->pluck('email', 'id');
 
         return view('dashboard.staffs.create', compact('divisions', 'users'));
     }
@@ -62,8 +62,8 @@ class DashboardStaffController extends Controller
 
     public function edit(Staff $staff)
     {
-        $divisions = Division::orderBy('order')->get()->pluck('name', 'id');
-        $users     = User::orderBy('name')->get()->pluck('name', 'id');
+        $divisions = Division::orderBy('order', 'asc')->get()->pluck('name', 'id');
+        $users     = User::orderBy('email', 'asc')->get()->pluck('email', 'id');
 
         return view('dashboard.staffs.edit', compact('staff', 'divisions', 'users'));
     }
@@ -99,5 +99,29 @@ class DashboardStaffController extends Controller
         $this->deleteStaff->execute($staff);
 
         return redirect()->route('dashboard.staffs')->with('success', 'Staff berhasil dihapus.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        $staffs = Staff::whereIn('id', $ids)->get();
+        foreach ($staffs as $staff) {
+            ActivityLog::record('deleted', $staff, "Menghapus pengurus: {$staff->name}");
+            $this->deleteStaff->execute($staff);
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' pengurus berhasil dihapus.');
+    }
+
+    public function reorder(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+
+        foreach ($ids as $order => $id) {
+            Staff::where('id', $id)->update(['order' => $order]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }
