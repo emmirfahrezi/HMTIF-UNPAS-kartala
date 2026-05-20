@@ -74,7 +74,7 @@
         </div>
 
         @if ($activities->isEmpty())
-            <p class="text-sm text-body/60 mt-8">Belum ada kegiatan. Jalankan seeder untuk menampilkan data.</p>
+            <p class="text-sm text-body/60 mt-8">Belum ada kegiatan yang tersedia.</p>
         @endif
     </div>
 </div>

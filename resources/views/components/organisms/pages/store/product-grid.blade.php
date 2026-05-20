@@ -99,7 +99,7 @@
             </div>
 
             @if ($products->isEmpty())
-                <p class="text-sm text-body/60 mt-8">Belum ada produk. Jalankan seeder untuk menampilkan data.</p>
+                <p class="text-sm text-body/60 mt-8">Belum ada produk yang tersedia.</p>
             @endif
         </div>
     </section>

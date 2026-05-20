@@ -73,7 +73,7 @@
             </div>
 
             @if ($timelineActivities->isEmpty())
-                <p class="text-sm text-body/60 mt-4">Belum ada agenda mendatang. Jalankan seeder untuk menampilkan data.
+                <p class="text-sm text-body/60 mt-4">Belum ada agenda mendatang.
                 </p>
             @endif
         </div>

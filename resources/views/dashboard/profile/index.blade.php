@@ -1,14 +1,13 @@
 @php
-    $user = auth()->user();
-    $staff = $user ? \App\Models\Staff::where('user_id', $user->id)->first() : null;
+    $user = $user ?? auth()->user();
+    $staff = $staff ?? null;
     
-    // Fallback data demo berkualitas tinggi jika data pengurus/staff belum terhubung
     $avatarUrl = $staff && $staff->photo 
         ? asset('storage/' . $staff->photo) 
         : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($user->name ?? 'Kartala User');
         
-    $name = $user->name ?? 'Emmir Fahrezi';
-    $email = $user->email ?? 'emmir@hmtifunpas.org';
+    $name = $user->name ?? 'Pengguna Kartala';
+    $email = $user->email ?? '';
     
     $roleNameMap = [
         'admin' => 'Superadmin',
@@ -18,11 +17,11 @@
     ];
     $roleDisplay = $roleNameMap[$user->role ?? 'staff'] ?? 'Pengurus';
     
-    $instagram = $staff->instagram ?? 'emmirfahrezi';
-    $linkedin = $staff->linkedin ?? 'emmir-fahrezi';
-    $github = 'emmirf'; // Fallback demo
-    $bio = $staff->bio ?? 'Bekerja dengan hati untuk kemajuan Informatika UNPAS.';
-    $position = $staff->position ?? 'Presiden Mahasiswa / Superadmin';
+    $instagram = $staff->instagram ?? '';
+    $linkedin = $staff->linkedin ?? '';
+    $github = '';
+    $bio = $staff->bio ?? '';
+    $position = $staff->position ?? $roleDisplay;
 @endphp
 
 <x-layouts.dashboard pageTitle="Profil Saya" :breadcrumbs="[['label' => 'Profil Saya']]">

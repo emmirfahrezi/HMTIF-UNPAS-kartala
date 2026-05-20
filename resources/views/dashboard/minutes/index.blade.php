@@ -1,14 +1,9 @@
 @php
-    $role = \App\Models\Role::where('name', [
-        'admin' => 'Superadmin', 'bph' => 'BPH', 'koordinator' => 'Koordinator', 'staff' => 'Staff'
-    ][auth()->user()->role] ?? auth()->user()->role)->first();
-    $canRead = $role ? (bool)$role->can_read : true;
-    $canCreate = $role ? (bool)$role->can_create : true;
-    $canUpdate = $role ? (bool)$role->can_update : true;
-    $canDelete = $role ? (bool)$role->can_delete : true;
-    if (auth()->user()->role === 'admin') {
-        $canRead = $canCreate = $canUpdate = $canDelete = true;
-    }
+    $permissions = $permissions ?? [];
+    $canRead = (bool) ($permissions['read'] ?? true);
+    $canCreate = (bool) ($permissions['create'] ?? true);
+    $canUpdate = (bool) ($permissions['update'] ?? true);
+    $canDelete = (bool) ($permissions['delete'] ?? true);
 @endphp
 <x-layouts.dashboard pageTitle="Notulensi Rapat" :breadcrumbs="[['label' => 'Notulensi']]">
     @if (!$canRead)
@@ -68,10 +63,10 @@
                 <td class="px-5 py-4 whitespace-nowrap">
                     <span class="text-xs font-black text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg uppercase tracking-widest transition-colors">{{ $item->nomor }}</span>
                 </td>
-                <td class="px-5 py-4">
+                <td class="px-5 py-4 max-w-[280px] md:max-w-[360px]">
                     <div class="flex flex-col">
-                        <span class="text-sm font-bold text-slate-800 dark:text-white leading-tight mb-1">{{ $item->perihal }}</span>
-                        <p class="text-[11px] text-slate-400 dark:text-slate-500 line-clamp-1 italic">{{ strip_tags($item->agenda) }}</p>
+                        <span class="text-sm font-bold text-slate-800 dark:text-white leading-tight mb-1 truncate" title="{{ $item->perihal }}">{{ $item->perihal }}</span>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500 line-clamp-1 italic truncate" title="{{ strip_tags($item->agenda) }}">{{ strip_tags($item->agenda) }}</p>
                     </div>
                 </td>
                 <td class="px-5 py-4">

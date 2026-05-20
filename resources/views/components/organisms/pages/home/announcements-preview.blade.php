@@ -59,7 +59,7 @@
         </div>
 
         @if ($announcements->isEmpty())
-            <p class="text-sm text-body/60 mt-8 text-center">Belum ada pengumuman. Jalankan seeder untuk menampilkan data.</p>
+            <p class="text-sm text-body/60 mt-8 text-center">Belum ada pengumuman yang tersedia.</p>
         @endif
 
         <div class="mt-12 text-center">

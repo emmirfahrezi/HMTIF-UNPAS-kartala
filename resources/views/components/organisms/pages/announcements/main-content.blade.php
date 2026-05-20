@@ -75,7 +75,7 @@
                         @if ($search !== '' || request('category_id'))
                             Tidak ada pengumuman yang cocok dengan filter yang sedang aktif.
                         @else
-                            Belum ada pengumuman yang tersedia. Jalankan seeder untuk menampilkan data.
+                            Belum ada pengumuman yang tersedia.
                         @endif
                     </p>
                 </div>

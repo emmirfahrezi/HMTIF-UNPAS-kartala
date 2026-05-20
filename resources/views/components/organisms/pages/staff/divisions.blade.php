@@ -77,6 +77,6 @@
     @endforeach
 
     @if ($divisions->isEmpty())
-        <p class="text-sm text-body/60">Belum ada data divisi. Jalankan seeder untuk menampilkan data.</p>
+        <p class="text-sm text-body/60">Belum ada data divisi yang tersedia.</p>
     @endif
 

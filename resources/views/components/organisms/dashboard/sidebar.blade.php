@@ -2,7 +2,7 @@
 @php
     $currentRoute = request()->path();
 
-    $menuGroups = [
+    $menuGroups = $dashboardMenuGroups ?? [
         'Overview' => [
             ['label' => 'Dashboard', 'icon' => 'heroicon-o-squares-2x2', 'href' => '/dashboard', 'match' => 'dashboard'],
         ],
@@ -28,19 +28,8 @@
         ],
     ];
 
-    // Filter menu groups based on role permissions
-    $user = auth()->user();
-    $roleNameMap = [
-        'admin' => 'Superadmin',
-        'bph' => 'BPH',
-        'koordinator' => 'Koordinator',
-        'staff' => 'Staff'
-    ];
-    $roleName = $roleNameMap[$user->role ?? ''] ?? ($user->role ?? '');
-    $role = \App\Models\Role::where('name', $roleName)->first();
-
-    $hasFullAccess = !$role || is_null($role->menu_access) || $roleName === 'Superadmin';
-    $allowedMenus = $role ? ($role->menu_access ?? []) : [];
+    $hasFullAccess = (bool) ($hasFullAccess ?? true);
+    $allowedMenus = $allowedMenus ?? [];
 
     foreach ($menuGroups as $group => $items) {
         $filteredItems = [];

@@ -6,17 +6,7 @@
             $thumbnail !== '' &&
             \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
         $heroImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/announcement.svg');
-
-        $relatedAnnouncements = \App\Models\Announcement::with('category')
-            ->where('id', '!=', $announcement->id)
-            ->whereNotNull('published_at')
-            ->where('published_at', '<=', now())
-            ->when($announcement->announcement_category_id, function ($query) use ($announcement) {
-                $query->where('announcement_category_id', $announcement->announcement_category_id);
-            })
-            ->orderByDesc('published_at')
-            ->limit(4)
-            ->get();
+        $relatedAnnouncements = $relatedAnnouncements ?? collect();
     @endphp
 
     <x-molecules.pages.sections.page-hero icon="heroicon-o-megaphone">
