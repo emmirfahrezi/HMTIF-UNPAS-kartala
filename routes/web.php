@@ -47,8 +47,8 @@ Route::get('/', function (GetHomeStatsService $getStats, GetActivitiesPreviewSer
 
 Route::get('/staff', function (GetAllStaffsService $getStaffs, GetDivisionsService $getDivisions, ) {
     return view('pages.staff', [
-        'staffs' => $getStaffs->execute(),
-        'divisions' => $getDivisions->execute(),
+        'staffs'    => $getStaffs->execute(),
+        'divisions' => $getDivisions->execute(excludeBph: true),
     ]);
 })->name('staff');
 
