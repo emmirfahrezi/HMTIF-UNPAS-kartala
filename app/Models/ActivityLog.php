@@ -22,6 +22,8 @@ class ActivityLog extends Model
         'created' => 'Dibuat',
         'updated' => 'Diperbarui',
         'deleted' => 'Dihapus',
+        'login'   => 'Login',
+        'logout'  => 'Logout',
     ];
 
     public static function record(string $action, Model $model, string $description): void
