@@ -15,6 +15,25 @@ class User extends Authenticatable
 
     protected static string $idPrefix = 'usr';
 
+    /** Daftar role untuk form (value => label singkat). */
+    public const ROLES = [
+        'admin'       => 'Admin',
+        'bph'         => 'BPH',
+        'koordinator' => 'Koordinator',
+        'staff'       => 'Staff',
+    ];
+
+    /**
+     * Label role untuk tampilan UI dashboard (lebih deskriptif).
+     * 'admin' ditampilkan sebagai 'Superadmin' di topbar/sidebar.
+     */
+    public const ROLE_LABELS = [
+        'admin'       => 'Superadmin',
+        'bph'         => 'BPH',
+        'koordinator' => 'Koordinator',
+        'staff'       => 'Staff',
+    ];
+
     public function isAdmin(): bool       { return $this->role === 'admin'; }
     public function isBph(): bool         { return in_array($this->role, ['admin', 'bph']); }
     public function isKoordinator(): bool { return in_array($this->role, ['admin', 'bph', 'koordinator']); }
@@ -26,6 +45,21 @@ class User extends Authenticatable
     public function getNameAttribute(): string
     {
         return $this->staff?->name ?? $this->email;
+    }
+
+    /** Label role untuk ditampilkan di UI (misal: "Superadmin", "BPH"). */
+    public function getRoleLabelAttribute(): string
+    {
+        return self::ROLE_LABELS[$this->role ?? ''] ?? ucfirst((string) ($this->role ?? ''));
+    }
+
+    /**
+     * Inisial satu huruf untuk avatar/topbar.
+     * Diambil dari huruf pertama nama, fallback ke 'A'.
+     */
+    public function getInitialAttribute(): string
+    {
+        return strtoupper(substr($this->name, 0, 1) ?: 'A');
     }
 
     protected $hidden = [

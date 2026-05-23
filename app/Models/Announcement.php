@@ -21,6 +21,27 @@ class Announcement extends Model
         'published_at' => 'datetime',
     ];
 
+    /**
+     * URL thumbnail yang sudah divalidasi.
+     * Jika path lokal → kembalikan as-is.
+     * Jika kosong → kembalikan placeholder.
+     */
+    public function getThumbnailUrlAttribute(): string
+    {
+        $thumbnail = (string) ($this->thumbnail ?? '');
+
+        if ($thumbnail === '') {
+            return asset('images/placeholders/announcement.svg');
+        }
+
+        $isLocal = str_starts_with($thumbnail, '/')
+            || str_starts_with($thumbnail, 'storage/')
+            || str_starts_with($thumbnail, 'images/')
+            || str_starts_with($thumbnail, url('/'));
+
+        return $isLocal ? $thumbnail : asset('images/placeholders/announcement.svg');
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(AnnouncementCategory::class, 'announcement_category_id');
