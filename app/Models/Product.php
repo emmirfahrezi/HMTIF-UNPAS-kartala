@@ -19,10 +19,82 @@ class Product extends Model
         'description', 'price', 'phone_number', 'order_text', 'is_available',
     ];
 
+    /** Ukuran yang tersedia untuk produk berupa pakaian. */
+    public const CLOTHING_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+
+    /**
+     * URL gambar utama produk yang sudah divalidasi.
+     * Mengambil dari relasi primaryImage → image_path.
+     * Fallback ke placeholder jika kosong atau bukan path lokal.
+     */
+    public function getPrimaryImageUrlAttribute(): string
+    {
+        $path = (string) (optional($this->primaryImage)->image_path ?? '');
+
+        if ($path === '') {
+            return asset('images/placeholders/product.svg');
+        }
+
+        $isLocal = str_starts_with($path, '/')
+            || str_starts_with($path, 'storage/')
+            || str_starts_with($path, 'images/')
+            || str_starts_with($path, url('/'));
+
+        return $isLocal ? $path : asset('images/placeholders/product.svg');
+    }
+
+    /** Slug kategori yang dianggap sebagai produk pakaian (perlu pilihan ukuran). */
+    public const CLOTHING_CATEGORY_SLUGS = ['pakaian'];
+
     protected $casts = [
         'price'        => 'decimal:2',
         'is_available' => 'boolean',
     ];
+
+    // -----------------------------------------------------------------------
+    // Accessors
+    // -----------------------------------------------------------------------
+
+    /**
+     * Nomor telepon yang sudah diformat ke format internasional (62xxx).
+     * Digunakan untuk membangun URL WhatsApp order.
+     */
+    public function getFormattedPhoneAttribute(): string
+    {
+        $phone = preg_replace('/\D+/', '', (string) ($this->phone_number ?? ''));
+
+        if ($phone === '') {
+            return '';
+        }
+
+        if (str_starts_with($phone, '0')) {
+            $phone = '62' . substr($phone, 1);
+        }
+
+        return $phone;
+    }
+
+    /**
+     * Apakah produk ini memerlukan pilihan ukuran.
+     * Ditentukan berdasarkan kategori produk — tidak ada slug hardcode.
+     */
+    public function getShowSizesAttribute(): bool
+    {
+        $categorySlug = $this->category?->slug ?? '';
+
+        return in_array($categorySlug, self::CLOTHING_CATEGORY_SLUGS, true);
+    }
+
+    /**
+     * Daftar ukuran yang tersedia.
+     * Kosong jika produk bukan pakaian.
+     *
+     * @return string[]
+     */
+    public function getAvailableSizesAttribute(): array
+    {
+        return $this->showSizes ? self::CLOTHING_SIZES : [];
+    }
 
     public function category(): BelongsTo
     {
