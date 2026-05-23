@@ -31,7 +31,8 @@ class DashboardUserController extends Controller
     public function create()
     {
         $staffOptions = Staff::orderBy('name', 'asc')->get()->mapWithKeys(fn ($s) => [$s->id => $s->name])->toArray();
-        return view('dashboard.users.create', compact('staffOptions'));
+        $roleOptions  = User::ROLES;
+        return view('dashboard.users.create', compact('staffOptions', 'roleOptions'));
     }
 
     public function store(Request $request)
@@ -73,7 +74,8 @@ class DashboardUserController extends Controller
     public function edit(User $user)
     {
         $staffOptions = Staff::orderBy('name', 'asc')->get()->mapWithKeys(fn ($s) => [$s->id => $s->name])->toArray();
-        return view('dashboard.users.edit', compact('user', 'staffOptions'));
+        $roleOptions  = User::ROLES;
+        return view('dashboard.users.edit', compact('user', 'staffOptions', 'roleOptions'));
     }
 
     public function update(Request $request, User $user)

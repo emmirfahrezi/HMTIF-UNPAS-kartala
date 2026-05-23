@@ -15,6 +15,14 @@ class User extends Authenticatable
 
     protected static string $idPrefix = 'usr';
 
+    /** Daftar role yang tersedia beserta label tampilannya. */
+    public const ROLES = [
+        'admin'       => 'Admin',
+        'bph'         => 'BPH',
+        'koordinator' => 'Koordinator',
+        'staff'       => 'Staff',
+    ];
+
     public function isAdmin(): bool       { return $this->role === 'admin'; }
     public function isBph(): bool         { return in_array($this->role, ['admin', 'bph']); }
     public function isKoordinator(): bool { return in_array($this->role, ['admin', 'bph', 'koordinator']); }
