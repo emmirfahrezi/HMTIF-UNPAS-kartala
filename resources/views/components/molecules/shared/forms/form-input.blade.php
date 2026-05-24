@@ -220,7 +220,7 @@
                                 formData.append('image', fileInput.files[0]);
                                 try {
                                     let csrfMeta = document.querySelector('meta[name=csrf-token]');
-                                    let res = await fetch('/api/editor/upload', {
+                                    let res = await fetch('/dashboard/editor/upload', {
                                         method: 'POST',
                                         headers: csrfMeta ? { 'X-CSRF-TOKEN': csrfMeta.content } : {},
                                         body: formData
@@ -233,8 +233,8 @@
                                         this.isUploading = false;
                                         return;
                                     }
-                                } catch(e) {
-                                    alert('Gagal menghubungi server untuk upload gambar. Pastikan endpoint /api/editor/upload tersedia.');
+                                catch(e) {
+                                    alert('Gagal menghubungi server untuk upload gambar. Pastikan endpoint /dashboard/editor/upload tersedia.');
                                     this.isUploading = false;
                                     return;
                                 }
@@ -557,7 +557,7 @@
                         
                         try {
                             let csrfMeta = document.querySelector('meta[name=csrf-token]');
-                            var res = await fetch('/api/editor/upload', {
+                            var res = await fetch('/dashboard/editor/upload', {
                                 method: 'POST',
                                 headers: csrfMeta ? { 'X-CSRF-TOKEN': csrfMeta.content } : {},
                                 body: formData
@@ -571,7 +571,7 @@
                                 alert('Gagal mengupload gambar yang di-paste: ' + (data.message || 'Unknown error'));
                             }
                         } catch(err) {
-                            alert('Gagal menghubungi server untuk upload gambar paste. Pastikan endpoint /api/editor/upload tersedia.');
+                            alert('Gagal menghubungi server untuk upload gambar paste. Pastikan endpoint /dashboard/editor/upload tersedia.');
                         }
                     }
                 });

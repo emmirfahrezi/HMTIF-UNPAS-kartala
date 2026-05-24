@@ -58,13 +58,35 @@
                     placeholder="Tuliskan spesifikasi produk, bahan, ukuran, dll..."
                     :value="$product?->description ?? ''" />
 
-                <x-molecules.shared.forms.form-input 
-                    label="Cara Pemesanan (Otomatis muncul di WhatsApp)" 
-                    name="order_text" 
-                    type="textarea"
-                    placeholder="Halo Admin, saya ingin memesan produk..."
-                    :value="$product?->order_text ?? ''" 
-                    :rows="3" />
+                <div class="space-y-4">
+                    <x-molecules.shared.forms.form-input 
+                        label="Pesan Otomatis WhatsApp" 
+                        name="order_text" 
+                        type="textarea"
+                        placeholder="Halo HMTIF Store, saya mau pesan [PRODUCT_NAME] ukuran [SIZE]."
+                        :value="$product?->order_text ?? ''" 
+                        :rows="3" />
+
+                    <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5 dark:bg-emerald-500/10">
+                        <div class="flex gap-4">
+                            <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-500 dark:bg-emerald-500/20">
+                                <x-heroicon-s-chat-bubble-left-ellipsis class="size-5" />
+                            </div>
+                            <div>
+                                <h4 class="mb-1 text-xs font-black uppercase tracking-widest text-emerald-500">TIPS PESAN DINAMIS</h4>
+                                <p class="text-[11px] font-medium leading-relaxed text-slate-600 dark:text-slate-400 mb-2">
+                                    Gunakan tag di bawah ini untuk membuat format pesan otomatis yang dinamis menyesuaikan pesanan pembeli:
+                                </p>
+                                <ul class="text-[11px] font-medium leading-relaxed text-slate-600 dark:text-slate-400 list-disc pl-4 space-y-1">
+                                    <li><strong>[PRODUCT_NAME]</strong> : Otomatis diganti menjadi nama produk ini.</li>
+                                    <li><strong>[SIZE]</strong> : Otomatis diganti menjadi ukuran yang dipilih pembeli.</li>
+                                    <li><strong>[PRICE]</strong> : Otomatis menampilkan harga produk (contoh: Rp 150.000).</li>
+                                    <li><strong>[PRODUCT_LINK]</strong> : Otomatis menyisipkan link halaman produk ini.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -138,6 +160,7 @@
                             <div x-show="source === 'file'" x-cloak class="space-y-2">
                                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">File Lokal</label>
                                 <input type="file"
+                                    name="images[0][image_file]"
                                     accept="image/*"
                                     class="w-full rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-white dark:bg-slate-950/45 px-4 py-3 text-sm text-slate-500 dark:text-slate-400 file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:text-primary hover:file:bg-primary/20 transition" />
                             </div>
@@ -205,6 +228,7 @@
                             <div x-show="source === 'file'" x-cloak class="space-y-2">
                                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">File Lokal</label>
                                 <input type="file"
+                                    name="images[{{ $i }}][image_file]"
                                     accept="image/*"
                                     class="w-full rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-white dark:bg-slate-950/45 px-4 py-3 text-sm text-slate-500 dark:text-slate-400 file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:text-primary hover:file:bg-primary/20 transition" />
                             </div>
@@ -344,7 +368,7 @@
 
                     <div x-show="source === 'file'" x-cloak class="space-y-2">
                         <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">File Lokal</label>
-                        <input type="file" accept="image/*"
+                        <input type="file" accept="image/*" name="images[${count}][image_file]"
                             class="w-full rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-white dark:bg-slate-950/45 px-4 py-3 text-sm text-slate-500 dark:text-slate-400 file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:text-primary hover:file:bg-primary/20 transition">
                     </div>
                 </div>

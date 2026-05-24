@@ -8,11 +8,7 @@
                 @php $delay = 1; @endphp
                 @foreach ($products as $product)
                     @php
-                        $primaryImage = (string) (optional($product->primaryImage)->image_path ?? '');
-                        $isLocalImage =
-                            $primaryImage !== '' &&
-                            \Illuminate\Support\Str::startsWith($primaryImage, ['/', 'storage/', 'images/', url('/')]);
-                        $productImage = $isLocalImage ? $primaryImage : asset('images/placeholders/product.svg');
+                        $productImage = $product->primary_image_url;
                     @endphp
                     <div
                         class="group bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-xl transition-all duration-700 overflow-hidden flex flex-col hover:-translate-y-2 reveal reveal-up reveal-delay-{{ $delay++ }}">

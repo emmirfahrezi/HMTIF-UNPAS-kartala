@@ -1,11 +1,7 @@
 <x-layouts.app :title="$announcement->title . ' | HMTIF-UNPAS'" :description="$announcement->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($announcement->body), 160)"
     keywords="Info Penting HMTIF, Warta Terbaru Informatika, Pengumuman Mahasiswa" :transparent="false">
     @php
-        $thumbnail = (string) ($announcement->thumbnail ?? '');
-        $isLocalThumbnail =
-            $thumbnail !== '' &&
-            \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
-        $heroImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/announcement.svg');
+        $heroImage = $announcement->thumbnail_url;
         $relatedAnnouncements = $relatedAnnouncements ?? collect();
     @endphp
 
@@ -21,7 +17,7 @@
                 <div class="flex flex-wrap items-center gap-3 mb-5">
                     <span
                         class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em]">
-                        {{ optional($announcement->category)->name ?: 'Umum' }}
+                        {{ $announcement->category_name }}
                     </span>
                     <span class="text-xs font-bold uppercase tracking-widest text-slate-400">
                         {{ optional($announcement->published_at)->translatedFormat('d F Y') ?: '-' }}

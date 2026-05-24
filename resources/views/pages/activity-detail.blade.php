@@ -1,17 +1,7 @@
 <x-layouts.app :title="$activity->title . ' | HMTIF-UNPAS'" :description="strip_tags($activity->description ?: 'Lihat rincian lengkap kegiatan HMTIF-UNPAS.')"
     keywords="Detail Acara HMTIF, Info Kegiatan Informatika, Event Mahasiswa UNPAS" :transparent="false">
     @php
-        $thumbnail = (string) ($activity->thumbnail ?? '');
-        $isLocalThumbnail =
-            $thumbnail !== '' &&
-            \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
-        $heroImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/activity.svg');
-
-        $statusLabel = [
-            'upcoming' => 'Mendatang',
-            'ongoing' => 'Berlangsung',
-            'past' => 'Selesai',
-        ];
+        $heroImage = $activity->thumbnail_url;
     @endphp
 
     <x-molecules.pages.sections.page-hero icon="heroicon-o-calendar-days">
@@ -25,7 +15,7 @@
             <div class="mt-2">
                 <span
                     class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-5">
-                    {{ $statusLabel[$activity->status] ?? 'Kegiatan' }}
+                    {{ $activity->status_label ?? 'Kegiatan' }}
                 </span>
                 <h1
                     class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter text-heading leading-tight">
@@ -81,7 +71,7 @@
                             <div>
                                 <div class="font-black text-slate-400 uppercase tracking-wide text-[10px] mb-1">Status
                                 </div>
-                                <div class="font-semibold text-heading">{{ $statusLabel[$activity->status] ?? '-' }}
+                                <div class="font-semibold text-heading">{{ $activity->status_label ?? '-' }}
                                 </div>
                             </div>
                             <div>

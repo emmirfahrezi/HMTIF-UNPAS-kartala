@@ -78,7 +78,7 @@
                 <td class="px-5 py-4 text-sm font-medium text-slate-700 dark:text-slate-200 max-w-xs truncate">{{ $item->title }}</td>
                 <td class="px-5 py-4">
                     <span class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $statusColors[$item->status] ?? 'bg-slate-100 text-slate-600' }}">
-                        {{ $item->status }}
+                        {{ $item->status_label }}
                     </span>
                 </td>
                 <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->start_date?->format('d M Y H:i') }}</td>
