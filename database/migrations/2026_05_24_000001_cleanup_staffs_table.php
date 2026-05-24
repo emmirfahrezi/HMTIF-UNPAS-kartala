@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Bersihkan tabel staffs:
-     * - Hapus kolom github (fitur profil GitHub tidak jadi diimplementasikan)
+     * - Hapus kolom github 
      * - Hapus kolom user_id (relasi sudah dikelola dari sisi users via users.staff_id)
      */
     public function up(): void
@@ -24,6 +24,7 @@ return new class extends Migration
             }
         });
     }
+
 
     public function down(): void
     {
