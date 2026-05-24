@@ -6,8 +6,9 @@
     'href' => '#',
 ])
 
-<a href="{{ $href }}"
-    class="group relative bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-xl transition-all duration-700 flex flex-col overflow-hidden hover:-translate-y-2 cursor-pointer reveal reveal-up h-full">
+<div class="reveal reveal-up h-full">
+    <a href="{{ $href }}"
+        class="group relative bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-xl transition-all duration-700 flex flex-col overflow-hidden hover:-translate-y-2 cursor-pointer h-full">
     <div class="relative aspect-video bg-section/50 overflow-hidden">
         <img src="{{ $image }}" alt="{{ $title }}" width="600" height="338" loading="lazy" decoding="async"
             fetchpriority="low" data-fallback-src="{{ asset('images/placeholders/announcement.svg') }}"
@@ -34,7 +35,7 @@
         </div>
 
         <h3
-            class="text-xl font-bold text-heading group-hover:text-primary transition-colors leading-tight mb-2 italic uppercase tracking-tighter line-clamp-2">
+            class="text-xl font-bold text-heading group-hover:text-primary transition-colors duration-500 leading-tight mb-2 italic uppercase tracking-tighter line-clamp-2">
             {{ $title }}
         </h3>
 
@@ -52,4 +53,5 @@
         </div>
     </div>
 </a>
+</div>
 

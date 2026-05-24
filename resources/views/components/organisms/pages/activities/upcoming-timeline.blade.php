@@ -30,8 +30,8 @@
                         $color = $statusToColor[$timeline->status] ?? 'primary';
                     @endphp
                     <div class="shrink-0 w-80 snap-center reveal reveal-up reveal-delay-{{ $delay++ }}">
-                        <div
-                            class="group bg-white p-8 rounded-3xl border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+                        <div x-data x-on:click="window.location.href='{{ route('activities.show', $timeline->slug) }}'"
+                            class="group bg-white p-8 rounded-3xl border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden cursor-pointer">
                             <div
                                 class="absolute top-0 right-0 w-32 h-32 bg-{{ $color == 'primary' ? 'primary' : $color . '-500' }}/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700">
                             </div>
@@ -46,7 +46,7 @@
                                         class="relative z-10 text-4xl font-black text-heading tracking-tighter">{{ $day }}</span>
                                 </div>
                                 <span
-                                    class="px-3 py-1 bg-gray-50 border border-gray-100 rounded-lg text-[9px] font-black uppercase tracking-widest text-gray-400 group-hover:bg-primary group-hover:text-white transition-all">
+                                    class="px-3 py-1 bg-gray-50 border border-gray-100 rounded-lg text-[9px] font-black uppercase tracking-widest text-gray-400 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                                     {{ ucfirst($timeline->status) }}
                                 </span>
                             </div>
@@ -56,7 +56,7 @@
                                     <div class="absolute inset-x-0 inset-y-1 bg-gray-50 animate-shimmer rounded-md">
                                     </div>
                                     <h2
-                                        class="relative z-10 font-bold text-heading text-lg group-hover:text-primary transition-colors line-clamp-1 leading-tight italic uppercase tracking-tighter">
+                                        class="relative z-10 font-bold text-heading text-lg group-hover:text-primary transition-colors duration-500 line-clamp-1 leading-tight italic uppercase tracking-tighter">
                                         {{ $timeline->title }}</h2>
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                                     class="w-2 h-2 rounded-full bg-{{ $color == 'primary' ? 'primary' : $color . '-500' }}">
                                 </div>
                                 <span
-                                    class="text-[10px] text-gray-400 font-bold uppercase tracking-widest group-hover:text-gray-600 transition-colors">Terkonfirmasi</span>
+                                    class="text-[10px] text-gray-400 font-bold uppercase tracking-widest group-hover:text-gray-600 transition-colors duration-500">Terkonfirmasi</span>
                             </div>
                         </div>
                     </div>

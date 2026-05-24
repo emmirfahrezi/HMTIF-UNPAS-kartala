@@ -1,6 +1,6 @@
 
 <x-layouts.dashboard pageTitle="Produk" :breadcrumbs="[['label' => 'Produk']]">
-    @if (!$canRead)
+    @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
             <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6 shadow-inner animate-pulse">
                 <x-heroicon-o-lock-closed class="size-8" />
@@ -9,7 +9,7 @@
             <p class="text-sm text-slate-400 dark:text-slate-500 max-w-md text-center leading-relaxed">Anda tidak memiliki izin untuk melihat data pada halaman ini. Silakan hubungi Administrator jika ini merupakan kesalahan.</p>
         </div>
     @else
-        @if ($canCreate)
+        @if ($permissions['create'])
         <x-slot:headerActions>
             <x-atoms.shared.button 
                 href="/dashboard/products/create"
@@ -19,7 +19,7 @@
         </x-slot:headerActions>
         @endif
 
-        @if ($canCreate || $canUpdate)
+        @if ($permissions['create'] || $permissions['update'])
         {{-- Collapsible Product Tools --}}
         <div class="mb-8" x-data="{ open: false }">
             {{-- Toggle Bar --}}
@@ -44,9 +44,9 @@
             {{-- Expandable Panel --}}
             <div x-show="open" x-collapse x-cloak
                 class="bg-white dark:bg-slate-900/50 border border-t-0 border-slate-200 dark:border-slate-800 rounded-b-2xl shadow-sm overflow-hidden">
-                <div class="p-6 grid grid-cols-1 {{ $canCreate && $canUpdate ? 'lg:grid-cols-2' : '' }} gap-6 items-stretch border-t border-slate-100 dark:border-slate-800">
+                <div class="p-6 grid grid-cols-1 {{ $permissions['create'] && $permissions['update'] ? 'lg:grid-cols-2' : '' }} gap-6 items-stretch border-t border-slate-100 dark:border-slate-800">
 
-                    @if ($canCreate)
+                    @if ($permissions['create'])
                     {{-- Column 1: Manajemen Kategori --}}
                     <div class="flex flex-col">
                         <div class="flex items-center gap-2 mb-4">
@@ -90,7 +90,7 @@
                     </div>
                     @endif
 
-                    @if ($canUpdate)
+                    @if ($permissions['update'])
                     {{-- Column 2: Quick Edit No. Telepon --}}
                     <div class="flex flex-col">
                         <div class="flex items-center gap-2 mb-4">
@@ -173,14 +173,14 @@
                 ['label' => 'Harga'],
                 ['label' => 'Tersedia'],
             ]"
-            :selectable="$canDelete"
-            :bulkDeleteEnabled="$canDelete"
-            :showActions="$canUpdate || $canDelete"
+            :selectable="$permissions['delete']"
+            :bulkDeleteEnabled="$permissions['delete']"
+            :showActions="$permissions['update'] || $permissions['delete']"
             bulkDeleteRoute="/dashboard/products/bulk-delete">
 
             @forelse ($products as $item)
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200" data-row-id="{{ $item->id }}">
-                    @if ($canDelete)
+                    @if ($permissions['delete'])
                     <td class="px-4 py-4 w-12">
                         <x-atoms.shared.checkbox x-bind:checked="isSelected('{{ $item->id }}')" @change="toggleRow('{{ $item->id }}')" />
                     </td>
@@ -199,10 +199,10 @@
                             </span>
                         @endif
                     </td>
-                    @if ($canUpdate || $canDelete)
+                    @if ($permissions['update'] || $permissions['delete'])
                     <td class="px-5 py-4 text-right">
                         <div class="flex items-center justify-end gap-1">
-                            @if ($canUpdate)
+                            @if ($permissions['update'])
                             <x-atoms.shared.button 
                                 variant="ghost"
                                 size="sm"
@@ -212,7 +212,7 @@
                                 <x-heroicon-o-pencil-square class="size-5" />
                             </x-atoms.shared.button>
                             @endif
-                            @if ($canDelete)
+                            @if ($permissions['delete'])
                             <x-atoms.shared.button 
                                 variant="ghost"
                                 size="sm"

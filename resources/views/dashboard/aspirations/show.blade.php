@@ -18,12 +18,7 @@
                     {{ $aspiration->status }}
                 </span>
                 
-                @if ($aspiration->is_spotlight)
-                    <span class="flex items-center gap-1 px-3 py-1.5 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-full text-xs font-bold uppercase">
-                        <x-heroicon-s-star class="size-3.5" />
-                        Spotlight
-                    </span>
-                @endif
+
             </div>
         </div>
 

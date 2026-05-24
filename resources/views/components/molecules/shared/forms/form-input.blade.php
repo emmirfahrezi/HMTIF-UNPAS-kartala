@@ -25,7 +25,7 @@
 @endphp
 
 <div class="space-y-2 group">
-    @if ($label)
+    @if ($label && $type !== 'toggle')
         <label for="{{ $name }}" class="inline-block text-sm font-bold text-slate-700 dark:text-slate-300 group-focus-within:text-primary transition-colors duration-300">
             {{ $label }}
             @if ($required)
@@ -578,18 +578,25 @@
             });
         </script>
     @elseif ($type === 'toggle')
-        <label class="inline-flex items-center gap-3 cursor-pointer group/toggle">
-            <input type="hidden" name="{{ $name }}" value="0" />
-            <div class="relative">
+        <div class="flex items-center justify-between p-4 bg-slate-50/50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-800 rounded-2xl transition-all duration-300 hover:border-primary/20 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.01] group/toggle-card">
+            <div class="flex flex-col">
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/toggle-card:text-primary transition-colors duration-300">{{ $label }}</span>
+                @if ($placeholder)
+                    <span class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 leading-relaxed">{{ $placeholder }}</span>
+                @elseif ($helper)
+                    <span class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 leading-relaxed">{{ $helper }}</span>
+                @endif
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer select-none">
+                <input type="hidden" name="{{ $name }}" value="0" />
                 <input type="checkbox" name="{{ $name }}" value="1" id="{{ $name }}"
                     class="peer sr-only"
                     {{ old($name, $value) ? 'checked' : '' }}
                     {{ $attributes }} />
-                <div class="w-12 h-6 bg-slate-200 dark:bg-slate-800 rounded-full transition-colors duration-300 peer-checked:bg-primary"></div>
-                <div class="absolute top-1 left-1 w-4 h-4 bg-white dark:bg-slate-200 rounded-full transition-transform duration-300 peer-checked:translate-x-6 shadow-sm"></div>
-            </div>
-            <span class="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover/toggle:text-slate-900 dark:group-hover/toggle:text-white transition-colors">{{ $placeholder ?: $label }}</span>
-        </label>
+                <div class="w-11 h-6 bg-slate-200 dark:bg-slate-800 rounded-full transition-colors duration-300 peer-checked:bg-primary shadow-inner"></div>
+                <div class="absolute top-1 left-1 w-4 h-4 bg-white dark:bg-slate-100 rounded-full transition-transform duration-300 peer-checked:translate-x-5 shadow-md"></div>
+            </label>
+        </div>
     @elseif ($type === 'password')
         <div x-data="{ show: false }" class="relative flex items-center w-full">
             <input :type="show ? 'text' : 'password'" name="{{ $name }}" id="{{ $name }}"
@@ -614,7 +621,7 @@
             {{ $attributes }} />
     @endif
 
-    @if ($helper)
+    @if ($helper && $type !== 'toggle')
         <div class="flex items-center gap-1.5 px-1">
             <svg class="size-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

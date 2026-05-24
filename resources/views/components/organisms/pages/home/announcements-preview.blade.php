@@ -11,7 +11,7 @@
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl relative z-10">
         <div class="text-center mb-16">
-            <x-atoms.pages.section-title align="center">Informasi Terkini</x-atoms.section-title>
+            <x-atoms.pages.section-title align="center">Informasi Terkini</x-atoms.pages.section-title>
             <h2 class="text-3xl md:text-5xl font-extrabold text-heading mt-4 italic uppercase tracking-tighter">
                 Pengumuman <span class="text-primary">Penting & Terbaru</span>
             </h2>
@@ -23,8 +23,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             @php $delay = 1; @endphp
             @foreach ($announcements as $news)
-                <div
-                    class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-4xl bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-xl hover:border-primary/20 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}"
+                <div x-data x-on:click="window.location.href='{{ route('announcements.show', $news->slug) }}'"
+                    class="group flex flex-col sm:flex-row items-center gap-6 p-6 rounded-4xl bg-gray-50/50 border border-gray-100 hover:bg-white hover:shadow-xl hover:border-primary/20 transition-all duration-700 cursor-pointer reveal reveal-up reveal-delay-{{ $delay++ }}"
                 >
                     <div
                         class="shrink-0 w-20 h-20 bg-white rounded-2xl shadow-md flex flex-col items-center justify-center border border-gray-50 group-hover:bg-primary group-hover:text-white transition-all transform group-hover:-rotate-6">

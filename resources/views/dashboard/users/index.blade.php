@@ -1,6 +1,6 @@
 
 <x-layouts.dashboard pageTitle="Pengguna" :breadcrumbs="[['label' => 'Pengguna']]">
-    @if (!$canRead)
+    @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
             <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6 shadow-inner animate-pulse">
                 <x-heroicon-o-lock-closed class="size-8" />
@@ -9,7 +9,7 @@
             <p class="text-sm text-slate-400 dark:text-slate-500 max-w-md text-center leading-relaxed">Anda tidak memiliki izin untuk melihat data pada halaman ini. Silakan hubungi Administrator jika ini merupakan kesalahan.</p>
         </div>
     @else
-        @if ($canCreate)
+        @if ($permissions['create'])
         <x-slot:headerActions>
             <x-atoms.shared.button 
                 href="/dashboard/users/create"
@@ -56,14 +56,14 @@
                 ['label' => 'Role'],
                 ['label' => 'Bergabung'],
             ]"
-            :selectable="$canDelete"
-            :bulkDeleteEnabled="$canDelete"
-            :showActions="$canUpdate || $canDelete"
+            :selectable="$permissions['delete']"
+            :bulkDeleteEnabled="$permissions['delete']"
+            :showActions="$permissions['update'] || $permissions['delete']"
             bulkDeleteRoute="/dashboard/users/bulk-delete">
 
             @forelse ($users as $item)
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition" data-row-id="{{ $item->id }}">
-                    @if ($canDelete)
+                    @if ($permissions['delete'])
                     <td class="px-4 py-4 w-12">
                         <x-atoms.shared.checkbox x-bind:checked="isSelected('{{ $item->id }}')" @change="toggleRow('{{ $item->id }}')" />
                     </td>
@@ -83,10 +83,10 @@
                         </span>
                     </td>
                     <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->created_at?->format('d M Y') }}</td>
-                    @if ($canUpdate || $canDelete)
+                    @if ($permissions['update'] || $permissions['delete'])
                     <td class="px-5 py-4 text-right">
                         <div class="flex items-center justify-end gap-1">
-                            @if ($canUpdate)
+                            @if ($permissions['update'])
                             <x-atoms.shared.button 
                                 variant="ghost"
                                 size="sm"
@@ -96,7 +96,7 @@
                                 <x-heroicon-o-pencil-square class="size-5" />
                             </x-atoms.shared.button>
                             @endif
-                            @if ($canDelete)
+                            @if ($permissions['delete'])
                             <x-atoms.shared.button 
                                 variant="ghost"
                                 size="sm"

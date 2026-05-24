@@ -5,7 +5,6 @@
         email: '{{ $user->email ?? '' }}',
         instagram: '{{ $staff?->instagram ?? '' }}',
         linkedin: '{{ $staff?->linkedin ?? '' }}',
-        github: '{{ $staff?->github ?? '' }}',
         bio: '{{ $staff?->bio ?? '' }}',
         avatarPreview: '{{ $user->avatar_url ?? '' }}',
         passwordModalOpen: false,
@@ -24,7 +23,6 @@
             this.email = '{{ $user->email ?? '' }}';
             this.instagram = '{{ $staff?->instagram ?? '' }}';
             this.linkedin = '{{ $staff?->linkedin ?? '' }}';
-            this.github = '{{ $staff?->github ?? '' }}';
             this.bio = '{{ $staff?->bio ?? '' }}';
             this.avatarPreview = '{{ $user->avatar_url ?? '' }}';
         }

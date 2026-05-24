@@ -16,7 +16,6 @@
         ['label' => 'Pengirim'],
         ['label' => 'Subjek'],
         ['label' => 'Status'],
-        ['label' => 'Spotlight'],
         ['label' => 'Tanggal'],
         ['label' => 'Kode Tracking'],
     ]">
@@ -36,13 +35,7 @@
                         {{ $item->status }}
                     </span>
                 </td>
-                <td class="px-5 py-4">
-                    @if ($item->is_spotlight)
-                        <x-heroicon-s-star class="size-5 text-amber-400" />
-                    @else
-                        <x-heroicon-o-star class="size-5 text-slate-300 dark:text-slate-700" />
-                    @endif
-                </td>
+
                 <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->created_at?->format('d M Y') }}
                 </td>
                 <td class="px-5 py-4 text-xs font-mono text-primary">{{ $item->tracking_code ?: '-' }}</td>

@@ -13,12 +13,13 @@
             "description": "Himpunan Mahasiswa Teknik Informatika Universitas Pasundan Bandung.",
             "sameAs": [
                 "https://www.instagram.com/hmtifunpas",
-                "https://github.com/hmtifunpas"
+                "https://web.facebook.com/hmtifunpas",
+                "https://www.tiktok.com/@hmtifunpas.kartala",
+                "https://www.youtube.com/@hmtifunpas"
             ]
         }
         </script>
     </x-slot:head>
-
     <x-organisms.pages.home.hero :home-sections="$homeSections ?? []" />
     <x-organisms.pages.home.about :home-sections="$homeSections ?? []" />
     <x-organisms.pages.home.vision-mission :home-sections="$homeSections ?? []" />
