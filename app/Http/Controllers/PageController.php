@@ -142,7 +142,7 @@ class PageController extends Controller
         GetAnnouncementCategoriesService $getCategories,
     ): View {
         $announcements = $getAnnouncements->execute(
-            $request->query('category_id') ? (int) $request->query('category_id') : null,
+            $request->query('category_id') ?: null,
             $request->query('search'),
             $request->query('sort', 'latest'),
         );
