@@ -2,7 +2,7 @@
     {{-- Main Content --}}
     <div class="lg:col-span-2 space-y-8">
         {{-- Primary Information --}}
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-sparkles class="size-32" />
             </div>
@@ -45,7 +45,7 @@
         </div>
 
         {{-- Schedule & Location --}}
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
                 <span class="size-8 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
                     <x-heroicon-s-calendar-days class="size-5" />
@@ -102,7 +102,7 @@
     {{-- Sidebar Content --}}
     <div class="space-y-8">
         {{-- Status & Thumbnail --}}
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-photo class="size-24" />
             </div>
@@ -118,12 +118,33 @@
                     :options="['upcoming' => 'Mendatang', 'ongoing' => 'Berlangsung', 'past' => 'Selesai']"
                     required />
 
-                <x-molecules.shared.forms.form-input 
-                    label="URL Gambar Thumbnail" 
-                    name="thumbnail" 
-                    placeholder="https://..."
-                    :value="$activity?->thumbnail ?? ''" 
-                    helper="Gunakan URL gambar dari internet" />
+                <div x-data="{ source: 'url' }" class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Sumber Thumbnail</label>
+                        <div class="inline-grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-950/60 p-1">
+                            <button type="button" @click="source = 'url'"
+                                :class="source === 'url' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                class="rounded-xl px-4 py-1.5 text-[10px] font-black transition uppercase tracking-widest">URL</button>
+                            <button type="button" @click="source = 'file'"
+                                :class="source === 'file' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                class="rounded-xl px-4 py-1.5 text-[10px] font-black transition uppercase tracking-widest">File Lokal</button>
+                        </div>
+                    </div>
+
+                    <div x-show="source === 'url'" x-cloak>
+                        <x-molecules.shared.forms.form-input 
+                            name="thumbnail" 
+                            placeholder="https://..."
+                            :value="$activity?->thumbnail ?? ''" 
+                            helper="Gunakan URL gambar dari internet (opsional)" />
+                    </div>
+
+                    <div x-show="source === 'file'" x-cloak class="space-y-2">
+                        <input type="file" name="thumbnail_file" accept="image/*"
+                            class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-primary/5 dark:file:bg-primary/20 file:text-primary hover:file:bg-primary/10 transition cursor-pointer" />
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-1">Format: JPG, PNG. Opsional.</p>
+                    </div>
+                </div>
 
                 <div class="space-y-2">
                     <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">File Lampiran</label>

@@ -101,29 +101,7 @@
                         }
 
                         this.loading = true;
-                        try {
-                            const res = await fetch(url.toString(), {
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            });
-                            const html = await res.text();
-                            const doc = new DOMParser().parseFromString(html, 'text/html');
-                            
-                            const newGrid = doc.querySelector(this.gridSelector);
-                            const oldGrid = document.querySelector(this.gridSelector);
-                            if (newGrid && oldGrid) oldGrid.replaceWith(newGrid);
-
-                            const newFilterBar = doc.querySelector(this.filterBarSelector);
-                            const oldFilterBar = document.querySelector(this.filterBarSelector);
-                            if (newFilterBar && oldFilterBar) oldFilterBar.replaceWith(newFilterBar);
-
-                            history.replaceState(null, '', url);
-                        } catch (err) {
-                            console.error('Filter fetch error', err);
-                        } finally {
-                            this.loading = false;
-                        }
+                        window.location.href = url.toString();
                     },
                     onSearchInput(e) {
                         clearTimeout(this.debounceTimer);

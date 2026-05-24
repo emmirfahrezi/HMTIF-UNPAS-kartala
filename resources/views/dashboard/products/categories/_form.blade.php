@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     {{-- Main Content --}}
     <div class="lg:col-span-2 space-y-8">
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-tag class="size-32" />
             </div>
@@ -39,7 +39,7 @@
     {{-- Sidebar --}}
     <div class="space-y-8">
         {{-- Info Card --}}
-        <div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/10 dark:border-primary/20 relative overflow-hidden transition-colors duration-300">
+        <div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/10 dark:border-primary/20 relative transition-colors duration-300">
              <div class="absolute top-0 right-0 p-4 opacity-[0.05] text-primary pointer-events-none">
                 <x-heroicon-o-light-bulb class="size-20" />
             </div>

@@ -1,10 +1,4 @@
-@php
-    $permissions = $permissions ?? [];
-    $canRead = (bool) ($permissions['read'] ?? true);
-    $canCreate = (bool) ($permissions['create'] ?? true);
-    $canUpdate = (bool) ($permissions['update'] ?? true);
-    $canDelete = (bool) ($permissions['delete'] ?? true);
-@endphp
+
 <x-layouts.dashboard pageTitle="Pengguna" :breadcrumbs="[['label' => 'Pengguna']]">
     @if (!$canRead)
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
@@ -48,7 +42,7 @@
                         type="select"
                         name="role"
                         :value="request('role')"
-                        :options="['' => 'Semua', 'admin' => 'Admin', 'bph' => 'BPH', 'koordinator' => 'Koordinator', 'staff' => 'Staff']"
+                        :options="['' => 'Semua'] + \App\Models\User::ROLES"
                         @change="setTimeout(() => $el.closest('form').submit(), 50)"
                     />
                 </div>
@@ -68,14 +62,6 @@
             bulkDeleteRoute="/dashboard/users/bulk-delete">
 
             @forelse ($users as $item)
-                @php
-                    $roleColors = [
-                        'admin' => 'bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-500',
-                        'bph' => 'bg-purple-100 dark:bg-purple-500/10 text-purple-700 dark:text-purple-500',
-                        'koordinator' => 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-500',
-                        'staff' => 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400',
-                    ];
-                @endphp
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition" data-row-id="{{ $item->id }}">
                     @if ($canDelete)
                     <td class="px-4 py-4 w-12">
@@ -85,15 +71,15 @@
                     <td class="px-5 py-4">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary font-bold text-xs shrink-0">
-                                {{ strtoupper(substr($item->name, 0, 1)) }}
+                                {{ $item->initial }}
                             </div>
                             <span class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ $item->name }}</span>
                         </div>
                     </td>
                     <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->email }}</td>
                     <td class="px-5 py-4">
-                        <span class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $roleColors[$item->role] ?? 'bg-slate-100 text-slate-600' }}">
-                            {{ $item->role }}
+                        <span class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $item->role_color_class }}">
+                            {{ $item->role_label }}
                         </span>
                     </td>
                     <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->created_at?->format('d M Y') }}</td>

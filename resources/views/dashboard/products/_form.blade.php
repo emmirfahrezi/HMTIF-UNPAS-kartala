@@ -2,7 +2,7 @@
     {{-- Main Content --}}
     <div class="lg:col-span-2 space-y-8">
         {{-- Product Details --}}
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-shopping-bag class="size-32" />
             </div>
@@ -69,7 +69,7 @@
         </div>
 
         {{-- Product Images --}}
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <h3 class="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
                 <span class="size-8 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center">
                     <x-heroicon-s-photo class="size-5" />
@@ -241,7 +241,7 @@
     {{-- Sidebar Content --}}
     <div class="space-y-8">
         {{-- Category & Stock --}}
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-tag class="size-24" />
             </div>

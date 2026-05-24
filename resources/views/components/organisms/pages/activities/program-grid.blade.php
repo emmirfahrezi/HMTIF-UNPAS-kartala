@@ -1,13 +1,6 @@
     {{-- Program List Grid --}}
     @props(['activities'])
 
-    @php
-        $statusLabel = [
-            'upcoming' => 'Mendatang',
-            'ongoing' => 'Berlangsung',
-            'past' => 'Selesai',
-        ];
-    @endphp
 
     <section class="py-24 bg-section/30">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
@@ -15,11 +8,7 @@
                 @php $delay = 1; @endphp
                 @foreach ($activities as $item)
                     @php
-                        $thumbnail = (string) ($item->thumbnail ?? '');
-                        $isLocalThumbnail =
-                            $thumbnail !== '' &&
-                            \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
-                        $activityImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/activity.svg');
+                        $activityImage = $item->thumbnail_url;
                     @endphp
                     <div
                         class="group relative bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-xl transition-all duration-700 flex flex-col overflow-hidden hover:-translate-y-2 reveal reveal-up reveal-delay-{{ $delay++ }}">
@@ -39,7 +28,7 @@
 
                             <div
                                 class="absolute top-4 right-4 px-3 py-1 bg-white/95 rounded-lg text-[10px] font-bold text-primary uppercase tracking-wider border border-primary/10 shadow-sm z-10">
-                                {{ $statusLabel[$item->status] ?? 'Kegiatan' }}
+                                {{ $item->status_label }}
                             </div>
                         </div>
 

@@ -72,16 +72,8 @@
                     <li class="px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
                         <div class="flex items-center justify-between gap-3">
                             <p class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate flex-1">{{ $item->subject }}</p>
-                            @php
-                                $statusColors = [
-                                    'pending' => 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-500',
-                                    'reviewed' => 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-500',
-                                    'resolved' => 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-500',
-                                    'rejected' => 'bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-500',
-                                ];
-                            @endphp
                             <span
-                                class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase {{ $statusColors[$item->status] ?? 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400' }}">
+                                class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase {{ $item->status_color_class }}">
                                 {{ $item->status }}
                             </span>
                         </div>

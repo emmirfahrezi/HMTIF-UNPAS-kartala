@@ -1,10 +1,4 @@
-@php
-    $permissions = $permissions ?? [];
-    $canRead = (bool) ($permissions['read'] ?? true);
-    $canCreate = (bool) ($permissions['create'] ?? true);
-    $canUpdate = (bool) ($permissions['update'] ?? true);
-    $canDelete = (bool) ($permissions['delete'] ?? true);
-@endphp
+
 <x-layouts.dashboard pageTitle="Pengurus" :breadcrumbs="[['label' => 'Pengurus']]">
     @if (!$canRead)
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
@@ -57,6 +51,17 @@
                 />
             </div>
         </div>
+
+        @if ($canDelete)
+        <div class="flex items-center border-l border-slate-100 dark:border-slate-800 pl-4 ml-auto">
+            <button type="button" 
+                @click="openDeleteModal('/dashboard/staffs/truncate', 'Yakin ingin menghapus SEMUA data pengurus di semua divisi? Data yang dihapus tidak dapat dikembalikan!')"
+                class="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent border border-red-500/30 text-red-500 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all duration-300 active:scale-95">
+                <x-heroicon-o-trash class="size-4" />
+                Hapus Semua
+            </button>
+        </div>
+        @endif
     </x-molecules.dashboard.cards.filter-card>
 
     {{-- Division Sections --}}

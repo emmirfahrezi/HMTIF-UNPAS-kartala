@@ -39,7 +39,7 @@
     <div class="flex items-center gap-4" x-data="{ userMenuOpen: false }">
         <div class="text-right hidden sm:block">
             <p class="text-sm font-bold text-slate-900 dark:text-white leading-none mb-1">{{ auth()->user()?->name ?? 'Admin Kartala' }}</p>
-            <p class="text-[10px] text-slate-400 dark:text-slate-600 font-black uppercase tracking-widest">{{ auth()->user()?->role ?? 'Administrator' }}</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-600 font-black uppercase tracking-widest">{{ auth()->user()?->role_label ?? 'Administrator' }}</p>
         </div>
 
         <div class="relative">
@@ -49,7 +49,7 @@
                 class="group flex items-center gap-1 focus:outline-none"
             >
                 <div class="size-10 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary font-black text-sm border-2 border-transparent group-hover:border-primary/20 transition-all">
-                    {{ strtoupper(substr(auth()->user()?->name ?? 'A', 0, 1)) }}
+                    {{ auth()->user()?->initial ?? 'A' }}
                 </div>
                 <span class="transition-transform duration-300" :class="userMenuOpen ? 'rotate-180' : ''">
                     <x-heroicon-o-chevron-down class="size-4 text-black dark:text-white" />

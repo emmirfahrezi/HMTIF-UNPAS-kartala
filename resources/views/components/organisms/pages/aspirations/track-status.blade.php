@@ -4,31 +4,9 @@
         $trackCode = strtoupper(trim((string) request('code')));
         $aspiration = $trackedAspiration ?? null;
         
-        $statusMap = [
-            'pending'  => ['label' => 'Aspirasi Masuk', 'step' => 1],
-            'reviewed' => ['label' => 'Sedang Diproses', 'step' => 2],
-            'resolved' => ['label' => 'Selesai', 'step' => 3],
-        ];
-        
-        $currentStatus = $aspiration ? ($statusMap[$aspiration->status] ?? $statusMap['pending']) : null;
-
         // Custom high-contrast badges using brand global colors & dark contrast backdrops
-        $badgeClasses = '';
-        $dotColor = '';
-        if ($aspiration) {
-            $badgeClasses = match($aspiration->status) {
-                'pending'  => 'bg-black/30 border border-secondary-soft/30 text-secondary-soft shadow-[0_4px_20px_rgba(0,0,0,0.15)]',
-                'reviewed' => 'bg-black/30 border border-primary-soft/30 text-primary-soft shadow-[0_4px_20px_rgba(0,0,0,0.15)]',
-                'resolved' => 'bg-black/30 border border-white/20 text-white shadow-[0_4px_20px_rgba(0,0,0,0.15)]',
-                default    => 'bg-black/30 border border-white/10 text-white',
-            };
-            $dotColor = match($aspiration->status) {
-                'pending'  => 'bg-secondary-soft',
-                'reviewed' => 'bg-primary-soft',
-                'resolved' => 'bg-white',
-                default    => 'bg-white',
-            };
-        }
+        $badgeClasses = $aspiration ? $aspiration->status_badge_class : '';
+        $dotColor = $aspiration ? $aspiration->status_dot_color : '';
     @endphp
 
     <div class="mx-auto px-6 lg:px-8 max-w-5xl">
@@ -93,7 +71,7 @@
 
                             <div class="flex items-center gap-3 px-6 py-3 rounded-2xl border {{ $badgeClasses }}">
                                 <span class="size-2.5 rounded-full {{ $dotColor }} {{ $aspiration->status != 'resolved' ? 'animate-pulse' : '' }}"></span>
-                                <span class="text-xs font-black uppercase tracking-widest">{{ $currentStatus['label'] }}</span>
+                                <span class="text-xs font-black uppercase tracking-widest">{{ $aspiration->status_label }}</span>
                             </div>
                         </div>
 
@@ -120,13 +98,7 @@
                                             @if(!empty($aspiration->admin_feedback))
                                                 <p class="text-white/90 text-sm leading-relaxed font-semibold break-words">{{ $aspiration->admin_feedback }}</p>
                                             @else
-                                                @if($aspiration->status == 'pending')
-                                                    <p class="text-white/60 text-sm italic font-medium leading-relaxed">Menunggu tim advokasi meninjau aspirasimu. Kami akan segera memprosesnya.</p>
-                                                @elseif($aspiration->status == 'reviewed')
-                                                    <p class="text-white/80 text-sm leading-relaxed font-medium">Aspirasi kamu sedang dalam tahap koordinasi dengan departemen terkait. Terima kasih atas kesabarannya.</p>
-                                                @else
-                                                    <p class="text-primary-soft text-sm leading-relaxed font-black">Aspirasi ini telah selesai ditindaklanjuti. Terima kasih telah berkontribusi.</p>
-                                                @endif
+                                                <p class="text-white/80 text-sm leading-relaxed font-medium break-words">{{ $aspiration->default_feedback_message }}</p>
                                             @endif
                                             <p class="text-primary-soft text-[11px] font-black uppercase tracking-[0.2em] mt-6 italic">— Tim Advokasi HMTIF</p>
                                         </div>
@@ -155,15 +127,15 @@
                                         </div>
 
                                         {{-- Step 2 --}}
-                                        @php $step2Active = $currentStatus['step'] >= 2; @endphp
+                                        @php $step2Active = $aspiration->status_step >= 2; @endphp
                                         <div class="flex gap-5 relative transition-all duration-500">
                                             <div class="size-9 rounded-full flex items-center justify-center z-10 transition-all duration-700
                                                 {{ $step2Active 
                                                     ? 'bg-primary-soft text-primary-dark ring-4 ring-primary-soft/25 shadow-lg shadow-black/20' 
                                                     : 'bg-black/30 border border-white/20 text-white/50' }}">
-                                                @if($currentStatus['step'] == 2)
+                                                @if($aspiration->status_step == 2)
                                                     <div class="size-3 rounded-full bg-primary-dark animate-pulse"></div>
-                                                @elseif($currentStatus['step'] > 2)
+                                                @elseif($aspiration->status_step > 2)
                                                     <x-heroicon-s-check class="size-5" />
                                                 @else
                                                     <span class="text-xs font-black">2</span>
@@ -176,7 +148,7 @@
                                         </div>
 
                                         {{-- Step 3 --}}
-                                        @php $step3Active = $currentStatus['step'] >= 3; @endphp
+                                        @php $step3Active = $aspiration->status_step >= 3; @endphp
                                         <div class="flex gap-5 relative transition-all duration-500">
                                             <div class="size-9 rounded-full flex items-center justify-center z-10 transition-all duration-700
                                                 {{ $step3Active 

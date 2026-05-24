@@ -1,11 +1,6 @@
     {{-- Filter & Search Bar --}}
     @php
-        $statusMap = [
-            'Semua' => null,
-            'Mendatang' => 'upcoming',
-            'Berlangsung' => 'ongoing',
-            'Selesai' => 'past',
-        ];
+        $statusMap = ['Semua' => null] + array_flip(\App\Models\Activity::STATUSES);
         $currentStatus = request('status');
         $search = request('search');
         $sort = request('sort', 'latest');
@@ -100,35 +95,7 @@
                         }
 
                         this.loading = true;
-                        try {
-                            const res = await fetch(url.toString(), {
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            });
-                            const html = await res.text();
-                            const doc = new DOMParser().parseFromString(html, 'text/html');
-                            
-                            // Update Grid
-                            const newGrid = doc.querySelector(this.gridSelector);
-                            const oldGrid = document.querySelector(this.gridSelector);
-                            if (newGrid && oldGrid) oldGrid.replaceWith(newGrid);
-
-                            // Update Filter Bar (to sync active states)
-                            const newFilterBar = doc.querySelector(this.filterBarSelector);
-                            const oldFilterBar = document.querySelector(this.filterBarSelector);
-                            if (newFilterBar && oldFilterBar) {
-                                // Only replace the inner buttons container to avoid breaking Alpine state if needed
-                                // but here we replace the whole bar because we want the labels to update too
-                                oldFilterBar.replaceWith(newFilterBar);
-                            }
-
-                            history.replaceState(null, '', url);
-                        } catch (err) {
-                            console.error('Filter fetch error', err);
-                        } finally {
-                            this.loading = false;
-                        }
+                        window.location.href = url.toString();
                     },
                     onSearchInput(e) {
                         clearTimeout(this.debounceTimer);

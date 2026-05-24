@@ -50,12 +50,12 @@
 </div>
 
 <script>
-    if (typeof debounceTimer === 'undefined') {
-        let debounceTimer;
+    if (typeof window.debounceTimer === 'undefined') {
+        window.debounceTimer = null;
     }
     function debounceSubmit() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
+        clearTimeout(window.debounceTimer);
+        window.debounceTimer = setTimeout(() => {
             document.getElementById('filter-form').submit();
         }, 600);
     }

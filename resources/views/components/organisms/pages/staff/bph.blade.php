@@ -1,27 +1,8 @@
 @props(['staffs'])
 
 @php
-    $leaders = $staffs
-        ->whereIn('position', ['Ketua Himpunan', 'Ketua Umum'])
-        ->sortBy('order')
-        ->take(1);
-
-    $bphMembers = $staffs
-        ->where('is_bph', true)
-        ->whereNotIn('position', ['Ketua Himpunan', 'Ketua Umum'])
-        ->sortBy('order')
-        ->take(7);
-
-    $deptAbbr = [
-        'Ketua Umum' => 'KET',
-        'Sekretaris Jenderal' => 'SEKJEN',
-        'Sekretaris Umum' => 'SEKUM',
-        'Wakil Sekretaris Umum' => 'WASEKUM',
-        'Bendahara Umum' => 'BEND',
-        'Wakil Bendahara Umum' => 'WABEND',
-        'Kepala Bidang 1' => 'KAB 1',
-        'Kepala Bidang 2' => 'KAB 2',
-    ];
+    $leaders = $staffs->filter(fn($s) => $s->isLeader())->sortBy('order')->take(1);
+    $bphMembers = $staffs->where('is_bph', true)->reject(fn($s) => $s->isLeader())->sortBy('order')->take(7);
 @endphp
 
 <div class="mb-20 md:mb-24">
@@ -60,7 +41,7 @@
         @foreach ($bphMembers as $index => $staff)
             <div class="w-full max-w-[400px] mx-auto reveal-delay-{{ ($index % 3) + 1 }}">
                 <x-molecules.pages.cards.member-card :name="$staff->name" :position="$staff->position" size="normal"
-                    :dept="$deptAbbr[$staff->position] ?? 'BPH'" :href="route('staff.show', $staff->id)"
+                    :dept="$staff->abbreviation" :href="route('staff.show', $staff->id)"
                     :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
             </div>
         @endforeach

@@ -22,14 +22,6 @@
     ]">
 
         @forelse ($aspirations as $item)
-            @php
-                $statusColors = [
-                    'pending' => 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400',
-                    'reviewed' => 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400',
-                    'resolved' => 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-                    'rejected' => 'bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400',
-                ];
-            @endphp
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200"
                 data-row-id="{{ $item->id }}">
                 <td class="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">
@@ -40,7 +32,7 @@
                     {{ $item->subject }}</td>
                 <td class="px-5 py-4">
                     <span
-                        class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $statusColors[$item->status] ?? 'bg-slate-100 text-slate-600' }}">
+                        class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $item->status_color_class }}">
                         {{ $item->status }}
                     </span>
                 </td>
