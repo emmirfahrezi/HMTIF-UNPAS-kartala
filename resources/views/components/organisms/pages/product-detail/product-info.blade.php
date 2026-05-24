@@ -9,25 +9,41 @@
 
 <div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right"
     x-data="{
+        copied: false,
         selectedSize: '{{ $showSizes ? 'L' : '' }}',
         phone: '{{ $orderPhone ?: '628123456789' }}',
-        productName: '{{ addslashes(e($product?->name ?? '')) }}',
-        baseMessage: '{{ addslashes(e($product?->order_text ?: 'Halo HMTIF Store, saya ingin memesan [PRODUCT_NAME] dengan ukuran [SIZE].')) }}',
+        productName: @js($product?->name ?? ''),
+        productPrice: @js('Rp ' . number_format((float) ($product?->price ?? 0), 0, ',', '.')),
+        productLink: window.location.href,
+        baseMessage: @js($product?->order_text ?: "Halo Min HMTIF-UNPAS,\n\nSaya mau memesan:\nProduk: *[PRODUCT_NAME]*\nUkuran: *[SIZE]*\nHarga: *[PRICE]*\n\nLink: [PRODUCT_LINK]"),
         getWhatsAppUrl() {
             let message = this.baseMessage;
             if (message.includes('[PRODUCT_NAME]')) {
-                message = message.replace('[PRODUCT_NAME]', this.productName);
+                message = message.replaceAll('[PRODUCT_NAME]', this.productName);
+            }
+            if (message.includes('[PRICE]')) {
+                message = message.replaceAll('[PRICE]', this.productPrice);
+            }
+            if (message.includes('[PRODUCT_LINK]')) {
+                message = message.replaceAll('[PRODUCT_LINK]', this.productLink);
             }
             if (this.selectedSize) {
                 if (message.includes('[SIZE]')) {
-                    message = message.replace('[SIZE]', this.selectedSize);
+                    message = message.replaceAll('[SIZE]', this.selectedSize);
                 } else {
-                    message = message + ' (Ukuran: ' + this.selectedSize + ')';
+                    message = message + '\nUkuran: *' + this.selectedSize + '*';
                 }
             } else {
-                message = message.replace(' dengan ukuran [SIZE]', '').replace('[SIZE]', '');
+                // Jika tidak ada ukuran, hapus baris yang mengandung [SIZE] agar format tetap rapi
+                message = message.replace(/^.*\[SIZE\].*$\n?/gm, '');
             }
             return 'https://wa.me/' + this.phone + '?text=' + encodeURIComponent(message);
+        },
+        copyLink() {
+            navigator.clipboard.writeText(this.productLink).then(() => {
+                this.copied = true;
+                setTimeout(() => this.copied = false, 2000);
+            });
         }
     }">
     <div class="flex flex-col gap-2 mb-8">
@@ -89,13 +105,25 @@
     <div class="flex flex-col sm:flex-row gap-4">
         <a :href="getWhatsAppUrl()"
             :data-external-url="getWhatsAppUrl()"
+            target="_blank"
             class="flex-1 px-10 py-5 bg-primary text-white rounded-2xl font-black text-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
             <x-heroicon-o-chat-bubble-left-right class="size-6" />
             Pesan via WhatsApp
         </a>
         <button
-            class="px-8 py-5 rounded-2xl border border-gray-200 text-gray-400 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all">
-            <x-heroicon-o-heart class="size-6" />
+            @click="copyLink()"
+            type="button"
+            title="Bagikan Link"
+            class="px-8 py-5 rounded-2xl border border-gray-200 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center"
+            :class="copied ? 'text-primary border-primary bg-primary/5' : 'text-gray-400'">
+            
+            <span x-show="!copied">
+                <x-heroicon-o-share class="size-6" />
+            </span>
+            <span x-show="copied" x-cloak>
+                <x-heroicon-o-check class="size-6" />
+            </span>
+            
         </button>
     </div>
 </div>

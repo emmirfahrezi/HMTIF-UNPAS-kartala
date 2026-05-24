@@ -1,17 +1,6 @@
 @props(['homeSections' => []])
 
-@php
-    $vmLabel = data_get($homeSections, 'vision_mission.label', 'Arah Gerak Organisasi');
-    $vmTitle = data_get($homeSections, 'vision_mission.title', 'Visi & Misi HMTIF');
-    $vmDesc = data_get($homeSections, 'vision_mission.description', 'Fondasi nilai yang membentuk cara kami berpikir, bergerak, dan berkontribusi untuk mahasiswa Teknik Informatika UNPAS.');
-    $visionTitle = data_get($homeSections, 'vision_mission.vision_title', 'Visi Utama');
-    $visionText = data_get($homeSections, 'vision_mission.vision_text', 'Mewujudkan HMTIF UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun harmoni serta kemajuan Teknik Informatika.');
-    $visionTagline = data_get($homeSections, 'vision_mission.vision_tagline', 'VISION FIRST, IMPACT FOLLOWS');
-    $missionTitle = data_get($homeSections, 'vision_mission.mission_title', 'Misi Strategis');
-    $missionText = data_get($homeSections, 'vision_mission.mission_text', '');
 
-    $missions = \App\Models\HomeSection::parseMissions($missionText);
-@endphp
 
 <section
     class="relative overflow-hidden py-24 lg:py-28 bg-linear-to-br from-primary-dark via-[#005f33] to-primary text-white content-auto">
@@ -24,11 +13,11 @@
         <div class="mx-auto mb-14 max-w-3xl text-center reveal reveal-up">
             <span
                 class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-black tracking-[0.25em] uppercase text-secondary">
-                {{ $vmLabel }}
+                {{ data_get($homeSections, 'vision_mission.label') }}
             </span>
-            <h2 class="mt-5 text-3xl font-black leading-tight sm:text-5xl">{{ $vmTitle }}</h2>
+            <h2 class="mt-5 text-3xl font-black leading-tight sm:text-5xl">{{ data_get($homeSections, 'vision_mission.title') }}</h2>
             <p class="mt-5 text-sm leading-relaxed text-white/80 sm:text-base lg:text-lg">
-                {{ $vmDesc }}
+                {{ data_get($homeSections, 'vision_mission.description') }}
             </p>
         </div>
 
@@ -41,13 +30,13 @@
                     class="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-primary-dark shadow-lg shadow-black/20">
                     <x-heroicon-o-eye class="h-7 w-7" />
                 </div>
-                <h3 class="text-2xl font-extrabold">{{ $visionTitle }}</h3>
+                <h3 class="text-2xl font-extrabold">{{ data_get($homeSections, 'vision_mission.vision_title') }}</h3>
                 <div class="mt-3 h-1 w-20 rounded-full bg-secondary"></div>
                 <blockquote class="mt-8 border-l-4 border-secondary pl-5 text-xl leading-relaxed text-white/90 italic">
-                    "{{ strip_tags($visionText) }}"
+                    "{{ strip_tags(data_get($homeSections, 'vision_mission.vision_text')) }}"
                 </blockquote>
                 <p class="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-primary-soft">
-                    {{ $visionTagline }}
+                    {{ data_get($homeSections, 'vision_mission.vision_tagline') }}
                 </p>
             </article>
 
@@ -59,11 +48,11 @@
                     class="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-primary-dark shadow-lg shadow-black/20">
                     <x-heroicon-o-rocket-launch class="h-7 w-7" />
                 </div>
-                <h3 class="text-2xl font-extrabold">{{ $missionTitle }}</h3>
+                <h3 class="text-2xl font-extrabold">{{ data_get($homeSections, 'vision_mission.mission_title') }}</h3>
                 <div class="mt-3 h-1 w-24 rounded-full bg-primary-soft"></div>
 
                 <ol class="mt-8 space-y-5">
-                    @foreach ($missions as $index => $misi)
+                    @foreach (data_get($homeSections, 'vision_mission.missions', []) as $index => $misi)
                         <li
                             class="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-secondary/60 hover:bg-white/10">
                             <span

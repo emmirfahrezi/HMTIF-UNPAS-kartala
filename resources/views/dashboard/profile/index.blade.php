@@ -5,8 +5,9 @@
         email: '{{ $user->email ?? '' }}',
         instagram: '{{ $staff?->instagram ?? '' }}',
         linkedin: '{{ $staff?->linkedin ?? '' }}',
+        github: '{{ $staff?->github ?? '' }}',
         bio: '{{ $staff?->bio ?? '' }}',
-        avatarPreview: '{{ $user->avatar_url ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($user->name ?? 'User') }}',
+        avatarPreview: '{{ $user->avatar_url ?? '' }}',
         passwordModalOpen: false,
         submitting: false,
     
@@ -19,13 +20,13 @@
     
         cancel() {
             this.editMode = false;
-            this.name = '{{ $name }}';
-            this.email = '{{ $email }}';
-            this.instagram = '{{ $instagram }}';
-            this.linkedin = '{{ $linkedin }}';
-            this.github = '{{ $github }}';
-            this.bio = '{{ $bio }}';
-            this.avatarPreview = '{{ $avatarUrl }}';
+            this.name = '{{ $user->name ?? '' }}';
+            this.email = '{{ $user->email ?? '' }}';
+            this.instagram = '{{ $staff?->instagram ?? '' }}';
+            this.linkedin = '{{ $staff?->linkedin ?? '' }}';
+            this.github = '{{ $staff?->github ?? '' }}';
+            this.bio = '{{ $staff?->bio ?? '' }}';
+            this.avatarPreview = '{{ $user->avatar_url ?? '' }}';
         }
     }" class="max-w-6xl mx-auto space-y-8">
 
@@ -137,7 +138,7 @@
 
                         {{-- Input Posisi (Readonly) --}}
                         <x-molecules.shared.forms.form-input type="text" label="Jabatan Pengurus (Read Only)"
-                            name="position" value="{{ $position }}"
+                            name="position" value="{{ $staff?->position ?? 'Admin Sistem' }}"
                             class="disabled:opacity-60 disabled:cursor-not-allowed" disabled />
 
                         {{-- Input Email --}}
@@ -147,7 +148,7 @@
 
                         {{-- Input Hak Akses (Readonly) --}}
                         <x-molecules.shared.forms.form-input type="text" label="Tingkat Akses (Read Only)"
-                            name="role" value="{{ $roleDisplay }}"
+                            name="role" value="{{ $user->role_label ?? '' }}"
                             class="disabled:opacity-60 disabled:cursor-not-allowed" disabled />
 
                         {{-- Input Bio --}}
@@ -175,6 +176,7 @@
                             x-model="linkedin" x-bind:disabled="!editMode"
                             class="disabled:opacity-60 disabled:cursor-not-allowed"
                             placeholder="URL profil LinkedIn..." />
+
                     </div>
                 </x-molecules.shared.forms.form-section>
             </div>
