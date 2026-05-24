@@ -8,7 +8,9 @@ use App\Services\Auth\LoginService;
 use App\Services\Auth\LogoutService;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -17,6 +19,46 @@ class LoginController extends Controller
         private LogoutService $logoutService,
     ) {}
 
+    // -----------------------------------------------------------------------
+    // Web (Blade)
+    // -----------------------------------------------------------------------
+
+    /** Tampilkan form login (GET /login). */
+    public function showLoginForm(): View
+    {
+        return view('pages.login');
+    }
+
+    /** Proses login via form (POST /login). */
+    public function loginWeb(Request $request): RedirectResponse
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        try {
+            $this->loginService->execute($credentials);
+        } catch (AuthenticationException $e) {
+            return back()->withInput()->withErrors(['email' => $e->getMessage()]);
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    /** Proses logout via form (POST /logout). */
+    public function logoutWeb(Request $request): RedirectResponse
+    {
+        $this->logoutService->logout($request);
+
+        return redirect()->route('login');
+    }
+
+    // -----------------------------------------------------------------------
+    // API (JSON)
+    // -----------------------------------------------------------------------
+
+    /** Login via API — mengembalikan token. */
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
@@ -33,25 +75,10 @@ class LoginController extends Controller
         return ResponseResource::success($result, 'Login berhasil');
     }
 
-    public function loginWeb(Request $request)
-    {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        try {
-            $this->loginService->execute($credentials);
-        } catch (AuthenticationException $e) {
-            return back()->withInput()->withErrors(['email' => $e->getMessage()]);
-        }
-
-        return redirect()->route('dashboard');
-    }
-
+    /** Logout via API. */
     public function logout(Request $request): JsonResponse
     {
-        $this->logoutService->execute($request->user());
+        $this->logoutService->logout($request);
 
         return ResponseResource::success(null, 'Logout berhasil');
     }

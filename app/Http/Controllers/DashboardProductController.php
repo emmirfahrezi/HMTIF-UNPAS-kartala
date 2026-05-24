@@ -37,19 +37,20 @@ class DashboardProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'                => 'required|string|max:255',
-            'slug'                => 'required|string|max:255|unique:products,slug',
-            'product_category_id' => 'nullable|exists:product_categories,id',
-            'price'               => 'required|numeric|min:0',
-            'phone_number'        => 'nullable|string|max:255',
-            'order_text'          => 'nullable|string',
-            'is_available'        => 'boolean',
-            'description'         => 'nullable|string',
-            'images'              => 'nullable|array',
-            'images.*.id'         => 'nullable|integer',
-            'images.*.image_path' => 'nullable|string|max:1024',
-            'images.*.order'      => 'nullable|integer',
-            'images.*.is_primary' => 'sometimes|boolean',
+            'name'                 => 'required|string|max:255',
+            'slug'                 => 'required|string|max:255|unique:products,slug',
+            'product_category_id'  => 'nullable|exists:product_categories,id',
+            'price'                => 'required|numeric|min:0',
+            'phone_number'         => 'nullable|string|max:255',
+            'order_text'           => 'nullable|string',
+            'is_available'         => 'boolean',
+            'description'          => 'nullable|string',
+            'images'               => 'nullable|array',
+            'images.*.id'          => 'nullable|integer',
+            'images.*.image_path'  => 'nullable|string|max:1024',
+            'images.*.image_file'  => 'nullable|file|image|max:2048',
+            'images.*.order'       => 'nullable|integer',
+            'images.*.is_primary'  => 'sometimes|boolean',
         ]);
 
         $product = $this->createProduct->execute($validated);
@@ -70,19 +71,20 @@ class DashboardProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name'                => 'required|string|max:255',
-            'slug'                => "required|string|max:255|unique:products,slug,{$product->id}",
-            'product_category_id' => 'nullable|exists:product_categories,id',
-            'price'               => 'required|numeric|min:0',
-            'phone_number'        => 'nullable|string|max:255',
-            'order_text'          => 'nullable|string',
-            'is_available'        => 'boolean',
-            'description'         => 'nullable|string',
-            'images'              => 'nullable|array',
-            'images.*.id'         => 'nullable|integer',
-            'images.*.image_path' => 'nullable|string|max:1024',
-            'images.*.order'      => 'nullable|integer',
-            'images.*.is_primary' => 'sometimes|boolean',
+            'name'                 => 'required|string|max:255',
+            'slug'                 => "required|string|max:255|unique:products,slug,{$product->id}",
+            'product_category_id'  => 'nullable|exists:product_categories,id',
+            'price'                => 'required|numeric|min:0',
+            'phone_number'         => 'nullable|string|max:255',
+            'order_text'           => 'nullable|string',
+            'is_available'         => 'boolean',
+            'description'          => 'nullable|string',
+            'images'               => 'nullable|array',
+            'images.*.id'          => 'nullable|integer',
+            'images.*.image_path'  => 'nullable|string|max:1024',
+            'images.*.image_file'  => 'nullable|file|image|max:2048',
+            'images.*.order'       => 'nullable|integer',
+            'images.*.is_primary'  => 'sometimes|boolean',
         ]);
 
         $this->updateProduct->execute($product, $validated);

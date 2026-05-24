@@ -113,6 +113,20 @@ class DashboardMinuteController extends Controller
             $this->deleteMinute->execute($minute);
         }
 
-        return redirect()->back()->with('success', count($ids) . ' notulensi berhasil dihapus.');
+        return redirect()->back()->with('success', \count($ids) . ' notulensi berhasil dihapus.');
+    }
+
+    public function show(string $id)
+    {
+        $minute = Minute::with('attendees')->findOrFail($id);
+
+        return view('dashboard.minutes.show', compact('minute'));
+    }
+
+    public function print(string $id)
+    {
+        $minute = Minute::with('attendees')->findOrFail($id);
+
+        return view('dashboard.minutes.print', compact('minute'));
     }
 }

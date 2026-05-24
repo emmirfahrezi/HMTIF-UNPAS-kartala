@@ -34,20 +34,25 @@ class DashboardActivityController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:activities,slug',
-            'description' => 'required|string',
-            'body' => 'nullable|string',
-            'thumbnail' => 'nullable|string|max:1024',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'location' => 'nullable|string|max:255',
+            'title'            => 'required|string|max:255',
+            'slug'             => 'required|string|max:255|unique:activities,slug',
+            'description'      => 'required|string',
+            'body'             => 'nullable|string',
+            'thumbnail'        => 'nullable|string|max:1024',
+            'thumbnail_file'   => 'nullable|file|image|max:2048',
+            'start_date'       => 'required|date',
+            'end_date'         => 'nullable|date|after_or_equal:start_date',
+            'location'         => 'nullable|string|max:255',
             'registration_url' => 'nullable|url|max:1024',
-            'status' => 'required|in:upcoming,ongoing,past',
-            'file' => 'nullable|file|max:10240',
+            'status'           => 'required|in:upcoming,ongoing,past',
+            'file'             => 'nullable|file|max:10240',
         ]);
 
-        $activity = $this->createActivity->execute($validated, $request->file('file'));
+        $activity = $this->createActivity->execute(
+            $validated,
+            $request->file('file'),
+            $request->file('thumbnail_file'),
+        );
 
         ActivityLog::record('created', $activity, "Menambahkan kegiatan: {$activity->title}");
 
@@ -62,20 +67,26 @@ class DashboardActivityController extends Controller
     public function update(Request $request, Activity $activity)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => "required|string|max:255|unique:activities,slug,{$activity->id}",
-            'description' => 'required|string',
-            'body' => 'nullable|string',
-            'thumbnail' => 'nullable|string|max:1024',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'location' => 'nullable|string|max:255',
+            'title'            => 'required|string|max:255',
+            'slug'             => "required|string|max:255|unique:activities,slug,{$activity->id}",
+            'description'      => 'required|string',
+            'body'             => 'nullable|string',
+            'thumbnail'        => 'nullable|string|max:1024',
+            'thumbnail_file'   => 'nullable|file|image|max:2048',
+            'start_date'       => 'required|date',
+            'end_date'         => 'nullable|date|after_or_equal:start_date',
+            'location'         => 'nullable|string|max:255',
             'registration_url' => 'nullable|url|max:1024',
-            'status' => 'required|in:upcoming,ongoing,past',
-            'file' => 'nullable|file|max:10240',
+            'status'           => 'required|in:upcoming,ongoing,past',
+            'file'             => 'nullable|file|max:10240',
         ]);
 
-        $this->updateActivity->execute($activity, $validated, $request->file('file'));
+        $this->updateActivity->execute(
+            $activity,
+            $validated,
+            $request->file('file'),
+            $request->file('thumbnail_file'),
+        );
 
         ActivityLog::record('updated', $activity, "Memperbarui kegiatan: {$activity->title}");
 
