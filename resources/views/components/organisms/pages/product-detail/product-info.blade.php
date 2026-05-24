@@ -2,15 +2,9 @@
 
 {{-- Product Details Layout --}}
 @php
-    $orderPhone = preg_replace('/\D+/', '', (string) ($product?->phone_number ?? ''));
-    if ($orderPhone !== '' && str_starts_with($orderPhone, '0')) {
-        $orderPhone = '62' . substr($orderPhone, 1);
-    }
-
-    // Detect if product needs size options (e.g. if category is 'pakaian' / apparel, or if it's clothing)
-    $categorySlug = $product?->category?->slug ?? '';
-    $showSizes = ($categorySlug === 'pakaian') || in_array($product?->slug, ['hoodie-kabinet-kartala-2026', 't-shirt-oversize-hmtif', 'polo-shirt-resmi-hmtif-unpas', 'buckethat-special-edition-kartala']);
-    $availableSizes = $showSizes ? ['S', 'M', 'L', 'XL', 'XXL'] : [];
+    $orderPhone = $product?->formatted_phone;
+    $showSizes = (bool) $product?->show_sizes;
+    $availableSizes = $product?->available_sizes ?? [];
 @endphp
 
 <div class="mt-12 lg:mt-0 lg:pl-8 reveal reveal-right"

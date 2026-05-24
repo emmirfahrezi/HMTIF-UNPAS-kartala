@@ -39,7 +39,7 @@
                     @endif
                 </td>
                 <td class="px-5 py-4">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border {{ $item->action_color_class }}">
                         {{ $item->category }}
                     </span>
                 </td>
@@ -76,42 +76,7 @@
     </x-molecules.dashboard.cards.data-table>
 
     @foreach ($logs ?? [] as $item)
-        <x-molecules.shared.modal id="activity-log-detail-{{ $item->id }}" title="Detail Log Aktivitas" maxWidth="lg">
-            <div class="space-y-6">
-                <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Judul Aktivitas</p>
-                    <h3 class="mt-1 text-lg font-black text-slate-900 dark:text-white">{{ $item->title }}</h3>
-                </div>
-
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <div class="rounded-2xl border border-slate-200/60 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Tanggal</p>
-                        <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">
-                            {{ \Carbon\Carbon::parse($item->date)->translatedFormat('d M Y H:i') }}
-                        </p>
-                    </div>
-                    <div class="rounded-2xl border border-slate-200/60 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Kategori</p>
-                        <p class="mt-1 text-sm font-bold text-primary">{{ $item->category }}</p>
-                    </div>
-                    <div class="rounded-2xl border border-slate-200/60 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Pelaksana</p>
-                        <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">{{ $item->performed_by }}</p>
-                    </div>
-                </div>
-
-                <div>
-                    <p class="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Deskripsi</p>
-                    <div class="prose prose-sm prose-slate max-w-none rounded-2xl border border-slate-200/60 bg-slate-50 p-5 text-slate-600 dark:prose-invert dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300">
-                        @if ($item->description)
-                            {!! $item->description !!}
-                        @else
-                            <p>Tidak ada deskripsi tambahan.</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </x-molecules.shared.modal>
+        @include('dashboard.activity-logs._show-log-modal', ['item' => $item])
     @endforeach
 
 </x-layouts.dashboard>

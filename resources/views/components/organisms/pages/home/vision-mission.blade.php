@@ -10,29 +10,7 @@
     $missionTitle = data_get($homeSections, 'vision_mission.mission_title', 'Misi Strategis');
     $missionText = data_get($homeSections, 'vision_mission.mission_text', '');
 
-    // Parse missions intelligently from plain/HTML text
-    $missions = [];
-    if (!empty($missionText)) {
-        if (str_contains($missionText, '<p>') || str_contains($missionText, '<li>')) {
-            preg_match_all('/(?:<p>|<li>)(.*?)(?:<\/p>|<\/li>)/is', $missionText, $matches);
-            if (!empty($matches[1])) {
-                $missions = array_map('strip_tags', $matches[1]);
-            }
-        }
-        if (empty($missions)) {
-            $cleaned = strip_tags($missionText);
-            $missions = array_filter(array_map('trim', explode("\n", $cleaned)));
-        }
-    }
-    
-    // Fallback premium jika data kosong di seeder/database
-    if (empty($missions)) {
-        $missions = [
-            'Menyelenggarakan kegiatan akademis dan non-akademis yang inovatif guna meningkatkan kompetensi mahasiswa Teknik Informatika.',
-            'Membangun budaya kolaborasi yang harmonis dan aktif baik di internal himpunan maupun eksternal kampus.',
-            'Menyediakan wadah aspirasi yang responsif, solutif, dan transparan untuk seluruh civitas akademika Teknik Informatika UNPAS.'
-        ];
-    }
+    $missions = \App\Models\HomeSection::parseMissions($missionText);
 @endphp
 
 <section

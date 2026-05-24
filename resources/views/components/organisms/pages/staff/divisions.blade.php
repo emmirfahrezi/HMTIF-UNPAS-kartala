@@ -1,35 +1,10 @@
     {{-- 3. Departemen / Divisi --}}
     @props(['divisions'])
 
-    @php
-        $divisionOrder = [
-            'kajian strategis dan advokasi',
-            'komunikasi dan informasi',
-            'kewirausahaan kreatif',
-            'pengembangan sumber daya mahasiswa',
-            'minat dan bakat',
-        ];
-
-        $divisions = $divisions
-            ->where('name', '!=', 'Badan Pengurus Harian')
-            ->sortBy(function ($division) use ($divisionOrder) {
-                $index = array_search(strtolower($division->name), $divisionOrder, true);
-                return $index === false ? 999 : $index;
-            })
-            ->values();
-
-        $abbrMap = [
-            'kajian strategis dan advokasi' => 'KASTRAD',
-            'komunikasi dan informasi' => 'KOMINFO',
-            'pengembangan sumber daya mahasiswa' => 'PSDM',
-            'minat dan bakat' => 'PMB',
-            'kewirausahaan kreatif' => 'KESKRAF',
-        ];
-    @endphp
 
     @foreach ($divisions as $div)
         @php
-            $divisionCode = $abbrMap[strtolower($div->name)] ?? strtoupper(substr($div->slug, 0, 6));
+            $divisionCode = $div->abbreviation_code;
             $coordinator = $div->staffs->first();
             $members = $div->staffs->slice(1);
         @endphp

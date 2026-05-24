@@ -59,10 +59,10 @@
                 if (opt) return opt.label;
                 return @js($placeholder) || '— Pilih Opsi —';
             }
-        }" x-init="$watch('selected', value => { $dispatch('change', value); })" class="relative" @click.away="open = false">
+        }" x-init="$watch('selected', value => { $refs.button.dispatchEvent(new Event('change', { bubbles: true })); })" class="relative" @click.away="open = false">
             <input type="hidden" name="{{ $name }}" :value="selected" {{ $required ? 'required' : '' }} {{ $attributes->whereStartsWith('data-') }}>
             
-            <button type="button" @click="open = !open"
+            <button x-ref="button" type="button" @click="open = !open"
                 class="{{ $baseInputClass }} flex items-center justify-between text-left"
                 :class="open ? 'border-primary ring-4 ring-primary/10' : ''"
                 {{ $attributes->whereDoesntStartWith('data-') }}>
@@ -190,10 +190,12 @@
                 x-data="{
                     editorName: @js($name),
                     type: 'image',
+                    source: 'url',
                     url: '',
+                    isUploading: false,
                     hasExisting: false,
                     get label() {
-                        return this.type === 'video' ? 'URL Video' : 'URL Gambar';
+                        return this.type === 'video' ? 'URL Video' : 'Sumber Gambar';
                     },
                     get placeholder() {
                         return this.type === 'video' ? 'https://youtube.com/...' : 'https://...';
@@ -202,12 +204,44 @@
                         window.addEventListener('open-richtext-media-modal', (event) => {
                             if (event.detail.name !== this.editorName) return;
                             this.type = event.detail.type || 'image';
+                            this.source = 'url';
                             this.url = event.detail.url || '';
                             this.hasExisting = !!event.detail.hasExisting;
+                            this.isUploading = false;
                             this.$nextTick(() => this.$refs.mediaUrlInput?.focus());
                         });
                     },
-                    save() {
+                    async save() {
+                        if (this.type === 'image' && this.source === 'file') {
+                            const fileInput = this.$refs.mediaFileInput;
+                            if (fileInput && fileInput.files.length > 0) {
+                                this.isUploading = true;
+                                let formData = new FormData();
+                                formData.append('image', fileInput.files[0]);
+                                try {
+                                    let csrfMeta = document.querySelector('meta[name=csrf-token]');
+                                    let res = await fetch('/api/editor/upload', {
+                                        method: 'POST',
+                                        headers: csrfMeta ? { 'X-CSRF-TOKEN': csrfMeta.content } : {},
+                                        body: formData
+                                    });
+                                    let data = await res.json();
+                                    if (data.url) {
+                                        this.url = data.url;
+                                    } else {
+                                        alert('Gagal mengupload gambar: ' + (data.message || 'Unknown error'));
+                                        this.isUploading = false;
+                                        return;
+                                    }
+                                } catch(e) {
+                                    alert('Gagal menghubungi server untuk upload gambar. Pastikan endpoint /api/editor/upload tersedia.');
+                                    this.isUploading = false;
+                                    return;
+                                }
+                                this.isUploading = false;
+                            }
+                        }
+
                         window.richTextEditors?.[this.editorName]?.applyMedia(this.type, this.url);
                         window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: this.editorName + '_media_modal' } }));
                     },
@@ -218,12 +252,32 @@
                 }"
                 class="space-y-6"
             >
-                <div class="space-y-2">
-                    <label class="inline-block text-sm font-bold text-slate-700 dark:text-slate-300" x-text="label"></label>
-                    <x-atoms.shared.input type="url" x-model="url" x-ref="mediaUrlInput" x-bind:placeholder="placeholder" />
-                    <p class="text-xs text-slate-400 dark:text-slate-500">
-                        Gunakan URL publik agar media dapat tampil di halaman.
-                    </p>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between" x-show="type === 'image'">
+                        <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Sumber Gambar</label>
+                        <div class="inline-grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-950/60 p-1">
+                            <button type="button" @click="source = 'url'"
+                                :class="source === 'url' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                class="rounded-xl px-4 py-1.5 text-[10px] font-black transition uppercase tracking-widest">URL</button>
+                            <button type="button" @click="source = 'file'"
+                                :class="source === 'file' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
+                                class="rounded-xl px-4 py-1.5 text-[10px] font-black transition uppercase tracking-widest">File Lokal</button>
+                        </div>
+                    </div>
+
+                    <div x-show="source === 'url' || type === 'video'" x-cloak class="space-y-2">
+                        <label class="inline-block text-sm font-bold text-slate-700 dark:text-slate-300" x-text="type === 'video' ? 'URL Video' : 'URL Gambar'"></label>
+                        <x-atoms.shared.input type="url" x-model="url" x-ref="mediaUrlInput" x-bind:placeholder="placeholder" />
+                        <p class="text-xs text-slate-400 dark:text-slate-500">
+                            Gunakan URL publik agar media dapat tampil di halaman.
+                        </p>
+                    </div>
+
+                    <div x-show="type === 'image' && source === 'file'" x-cloak class="space-y-2">
+                        <input type="file" x-ref="mediaFileInput" accept="image/*"
+                            class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-primary/5 dark:file:bg-primary/20 file:text-primary hover:file:bg-primary/10 transition cursor-pointer" />
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Gambar akan diunggah otomatis ke server.</p>
+                    </div>
                 </div>
 
                 <div class="flex justify-end pt-2">
@@ -231,18 +285,22 @@
                         <button type="button"
                             x-show="hasExisting"
                             @click="remove"
-                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-red-500/80 transition hover:bg-red-500/10 hover:text-red-500">
+                            :disabled="isUploading"
+                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-red-500/80 transition hover:bg-red-500/10 hover:text-red-500 disabled:opacity-50">
                             Hapus Media
                         </button>
                         <button type="button"
                             @click="window.dispatchEvent(new CustomEvent('close-modal', { detail: { name: editorName + '_media_modal' } }))"
-                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300">
+                            :disabled="isUploading"
+                            class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 disabled:opacity-50">
                             Batal
                         </button>
                         <button type="button"
                             @click="save"
-                            class="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm font-bold text-primary transition hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/20">
-                            Simpan Media
+                            :disabled="isUploading"
+                            class="inline-flex items-center justify-center rounded-xl border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm font-bold text-primary transition hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/20 disabled:opacity-50">
+                            <span x-show="!isUploading">Simpan Media</span>
+                            <span x-show="isUploading">Mengunggah...</span>
                         </button>
                     </div>
                 </div>
@@ -475,6 +533,47 @@
                 hiddenInput.value = quill.root.innerHTML;
                 quill.on('text-change', function() {
                     hiddenInput.value = quill.root.innerHTML;
+                });
+
+                // Intercept Image Paste to prevent Base64 bloat
+                quill.root.addEventListener('paste', async function(e) {
+                    var clipboardData = e.clipboardData || window.clipboardData;
+                    if (!clipboardData) return;
+                    
+                    var items = clipboardData.items;
+                    var file = null;
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].type.indexOf('image') === 0) {
+                            file = items[i].getAsFile();
+                            break;
+                        }
+                    }
+                    
+                    if (file) {
+                        e.preventDefault();
+                        var range = quill.getSelection();
+                        var formData = new FormData();
+                        formData.append('image', file);
+                        
+                        try {
+                            let csrfMeta = document.querySelector('meta[name=csrf-token]');
+                            var res = await fetch('/api/editor/upload', {
+                                method: 'POST',
+                                headers: csrfMeta ? { 'X-CSRF-TOKEN': csrfMeta.content } : {},
+                                body: formData
+                            });
+                            var data = await res.json();
+                            
+                            if (data.url) {
+                                quill.insertEmbed(range ? range.index : 0, 'image', data.url, 'user');
+                                if (range) quill.setSelection(range.index + 1, 'silent');
+                            } else {
+                                alert('Gagal mengupload gambar yang di-paste: ' + (data.message || 'Unknown error'));
+                            }
+                        } catch(err) {
+                            alert('Gagal menghubungi server untuk upload gambar paste. Pastikan endpoint /api/editor/upload tersedia.');
+                        }
+                    }
                 });
             });
         </script>

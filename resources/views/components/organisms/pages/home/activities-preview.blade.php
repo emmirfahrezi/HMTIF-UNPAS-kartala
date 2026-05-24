@@ -2,13 +2,6 @@
 
 <div id="activities" class="py-24 bg-section/30 relative overflow-hidden content-auto">
 
-    @php
-        $statusLabels = [
-            'upcoming' => 'Mendatang',
-            'ongoing' => 'Berlangsung',
-            'past' => 'Selesai',
-        ];
-    @endphp
 
     <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl relative z-10">
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -30,11 +23,7 @@
             @php $delay = 1; @endphp
             @foreach ($activities as $item)
                 @php
-                    $thumbnail = (string) ($item->thumbnail ?? '');
-                    $isLocalThumbnail =
-                        $thumbnail !== '' &&
-                        \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
-                    $activityImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/activity.svg');
+                    $activityImage = $item->thumbnail_url;
                 @endphp
                 <div
                     class="group bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:-translate-y-2 transition-all duration-700 reveal reveal-up reveal-delay-{{ $delay++ }}">
@@ -46,7 +35,7 @@
                         <div class="absolute top-4 left-4">
                             <span
                                 class="px-3 py-1 bg-white/90 backdrop-blur-md text-primary text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm border border-primary/10 italic">
-                                {{ $statusLabels[$item->status] ?? 'Kegiatan' }}
+                                {{ $item->status_label }}
                             </span>
                         </div>
                     </div>

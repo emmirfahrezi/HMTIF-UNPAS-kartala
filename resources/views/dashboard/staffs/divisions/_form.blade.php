@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     {{-- Main Content --}}
     <div class="lg:col-span-2 space-y-8">
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-building-office-2 class="size-32" />
             </div>
@@ -45,7 +45,7 @@
 
     {{-- Sidebar --}}
     <div class="space-y-8">
-        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
             <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-primary pointer-events-none">
                 <x-heroicon-o-list-bullet class="size-24" />
             </div>

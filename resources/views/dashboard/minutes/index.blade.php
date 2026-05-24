@@ -1,10 +1,4 @@
-@php
-    $permissions = $permissions ?? [];
-    $canRead = (bool) ($permissions['read'] ?? true);
-    $canCreate = (bool) ($permissions['create'] ?? true);
-    $canUpdate = (bool) ($permissions['update'] ?? true);
-    $canDelete = (bool) ($permissions['delete'] ?? true);
-@endphp
+
 <x-layouts.dashboard pageTitle="Notulensi Rapat" :breadcrumbs="[['label' => 'Notulensi']]">
     @if (!$canRead)
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">

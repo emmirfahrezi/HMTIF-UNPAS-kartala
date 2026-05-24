@@ -13,7 +13,7 @@
         selectAll: false,
         toggleSelectAll() {
             if (this.selectAll) {
-                this.selectedIds = [...document.querySelectorAll('[data-row-id]')].map(el => el.dataset.rowId);
+                this.selectedIds = [...$el.querySelectorAll('[data-row-id]')].map(el => el.dataset.rowId);
             } else {
                 this.selectedIds = [];
             }
@@ -25,7 +25,7 @@
             } else {
                 this.selectedIds.push(id);
             }
-            this.selectAll = this.selectedIds.length === document.querySelectorAll('[data-row-id]').length && this.selectedIds.length > 0;
+            this.selectAll = this.selectedIds.length === $el.querySelectorAll('[data-row-id]').length && this.selectedIds.length > 0;
         },
         isSelected(id) {
             return this.selectedIds.includes(id);

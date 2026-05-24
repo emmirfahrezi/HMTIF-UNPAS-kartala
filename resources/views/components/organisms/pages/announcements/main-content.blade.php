@@ -174,29 +174,7 @@
                         }
 
                         this.loading = true;
-                        try {
-                            const res = await fetch(url.toString(), {
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            });
-                            const html = await res.text();
-                            const doc = new DOMParser().parseFromString(html, 'text/html');
-                            
-                            const newGrid = doc.querySelector(this.gridSelector);
-                            const oldGrid = document.querySelector(this.gridSelector);
-                            if (newGrid && oldGrid) oldGrid.replaceWith(newGrid);
-
-                            // For announcements, we don't necessarily need to replace the filter bar
-                            // as there are no sticky category buttons here that need active state syncing
-                            // (they are in the sidebar)
-
-                            history.replaceState(null, '', url);
-                        } catch (err) {
-                            console.error('Filter fetch error', err);
-                        } finally {
-                            this.loading = false;
-                        }
+                        window.location.href = url.toString();
                     },
                     onSearchInput(e) {
                         clearTimeout(this.debounceTimer);
