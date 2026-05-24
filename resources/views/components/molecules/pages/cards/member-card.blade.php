@@ -20,13 +20,14 @@
     };
 @endphp
 
-@if ($href)
-    <a href="{{ $href }}"
-        class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary reveal reveal-up {{ $sizeClasses }} block">
-    @else
-        <div
-            class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary reveal reveal-up {{ $sizeClasses }}">
-@endif
+<div class="reveal reveal-up h-full">
+    @if ($href)
+        <a href="{{ $href }}"
+            class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary {{ $sizeClasses }} block h-full">
+        @else
+            <div
+                class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary {{ $sizeClasses }} h-full">
+    @endif
 
 {{-- Intense Green Inner Shadow --}}
 <div
@@ -42,7 +43,7 @@
         data-fallback-src="{{ $fallbackImage }}">
     {{-- Elegant Fade Overlay --}}
     <div
-        class="absolute inset-0 bg-linear-to-t from-white via-white/20 to-transparent opacity-95 md:group-hover:opacity-80 transition-opacity">
+        class="absolute inset-0 bg-linear-to-t from-white via-white/20 to-transparent opacity-95 md:group-hover:opacity-80 transition-opacity duration-700">
     </div>
 </div>
 
@@ -74,4 +75,5 @@
 @else
     </div>
 @endif
+</div>
 

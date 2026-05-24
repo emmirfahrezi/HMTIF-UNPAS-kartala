@@ -3,14 +3,25 @@
     @php
         $heroImage = $announcement->thumbnail_url;
         $relatedAnnouncements = $relatedAnnouncements ?? collect();
+        
+        $previousUrl = url()->previous();
+        $backUrl = route('announcements');
+        $backLabel = 'Kembali ke Pengumuman';
+        
+        if ($previousUrl && $previousUrl !== url()->current() && str_contains($previousUrl, request()->getHost())) {
+            $backUrl = $previousUrl;
+            if ($previousUrl === url('/') || $previousUrl === url('/index') || $previousUrl === url('/home')) {
+                $backLabel = 'Kembali ke Beranda';
+            }
+        }
     @endphp
 
     <x-molecules.pages.sections.page-hero icon="heroicon-o-megaphone">
         <div class="text-left max-w-3xl -mt-16 md:-mt-24 relative z-20">
-            <a href="{{ route('announcements') }}"
+            <a href="{{ $backUrl }}"
                 class="inline-flex items-center gap-2 text-primary font-bold text-sm hover:-translate-x-1 transition-transform group mb-8">
                 <x-heroicon-o-arrow-left class="size-4" />
-                Kembali ke Pengumuman
+                {{ $backLabel }}
             </a>
 
             <div class="mt-2">

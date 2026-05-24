@@ -1,0 +1,200 @@
+/* --- DASHBOARD STYLES --- */
+
+/* Quill Rich Editor Theme Customizations */
+.ql-container {
+  border: 0 !important;
+  border-radius: 0 !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  background-color: var(--color-base) !important;
+}
+
+.dark .ql-container {
+  background-color: var(--color-dash-editor-bg-dark) !important;
+  color: var(--color-base) !important;
+}
+
+.ql-toolbar {
+  border: 0 !important;
+  border-bottom: 1px solid var(--color-dash-editor-border) !important;
+  border-radius: 0 !important;
+  background-color: var(--color-dash-editor-bg-light) !important;
+}
+
+.dark .ql-toolbar {
+  border-bottom-color: var(--color-dash-editor-border-dark) !important;
+  background-color: var(--color-dash-editor-bg-dark-soft) !important;
+}
+
+.ql-editor {
+  min-height: 200px !important;
+}
+
+.dark .ql-snow .ql-stroke {
+  stroke: var(--color-dash-editor-text-muted) !important;
+}
+
+.dark .ql-snow .ql-fill {
+  fill: var(--color-dash-editor-text-muted) !important;
+}
+
+.dark .ql-snow .ql-picker {
+  color: var(--color-dash-editor-text-muted) !important;
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--color-dash-editor-text-muted) !important;
+  font-style: normal !important;
+}
+
+.ql-editor table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-dash-editor-border);
+}
+
+.dark .ql-editor table {
+  border-color: var(--color-dash-editor-border-dark);
+}
+
+.ql-editor td {
+  border: 1px solid var(--color-dash-editor-border);
+  padding: 0.5rem;
+}
+
+.dark .ql-editor td {
+  border-color: var(--color-dash-editor-border-dark);
+}
+
+/* Dashboard Navigation Layout (Sidebar & Main Panel) */
+.dash-sidebar {
+  width: 260px;
+  transition: transform 0.3s ease;
+}
+
+.dash-content {
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+  .dash-sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 50;
+  }
+
+  .dash-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .dash-content {
+    margin-left: 0;
+  }
+}
+
+.dash-sidebar-overlay {
+  display: none;
+}
+
+.dash-sidebar-overlay.open {
+  display: block;
+}
+
+/* --- CUSTOM SCROLLBAR --- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary-soft) 20%, transparent);
+}
+
+/* Chrome/Safari Autofill Styling Overrides */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-dash-editor-bg-light) inset !important;
+  -webkit-text-fill-color: var(--color-dash-editor-border-dark) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover, 
+.dark input:-webkit-autofill:focus, 
+.dark input:-webkit-autofill:active,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-dash-editor-bg-dark) inset !important;
+  -webkit-text-fill-color: var(--color-base) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* --- DATE & TIME INDICATOR PICKER ICONS STYLING --- */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+  transition: filter 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(0.2);
+}
+
+/* Auto-invert to bright slate-200 inside dark mode */
+.dark input[type="date"]::-webkit-calendar-picker-indicator,
+.dark input[type="time"]::-webkit-calendar-picker-indicator,
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+[data-theme='dark'] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme='dark'] input[type="time"]::-webkit-calendar-picker-indicator,
+[data-theme='dark'] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8) brightness(1.2);
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator:hover,
+.dark input[type="time"]::-webkit-calendar-picker-indicator:hover,
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+[data-theme='dark'] input[type="date"]::-webkit-calendar-picker-indicator:hover,
+[data-theme='dark'] input[type="time"]::-webkit-calendar-picker-indicator:hover,
+[data-theme='dark'] input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(1) brightness(1.5);
+}

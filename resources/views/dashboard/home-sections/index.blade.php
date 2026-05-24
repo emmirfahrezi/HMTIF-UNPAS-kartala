@@ -1,6 +1,6 @@
 
 <x-layouts.dashboard pageTitle="Halaman Utama" :breadcrumbs="[['label' => 'Konten'], ['label' => 'Halaman Utama']]">
-    @if (!$canRead)
+    @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
             <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6 shadow-inner animate-pulse">
                 <x-heroicon-o-lock-closed class="size-8" />
@@ -44,7 +44,7 @@
                         Kelola konten teks untuk bagian {{ strtolower($sectionNames[$key] ?? Str::headline($key)) }} di halaman utama website.
                     </p>
 
-                    @if ($canUpdate)
+                    @if ($permissions['update'])
                     <div class="pt-4 border-t border-slate-100 dark:border-slate-800 mt-auto">
                         <x-atoms.shared.button 
                             href="/dashboard/home-sections/{{ $key }}/edit" 

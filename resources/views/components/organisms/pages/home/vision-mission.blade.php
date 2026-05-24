@@ -3,7 +3,7 @@
 
 
 <section
-    class="relative overflow-hidden py-24 lg:py-28 bg-linear-to-br from-primary-dark via-[#005f33] to-primary text-white content-auto">
+    class="relative overflow-hidden py-24 lg:py-28 bg-linear-to-br from-primary-dark via-vision-via to-primary text-white content-auto">
     <div class="absolute inset-0 opacity-10 bg-repeat"
         style="background-image: url('{{ asset('images/placeholders/pattern-grid.svg') }}');"></div>
     <div class="absolute -top-28 -left-24 h-80 w-80 rounded-full bg-secondary/20 blur-3xl"></div>

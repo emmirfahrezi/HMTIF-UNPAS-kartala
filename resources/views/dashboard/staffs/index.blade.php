@@ -1,6 +1,6 @@
 
 <x-layouts.dashboard pageTitle="Pengurus" :breadcrumbs="[['label' => 'Pengurus']]">
-    @if (!$canRead)
+    @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
             <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6 shadow-inner animate-pulse">
                 <x-heroicon-o-lock-closed class="size-8" />
@@ -9,7 +9,7 @@
             <p class="text-sm text-slate-400 dark:text-slate-500 max-w-md text-center leading-relaxed">Anda tidak memiliki izin untuk melihat data pada halaman ini. Silakan hubungi Administrator jika ini merupakan kesalahan.</p>
         </div>
     @else
-        @if ($canCreate)
+        @if ($permissions['create'])
         <x-slot:headerActions>
             <x-atoms.shared.button 
                 href="/dashboard/staffs/create"
@@ -19,7 +19,7 @@
         </x-slot:headerActions>
         @endif
 
-    @if ($canCreate)
+    @if ($permissions['create'])
     <x-molecules.dashboard.cards.category-card title="Manajemen Bidang / Divisi"
         subtitle="Kelola struktur organisasi dan divisi pengurus" addModalId="quick-add-division"
         manageRoute="/dashboard/staffs/divisions" />
@@ -32,8 +32,8 @@
                 <x-molecules.shared.forms.form-input 
                     type="select"
                     name="sort"
-                    :value="request('sort', 'latest')"
-                    :options="['latest' => 'Terbaru', 'oldest' => 'Terlama', 'az' => 'Nama A-Z', 'za' => 'Nama Z-A']"
+                    :value="request('sort', 'custom')"
+                    :options="['custom' => 'Urutan Kustom', 'latest' => 'Terbaru', 'oldest' => 'Terlama', 'az' => 'Nama A-Z', 'za' => 'Nama Z-A']"
                     @change="setTimeout(() => $el.closest('form').submit(), 50)"
                 />
             </div>
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        @if ($canDelete)
+        @if ($permissions['delete'])
         <div class="flex items-center border-l border-slate-100 dark:border-slate-800 pl-4 ml-auto">
             <button type="button" 
                 @click="openDeleteModal('/dashboard/staffs/truncate', 'Yakin ingin menghapus SEMUA data pengurus di semua divisi? Data yang dihapus tidak dapat dikembalikan!')"
@@ -65,7 +65,7 @@
     </x-molecules.dashboard.cards.filter-card>
 
     {{-- Division Sections --}}
-    @foreach ($divisions as $division)
+    @foreach ($staffs as $division)
         <div class="mb-12">
             <div class="flex items-center justify-between mb-4 px-1">
                 <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-3">
@@ -80,7 +80,7 @@
 
             @php
                 $headers = [];
-                if ($canUpdate) {
+                if ($permissions['update']) {
                     $headers[] = ['label' => '', 'width' => 'w-10'];
                 }
                 $headers = array_merge($headers, [
@@ -91,14 +91,14 @@
                 ]);
             @endphp
             <x-molecules.dashboard.cards.data-table :headers="$headers"
-                :selectable="$canDelete"
-                :bulkDeleteEnabled="$canDelete"
-                :showActions="$canUpdate || $canDelete"
+                :selectable="$permissions['delete']"
+                :bulkDeleteEnabled="$permissions['delete']"
+                :showActions="$permissions['update'] || $permissions['delete']"
                 bulkDeleteRoute="/dashboard/staffs/bulk-delete">
 
                 @forelse ($division->staffs as $item)
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200 group/row" data-row-id="{{ $item->id }}">
-                        @if ($canDelete)
+                        @if ($permissions['delete'])
                         <td class="px-4 py-4 w-12 text-center">
                             <x-atoms.shared.checkbox 
                                 x-bind:checked="isSelected('{{ $item->id }}')"
@@ -106,7 +106,7 @@
                             />
                         </td>
                         @endif
-                        @if ($canUpdate)
+                        @if ($permissions['update'])
                         <td class="px-3 py-4 w-10">
                             <div
                                 class="cursor-grab active:cursor-grabbing text-slate-300 dark:text-slate-600 hover:text-slate-400 dark:hover:text-slate-400 transition sort-handle">
@@ -144,10 +144,10 @@
                                     class="inline-flex items-center gap-1 text-[10px] font-black text-slate-400 dark:text-slate-600 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 px-2.5 py-0.5 rounded-full uppercase tracking-tight">Nonaktif</span>
                             @endif
                         </td>
-                        @if ($canUpdate || $canDelete)
+                        @if ($permissions['update'] || $permissions['delete'])
                         <td class="px-5 py-4 text-right">
                             <div class="flex items-center justify-end gap-1">
-                                @if ($canUpdate)
+                                @if ($permissions['update'])
                                 <x-atoms.shared.button 
                                     variant="ghost"
                                     size="sm"
@@ -157,7 +157,7 @@
                                     <x-heroicon-o-pencil-square class="size-5" />
                                 </x-atoms.shared.button>
                                 @endif
-                                @if ($canDelete)
+                                @if ($permissions['delete'])
                                 <x-atoms.shared.button 
                                     variant="ghost"
                                     size="sm"
@@ -222,7 +222,7 @@
     </x-molecules.shared.modal>
     @endif
 
-    @if ($canUpdate)
+    @if ($permissions['update'])
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
         <script>
