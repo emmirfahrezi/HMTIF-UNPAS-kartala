@@ -105,6 +105,7 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::get('/products/create',           [DashboardProductController::class, 'create'])->name('dashboard.products.create');
     Route::post('/products',                 [DashboardProductController::class, 'store'])->name('dashboard.products.store');
     Route::delete('/products/bulk-delete',   [DashboardProductController::class, 'bulkDestroy']);
+    Route::patch('/products/bulk-phone',     [DashboardProductController::class, 'bulkUpdatePhone'])->name('dashboard.products.bulk-phone');
     Route::get('/products/{product}/edit',   [DashboardProductController::class, 'edit'])->name('dashboard.products.edit');
     Route::put('/products/{product}',        [DashboardProductController::class, 'update'])->name('dashboard.products.update');
     Route::delete('/products/{product}',     [DashboardProductController::class, 'destroy'])->name('dashboard.products.destroy');

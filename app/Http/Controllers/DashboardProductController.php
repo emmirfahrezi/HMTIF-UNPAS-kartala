@@ -114,6 +114,29 @@ class DashboardProductController extends Controller
             $this->deleteProduct->execute($product);
         }
 
-        return redirect()->back()->with('success', count($ids) . ' produk berhasil dihapus.');
+        return redirect()->back()->with('success', \count($ids) . ' produk berhasil dihapus.');
+    }
+
+    /**
+     * Perbarui nomor telepon untuk semua produk sekaligus.
+     * Digunakan oleh form "Quick Edit No. Telepon" di halaman daftar produk.
+     *
+     * Method: PATCH /dashboard/products/bulk-phone
+     */
+    public function bulkUpdatePhone(Request $request)
+    {
+        $validated = $request->validate([
+            'phone_number' => 'required|string|max:255',
+        ]);
+
+        $count = Product::query()->update(['phone_number' => $validated['phone_number']]);
+
+        ActivityLog::record(
+            'updated',
+            new Product(),
+            "Memperbarui nomor telepon semua produk ({$count} produk) menjadi: {$validated['phone_number']}",
+        );
+
+        return redirect()->back()->with('success', "Nomor telepon {$count} produk berhasil diperbarui.");
     }
 }

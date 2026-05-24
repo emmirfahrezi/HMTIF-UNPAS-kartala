@@ -11,12 +11,12 @@ class GetAllAnnouncementsService
      * Ambil semua pengumuman yang sudah dipublikasikan dengan dukungan filter,
      * pencarian, dan pengurutan.
      *
-     * @param  int|null    $categoryId  Filter berdasarkan kategori
+     * @param  string|null $categoryId  Filter berdasarkan kategori (UUID string, misal: 'anc_xyz')
      * @param  string|null $search      Cari berdasarkan judul atau excerpt
      * @param  string|null $sort        Urutan: 'latest' | 'oldest' | 'az' | 'za'
      */
     public function execute(
-        ?int    $categoryId = null,
+        ?string $categoryId = null,
         ?string $search     = null,
         ?string $sort       = 'latest',
     ): LengthAwarePaginator {

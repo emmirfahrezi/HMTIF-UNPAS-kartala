@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -36,7 +35,6 @@ class DashboardProfileController extends Controller
             'bio'       => 'nullable|string|max:500',
             'instagram' => 'nullable|string|max:255',
             'linkedin'  => 'nullable|string|max:1024',
-            'github'    => 'nullable|string|max:255',
             'photo'     => 'nullable|file|image|max:2048',
         ]);
 
@@ -50,7 +48,6 @@ class DashboardProfileController extends Controller
                 'bio'       => $validated['bio']       ?? $staff->bio,
                 'instagram' => $validated['instagram'] ?? $staff->instagram,
                 'linkedin'  => $validated['linkedin']  ?? $staff->linkedin,
-                'github'    => $validated['github']    ?? $staff->github,
             ];
 
             if ($request->hasFile('photo')) {

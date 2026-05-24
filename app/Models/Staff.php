@@ -33,8 +33,8 @@ class Staff extends Model
     ];
 
     protected $fillable = [
-        'user_id', 'division_id', 'name', 'position', 'photo', 'bio',
-        'instagram', 'linkedin', 'github', 'order', 'is_active', 'is_bph',
+        'division_id', 'name', 'position', 'photo', 'bio',
+        'instagram', 'linkedin', 'order', 'is_active', 'is_bph',
     ];
 
     protected $casts = [
@@ -46,7 +46,7 @@ class Staff extends Model
     /** Apakah jabatan ini termasuk pimpinan himpunan. */
     public function isLeader(): bool
     {
-        return in_array($this->position, self::LEADER_POSITIONS, true);
+        return \in_array($this->position, self::LEADER_POSITIONS, true);
     }
 
     /**
