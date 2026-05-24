@@ -11,6 +11,7 @@ use App\Services\Staff\DeleteStaffService;
 use App\Services\Staff\GetStaffsDashboardService;
 use App\Services\Staff\UpdateStaffService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardStaffController extends Controller
 {
@@ -44,7 +45,8 @@ class DashboardStaffController extends Controller
             'position'    => 'required|string|max:255',
             'division_id' => 'required|exists:divisions,id',
             'user_id'     => 'nullable|exists:users,id',
-            'photo'       => 'nullable|url|max:1024',
+            'photo'       => 'nullable|string|max:1024',
+            'photo_file'  => 'nullable|file|image|max:2048',
             'bio'         => 'nullable|string',
             'instagram'   => 'nullable|string|max:255',
             'linkedin'    => 'nullable|string|max:1024',
@@ -53,7 +55,7 @@ class DashboardStaffController extends Controller
             'is_bph'      => 'boolean',
         ]);
 
-        $staff = $this->createStaff->execute($validated);
+        $staff = $this->createStaff->execute($validated, $request->file('photo_file'));
 
         ActivityLog::record('created', $staff, "Menambahkan pengurus: {$staff->name}");
 
@@ -75,7 +77,8 @@ class DashboardStaffController extends Controller
             'position'    => 'required|string|max:255',
             'division_id' => 'required|exists:divisions,id',
             'user_id'     => 'nullable|exists:users,id',
-            'photo'       => 'nullable|url|max:1024',
+            'photo'       => 'nullable|string|max:1024',
+            'photo_file'  => 'nullable|file|image|max:2048',
             'bio'         => 'nullable|string',
             'instagram'   => 'nullable|string|max:255',
             'linkedin'    => 'nullable|string|max:1024',
@@ -84,7 +87,7 @@ class DashboardStaffController extends Controller
             'is_bph'      => 'boolean',
         ]);
 
-        $this->updateStaff->execute($staff, $validated);
+        $this->updateStaff->execute($staff, $validated, $request->file('photo_file'));
 
         ActivityLog::record('updated', $staff, "Memperbarui pengurus: {$staff->name}");
 
@@ -111,7 +114,23 @@ class DashboardStaffController extends Controller
             $this->deleteStaff->execute($staff);
         }
 
-        return redirect()->back()->with('success', count($ids) . ' pengurus berhasil dihapus.');
+        return redirect()->back()->with('success', \count($ids) . ' pengurus berhasil dihapus.');
+    }
+
+    public function truncate()
+    {
+        // Bersihkan file foto lokal agar tidak meninggalkan orphan di storage.
+        // File yang diawali 'http' dianggap URL eksternal — tidak dihapus.
+        Staff::whereNotNull('photo')
+            ->where('photo', 'not like', 'http%')
+            ->pluck('photo')
+            ->each(fn ($path) => Storage::disk('public')->delete($path));
+
+        Staff::query()->delete();
+
+        ActivityLog::record('deleted', new Staff(), 'Mereset (menghapus semua) data pengurus.');
+
+        return redirect()->route('dashboard.staffs')->with('success', 'Seluruh data pengurus berhasil dihapus.');
     }
 
     public function reorder(Request $request)

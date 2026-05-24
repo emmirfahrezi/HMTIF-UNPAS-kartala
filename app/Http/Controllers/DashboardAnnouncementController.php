@@ -38,17 +38,22 @@ class DashboardAnnouncementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:announcements,slug',
+            'title'                    => 'required|string|max:255',
+            'slug'                     => 'required|string|max:255|unique:announcements,slug',
             'announcement_category_id' => 'nullable|exists:announcement_categories,id',
-            'excerpt' => 'nullable|string|max:1024',
-            'body' => 'nullable|string',
-            'thumbnail' => 'nullable|string|max:1024',
-            'published_at' => 'nullable|date',
-            'file' => 'nullable|file|max:10240',
+            'excerpt'                  => 'nullable|string|max:1024',
+            'body'                     => 'nullable|string',
+            'thumbnail'                => 'nullable|string|max:1024',
+            'thumbnail_file'           => 'nullable|file|image|max:2048',
+            'published_at'             => 'nullable|date',
+            'file'                     => 'nullable|file|max:10240',
         ]);
 
-        $announcement = $this->createAnnouncement->execute($validated, $request->file('file'));
+        $announcement = $this->createAnnouncement->execute(
+            $validated,
+            $request->file('file'),
+            $request->file('thumbnail_file'),
+        );
 
         ActivityLog::record('created', $announcement, "Menambahkan pengumuman: {$announcement->title}");
 
@@ -65,17 +70,23 @@ class DashboardAnnouncementController extends Controller
     public function update(Request $request, Announcement $announcement)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => "required|string|max:255|unique:announcements,slug,{$announcement->id}",
+            'title'                    => 'required|string|max:255',
+            'slug'                     => "required|string|max:255|unique:announcements,slug,{$announcement->id}",
             'announcement_category_id' => 'nullable|exists:announcement_categories,id',
-            'excerpt' => 'nullable|string|max:1024',
-            'body' => 'nullable|string',
-            'thumbnail' => 'nullable|string|max:1024',
-            'published_at' => 'nullable|date',
-            'file' => 'nullable|file|max:10240',
+            'excerpt'                  => 'nullable|string|max:1024',
+            'body'                     => 'nullable|string',
+            'thumbnail'                => 'nullable|string|max:1024',
+            'thumbnail_file'           => 'nullable|file|image|max:2048',
+            'published_at'             => 'nullable|date',
+            'file'                     => 'nullable|file|max:10240',
         ]);
 
-        $this->updateAnnouncement->execute($announcement, $validated, $request->file('file'));
+        $this->updateAnnouncement->execute(
+            $announcement,
+            $validated,
+            $request->file('file'),
+            $request->file('thumbnail_file'),
+        );
 
         ActivityLog::record('updated', $announcement, "Memperbarui pengumuman: {$announcement->title}");
 

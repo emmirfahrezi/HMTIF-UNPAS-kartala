@@ -34,7 +34,7 @@ class Staff extends Model
 
     protected $fillable = [
         'user_id', 'division_id', 'name', 'position', 'photo', 'bio',
-        'instagram', 'linkedin', 'order', 'is_active', 'is_bph',
+        'instagram', 'linkedin', 'github', 'order', 'is_active', 'is_bph',
     ];
 
     protected $casts = [

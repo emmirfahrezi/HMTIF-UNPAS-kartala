@@ -42,6 +42,15 @@ class Announcement extends Model
         return $isLocal ? $thumbnail : asset('images/placeholders/announcement.svg');
     }
 
+    /**
+     * Nama kategori pengumuman.
+     * Fallback ke 'Umum' jika belum dikategorikan.
+     */
+    public function getCategoryNameAttribute(): string
+    {
+        return $this->category?->name ?? 'Umum';
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(AnnouncementCategory::class, 'announcement_category_id');

@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,5 +16,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Rate limit aspirasi: redirect balik dengan pesan error Bahasa Indonesia
+        $exceptions->render(function (ThrottleRequestsException $e, Request $request) {
+            if ($request->expectsJson()) {
+                return null; // biarkan handler default menangani JSON/API
+            }
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Terlalu banyak percobaan pengiriman. Silakan tunggu beberapa menit sebelum mencoba kembali.');
+        });
     })->create();
