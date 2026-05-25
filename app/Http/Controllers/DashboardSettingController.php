@@ -44,8 +44,10 @@ class DashboardSettingController extends Controller
             'name' => 'required|string|max:255|unique:roles,name',
         ]);
 
+        // Nama role disimpan lowercase agar cocok dengan nilai users.role
+        // ('admin', 'bph', 'koordinator', 'staff') tanpa perlu case-insensitive query.
         Role::create([
-            'name'       => $request->name,
+            'name'       => strtolower($request->name),
             'can_create' => $request->boolean('perm_create'),
             'can_read'   => $request->boolean('perm_read'),
             'can_update' => $request->boolean('perm_update'),
@@ -91,6 +93,6 @@ class DashboardSettingController extends Controller
         $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'integer'])['ids'];
         Role::whereIn('id', $ids)->delete();
 
-        return redirect()->back()->with('success', count($ids) . ' role berhasil dihapus.');
+        return redirect()->back()->with('success', \count($ids) . ' role berhasil dihapus.');
     }
 }
