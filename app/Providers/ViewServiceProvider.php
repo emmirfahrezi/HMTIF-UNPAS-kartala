@@ -56,10 +56,13 @@ class ViewServiceProvider extends ServiceProvider
                 return;
             }
 
-            // Cari konfigurasi role di database
+            // Cari konfigurasi role di database.
+            // Gunakan LOWER() agar case-insensitive: $user->role selalu lowercase
+            // ('staff', 'bph', dst.), namun admin bisa mengetik nama Role dengan
+            // berbagai kapitalisasi ('Staff', 'BPH') di halaman Settings.
             $role = null;
             try {
-                $role = Role::where('name', $user->role)->first();
+                $role = Role::whereRaw('LOWER(name) = ?', [strtolower($user->role)])->first();
             } catch (\Throwable) {
                 // Tabel roles belum ada (misal: saat migrate awal) — abaikan
             }

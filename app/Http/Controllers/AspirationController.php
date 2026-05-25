@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AspirationResource;
 use App\Http\Resources\ResponseResource;
-use App\Services\Aspiration\GetWeeklySpotlightService;
 use App\Services\Aspiration\SubmitAspirationService;
 use App\Services\Aspiration\TrackAspirationService;
 use App\Services\Aspiration\TrackAspirationByNimService;
@@ -19,7 +18,6 @@ class AspirationController extends Controller
         private SubmitAspirationService $submitAspiration,
         private TrackAspirationService $trackAspiration,
         private TrackAspirationByNimService $trackAspirationByNim,
-        private GetWeeklySpotlightService $getWeeklySpotlight,
         private MailService $mailService,
     ) {}
 
@@ -63,16 +61,6 @@ class AspirationController extends Controller
         return ResponseResource::success(
             AspirationResource::collection($aspirations),
             'Aspirations retrieved successfully'
-        );
-    }
-
-    public function spotlight(): JsonResponse
-    {
-        $aspirations = $this->getWeeklySpotlight->execute();
-
-        return ResponseResource::success(
-            AspirationResource::collection($aspirations),
-            'Weekly spotlight retrieved successfully'
         );
     }
 

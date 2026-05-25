@@ -18,8 +18,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Saya ingin menyampaikan aspirasi mengenai kondisi lab komputer yang perlu diperbarui. Beberapa unit komputer sudah cukup tua dan sering mengalami masalah teknis yang mengganggu kegiatan praktikum. Mohon kiranya dapat diprioritaskan pengadaan unit komputer baru, terutama yang mendukung kebutuhan mata kuliah basis data dan jaringan komputer.',
                 'tracking_code'  => 'ASP2026001',
                 'status'         => 'resolved',
-                'is_spotlight'   => true,
-                'spotlighted_week' => '2026-04-07',
             ],
             [
                 'name'           => 'Siti Nurhaliza',
@@ -29,8 +27,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Terdapat beberapa jadwal kuliah semester ini yang tumpang tindih antar matakuliah, khususnya untuk angkatan 2023. Hal ini menyulitkan mahasiswa dalam memilih kelas. Mohon koordinasi lebih baik dengan pihak fakultas agar tidak terjadi bentrok jadwal di semester berikutnya.',
                 'tracking_code'  => 'ASP2026002',
                 'status'         => 'reviewed',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => 'Ahmad Fauzi',
@@ -40,8 +36,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'HMTIF sebaiknya membuka lebih banyak komunitas minat dan bakat, seperti komunitas UI/UX Design, Cybersecurity, dan Game Development. Saat ini komunitas yang tersedia masih sangat terbatas. Hal ini dapat meningkatkan engagement mahasiswa terhadap himpunan dan menambah portofolio mahasiswa.',
                 'tracking_code'  => 'ASP2026003',
                 'status'         => 'resolved',
-                'is_spotlight'   => true,
-                'spotlighted_week' => '2026-04-14',
             ],
             [
                 'name'           => 'Dewi Anggraeni',
@@ -51,8 +45,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Koneksi WiFi di area gedung Teknik Informatika sering kali terputus atau sangat lambat, terutama pada jam-jam sibuk perkuliahan. Hal ini sangat menghambat kegiatan belajar yang memerlukan akses internet. Harap dapat ditindaklanjuti ke pihak kampus.',
                 'tracking_code'  => 'ASP2026004',
                 'status'         => 'reviewed',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => null,
@@ -62,8 +54,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Sebagai mahasiswa yang aktif dalam berbagai project kelompok, kami sangat membutuhkan ruang diskusi yang nyaman dan memadai. Saat ini mahasiswa seringkali kesulitan menemukan tempat yang kondusif untuk berdiskusi dan mengerjakan tugas bersama di lingkungan kampus.',
                 'tracking_code'  => 'ASP2026005',
                 'status'         => 'pending',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => 'Budi Santoso',
@@ -73,8 +63,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Saya mengusulkan agar HMTIF mengadakan program mentoring yang menghubungkan mahasiswa aktif dengan alumni yang sudah berkarir di industri teknologi. Program ini bisa sangat bermanfaat untuk mempersiapkan mahasiswa menghadapi dunia kerja dan membangun relasi profesional sejak dini.',
                 'tracking_code'  => 'ASP2026006',
                 'status'         => 'resolved',
-                'is_spotlight'   => true,
-                'spotlighted_week' => '2026-04-21',
             ],
             [
                 'name'           => 'Rina Melati',
@@ -84,8 +72,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Sebagai anggota himpunan, kami ingin mengetahui lebih jelas mengenai penggunaan dana kegiatan himpunan. Mohon agar laporan keuangan kegiatan dapat dipublikasikan secara transparan, misalnya melalui website atau media sosial himpunan.',
                 'tracking_code'  => 'ASP2026007',
                 'status'         => 'reviewed',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => 'Hendra Wijaya',
@@ -95,8 +81,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Unit komputer yang tersedia di perpustakaan jumlahnya sangat terbatas dan sering kali penuh saat jam belajar. Tolong diusulkan penambahan unit komputer di perpustakaan, atau setidaknya pengadaan charging station yang memadai.',
                 'tracking_code'  => 'ASP2026008',
                 'status'         => 'pending',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => null,
@@ -106,8 +90,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Beberapa modul praktikum yang digunakan saat ini sudah tidak sesuai dengan kondisi industri terkini. Misalnya, materi praktikum Web Programming masih menggunakan teknologi lama. Mohon pihak terkait dapat merevisi dan memperbarui modul agar relevan dengan kebutuhan industri.',
                 'tracking_code'  => 'ASP2026009',
                 'status'         => 'pending',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => 'Laila Fitriani',
@@ -117,8 +99,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Saya mengusulkan agar HMTIF menyediakan program sewa atau cicilan baju wisuda dengan harga yang terjangkau bagi mahasiswa. Harga sewa baju wisuda saat ini cukup memberatkan, terutama bagi mahasiswa yang tidak mampu.',
                 'tracking_code'  => 'ASP2026010',
                 'status'         => 'reviewed',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
             [
                 'name'           => 'Doni Prasetyo',
@@ -128,8 +108,6 @@ class AspirationSeeder extends Seeder
                 'message'        => 'Saya mengusulkan agar HMTIF mengadakan workshop atau pelatihan untuk persiapan sertifikasi internasional seperti AWS, Google Cloud, atau CompTIA. Sertifikasi ini sangat dibutuhkan untuk meningkatkan daya saing mahasiswa di pasar kerja global.',
                 'tracking_code'  => 'ASP2026011',
                 'status'         => 'pending',
-                'is_spotlight'   => false,
-                'spotlighted_week' => null,
             ],
         ];
 
