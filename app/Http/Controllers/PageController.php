@@ -7,7 +7,6 @@ use App\Services\Activity\GetAllActivitiesService;
 use App\Services\Announcement\GetAllAnnouncementsService;
 use App\Services\Announcement\GetAnnouncementBySlugService;
 use App\Services\Announcement\GetAnnouncementCategoriesService;
-use App\Services\Aspiration\GetWeeklySpotlightService;
 use App\Services\Home\GetActivitiesPreviewService;
 use App\Services\Home\GetAnnouncementsPreviewService;
 use App\Services\Home\GetHomeStatsService;
@@ -164,11 +163,9 @@ class PageController extends Controller
     // Halaman Aspirasi
     // -----------------------------------------------------------------------
 
-    public function aspirations(GetWeeklySpotlightService $getSpotlight): View
+    public function aspirations(): View
     {
-        return view('pages.aspirations', [
-            'spotlight' => $getSpotlight->execute(),
-        ]);
+        return view('pages.aspirations');
     }
 
     // -----------------------------------------------------------------------

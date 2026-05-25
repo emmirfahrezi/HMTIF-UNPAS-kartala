@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class GetAnnouncementsPreviewService
 {
-    public function execute(int $limit = 3): Collection
+    public function execute(int $limit = 4): Collection
     {
         return Announcement::with('category')
             ->whereNotNull('published_at')

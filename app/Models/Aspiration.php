@@ -24,12 +24,7 @@ class Aspiration extends Model
 
     protected $fillable = [
         'name', 'nim', 'email', 'subject', 'message',
-        'tracking_code', 'status', 'is_spotlight', 'spotlighted_week',
-    ];
-
-    protected $casts = [
-        'is_spotlight'     => 'boolean',
-        'spotlighted_week' => 'date',
+        'tracking_code', 'status',
     ];
 
     // -----------------------------------------------------------------------

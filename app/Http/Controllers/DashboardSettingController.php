@@ -9,7 +9,6 @@ class DashboardSettingController extends Controller
 {
     public const MENU_ITEMS = [
         ['key' => 'dashboard',                'label' => 'Dashboard',             'type' => 'root'],
-        ['key' => 'profile',                  'label' => 'Profil Saya',           'type' => 'item', 'parent' => 'dashboard'],
         ['key' => 'konten',                   'label' => 'Konten',                'type' => 'category'],
         ['key' => 'home-sections',            'label' => 'Halaman Utama',         'type' => 'item', 'parent' => 'konten'],
         ['key' => 'activities',               'label' => 'Kegiatan',              'type' => 'item', 'parent' => 'konten'],
@@ -24,6 +23,7 @@ class DashboardSettingController extends Controller
         ['key' => 'products',                 'label' => 'Produk',                'type' => 'item', 'parent' => 'store'],
         ['key' => 'products/categories',      'label' => 'Kategori Produk',       'type' => 'item', 'parent' => 'products'],
         ['key' => 'pengaturan',               'label' => 'Pengaturan',            'type' => 'category'],
+        ['key' => 'profile',                  'label' => 'Profil Saya',           'type' => 'item', 'parent' => 'pengaturan'],
         ['key' => 'activity-logs',            'label' => 'Log Aktivitas',         'type' => 'item', 'parent' => 'pengaturan'],
         ['key' => 'stats',                    'label' => 'Statistik',             'type' => 'item', 'parent' => 'pengaturan'],
         ['key' => 'users',                    'label' => 'Pengguna',              'type' => 'item', 'parent' => 'pengaturan'],
