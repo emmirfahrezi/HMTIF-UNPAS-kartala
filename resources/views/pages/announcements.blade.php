@@ -6,10 +6,12 @@
 >
     <x-organisms.pages.announcements.hero />
 
+    <x-organisms.pages.announcements.mobile-filter-bar :categories="$categories" />
+
     <div class="bg-section/30 py-16">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
-                <x-organisms.pages.announcements.main-content :announcements="$announcements" />
+                <x-organisms.pages.announcements.main-content :announcements="$announcements" :categories="$categories" />
                 <x-organisms.pages.announcements.sidebar :categories="$categories" />
             </div>
         </div>

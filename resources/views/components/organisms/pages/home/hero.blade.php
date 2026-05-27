@@ -25,10 +25,10 @@
             class="text-4xl font-extrabold tracking-tight text-white sm:text-7xl mb-6 drop-shadow-2xl reveal reveal-up reveal-delay-2">
             {{ $title }} <br>
         </h1>
-        <p
+        <div
             class="mt-4 text-[1rem] font-medium text-white/90 leading-relaxed max-w-2xl mx-auto sm:text-[1.125rem] reveal reveal-up reveal-delay-3">
-            {{ $subtitle }}
-        </p>
+            {!! $subtitle !!}
+        </div>
         <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal reveal-up reveal-delay-4">
             <x-atoms.shared.button variant="primary" href="{{ route('activities') }}"
                 class="px-8 py-3 text-base shadow-xl shadow-primary/30 w-full sm:w-auto transform hover:translate-y-1 transition-all group">

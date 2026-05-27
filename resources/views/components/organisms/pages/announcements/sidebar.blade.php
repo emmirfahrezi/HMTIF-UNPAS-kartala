@@ -1,21 +1,30 @@
     {{-- Sidebar Components --}}
     @props(['categories'])
 
-    @php
-        // $categories should be passed from the controller
-    @endphp
-
-    <div class="space-y-8 reveal reveal-right">
-        <div class="bg-white p-6 rounded-2xl border border-border shadow-sm">
+    <div class="space-y-8 reveal reveal-up">
+        <div class="bg-white p-6 rounded-2xl border border-border shadow-sm hidden md:block">
             <h4 class="font-bold text-heading mb-4 pb-2 border-b-2 border-primary-soft">Kategori</h4>
             <ul class="space-y-3">
+                @php
+                    $currentCategoryId = request('category_id');
+                    $isAllActive = $currentCategoryId === null || $currentCategoryId === '';
+                @endphp
+                
+                {{-- Opsi Semua --}}
+                <li>
+                    <a href="{{ route('announcements', ['search' => request('search'), 'sort' => request('sort')]) }}"
+                        class="text-body hover:text-primary transition-colors flex items-center gap-2 {{ $isAllActive ? 'text-primary font-bold' : '' }}">
+                        <span class="w-1.5 h-1.5 rounded-full {{ $isAllActive ? 'bg-primary' : 'bg-primary/40' }}"></span> Semua
+                    </a>
+                </li>
+
                 @foreach ($categories as $cat)
                     @php
                         $categoryId = is_string($cat) ? null : $cat->id;
                         $categoryName = is_string($cat) ? $cat : $cat->name;
-                        $isActive = $categoryId !== null && (int) request('category_id') === (int) $categoryId;
+                        $isActive = !$isAllActive && $categoryId !== null && (string) $currentCategoryId === (string) $categoryId;
                     @endphp
-                    <li><a href="{{ $categoryId ? route('announcements', ['category_id' => $categoryId, 'search' => request('search')]) : route('announcements', ['search' => request('search')]) }}"
+                    <li><a href="{{ $categoryId ? route('announcements', ['category_id' => $categoryId, 'search' => request('search'), 'sort' => request('sort')]) : route('announcements', ['search' => request('search'), 'sort' => request('sort')]) }}"
                             class="text-body hover:text-primary transition-colors flex items-center gap-2 {{ $isActive ? 'text-primary font-bold' : '' }}">
                             <span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span> {{ $categoryName }}
                         </a></li>

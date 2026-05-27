@@ -20,13 +20,13 @@
     };
 @endphp
 
-<div class="reveal reveal-up h-full">
+<div class="reveal reveal-up">
     @if ($href)
         <a href="{{ $href }}"
-            class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary {{ $sizeClasses }} block h-full">
+            class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary {{ $sizeClasses }} block">
         @else
             <div
-                class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary {{ $sizeClasses }} h-full">
+                class="group relative overflow-hidden rounded-lg bg-section shadow-md transition-all duration-700 md:hover:-translate-y-3 border border-gray-100 md:hover:border-primary {{ $sizeClasses }}">
     @endif
 
 {{-- Intense Green Inner Shadow --}}

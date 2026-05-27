@@ -44,9 +44,9 @@
                     <x-atoms.pages.section-title>{{ $identityTitle }}</x-atoms.pages.section-title>
                     <h2 class="text-4xl font-extrabold text-heading mt-4 leading-tight">{{ $identitySubtitle }}</h2>
                 </div>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    {{ $identityDesc }}
-                </p>
+                <div class="text-gray-600 text-lg leading-relaxed rich-text-content">
+                    {!! $identityDesc !!}
+                </div>
                 <div class="grid grid-cols-2 gap-6">
                     <div class="p-4 rounded-xl bg-gray-50 border-l-4 border-primary">
                         <h4 class="font-bold text-heading">{{ $point1Title }}</h4>
@@ -75,9 +75,9 @@
                         @endif
                     </h2>
                 </div>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    {{ $eraDesc }}
-                </p>
+                <div class="text-gray-600 text-lg leading-relaxed rich-text-content">
+                    {!! $eraDesc !!}
+                </div>
                 <div class="space-y-4">
                     @foreach ($features ?? [] as $item)
                         <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors group">
@@ -107,4 +107,3 @@
         </div>
     </div>
 </div>
-

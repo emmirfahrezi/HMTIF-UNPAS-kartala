@@ -21,8 +21,8 @@
                     {{-- Grouped layout for Vision & Mission --}}
                     @php
                         $headerKeys = ['label', 'title', 'description'];
-                        $visionKeys = ['vision_title', 'vision_text', 'vision_tagline'];
-                        $missionKeys = ['mission_title', 'mission_text'];
+                        $visionTypeValue = isset($fields['vision_type']) ? $fields['vision_type']->value : 'text';
+                        $missionTypeValue = isset($fields['mission_type']) ? $fields['mission_type']->value : 'points';
                     @endphp
 
                     {{-- Header Section --}}
@@ -60,7 +60,7 @@
                     </div>
 
                     {{-- Visi Section --}}
-                    <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+                    <div x-data="{ visionType: @js($visionTypeValue) }" class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
                         <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-emerald-500 pointer-events-none">
                             <x-heroicon-o-eye class="size-32" />
                         </div>
@@ -74,27 +74,90 @@
 
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                @foreach($visionKeys as $key)
-                                    @if(isset($fields[$key]))
-                                        @php
-                                            $isRichText = in_array($key, $richTextKeys, true);
-                                        @endphp
-                                        <div class="{{ $isRichText ? 'md:col-span-2' : '' }}">
-                                            <x-molecules.shared.forms.form-input 
-                                                :type="$isRichText ? 'richtext' : 'text'"
-                                                label="{{ Str::headline(str_replace('_', ' ', $key)) }}" 
-                                                name="{{ $key }}" 
-                                                :value="$fields[$key]->value" 
-                                                required />
+                                {{-- vision_title --}}
+                                @if(isset($fields['vision_title']))
+                                    <div>
+                                        <x-molecules.shared.forms.form-input 
+                                            type="text"
+                                            label="Judul Visi" 
+                                            name="vision_title" 
+                                            :value="$fields['vision_title']->value" 
+                                            required />
+                                    </div>
+                                @endif
+
+                                {{-- vision_tagline --}}
+                                @if(isset($fields['vision_tagline']))
+                                    <div>
+                                        <x-molecules.shared.forms.form-input 
+                                            type="text"
+                                            label="Tagline Visi" 
+                                            name="vision_tagline" 
+                                            :value="$fields['vision_tagline']->value" 
+                                            required />
+                                    </div>
+                                @endif
+
+                                {{-- vision_type (Placed right above vision_text) --}}
+                                <div class="md:col-span-2" @change="visionType = $event.target.value">
+                                    <x-molecules.shared.forms.form-input 
+                                        type="select"
+                                        label="Format Tampilan Visi" 
+                                        name="vision_type" 
+                                        :value="$visionTypeValue" 
+                                        :options="[
+                                            'text' => 'Paragraf / Kutipan (Rich Text)',
+                                            'points' => 'Poin-Poin Berurutan (Grid/Gallery)'
+                                        ]"
+                                        required />
+                                </div>
+
+                                {{-- vision_text --}}
+                                @if(isset($fields['vision_text']))
+                                    <div class="md:col-span-2 space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Teks Visi <span class="text-red-500">*</span></label>
+                                            
+                                            {{-- Live Mode Badge --}}
+                                            <template x-if="visionType === 'points'">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-500 animate-pulse">
+                                                    <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                                    Mode Poin-Poin Aktif
+                                                </span>
+                                            </template>
+                                            <template x-if="visionType !== 'points'">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-500/10 text-slate-400">
+                                                    <span class="size-1.5 rounded-full bg-slate-400"></span>
+                                                    Mode Paragraf / Kutipan
+                                                </span>
+                                            </template>
                                         </div>
-                                    @endif
-                                @endforeach
+
+                                        {{-- Live Helper Notification Box --}}
+                                        <div class="transition-all duration-500 overflow-hidden">
+                                            <div x-show="visionType === 'points'" class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-600 dark:text-amber-500 leading-relaxed font-semibold flex gap-2">
+                                                <x-heroicon-s-exclamation-triangle class="size-4 shrink-0" />
+                                                <span><strong>PENTING:</strong> Karena Visi dalam mode Poin-Poin, silakan tulis poin-poin visi di editor di bawah. **Gunakan tombol ENTER (baris baru)** untuk memisahkan setiap poin.</span>
+                                            </div>
+                                            <div x-show="visionType !== 'points'" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-500 leading-relaxed font-semibold flex gap-2">
+                                                <x-heroicon-s-information-circle class="size-4 shrink-0" />
+                                                <span>Visi dalam mode Paragraf. Editor di bawah berfungsi seperti editor rich-text normal. Teks akan tampil sebagai kutipan besar bergaya elegan di landing page.</span>
+                                            </div>
+                                        </div>
+
+                                        <x-molecules.shared.forms.form-input 
+                                            type="richtext"
+                                            name="vision_text" 
+                                            :value="$fields['vision_text']->value" 
+                                            required />
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
 
                     {{-- Misi Section --}}
-                    <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
+                    <div x-data="{ missionType: @js($missionTypeValue) }" class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors duration-300">
                         <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-blue-500 pointer-events-none">
                             <x-heroicon-o-rocket-launch class="size-32" />
                         </div>
@@ -108,21 +171,72 @@
 
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                @foreach($missionKeys as $key)
-                                    @if(isset($fields[$key]))
-                                        @php
-                                            $isRichText = in_array($key, $richTextKeys, true);
-                                        @endphp
-                                        <div class="{{ $isRichText ? 'md:col-span-2' : '' }}">
-                                            <x-molecules.shared.forms.form-input 
-                                                :type="$isRichText ? 'richtext' : 'text'"
-                                                label="{{ Str::headline(str_replace('_', ' ', $key)) }}" 
-                                                name="{{ $key }}" 
-                                                :value="$fields[$key]->value" 
-                                                required />
+                                {{-- mission_title --}}
+                                @if(isset($fields['mission_title']))
+                                    <div class="md:col-span-2">
+                                        <x-molecules.shared.forms.form-input 
+                                            type="text"
+                                            label="Judul Misi" 
+                                            name="mission_title" 
+                                            :value="$fields['mission_title']->value" 
+                                            required />
+                                    </div>
+                                @endif
+
+                                {{-- mission_type (Placed right above mission_text) --}}
+                                <div class="md:col-span-2" @change="missionType = $event.target.value">
+                                    <x-molecules.shared.forms.form-input 
+                                        type="select"
+                                        label="Format Tampilan Misi" 
+                                        name="mission_type" 
+                                        :value="$missionTypeValue" 
+                                        :options="[
+                                            'points' => 'Poin-Poin Berurutan (Grid/Gallery)',
+                                            'text' => 'Paragraf / Kutipan (Rich Text)'
+                                        ]"
+                                        required />
+                                </div>
+
+                                {{-- mission_text --}}
+                                @if(isset($fields['mission_text']))
+                                    <div class="md:col-span-2 space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Teks Misi <span class="text-red-500">*</span></label>
+                                            
+                                            {{-- Live Mode Badge --}}
+                                            <template x-if="missionType === 'points'">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-500 animate-pulse">
+                                                    <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                                    Mode Poin-Poin Aktif
+                                                </span>
+                                            </template>
+                                            <template x-if="missionType !== 'points'">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-500/10 text-slate-400">
+                                                    <span class="size-1.5 rounded-full bg-slate-400"></span>
+                                                    Mode Paragraf / Kutipan
+                                                </span>
+                                            </template>
                                         </div>
-                                    @endif
-                                @endforeach
+
+                                        {{-- Live Helper Notification Box --}}
+                                        <div class="transition-all duration-500 overflow-hidden">
+                                            <div x-show="missionType === 'points'" class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-600 dark:text-amber-500 leading-relaxed font-semibold flex gap-2">
+                                                <x-heroicon-s-exclamation-triangle class="size-4 shrink-0" />
+                                                <span><strong>PENTING:</strong> Karena Misi dalam mode Poin-Poin, silakan tulis poin-poin misi di editor di bawah. **Gunakan tombol ENTER (baris baru)** untuk memisahkan setiap poin.</span>
+                                            </div>
+                                            <div x-show="missionType !== 'points'" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-500 leading-relaxed font-semibold flex gap-2">
+                                                <x-heroicon-s-information-circle class="size-4 shrink-0" />
+                                                <span>Misi dalam mode Paragraf. Editor di bawah berfungsi seperti editor rich-text normal. Teks akan tampil sebagai kutipan besar bergaya elegan di landing page.</span>
+                                            </div>
+                                        </div>
+
+                                        <x-molecules.shared.forms.form-input 
+                                            type="richtext"
+                                            name="mission_text" 
+                                            :value="$fields['mission_text']->value" 
+                                            required />
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
