@@ -2,6 +2,7 @@
     'label' => '',
     'value' => '',
     'icon' => null,
+    'description' => null,
 ])
 
 <div
@@ -33,7 +34,7 @@
         </h4>
         <p
             class="text-sm text-body mt-2 leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity duration-300">
-            Terdaftar secara resmi dalam database keanggotaan HMTIF-UNPAS.
+            {{ $description ?? 'Terdaftar secara resmi dalam database keanggotaan HMTIF-UNPAS.' }}
         </p>
     </div>
 </div>

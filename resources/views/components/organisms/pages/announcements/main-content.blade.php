@@ -1,6 +1,6 @@
     {{-- Main Content (Search & Grid) --}}
     <div class="lg:col-span-3">
-        @props(['announcements'])
+        @props(['announcements', 'categories' => []])
 
         @php
             $search = trim((string) request('search', ''));
@@ -9,14 +9,14 @@
         @endphp
 
         {{-- Search & Filter Bar --}}
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-8 md:mb-16">
             <div class="flex items-center gap-4">
                 <div class="h-8 w-2 bg-primary rounded-full"></div>
                 <h2 class="text-heading font-black text-3xl uppercase tracking-tighter italic">Pengumuman <span
                         class="text-primary">Terbaru</span></h2>
             </div>
 
-            <div class="w-full lg:w-auto">
+            <div class="hidden md:block w-full lg:w-auto">
                 <form action="{{ route('announcements') }}" method="GET" x-data="announcementFilters()"
                     @submit.prevent="apply($event)" class="flex flex-col sm:flex-row items-center gap-4">
                     @if (request('category_id'))

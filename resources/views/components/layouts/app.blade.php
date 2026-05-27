@@ -1,7 +1,7 @@
 @props([
-    'title' => 'HMTIF-UNPAS | Kartala',
+    'title' => 'HMTIF-UNPAS | Himpunan Mahasiswa Teknik Informatika Universitas Pasundan',
     'description' => 'Website Resmi HMTIF-UNPAS. Teknik Informatika Progresif.',
-    'keywords' => 'HMTIF, UNPAS, Kartala, Informatika, Universitas Pasundan, Himpunan Mahasiswa',
+    'keywords' => 'HMTIF, UNPAS, Informatika, Universitas Pasundan, Himpunan Mahasiswa, Teknik Informatika',
     'image' => '/images/placeholders/hero-home.svg',
     'transparent' => false,
 ])
@@ -14,18 +14,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <x-shared.head-meta 
-        :title="$title" 
-        :description="$description" 
-        :keywords="$keywords" 
-        :image="$image" 
-    />
+    <x-shared.head-meta :title="$title" :description="$description" :keywords="$keywords" :image="$image" />
 
     {{-- Custom Head Slot --}}
     {{ $head ?? '' }}
 
     {{-- LCP Preload --}}
-    @if(isset($lcpImage))
+    @if (isset($lcpImage))
         <link rel="preload" as="image" href="{{ $lcpImage }}">
     @endif
 
@@ -46,4 +41,3 @@
 </body>
 
 </html>
-

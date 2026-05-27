@@ -1,18 +1,23 @@
 <x-layouts.dashboard pageTitle="Dashboard Overview">
     {{-- Stats Grid --}}
+    @php
+        $statCards = [
+            ['label' => 'Pengguna',    'value' => $counts['users'] ?? 0,          'icon' => 'heroicon-o-user-circle',           'color' => 'primary', 'href' => '/dashboard/users',         'menuKey' => 'users'],
+            ['label' => 'Pengumuman',  'value' => $counts['announcements'] ?? 0,  'icon' => 'heroicon-o-megaphone',             'color' => 'blue',    'href' => '/dashboard/announcements', 'menuKey' => 'announcements'],
+            ['label' => 'Kegiatan',    'value' => $counts['activities'] ?? 0,     'icon' => 'heroicon-o-calendar',              'color' => 'emerald', 'href' => '/dashboard/activities',    'menuKey' => 'activities'],
+            ['label' => 'Produk',      'value' => $counts['products'] ?? 0,       'icon' => 'heroicon-o-shopping-bag',          'color' => 'purple',  'href' => '/dashboard/products',      'menuKey' => 'products'],
+            ['label' => 'Aspirasi',    'value' => $counts['aspirations'] ?? 0,    'icon' => 'heroicon-o-chat-bubble-left-right','color' => 'amber',   'href' => '/dashboard/aspirations',   'menuKey' => 'aspirations'],
+            ['label' => 'Pengurus',    'value' => $counts['staff'] ?? 0,          'icon' => 'heroicon-o-users',                 'color' => 'rose',    'href' => '/dashboard/staffs',        'menuKey' => 'staffs'],
+        ];
+    @endphp
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
-        <x-molecules.dashboard.cards.stat-card label="Pengguna" :value="$counts['users'] ?? 0" icon="heroicon-o-user-circle"
-            color="primary" href="/dashboard/users" />
-        <x-molecules.dashboard.cards.stat-card label="Pengumuman" :value="$counts['announcements'] ?? 0" icon="heroicon-o-megaphone"
-            color="blue" href="/dashboard/announcements" />
-        <x-molecules.dashboard.cards.stat-card label="Kegiatan" :value="$counts['activities'] ?? 0" icon="heroicon-o-calendar"
-            color="emerald" href="/dashboard/activities" />
-        <x-molecules.dashboard.cards.stat-card label="Produk" :value="$counts['products'] ?? 0" icon="heroicon-o-shopping-bag"
-            color="purple" href="/dashboard/products" />
-        <x-molecules.dashboard.cards.stat-card label="Aspirasi" :value="$counts['aspirations'] ?? 0"
-            icon="heroicon-o-chat-bubble-left-right" color="amber" href="/dashboard/aspirations" />
-        <x-molecules.dashboard.cards.stat-card label="Pengurus" :value="$counts['staff'] ?? 0" icon="heroicon-o-users" color="rose"
-            href="/dashboard/staffs" />
+        @foreach ($statCards as $card)
+            @php
+                $canAccess = $hasFullAccess || in_array($card['menuKey'], $allowedMenus);
+            @endphp
+            <x-molecules.dashboard.cards.stat-card :label="$card['label']" :value="$card['value']" :icon="$card['icon']"
+                :color="$card['color']" :href="$canAccess ? $card['href'] : null" />
+        @endforeach
     </div>
 
     {{-- Recent Items --}}
@@ -22,8 +27,10 @@
         <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors duration-300">
             <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
                 <h3 class="font-bold text-slate-800 dark:text-white text-sm">Pengumuman Terbaru</h3>
-                <a href="/dashboard/announcements"
-                    class="text-xs text-primary font-semibold hover:underline">Lihat Semua</a>
+                @if ($hasFullAccess || in_array('announcements', $allowedMenus))
+                    <a href="/dashboard/announcements"
+                        class="text-xs text-primary font-semibold hover:underline">Lihat Semua</a>
+                @endif
             </div>
             <ul class="divide-y divide-slate-50 dark:divide-slate-800">
                 @forelse ($recentAnnouncements as $item)
@@ -43,8 +50,10 @@
         <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors duration-300">
             <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
                 <h3 class="font-bold text-slate-800 dark:text-white text-sm">Kegiatan Terbaru</h3>
-                <a href="/dashboard/activities"
-                    class="text-xs text-primary font-semibold hover:underline">Lihat Semua</a>
+                @if ($hasFullAccess || in_array('activities', $allowedMenus))
+                    <a href="/dashboard/activities"
+                        class="text-xs text-primary font-semibold hover:underline">Lihat Semua</a>
+                @endif
             </div>
             <ul class="divide-y divide-slate-50 dark:divide-slate-800">
                 @forelse ($recentActivities as $item)
@@ -64,8 +73,10 @@
         <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors duration-300">
             <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
                 <h3 class="font-bold text-slate-800 dark:text-white text-sm">Aspirasi Terbaru</h3>
-                <a href="/dashboard/aspirations"
-                    class="text-xs text-primary font-semibold hover:underline">Lihat Semua</a>
+                @if ($hasFullAccess || in_array('aspirations', $allowedMenus))
+                    <a href="/dashboard/aspirations"
+                        class="text-xs text-primary font-semibold hover:underline">Lihat Semua</a>
+                @endif
             </div>
             <ul class="divide-y divide-slate-50 dark:divide-slate-800">
                 @forelse ($recentAspirations as $item)
