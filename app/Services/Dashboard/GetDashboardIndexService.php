@@ -5,15 +5,12 @@ namespace App\Services\Dashboard;
 use App\Models\Activity;
 use App\Models\Announcement;
 use App\Models\Aspiration;
-use App\Models\Stat;
 use App\Models\User;
 
 class GetDashboardIndexService
 {
     public function execute()
     {
-        $stats = Stat::orderBy('order')->get();
-
         $counts = [
             'users'         => User::count(),
             'announcements' => Announcement::count(),
@@ -36,7 +33,6 @@ class GetDashboardIndexService
             ->get(['id', 'subject', 'created_at', 'status']);
 
         return [
-            'stats'                 => $stats,
             'counts'                => $counts,
             'recentAnnouncements'   => $recentAnnouncements,
             'recentActivities'      => $recentActivities,
