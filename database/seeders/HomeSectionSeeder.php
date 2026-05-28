@@ -40,6 +40,8 @@ class HomeSectionSeeder extends Seeder
             ['section' => 'vision_mission', 'key' => 'vision_tagline','value' => 'VISION FIRST, IMPACT FOLLOWS',           'order' => 6],
             ['section' => 'vision_mission', 'key' => 'mission_title', 'value' => 'Misi Strategis',                         'order' => 7],
             ['section' => 'vision_mission', 'key' => 'mission_text',  'value' => '',                                        'order' => 8],
+            ['section' => 'vision_mission', 'key' => 'vision_type',   'value' => 'text',                                    'order' => 9],
+            ['section' => 'vision_mission', 'key' => 'mission_type',  'value' => 'points',                                  'order' => 10],
 
             // Stats section header
             ['section' => 'stats', 'key' => 'label',       'value' => 'Pergerakan Kami',                                   'order' => 1],

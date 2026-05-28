@@ -11,7 +11,6 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
 use App\Models\Staff;
-use App\Models\Stat;
 use App\Models\User;
 use App\Models\HomeSection;
 use Illuminate\Database\Seeder;
@@ -32,7 +31,6 @@ class DatabaseSeeder extends Seeder
         Division::query()->delete();
         Activity::query()->delete();
         Aspiration::query()->delete();
-        Stat::query()->delete();
         User::query()->delete();
 
         Schema::enableForeignKeyConstraints();
@@ -47,7 +45,6 @@ class DatabaseSeeder extends Seeder
             StaffSeeder::class,
             ProductSeeder::class,
             AspirationSeeder::class,
-            StatSeeder::class,
             HomeSectionSeeder::class,
         ]);
 
