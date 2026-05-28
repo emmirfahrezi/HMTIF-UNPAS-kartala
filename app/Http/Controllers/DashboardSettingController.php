@@ -25,7 +25,6 @@ class DashboardSettingController extends Controller
         ['key' => 'pengaturan',               'label' => 'Pengaturan',            'type' => 'category'],
         ['key' => 'profile',                  'label' => 'Profil Saya',           'type' => 'item', 'parent' => 'pengaturan'],
         ['key' => 'activity-logs',            'label' => 'Log Aktivitas',         'type' => 'item', 'parent' => 'pengaturan'],
-        ['key' => 'stats',                    'label' => 'Statistik',             'type' => 'item', 'parent' => 'pengaturan'],
         ['key' => 'users',                    'label' => 'Pengguna',              'type' => 'item', 'parent' => 'pengaturan'],
         ['key' => 'settings',                 'label' => 'Sistem Settings',       'type' => 'item', 'parent' => 'pengaturan'],
     ];

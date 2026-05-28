@@ -16,7 +16,6 @@ use App\Http\Controllers\DashboardProductController;
 use App\Http\Controllers\DashboardProfileController;
 use App\Http\Controllers\DashboardSettingController;
 use App\Http\Controllers\DashboardStaffController;
-use App\Http\Controllers\DashboardStatController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EditorUploadController;
 use App\Http\Controllers\PageController;
@@ -58,7 +57,7 @@ Route::post('/logout', [LoginController::class, 'logoutWeb'])->middleware('auth'
 // Dashboard (Auth Required)
 // =============================================================================
 
-Route::middleware('auth')->prefix('/dashboard')->group(function () {
+Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Announcements
@@ -123,15 +122,6 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::get('/aspirations',                     [DashboardAspirationController::class, 'index'])->name('dashboard.aspirations');
     Route::get('/aspirations/{id}',                [DashboardAspirationController::class, 'show'])->name('dashboard.aspirations.show');
     Route::put('/aspirations/{id}/feedback',       [DashboardAspirationController::class, 'feedback'])->name('dashboard.aspirations.feedback');
-
-    // Stats
-    Route::get('/stats',              [DashboardStatController::class, 'index'])->name('dashboard.stats');
-    Route::get('/stats/create',       [DashboardStatController::class, 'create'])->name('dashboard.stats.create');
-    Route::post('/stats',             [DashboardStatController::class, 'store'])->name('dashboard.stats.store');
-    Route::delete('/stats/bulk-delete', [DashboardStatController::class, 'bulkDestroy']);
-    Route::get('/stats/{stat}/edit',  [DashboardStatController::class, 'edit'])->name('dashboard.stats.edit');
-    Route::put('/stats/{stat}',       [DashboardStatController::class, 'update'])->name('dashboard.stats.update');
-    Route::delete('/stats/{stat}',    [DashboardStatController::class, 'destroy'])->name('dashboard.stats.destroy');
 
     // Minutes (Notulensi) — show & print harus sebelum /{minute} wildcard
     Route::get('/minutes',               [DashboardMinuteController::class, 'index'])->name('dashboard.minutes');
