@@ -44,7 +44,7 @@ class DashboardAnnouncementController extends Controller
             'excerpt'                  => 'nullable|string|max:1024',
             'body'                     => 'nullable|string',
             'thumbnail'                => 'nullable|string|max:1024',
-            'thumbnail_file'           => 'nullable|file|image|max:2048',
+            'thumbnail_file'           => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'published_at'             => 'nullable|date',
             'file'                     => 'nullable|file|max:10240',
         ]);
@@ -76,7 +76,7 @@ class DashboardAnnouncementController extends Controller
             'excerpt'                  => 'nullable|string|max:1024',
             'body'                     => 'nullable|string',
             'thumbnail'                => 'nullable|string|max:1024',
-            'thumbnail_file'           => 'nullable|file|image|max:2048',
+            'thumbnail_file'           => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'published_at'             => 'nullable|date',
             'file'                     => 'nullable|file|max:10240',
         ]);

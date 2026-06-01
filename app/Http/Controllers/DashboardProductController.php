@@ -48,7 +48,7 @@ class DashboardProductController extends Controller
             'images'               => 'nullable|array',
             'images.*.id'          => 'nullable|integer',
             'images.*.image_path'  => 'nullable|string|max:1024',
-            'images.*.image_file'  => 'nullable|file|image|max:2048',
+            'images.*.image_file'  => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'images.*.order'       => 'nullable|integer',
             'images.*.is_primary'  => 'sometimes|boolean',
         ]);
@@ -82,7 +82,7 @@ class DashboardProductController extends Controller
             'images'               => 'nullable|array',
             'images.*.id'          => 'nullable|integer',
             'images.*.image_path'  => 'nullable|string|max:1024',
-            'images.*.image_file'  => 'nullable|file|image|max:2048',
+            'images.*.image_file'  => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'images.*.order'       => 'nullable|integer',
             'images.*.is_primary'  => 'sometimes|boolean',
         ]);
