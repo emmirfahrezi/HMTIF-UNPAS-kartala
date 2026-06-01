@@ -84,7 +84,24 @@ class AspirationController extends Controller
 
         try {
             $this->mailService->sendAspirationNotification($aspiration->toArray());
-        } catch (\Throwable) {}
+        } catch (\Throwable $e) {
+            \Log::error('[AspirationController] Email notif admin gagal: ' . $e->getMessage());
+        }
+
+        if (!empty($aspiration->email)) {
+            try {
+                $this->mailService->sendAspirationStatusUpdate(
+                    $aspiration->email,
+                    $aspiration->name ?? 'Pengirim',
+                    $aspiration->subject,
+                    'pending',
+                    $aspiration->tracking_code,
+                    ''
+                );
+            } catch (\Throwable $e) {
+                \Log::error('[AspirationController] Email konfirmasi pengirim gagal: ' . $e->getMessage());
+            }
+        }
 
         return redirect()
             ->back()

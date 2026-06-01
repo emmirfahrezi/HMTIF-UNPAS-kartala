@@ -65,7 +65,14 @@ class MailService
             $mail->addAddress($adminEmail);
             $mail->Subject = '[Aspirasi Masuk] ' . ($aspiration['subject'] ?? '-');
             $mail->isHTML(true);
-            $mail->Body    = view('mail.aspiration-incoming', compact('aspiration'))->render();
+            $mail->Body    = view('mail.aspiration-incoming', [
+                'trackingCode' => $aspiration['tracking_code'] ?? '-',
+                'name'         => $aspiration['name']          ?? '',
+                'nim'          => $aspiration['nim']           ?? null,
+                'email'        => $aspiration['email']         ?? null,
+                'subject'      => $aspiration['subject']       ?? '-',
+                'message'      => $aspiration['message']       ?? '',
+            ])->render();
             $mail->AltBody = strip_tags($mail->Body);
             $mail->send();
             return true;

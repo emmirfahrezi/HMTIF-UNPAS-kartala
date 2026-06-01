@@ -165,7 +165,14 @@ class PageController extends Controller
 
     public function aspirations(): View
     {
-        return view('pages.aspirations');
+        $trackedAspiration = null;
+        $code = strtoupper(trim((string) request('code', '')));
+
+        if ($code !== '') {
+            $trackedAspiration = \App\Models\Aspiration::where('tracking_code', $code)->first();
+        }
+
+        return view('pages.aspirations', compact('trackedAspiration'));
     }
 
     // -----------------------------------------------------------------------
