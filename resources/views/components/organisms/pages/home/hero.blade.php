@@ -6,10 +6,14 @@
     $subtitle = data_get($homeSections, 'hero.description', 'Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui dedikasi dan kerja nyata.');
     $btnPrimary = data_get($homeSections, 'hero.btn_primary', 'Jelajahi Program');
     $btnSecondary = data_get($homeSections, 'hero.btn_secondary', 'Tentang Kami');
+    $defaultBackgroundImage = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80';
+    $backgroundImage = trim((string) data_get($homeSections, 'hero.background_image', ''));
+    $backgroundImage = $backgroundImage !== '' ? $backgroundImage : $defaultBackgroundImage;
 @endphp
 
 <div
-    class="relative isolate px-6 pt-14 mt-0 lg:px-8 min-h-screen flex items-center bg-[url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center bg-no-repeat z-0 transform">
+    class="relative isolate px-6 pt-14 mt-0 lg:px-8 min-h-screen flex items-center bg-cover bg-center bg-no-repeat z-0 transform"
+    style="background-image: url('{{ $backgroundImage }}');">
     <div class="absolute inset-0 bg-linear-to-b from-black via-black/45 to-transparent z-0"></div>
     <div class="mx-auto max-w-4xl py-24 sm:py-32 z-20 text-center">
         <div
