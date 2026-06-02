@@ -18,6 +18,11 @@ class ProductImage extends Model
         'is_primary' => 'boolean',
     ];
 
+    public function getImageUrlAttribute(): string
+    {
+        return media_url($this->image_path, 'images/placeholders/product.svg');
+    }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

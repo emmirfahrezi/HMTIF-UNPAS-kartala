@@ -22,25 +22,12 @@ class Product extends Model
     /** Ukuran yang tersedia untuk produk berupa pakaian. */
     public const CLOTHING_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
-    /**
-     * URL gambar utama produk yang sudah divalidasi.
-     * Mengambil dari relasi primaryImage → image_path.
-     * Fallback ke placeholder jika kosong atau bukan path lokal.
-     */
     public function getPrimaryImageUrlAttribute(): string
     {
-        $path = (string) (optional($this->primaryImage)->image_path ?? '');
-
-        if ($path === '') {
-            return asset('images/placeholders/product.svg');
-        }
-
-        $isLocal = str_starts_with($path, '/')
-            || str_starts_with($path, 'storage/')
-            || str_starts_with($path, 'images/')
-            || str_starts_with($path, url('/'));
-
-        return $isLocal ? $path : asset('images/placeholders/product.svg');
+        return media_url(
+            optional($this->primaryImage)->image_path,
+            'images/placeholders/product.svg'
+        );
     }
 
     /** Slug kategori yang dianggap sebagai produk pakaian (perlu pilihan ukuran). */

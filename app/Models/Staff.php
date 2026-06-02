@@ -59,6 +59,11 @@ class Staff extends Model
             ?? ($this->division?->abbreviationCode ?? 'BPH');
     }
 
+    public function getPhotoUrlAttribute(): string
+    {
+        return media_url($this->photo, 'images/placeholders/member.svg');
+    }
+
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
