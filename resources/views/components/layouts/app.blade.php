@@ -4,6 +4,7 @@
     'keywords' => 'HMTIF, UNPAS, Informatika, Universitas Pasundan, Himpunan Mahasiswa, Teknik Informatika',
     'image' => '/images/placeholders/hero-home.svg',
     'transparent' => false,
+    'lcpImage' => null,
 ])
 <!DOCTYPE html>
 <html lang="id">
@@ -20,7 +21,7 @@
     {{ $head ?? '' }}
 
     {{-- LCP Preload --}}
-    @if (isset($lcpImage))
+    @if ($lcpImage)
         <link rel="preload" as="image" href="{{ $lcpImage }}">
     @endif
 

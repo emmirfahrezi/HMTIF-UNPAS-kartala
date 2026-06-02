@@ -9,11 +9,16 @@
     $point1Desc = data_get($homeSections, 'identity.point_1_desc', 'Mengembangkan solusi teknologi inovatif.');
     $point2Title = data_get($homeSections, 'identity.point_2_title', 'Wadah Solutif');
     $point2Desc = data_get($homeSections, 'identity.point_2_desc', 'Menampung aspirasi setiap anggota.');
+    $defaultAboutImage = 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png';
+    $identityImage = trim((string) data_get($homeSections, 'identity.image', ''));
+    $identityImage = $identityImage !== '' ? $identityImage : $defaultAboutImage;
 
     // Section 2: Era
     $eraLabel = data_get($homeSections, 'era.label', 'Era Baru: Kartala');
     $eraTitle = data_get($homeSections, 'era.title', 'HARMONI DALAM PERGERAKAN NYATA');
     $eraDesc = data_get($homeSections, 'era.description', 'Di bawah semangat HMTIF UNPAS, kami berkomitmen untuk menghadirkan perubahan yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.');
+    $eraImage = trim((string) data_get($homeSections, 'era.image', ''));
+    $eraImage = $eraImage !== '' ? $eraImage : $defaultAboutImage;
 @endphp
 
 <!-- about HMTIF -->
@@ -31,7 +36,7 @@
             <div class="relative group reveal reveal-left">
                 <div
                     class="relative mx-auto aspect-square w-full max-w-96 lg:max-w-120 overflow-hidden rounded-full transition-all duration-700 ease-in-out group-hover:-translate-y-1">
-                    <img src="https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png"
+                    <img src="{{ $identityImage }}"
                         alt="Logo HMTIF-UNPAS"
                         class="relative z-10 h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.01]"
                         width="960" height="960" loading="lazy" decoding="async" />
@@ -98,7 +103,7 @@
             <div class="order-1 lg:order-2 relative group reveal reveal-right">
                 <div
                     class="relative mx-auto aspect-square w-full max-w-96 lg:max-w-120 overflow-hidden rounded-full transform transition-all duration-700 ease-out group-hover:scale-[1.01] group-hover:-translate-y-1">
-                    <img src="https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png"
+                    <img src="{{ $eraImage }}"
                         alt="Logo HMTIF-UNPAS"
                         class="relative z-10 h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.01]"
                         loading="lazy" decoding="async" width="960" height="960">
