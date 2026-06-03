@@ -1,3 +1,10 @@
+@php
+    $activePeriodLabel = $activePeriod?->label ?? request('period', '2025/2026');
+    $periodOptions = collect($periods ?? [])
+        ->mapWithKeys(fn ($period) => [$period->label => 'Tahun ' . $period->label])
+        ->all();
+@endphp
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     {{-- Main Content --}}
     <div class="lg:col-span-2 space-y-8">
@@ -17,6 +24,14 @@
             </h3>
 
             <div class="space-y-6">
+                <x-molecules.shared.forms.form-input
+                    label="Periode Kepengurusan"
+                    name="period"
+                    type="select"
+                    :value="$activePeriodLabel"
+                    :options="$periodOptions"
+                    required />
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <x-molecules.shared.forms.form-input label="Nama Lengkap" name="name"
                         placeholder="Nama lengkap pengurus..." :value="$staff?->name ?? ''" required />

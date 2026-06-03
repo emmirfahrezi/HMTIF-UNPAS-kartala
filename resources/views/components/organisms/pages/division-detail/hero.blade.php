@@ -2,7 +2,7 @@
 
 <x-molecules.pages.sections.page-hero icon="heroicon-o-briefcase">
     <div class="text-left max-w-3xl -mt-16 md:-mt-24 relative z-20">
-        <a href="{{ route('staff') }}"
+        <a href="{{ route('staff', ['period' => request('period')]) }}"
             class="inline-flex items-center gap-2 text-primary font-bold text-sm hover:-translate-x-1 transition-transform group mb-8">
             <x-heroicon-o-arrow-left class="size-4" />
             Kembali ke Daftar Bidang

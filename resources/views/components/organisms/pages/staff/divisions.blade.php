@@ -27,7 +27,7 @@
                         </p>
                     </div>
                 </div>
-                <a href="{{ route('divisions.show', $div->slug) }}"
+                <a href="{{ route('divisions.show', ['slug' => $div->slug, 'period' => request('period')]) }}"
                     class="inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-primary-dark shadow-sm transition-colors hover:border-primary/40 hover:bg-primary/5 md:px-4 md:py-2 md:text-xs shrink-0">
                     Detail Bidang
                     <x-heroicon-o-arrow-right class="size-3.5 md:size-4" />
@@ -41,7 +41,7 @@
                     <div
                         class="min-w-[82%] sm:min-w-[58%] md:min-w-0 md:col-span-1 lg:col-span-1 snap-start reveal reveal-up reveal-delay-1">
                         <x-molecules.pages.cards.member-card :name="$coordinator->name" :position="$coordinator->position" size="normal"
-                            :dept="$divisionCode" :image="$coordinator->photo_url" :href="route('staff.show', $coordinator->id)" />
+                            :dept="$divisionCode" :image="$coordinator->photo_url" :href="route('staff.show', ['id' => $coordinator->id, 'period' => request('period')])" />
                     </div>
                 @endif
                 {{-- Members --}}
@@ -49,7 +49,7 @@
                     <div
                         class="min-w-[82%] sm:min-w-[58%] md:min-w-0 snap-start reveal reveal-up reveal-delay-{{ ($index % 4) + 2 }}">
                         <x-molecules.pages.cards.member-card :name="$member->name" :position="$member->position" size="normal"
-                            :dept="$divisionCode" :image="$member->photo_url" :href="route('staff.show', $member->id)" />
+                            :dept="$divisionCode" :image="$member->photo_url" :href="route('staff.show', ['id' => $member->id, 'period' => request('period')])" />
                     </div>
                 @endforeach
             </div>
