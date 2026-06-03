@@ -43,6 +43,8 @@ class LoginController extends Controller
             return back()->withInput()->withErrors(['email' => $e->getMessage()]);
         }
 
+        $request->session()->regenerate();
+
         return redirect()->route('dashboard');
     }
 

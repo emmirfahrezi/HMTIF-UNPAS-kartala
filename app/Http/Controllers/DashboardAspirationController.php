@@ -60,7 +60,7 @@ class DashboardAspirationController extends Controller
                 try {
                     $this->mailService->sendAspirationStatusUpdate(
                         $aspiration->email,
-                        $aspiration->name ?: 'Pelapor',
+                        $aspiration->name ?: 'Sobat HMTIF',
                         $aspiration->subject,
                         $request->status,
                         $aspiration->tracking_code,

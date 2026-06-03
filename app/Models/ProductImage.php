@@ -20,7 +20,7 @@ class ProductImage extends Model
 
     public function getImageUrlAttribute(): string
     {
-        return media_url($this->image_path, 'images/placeholders/product.svg');
+        return \media_url($this->image_path, 'images/placeholders/product.svg');
     }
 
     public function product(): BelongsTo

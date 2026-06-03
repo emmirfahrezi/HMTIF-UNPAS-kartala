@@ -65,4 +65,9 @@ class Division extends Model
     {
         return $this->hasMany(Staff::class);
     }
+
+    public function staffPeriods(): HasMany
+    {
+        return $this->hasMany(StaffPeriod::class);
+    }
 }

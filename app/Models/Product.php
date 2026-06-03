@@ -24,7 +24,7 @@ class Product extends Model
 
     public function getPrimaryImageUrlAttribute(): string
     {
-        return media_url(
+        return \media_url(
             optional($this->primaryImage)->image_path,
             'images/placeholders/product.svg'
         );

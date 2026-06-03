@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class DashboardProfileController extends Controller
@@ -71,7 +72,7 @@ class DashboardProfileController extends Controller
     {
         $request->validate([
             'old_password'          => 'required|string',
-            'password'              => 'required|string|min:8|confirmed',
+            'password'              => ['required', 'confirmed', Password::min(12)->mixedCase()->numbers()->symbols()],
             'password_confirmation' => 'required|string',
         ]);
 

@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Division;
+use App\Models\Period;
 use App\Models\Staff;
+use App\Models\StaffPeriod;
 use Illuminate\Database\Seeder;
 
 class StaffSeeder extends Seeder
@@ -317,11 +319,26 @@ class StaffSeeder extends Seeder
             ],
         ];
 
+        $period = Period::where('label', '2025/2026')->first();
+
         foreach ($staffs as $data) {
-            Staff::updateOrCreate(
+            $staff = Staff::updateOrCreate(
                 ['name' => $data['name'], 'division_id' => $data['division_id']],
                 $data
             );
+
+            if ($period) {
+                StaffPeriod::updateOrCreate(
+                    ['period_id' => $period->id, 'staff_id' => $staff->id],
+                    [
+                        'division_id' => $data['division_id'],
+                        'position'    => $data['position'],
+                        'order'       => $data['order'],
+                        'is_bph'      => $data['is_bph'],
+                        'is_active'   => $data['is_active'],
+                    ]
+                );
+            }
         }
     }
 }

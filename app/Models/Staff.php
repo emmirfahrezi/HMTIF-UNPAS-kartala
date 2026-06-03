@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\GeneratesId;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Staff extends Model
@@ -61,7 +62,7 @@ class Staff extends Model
 
     public function getPhotoUrlAttribute(): string
     {
-        return media_url($this->photo, 'images/placeholders/member.svg');
+        return \media_url($this->photo, 'images/placeholders/member.svg');
     }
 
     public function division(): BelongsTo
@@ -72,5 +73,21 @@ class Staff extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
+    }
+
+    public function periodAssignments(): HasMany
+    {
+        return $this->hasMany(StaffPeriod::class);
+    }
+
+    /**
+     * Assignment pertama yang di-eager-load (scope ke periode tertentu via with()).
+     * Gunakan: Staff::with(['periodAssignments' => fn($q) => $q->where('period_id', $id)])
+     */
+    public function getCurrentAssignmentAttribute(): ?StaffPeriod
+    {
+        return $this->relationLoaded('periodAssignments')
+            ? $this->periodAssignments->first()
+            : null;
     }
 }
