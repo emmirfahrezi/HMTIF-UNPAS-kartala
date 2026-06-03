@@ -2,16 +2,18 @@
 @php
     $currentRoute = request()->path();
     $archivesRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.archives.index');
+    $developerTeamsRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.developer-teams.index');
 
     $menuGroups = $dashboardMenuGroups ?? [
         'Overview' => [
             ['label' => 'Dashboard', 'icon' => 'heroicon-o-squares-2x2', 'href' => '/dashboard', 'match' => 'dashboard'],
         ],
-        'Konten' => [
+        'Konten' => array_values(array_filter([
             ['label' => 'Halaman Utama', 'icon' => 'heroicon-o-home', 'href' => '/dashboard/home-sections', 'match' => 'dashboard/home-sections'],
+            $developerTeamsRouteReady ? ['label' => 'Tim Pengembang', 'icon' => 'heroicon-o-code-bracket-square', 'href' => '/dashboard/developer-teams', 'match' => 'dashboard/developer-teams'] : null,
             ['label' => 'Kegiatan', 'icon' => 'heroicon-o-calendar', 'href' => '/dashboard/activities', 'match' => 'dashboard/activities'],
             ['label' => 'Pengumuman', 'icon' => 'heroicon-o-megaphone', 'href' => '/dashboard/announcements', 'match' => 'dashboard/announcements'],
-        ],
+        ])),
         'Organisasi' => array_values(array_filter([
             ['label' => 'Pengurus', 'icon' => 'heroicon-o-users', 'href' => '/dashboard/staffs', 'match' => 'dashboard/staffs'],
             ['label' => 'Aspirasi', 'icon' => 'heroicon-o-chat-bubble-left-right', 'href' => '/dashboard/aspirations', 'match' => 'dashboard/aspirations'],

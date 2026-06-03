@@ -1,5 +1,12 @@
-
 <x-layouts.dashboard pageTitle="Pengurus" :breadcrumbs="[['label' => 'Pengurus']]">
+    @php
+        $activePeriodLabel = $activePeriod?->label ?? request('period', '2025/2026');
+        $periodOptions = collect($periods ?? [])
+            ->mapWithKeys(fn ($period) => [$period->label => 'Tahun ' . $period->label])
+            ->all();
+        $staffIndexRoute = '/dashboard/staffs?period=' . urlencode($activePeriodLabel);
+    @endphp
+
     @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
             <div class="w-16 h-16 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500 mb-6 shadow-inner animate-pulse">
@@ -12,7 +19,7 @@
         @if ($permissions['create'])
         <x-slot:headerActions>
             <x-atoms.shared.button 
-                href="/dashboard/staffs/create"
+                href="/dashboard/staffs/create?period={{ urlencode($activePeriodLabel) }}"
                 icon="heroicon-o-plus">
                 Tambah Pengurus
             </x-atoms.shared.button>
@@ -20,12 +27,40 @@
         @endif
 
     @if ($permissions['create'])
-    <x-molecules.dashboard.cards.category-card title="Manajemen Bidang / Divisi"
-        subtitle="Kelola struktur organisasi dan divisi pengurus" addModalId="quick-add-division"
-        manageRoute="/dashboard/staffs/divisions" />
+    <x-molecules.dashboard.cards.category-card
+        title="Manajemen Struktur Pengurus"
+        subtitle="Kelola periode kepengurusan, bidang, dan divisi pengurus"
+        addModalId="quick-add-structure"
+        :manageItems="[
+            [
+                'label' => 'Kelola Periode',
+                'href' => route('dashboard.staffs.periods'),
+                'icon' => 'heroicon-o-calendar-days',
+                'description' => 'Atur periode aktif dan urutan periode.',
+            ],
+            [
+                'label' => 'Kelola Bidang / Divisi',
+                'href' => route('dashboard.staffs.divisions'),
+                'icon' => 'heroicon-o-building-office-2',
+                'description' => 'Atur struktur bidang dan divisi pengurus.',
+            ],
+        ]" />
     @endif
 
-    <x-molecules.dashboard.cards.filter-card searchRoute="/dashboard/staffs" searchPlaceholder="Cari pengurus...">
+    <x-molecules.dashboard.cards.filter-card :searchRoute="$staffIndexRoute" searchPlaceholder="Cari pengurus...">
+        <div class="flex items-center gap-2 transition-colors duration-300">
+            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Periode</label>
+            <div class="w-48">
+                <x-molecules.shared.forms.form-input
+                    type="select"
+                    name="period"
+                    :value="$activePeriodLabel"
+                    :options="$periodOptions"
+                    @change="setTimeout(() => $el.closest('form').submit(), 50)"
+                />
+            </div>
+        </div>
+
         <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3 transition-colors duration-300">
             <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Urutkan</label>
             <div class="w-44">
@@ -55,10 +90,10 @@
         @if ($permissions['delete'])
         <div class="flex items-center border-l border-slate-100 dark:border-slate-800 pl-4 ml-auto">
             <button type="button" 
-                @click="openDeleteModal('/dashboard/staffs/truncate', 'Yakin ingin menghapus SEMUA data pengurus di semua divisi? Data yang dihapus tidak dapat dikembalikan!')"
+                @click="openDeleteModal('/dashboard/staffs/truncate?period={{ urlencode($activePeriodLabel) }}', 'Yakin ingin menghapus data pengurus untuk periode {{ $activePeriodLabel }}? Profil orang tetap tersimpan.')"
                 class="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent border border-red-500/30 text-red-500 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all duration-300 active:scale-95">
                 <x-heroicon-o-trash class="size-4" />
-                Hapus Semua
+                Reset Periode
             </button>
         </div>
         @endif
@@ -94,7 +129,7 @@
                 :selectable="$permissions['delete']"
                 :bulkDeleteEnabled="$permissions['delete']"
                 :showActions="$permissions['update'] || $permissions['delete']"
-                bulkDeleteRoute="/dashboard/staffs/bulk-delete">
+                bulkDeleteRoute="/dashboard/staffs/bulk-delete?period={{ urlencode($activePeriodLabel) }}">
 
                 @forelse ($division->staffs as $item)
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200 group/row" data-row-id="{{ $item->id }}">
@@ -151,7 +186,7 @@
                                 <x-atoms.shared.button 
                                     variant="ghost"
                                     size="sm"
-                                    href="/dashboard/staffs/{{ $item->id }}/edit"
+                                    href="/dashboard/staffs/{{ $item->id }}/edit?period={{ urlencode($activePeriodLabel) }}"
                                     class="size-9 !px-0"
                                     title="Edit">
                                     <x-heroicon-o-pencil-square class="size-5" />
@@ -161,7 +196,7 @@
                                 <x-atoms.shared.button 
                                     variant="ghost"
                                     size="sm"
-                                    @click="openDeleteModal('/dashboard/staffs/{{ $item->id }}', 'Hapus pengurus &quot;{{ $item->name }}&quot;?')"
+                                    @click="openDeleteModal('/dashboard/staffs/{{ $item->id }}?period={{ urlencode($activePeriodLabel) }}', 'Hapus pengurus &quot;{{ $item->name }}&quot; dari periode {{ $activePeriodLabel }}?')"
                                     class="size-9 !px-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                                     title="Hapus">
                                     <x-heroicon-o-trash class="size-5" />
@@ -174,7 +209,7 @@
                 @empty
                     <x-slot:empty>
                         <x-molecules.shared.empty-state title="Belum ada data pengurus di divisi ini"
-                            icon="heroicon-o-users" createRoute="/dashboard/staffs/create" />
+                            icon="heroicon-o-users" createRoute="/dashboard/staffs/create?period={{ urlencode($activePeriodLabel) }}" />
                     </x-slot:empty>
                 @endforelse
 
@@ -187,38 +222,96 @@
         </div>
     @endforeach
 
-    <x-molecules.shared.modal id="quick-add-division" title="Tambah Bidang / Divisi">
-        <form action="/dashboard/staffs/divisions" method="POST" class="space-y-4"
-            x-data="slugHelper(@js(old('name')), @js(old('slug')))">
-            @csrf
-            <x-molecules.shared.forms.form-input 
-                label="Nama Divisi"
-                name="name"
-                required
-                placeholder="Masukan nama divisi..."
-                x-model="sourceValue"
-            />
-            <x-molecules.shared.forms.form-input 
-                label="Slug"
-                name="slug"
-                readonly
-                placeholder="dibuat otomatis"
-                x-model="slugValue"
-                helper="Slug akan terisi otomatis berdasarkan nama"
-            />
-            <div class="flex justify-end gap-3 mt-6">
-                <x-atoms.shared.button 
-                    variant="ghost"
-                    type="button"
-                    @click="$dispatch('close-modal', { name: 'quick-add-division' })">
-                    Batal
-                </x-atoms.shared.button>
-                <x-atoms.shared.button 
-                    type="submit">
-                    Simpan Divisi
-                </x-atoms.shared.button>
-            </div>
-        </form>
+    <x-molecules.shared.modal id="quick-add-structure" title="Tambah Cepat Struktur">
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <form action="{{ route('dashboard.staffs.periods.store') }}" method="POST"
+                class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-slate-800 dark:bg-slate-950/50">
+                @csrf
+                <input type="hidden" name="return_to" value="{{ request()->fullUrl() }}">
+
+                <div class="mb-5 flex items-center gap-3">
+                    <span class="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <x-heroicon-o-calendar-days class="size-5" />
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-800 dark:text-white">Quick Add Periode</h3>
+                        <p class="text-xs font-medium text-slate-400 dark:text-slate-500">Tambah periode kepengurusan baru.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <x-molecules.shared.forms.form-input
+                        label="Label Periode"
+                        name="label"
+                        required
+                        placeholder="Contoh: 2026/2027" />
+
+                    <x-molecules.shared.forms.form-input
+                        label="Urutan Tampil"
+                        name="display_order"
+                        type="number"
+                        :value="0" />
+
+                    <x-molecules.shared.forms.form-input
+                        type="toggle"
+                        label="Jadikan Periode Aktif"
+                        name="is_active"
+                        :value="false" />
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-atoms.shared.button type="submit" icon="heroicon-o-plus">
+                        Simpan Periode
+                    </x-atoms.shared.button>
+                </div>
+            </form>
+
+            <form action="/dashboard/staffs/divisions" method="POST"
+                class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-slate-800 dark:bg-slate-950/50"
+                x-data="slugHelper(@js(old('name')), @js(old('slug')))">
+                @csrf
+                <input type="hidden" name="return_to" value="{{ request()->fullUrl() }}">
+
+                <div class="mb-5 flex items-center gap-3">
+                    <span class="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <x-heroicon-o-building-office-2 class="size-5" />
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-800 dark:text-white">Quick Add Divisi</h3>
+                        <p class="text-xs font-medium text-slate-400 dark:text-slate-500">Tambah bidang atau divisi pengurus.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <x-molecules.shared.forms.form-input
+                        label="Nama Divisi"
+                        name="name"
+                        required
+                        placeholder="Masukan nama divisi..."
+                        x-model="sourceValue" />
+
+                    <x-molecules.shared.forms.form-input
+                        label="Slug"
+                        name="slug"
+                        readonly
+                        placeholder="dibuat otomatis"
+                        x-model="slugValue"
+                        helper="Slug akan terisi otomatis berdasarkan nama" />
+
+                    <x-molecules.shared.forms.form-input
+                        label="Urutan Tampil"
+                        name="order"
+                        type="number"
+                        :value="0" />
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-atoms.shared.button type="submit" icon="heroicon-o-plus">
+                        Simpan Divisi
+                    </x-atoms.shared.button>
+                </div>
+            </form>
+        </div>
     </x-molecules.shared.modal>
     @endif
 
@@ -250,7 +343,7 @@
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                                 },
-                                body: JSON.stringify({ ids: rowIds })
+                                body: JSON.stringify({ ids: rowIds, period: @js($activePeriodLabel) })
                             })
                             .then(response => response.json())
                             .then(data => {

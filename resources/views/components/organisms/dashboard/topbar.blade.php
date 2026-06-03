@@ -16,7 +16,7 @@
             $currentPath = request()->path();
             $categoryName = 'Dashboard';
             
-            if (str_contains($currentPath, '/activities') || str_contains($currentPath, '/announcements')) {
+            if (str_contains($currentPath, '/activities') || str_contains($currentPath, '/announcements') || str_contains($currentPath, '/developer-teams')) {
                 $categoryName = 'Manajemen Konten';
             } elseif (str_contains($currentPath, '/staffs') || str_contains($currentPath, '/aspirations') || str_contains($currentPath, '/minutes') || str_contains($currentPath, '/archives')) {
                 $categoryName = 'Manajemen Organisasi';

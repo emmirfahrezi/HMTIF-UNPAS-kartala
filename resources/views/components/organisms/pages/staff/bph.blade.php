@@ -11,7 +11,7 @@
         <h2 class="text-heading font-black text-3xl md:text-4xl uppercase tracking-tighter italic">Badan Pengurus <span
                 class="text-primary italic">Harian</span></h2>
         <div class="h-px flex-1 bg-linear-to-r from-primary/20 to-transparent"></div>
-        <a href="{{ route('divisions.show', 'bph') }}"
+        <a href="{{ route('divisions.show', ['slug' => 'bph', 'period' => request('period')]) }}"
             class="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-lg border border-secondary/50 text-heading text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors shrink-0">
             Detail Bidang
             <x-heroicon-o-arrow-right class="size-3.5 md:size-4" />
@@ -22,7 +22,7 @@
         @foreach ($leaders as $index => $staff)
             <x-molecules.pages.cards.member-card :name="$staff->name" position="Ketua Umum" size="xl" dept="KARTALA"
                 class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo_url"
-                :href="route('staff.show', $staff->id)" />
+                :href="route('staff.show', ['id' => $staff->id, 'period' => request('period')])" />
         @endforeach
     </div>
 
@@ -30,7 +30,7 @@
         @foreach ($bphMembers as $index => $staff)
             <div class="min-w-[82%] sm:min-w-[58%] md:min-w-0 snap-start reveal reveal-up reveal-delay-{{ ($index % 4) + 1 }}">
                 <x-molecules.pages.cards.member-card :name="$staff->name" :position="$staff->position" size="normal"
-                    :dept="$staff->abbreviation" :href="route('staff.show', $staff->id)"
+                    :dept="$staff->abbreviation" :href="route('staff.show', ['id' => $staff->id, 'period' => request('period')])"
                     :image="$staff->photo_url" />
             </div>
         @endforeach
