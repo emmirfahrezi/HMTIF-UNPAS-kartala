@@ -36,6 +36,6 @@ class Activity extends Model
 
     public function getThumbnailUrlAttribute(): string
     {
-        return media_url($this->thumbnail, 'images/placeholders/activity.svg');
+        return \media_url($this->thumbnail, 'images/placeholders/activity.svg');
     }
 }

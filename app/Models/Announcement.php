@@ -23,7 +23,7 @@ class Announcement extends Model
 
     public function getThumbnailUrlAttribute(): string
     {
-        return media_url($this->thumbnail, 'images/placeholders/announcement.svg');
+        return \media_url($this->thumbnail, 'images/placeholders/announcement.svg');
     }
 
     /**

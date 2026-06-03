@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class SetupPasswordController extends Controller
@@ -28,7 +29,7 @@ class SetupPasswordController extends Controller
         $request->validate([
             'token'                 => 'required|string',
             'email'                 => 'required|email',
-            'password'              => 'required|string|min:8|confirmed',
+            'password'              => ['required', 'confirmed', Password::min(12)->mixedCase()->numbers()->symbols()],
             'password_confirmation' => 'required|string',
         ]);
 
@@ -36,7 +37,11 @@ class SetupPasswordController extends Controller
             ->where('email', $request->email)
             ->first();
 
-        if (! $record || ! Hash::check($request->token, $record->token)) {
+        $expired = ! $record
+            || ! Hash::check($request->token, $record->token)
+            || now()->diffInMinutes($record->created_at) > 60;
+
+        if ($expired) {
             return back()->withErrors(['token' => 'Tautan tidak valid atau sudah kadaluarsa.']);
         }
 

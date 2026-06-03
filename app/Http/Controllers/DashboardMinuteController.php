@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
+use App\Models\Division;
 use App\Models\Minute;
 use App\Services\Minute\CreateMinuteService;
 use App\Services\Minute\DeleteMinuteService;
@@ -22,17 +23,22 @@ class DashboardMinuteController extends Controller
     public function index(Request $request)
     {
         $minutes = $this->getMinutes->execute($request);
-        return view('dashboard.minutes.index', compact('minutes'));
+        $divisions = Division::orderBy('order')->get(['id', 'name']);
+
+        return view('dashboard.minutes.index', compact('minutes', 'divisions'));
     }
 
     public function create()
     {
-        return view('dashboard.minutes.create');
+        $divisions = Division::orderBy('order')->get(['id', 'name']);
+
+        return view('dashboard.minutes.create', compact('divisions'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'division_id'        => 'nullable|exists:divisions,id',
             'nomor'              => 'required|string|max:255|unique:minutes,nomor',
             'perihal'            => 'required|string|max:255',
             'tanggal'            => 'required|date',
@@ -61,12 +67,15 @@ class DashboardMinuteController extends Controller
     public function edit(Minute $minute)
     {
         $minute->load('attendees');
-        return view('dashboard.minutes.edit', compact('minute'));
+        $divisions = Division::orderBy('order')->get(['id', 'name']);
+
+        return view('dashboard.minutes.edit', compact('minute', 'divisions'));
     }
 
     public function update(Request $request, Minute $minute)
     {
         $validated = $request->validate([
+            'division_id'        => 'nullable|exists:divisions,id',
             'nomor'              => "required|string|max:255|unique:minutes,nomor,{$minute->id}",
             'perihal'            => 'required|string|max:255',
             'tanggal'            => 'required|date',

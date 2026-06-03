@@ -19,21 +19,25 @@ class GetAllActivitiesService
         ?string $search = null,
         ?string $sort   = 'latest',
     ): LengthAwarePaginator {
-        return Activity::query()
+        $allowedStatuses = ['upcoming', 'ongoing', 'past'];
+        $status = \in_array($status, $allowedStatuses, true) ? $status : null;
+
+        $query = Activity::query()
             ->when($status, fn ($q) => $q->where('status', $status))
             ->when($search, fn ($q) => $q->where(function ($q) use ($search) {
-                $q->where('title',       'like', '%' . $search . '%')
-                  ->orWhere('description', 'like', '%' . $search . '%');
-            }))
-            ->when(true, function ($q) use ($sort) {
-                match ($sort) {
-                    'oldest' => $q->orderBy('start_date', 'asc'),
-                    'az'     => $q->orderBy('title', 'asc'),
-                    'za'     => $q->orderBy('title', 'desc'),
-                    default  => $q->orderBy('start_date', 'desc'), // 'latest'
-                };
-            })
-            ->paginate(9)
-            ->withQueryString();
+                $q->where('title',       'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('body',        'like', "%{$search}%")
+                  ->orWhere('location',    'like', "%{$search}%");
+            }));
+
+        match ($sort) {
+            'oldest' => $query->oldest('created_at'),
+            'az'     => $query->orderBy('title', 'asc'),
+            'za'     => $query->orderBy('title', 'desc'),
+            default  => $query->latest('created_at'),
+        };
+
+        return $query->paginate(9)->withQueryString();
     }
 }

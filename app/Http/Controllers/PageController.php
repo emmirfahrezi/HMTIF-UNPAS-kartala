@@ -11,6 +11,7 @@ use App\Services\Home\GetActivitiesPreviewService;
 use App\Services\Home\GetAnnouncementsPreviewService;
 use App\Services\Home\GetHomeStatsService;
 use App\Services\Home\GetHomeSectionsService;
+use App\Models\Period;
 use App\Services\Staff\GetAllStaffsService;
 use App\Services\Staff\GetDivisionBySlugService;
 use App\Services\Staff\GetDivisionsService;
@@ -46,26 +47,38 @@ class PageController extends Controller
     // Halaman Staff / Pengurus
     // -----------------------------------------------------------------------
 
-    public function staffs(GetAllStaffsService $getStaffs, GetDivisionsService $getDivisions): View
-    {
+    public function staffs(
+        Request $request,
+        GetAllStaffsService $getStaffs,
+        GetDivisionsService $getDivisions,
+    ): View {
+        $periods      = Period::orderBy('display_order')->get();
+        $activePeriod = Period::resolveFromRequest($request, $periods);
+
         return view('pages.staff', [
-            'staffs'    => $getStaffs->execute(),
-            'divisions' => $getDivisions->execute(excludeBph: true),
+            'staffs'       => $getStaffs->execute($activePeriod),
+            'divisions'    => $getDivisions->execute(excludeBph: true, period: $activePeriod),
+            'periods'      => $periods,
+            'activePeriod' => $activePeriod,
         ]);
     }
 
-    public function staffDetail(string $id, GetStaffByIdService $getStaff): View
+    public function staffDetail(string $id, Request $request, GetStaffByIdService $getStaff): View
     {
-        $staff = $getStaff->execute($id);
+        $periods      = Period::orderBy('display_order')->get();
+        $activePeriod = Period::resolveFromRequest($request, $periods);
+        $staff        = $getStaff->execute($id);
 
-        return view('pages.staff-detail', compact('staff'));
+        return view('pages.staff-detail', compact('staff', 'periods', 'activePeriod'));
     }
 
-    public function divisionDetail(string $slug, GetDivisionBySlugService $getDivision): View
+    public function divisionDetail(string $slug, Request $request, GetDivisionBySlugService $getDivision): View
     {
-        $division = $getDivision->execute($slug);
+        $periods      = Period::orderBy('display_order')->get();
+        $activePeriod = Period::resolveFromRequest($request, $periods);
+        $division     = $getDivision->execute($slug, $activePeriod);
 
-        return view('pages.division-detail', compact('division'));
+        return view('pages.division-detail', compact('division', 'periods', 'activePeriod'));
     }
 
     // -----------------------------------------------------------------------
@@ -78,8 +91,8 @@ class PageController extends Controller
         GetAllAnnouncementsService $getAnnouncements,
     ): View {
         $activities = $getActivities->execute(
-            $request->query('status'),
-            $request->query('search'),
+            $request->query('status') ?: null,
+            $request->query('search') ?: null,
             $request->query('sort', 'latest'),
         );
 

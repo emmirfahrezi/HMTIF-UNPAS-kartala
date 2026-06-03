@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LogoutService
 {
-public function logout(Request $request): void
+    public function logout(Request $request): void
     {
         Auth::logout();
 

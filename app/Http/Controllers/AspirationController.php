@@ -92,7 +92,7 @@ class AspirationController extends Controller
             try {
                 $this->mailService->sendAspirationStatusUpdate(
                     $aspiration->email,
-                    $aspiration->name ?? 'Pengirim',
+                    $aspiration->name ?: 'Sobat HMTIF',
                     $aspiration->subject,
                     'pending',
                     $aspiration->tracking_code,

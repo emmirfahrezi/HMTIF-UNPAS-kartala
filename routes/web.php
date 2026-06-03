@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AspirationController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SetupPasswordController;
 use App\Http\Controllers\DashboardActivityController;
 use App\Http\Controllers\DashboardActivityLogController;
@@ -10,6 +12,8 @@ use App\Http\Controllers\DashboardAspirationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardDivisionController;
 use App\Http\Controllers\DashboardHomeSectionController;
+use App\Http\Controllers\DashboardPeriodController;
+use App\Http\Controllers\DeveloperTeamController;
 use App\Http\Controllers\DashboardMinuteController;
 use App\Http\Controllers\DashboardProductCategoryController;
 use App\Http\Controllers\DashboardProductController;
@@ -36,6 +40,7 @@ Route::get('/store/{slug}',         [PageController::class, 'productDetail'])->n
 Route::get('/announcements',        [PageController::class, 'announcements'])->name('announcements');
 Route::get('/announcements/{slug}', [PageController::class, 'announcementDetail'])->name('announcements.show');
 Route::get('/aspirations',          [PageController::class, 'aspirations'])->name('aspirations');
+Route::get('/tim-pengembang',       [DeveloperTeamController::class, 'show'])->name('developer-team');
 
 Route::post('/aspirations', [AspirationController::class, 'storeWeb'])
     ->middleware('throttle:aspirasi')
@@ -50,8 +55,15 @@ Route::post('/setup-password',        [SetupPasswordController::class, 'store'])
 Route::get('/setup-password-success', [SetupPasswordController::class, 'success'])->name('setup-password.success');
 
 Route::get('/login',   [LoginController::class, 'showLoginForm'])->middleware('guest')->name('login');
-Route::post('/login',  [LoginController::class, 'loginWeb'])->middleware('guest')->name('login.store');
+Route::post('/login',  [LoginController::class, 'loginWeb'])->middleware(['guest', 'throttle:5,1'])->name('login.store');
 Route::post('/logout', [LoginController::class, 'logoutWeb'])->middleware('auth')->name('logout');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password',  [ForgotPasswordController::class, 'show'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->middleware('throttle:5,1')->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'show'])->name('password.reset');
+    Route::post('/reset-password',        [ResetPasswordController::class, 'store'])->name('password.update');
+});
 
 // =============================================================================
 // Dashboard (Auth Required)
@@ -89,6 +101,15 @@ Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function 
     Route::get('/staffs/{staff}/edit',       [DashboardStaffController::class, 'edit'])->name('dashboard.staffs.edit');
     Route::put('/staffs/{staff}',            [DashboardStaffController::class, 'update'])->name('dashboard.staffs.update');
     Route::delete('/staffs/{staff}',         [DashboardStaffController::class, 'destroy'])->name('dashboard.staffs.destroy');
+
+    // Periods (harus sebelum wildcard /staffs/{staff})
+    Route::get('/staffs/periods',                     [DashboardPeriodController::class, 'index'])->name('dashboard.staffs.periods');
+    Route::get('/staffs/periods/create',              [DashboardPeriodController::class, 'create'])->name('dashboard.staffs.periods.create');
+    Route::post('/staffs/periods',                    [DashboardPeriodController::class, 'store'])->name('dashboard.staffs.periods.store');
+    Route::delete('/staffs/periods/bulk-delete',      [DashboardPeriodController::class, 'bulkDestroy']);
+    Route::get('/staffs/periods/{period}/edit',       [DashboardPeriodController::class, 'edit'])->name('dashboard.staffs.periods.edit');
+    Route::put('/staffs/periods/{period}',            [DashboardPeriodController::class, 'update'])->name('dashboard.staffs.periods.update');
+    Route::delete('/staffs/periods/{period}',         [DashboardPeriodController::class, 'destroy'])->name('dashboard.staffs.periods.destroy');
 
     // Divisions
     Route::get('/staffs/divisions',                       [DashboardDivisionController::class, 'index'])->name('dashboard.staffs.divisions');
@@ -165,6 +186,11 @@ Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function 
         ->middleware('throttle:30,1')
         ->name('dashboard.editor.upload');
 
+    // Developer Teams (Tim Pengembang)
+    Route::get('/developer-teams',                [DeveloperTeamController::class, 'index'])->name('dashboard.developer-teams');
+    Route::put('/developer-teams',                [DeveloperTeamController::class, 'save'])->name('dashboard.developer-teams.save');
+    Route::delete('/developer-teams/period',      [DeveloperTeamController::class, 'deletePeriod'])->name('dashboard.developer-teams.delete-period');
+
     // Profile
     Route::get('/profile',          [DashboardProfileController::class, 'index'])->name('dashboard.profile');
     Route::put('/profile',          [DashboardProfileController::class, 'update'])->name('dashboard.profile.update');
@@ -175,4 +201,6 @@ Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function 
 // Dev (hanya untuk development)
 // =============================================================================
 
-Route::get('/dev/components', [PageController::class, 'devComponents']);
+if (app()->environment('local')) {
+    Route::get('/dev/components', [PageController::class, 'devComponents']);
+}

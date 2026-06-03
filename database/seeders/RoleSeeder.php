@@ -27,7 +27,7 @@ class RoleSeeder extends Seeder
         $koordinatorMenus = [
             'dashboard', 'profile',
             'home-sections', 'activities', 'announcements', 'announcements/categories',
-            'staffs', 'staffs/divisions', 'aspirations', 'minutes',
+            'staffs', 'staffs/divisions', 'aspirations', 'minutes', 'developer-teams',
             'products', 'products/categories',
             'stats',
         ];
