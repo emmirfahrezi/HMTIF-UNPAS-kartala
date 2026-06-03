@@ -109,7 +109,8 @@ Variables yang dibutuhkan BE:
                                         {{-- Footer Note --}}
                                         <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.6;">
                                             Jika Anda merasa tidak mendaftar di HMTIF-UNPAS, abaikan email ini. Link ini
-                                            tidak memiliki batas kadaluarsa.
+                                            hanya berlaku sementara dan satu kali pakai. Jika sudah kedaluwarsa, minta
+                                            link baru melalui admin HMTIF atau alur reset password via email.
                                         </p>
 
                                     </td>

@@ -1,11 +1,15 @@
 @props(['staff', 'fallbackImage'])
 
+@php
+    $photoSrc = $staff->photo_url;
+@endphp
+
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
     {{-- Left: Photo --}}
     <div class="lg:col-span-5">
         <div class="sticky top-24 bg-white rounded-[2.5rem] border border-border shadow-xl shadow-black/5 overflow-hidden group">
             <div class="aspect-[4/5] bg-section relative">
-                <img src="{{ $staff->photo ?: $fallbackImage }}" alt="{{ $staff->name }}"
+                <img src="{{ $photoSrc }}" alt="{{ $staff->name }}"
                     class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105" data-fallback-src="{{ $fallbackImage }}">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>

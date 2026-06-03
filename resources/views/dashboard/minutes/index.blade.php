@@ -1,4 +1,27 @@
 
+@php
+    $minuteDivisionOptions = ['' => 'Semua Bidang'];
+
+    if (isset($divisions) && collect($divisions)->isNotEmpty()) {
+        $minuteDivisionOptions += collect($divisions)
+            ->mapWithKeys(fn ($division, $key) => is_scalar($division)
+                ? [$key => $division]
+                : [data_get($division, 'id') => data_get($division, 'name')])
+            ->filter(fn ($name, $id) => filled($id) && filled($name))
+            ->all();
+    } else {
+        $minuteDivisionOptions += [
+            'bph' => 'BPH',
+            'kastrad' => 'Bidang Kastrad',
+            'medkominfo' => 'Bidang Medkominfo',
+            'ristek' => 'Bidang Ristek',
+            'keskraf' => 'Bidang Keskraf',
+            'psdm' => 'Bidang PSDM',
+            'pmb' => 'Bidang PMB',
+        ];
+    }
+@endphp
+
 <x-layouts.dashboard pageTitle="Notulensi Rapat" :breadcrumbs="[['label' => 'Notulensi']]">
     @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
@@ -23,13 +46,31 @@
         searchRoute="/dashboard/minutes" 
         searchPlaceholder="Cari nomor atau perihal...">
         <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3 transition-colors duration-300">
+            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Bidang</label>
+            <div class="w-52">
+                <x-molecules.shared.forms.form-input
+                    type="select"
+                    name="division"
+                    :value="request('division', '')"
+                    :options="$minuteDivisionOptions"
+                    @change="setTimeout(() => $el.closest('form').submit(), 50)"
+                />
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3 transition-colors duration-300">
             <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Urutkan</label>
             <div class="w-44">
                 <x-molecules.shared.forms.form-input 
                     type="select"
                     name="sort"
                     :value="request('sort', 'latest')"
-                    :options="['latest' => 'Terbaru', 'oldest' => 'Terlama']"
+                    :options="[
+                        'latest' => 'Terbaru',
+                        'oldest' => 'Terlama',
+                        'az' => 'A - Z',
+                        'za' => 'Z - A',
+                    ]"
                     @change="setTimeout(() => $el.closest('form').submit(), 50)"
                 />
             </div>

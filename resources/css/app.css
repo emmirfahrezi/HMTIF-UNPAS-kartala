@@ -15,8 +15,19 @@
 @source '../**/*.js';
 
 @theme {
+  --font-pages:
+    'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-dashboard:
+    'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-display: var(--font-pages);
   --font-sans:
-    'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+    var(--font-pages);
+  --font-ui:
+    var(--font-dashboard);
+
+  --font-stack-emoji:
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   /* Brand Colors */
@@ -69,10 +80,27 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: var(--font-pages);
 }
 
 :root {
   --nav-height: 72px;
+}
+
+body {
+  font-family: var(--font-pages);
+}
+
+.font-pages {
+  font-family: var(--font-pages);
+}
+
+.font-dashboard {
+  font-family: var(--font-dashboard);
+}
+
+.font-display {
+  font-family: var(--font-display);
 }
 
 /* Global comfort scaling for desktop-medium widths (including common 125% zoom scenarios) */

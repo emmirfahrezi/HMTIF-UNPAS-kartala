@@ -71,7 +71,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('aspirations.store') }}" method="POST" class="space-y-12"
+                <form action="{{ route('aspirations.store') }}" method="POST" class="aspiration-form space-y-12"
                     @submit="submitForm($event)" novalidate>
                     @csrf
 

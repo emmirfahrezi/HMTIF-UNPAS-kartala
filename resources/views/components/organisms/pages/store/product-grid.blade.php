@@ -8,7 +8,9 @@
                 @php $delay = 1; @endphp
                 @foreach ($products as $product)
                     @php
-                        $productImage = $product->primary_image_url;
+                        $productImage = $product->primaryImage?->image_url
+                            ?? $product->images()->orderBy('order')->first()?->image_url
+                            ?? asset('images/placeholders/product.svg');
                     @endphp
                     <div class="reveal reveal-up reveal-delay-{{ $delay++ }} flex flex-col h-full">
                         <div
@@ -16,9 +18,10 @@
                             {{-- Product Image Thumbnail --}}
                             <div
                                 class="relative aspect-square bg-section/50 flex items-center justify-center group-hover:bg-primary/5 transition-colors overflow-hidden">
-                                <div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                                    style="background-image: url('{{ $productImage }}');">
-                                </div>
+                                <img src="{{ $productImage }}"
+                                    alt="{{ $product->name }}"
+                                    class="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                    data-fallback-src="{{ asset('images/placeholders/product.svg') }}">
                                 <div
                                     class="absolute inset-x-0 bottom-0 h-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity z-20">
                                 </div>

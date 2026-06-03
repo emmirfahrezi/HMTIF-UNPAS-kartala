@@ -8,10 +8,18 @@
     ];
     $title = 'Edit ' . ($sectionNames[$section] ?? Str::headline($section));
     $richTextKeys = ['description', 'vision_text', 'mission_text'];
+    $mediaFields = [
+        'hero' => ['background_image' => 'Gambar Background Hero'],
+        'identity' => ['image' => 'Gambar Identitas & Harapan'],
+        'era' => ['image' => 'Gambar Era Baru: Kartala'],
+    ];
+    $mediaFieldLabels = $mediaFields[$section] ?? [];
+    $missingMediaKeys = collect(array_keys($mediaFieldLabels))->reject(fn ($key) => isset($fields[$key]));
+    $totalFieldCount = $fields->count() + $missingMediaKeys->count();
 @endphp
 
 <x-layouts.dashboard :pageTitle="$title" :breadcrumbs="[['label' => 'Halaman Utama', 'href' => '/dashboard/home-sections'], ['label' => 'Edit']]">
-    <form method="POST" action="/dashboard/home-sections/{{ $section }}">
+    <form method="POST" action="/dashboard/home-sections/{{ $section }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -270,15 +278,35 @@
                                 @foreach($fields as $key => $field)
                                     @php
                                         $isRichText = in_array($key, $richTextKeys, true);
+                                        $isMediaField = array_key_exists($key, $mediaFieldLabels);
                                     @endphp
 
                                     <div class="{{ $isRichText ? 'md:col-span-2' : '' }}">
-                                        <x-molecules.shared.forms.form-input 
-                                            :type="$isRichText ? 'richtext' : 'text'"
-                                            label="{{ Str::headline(str_replace('_', ' ', $key)) }}" 
-                                            name="{{ $key }}" 
-                                            :value="$field->value" 
-                                            required />
+                                        @if($isMediaField)
+                                            <x-molecules.shared.forms.image-picker
+                                                label="{{ $mediaFieldLabels[$key] }}"
+                                                name="{{ $key }}"
+                                                :value="$field->value"
+                                                :upload-to-editor="true"
+                                                helper="Pilih link gambar atau upload dari device. Upload device akan disimpan sebagai URL lalu masuk ke field ini." />
+                                        @else
+                                            <x-molecules.shared.forms.form-input
+                                                :type="$isRichText ? 'richtext' : 'text'"
+                                                label="{{ Str::headline(str_replace('_', ' ', $key)) }}"
+                                                name="{{ $key }}"
+                                                :value="$field->value"
+                                                required />
+                                        @endif
+                                    </div>
+                                @endforeach
+
+                                @foreach($missingMediaKeys as $mediaKey)
+                                    <div class="md:col-span-2">
+                                        <x-molecules.shared.forms.image-picker
+                                            label="{{ $mediaFieldLabels[$mediaKey] }}"
+                                            name="{{ $mediaKey }}"
+                                            :upload-to-editor="true"
+                                            helper="Pilih link gambar atau upload dari device. Upload device akan disimpan sebagai URL lalu masuk ke field ini." />
                                     </div>
                                 @endforeach
                             </div>
@@ -302,7 +330,7 @@
                         </div>
                         <div>
                             <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Jumlah Field</p>
-                            <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">{{ $fields->count() }} konten</p>
+                            <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">{{ $totalFieldCount }} konten</p>
                         </div>
                     </div>
                 </div>

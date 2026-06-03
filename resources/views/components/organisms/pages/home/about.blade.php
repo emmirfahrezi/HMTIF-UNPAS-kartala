@@ -10,15 +10,19 @@
     $point2Title = data_get($homeSections, 'identity.point_2_title', 'Wadah Solutif');
     $point2Desc = data_get($homeSections, 'identity.point_2_desc', 'Menampung aspirasi setiap anggota.');
     $defaultAboutImage = 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/rm-logo-hmtif-unpas.png';
-    $identityImage = trim((string) data_get($homeSections, 'identity.image', ''));
-    $identityImage = $identityImage !== '' ? $identityImage : $defaultAboutImage;
+    $identityImageValue = trim((string) data_get($homeSections, 'identity.image', ''));
+    $identityImage = $identityImageValue !== ''
+        ? media_url($identityImageValue, 'images/placeholders/hero-home.svg')
+        : $defaultAboutImage;
 
     // Section 2: Era
     $eraLabel = data_get($homeSections, 'era.label', 'Era Baru: Kartala');
     $eraTitle = data_get($homeSections, 'era.title', 'HARMONI DALAM PERGERAKAN NYATA');
     $eraDesc = data_get($homeSections, 'era.description', 'Di bawah semangat HMTIF UNPAS, kami berkomitmen untuk menghadirkan perubahan yang progresif. Kartala bukan hanya soal nama, tapi soal bagaimana kami membangun harmoni di tengah keberagaman, menginspirasi melalui dedikasi, dan mengeksekusi setiap program kerja dengan presisi.');
-    $eraImage = trim((string) data_get($homeSections, 'era.image', ''));
-    $eraImage = $eraImage !== '' ? $eraImage : $defaultAboutImage;
+    $eraImageValue = trim((string) data_get($homeSections, 'era.image', ''));
+    $eraImage = $eraImageValue !== ''
+        ? media_url($eraImageValue, 'images/placeholders/hero-home.svg')
+        : $defaultAboutImage;
 @endphp
 
 <!-- about HMTIF -->

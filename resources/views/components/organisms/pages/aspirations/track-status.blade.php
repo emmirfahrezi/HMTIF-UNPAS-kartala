@@ -1,8 +1,10 @@
+@props(['trackedAspiration' => null])
+
 {{-- Track Aspiration (Official Brand Theme) --}}
 <section class="py-12 relative">
     @php
         $trackCode = strtoupper(trim((string) request('code')));
-        $aspiration = $trackedAspiration ?? null;
+        $aspiration = $trackedAspiration;
         
         // Custom high-contrast badges using brand global colors & dark contrast backdrops
         $badgeClasses = $aspiration ? $aspiration->status_badge_class : '';

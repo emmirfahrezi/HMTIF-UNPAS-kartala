@@ -2,14 +2,10 @@
     @props(['product'])
 
     @php
-        $images = $product?->images?->sortBy('order')->pluck('image_path')->filter()->values()->all() ?? [];
-
-        $images = collect($images)
-            ->map(function (string $imagePath) {
-                return \Illuminate\Support\Str::startsWith($imagePath, ['/', 'storage/', 'images/', url('/')])
-                    ? $imagePath
-                    : asset('images/placeholders/product.svg');
-            })
+        $images = ($product?->images ?? collect())->sortBy('order')
+            ->map(fn ($image) => $image->image_url)
+            ->filter()
+            ->values()
             ->all();
 
         if (empty($images)) {

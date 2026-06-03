@@ -12,6 +12,9 @@
     'searchable' => false,
     'transparent' => false,
     'size' => 'md',
+    'nameExpression' => null,
+    'selectedExpression' => null,
+    'modelExpression' => null,
 ])
 
 @php
@@ -22,6 +25,7 @@
     $roundedClass = $size === 'sm' ? 'rounded-xl' : 'rounded-2xl';
     
     $baseInputClass = "w-full $paddingClass border $roundedClass text-sm dark:text-white outline-none transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 " . $bgClass . " " . $errorClass;
+    $selectedState = filled($selectedExpression) ? $selectedExpression : \Illuminate\Support\Js::from((string) old($name, $value));
 @endphp
 
 <div class="space-y-2 group">
@@ -48,7 +52,7 @@
         <div x-data="{
             open: false,
             search: '',
-            selected: @js((string) old($name, $value)),
+            selected: {!! $selectedState !!},
             options: @js($formattedOptions),
             get filteredOptions() {
                 if (!this.search) return this.options;
@@ -59,8 +63,26 @@
                 if (opt) return opt.label;
                 return @js($placeholder) || '— Pilih Opsi —';
             }
-        }" x-init="$watch('selected', value => { $refs.button.dispatchEvent(new Event('change', { bubbles: true })); })" class="relative" @click.away="open = false">
-            <input type="hidden" name="{{ $name }}" :value="selected" {{ $required ? 'required' : '' }} {{ $attributes->whereStartsWith('data-') }}>
+        }"
+            x-init="
+                @if (filled($modelExpression))
+                    if (selected && {!! $modelExpression !!} !== selected) {!! $modelExpression !!} = selected;
+                @endif
+                $watch('selected', value => {
+                    @if (filled($modelExpression))
+                        {!! $modelExpression !!} = value;
+                    @endif
+                    $refs.button.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            "
+            class="relative" @click.away="open = false">
+            <input type="hidden"
+                @if (filled($nameExpression))
+                    :name="{!! $nameExpression !!}"
+                @else
+                    name="{{ $name }}"
+                @endif
+                :value="selected" {{ $required ? 'required' : '' }} {{ $attributes->whereStartsWith('data-') }}>
             
             <button x-ref="button" type="button" @click="open = !open"
                 class="{{ $baseInputClass }} flex items-center justify-between text-left"
@@ -233,13 +255,22 @@
                                         this.isUploading = false;
                                         return;
                                     }
+                                }
                                 catch(e) {
                                     alert('Gagal menghubungi server untuk upload gambar. Pastikan endpoint /dashboard/editor/upload tersedia.');
                                     this.isUploading = false;
                                     return;
                                 }
                                 this.isUploading = false;
+                            } else if (!this.url.trim()) {
+                                alert('Pilih file gambar terlebih dahulu.');
+                                return;
                             }
+                        }
+
+                        if (!this.url.trim()) {
+                            alert(this.type === 'video' ? 'Masukkan URL video terlebih dahulu.' : 'Masukkan URL gambar terlebih dahulu.');
+                            return;
                         }
 
                         window.richTextEditors?.[this.editorName]?.applyMedia(this.type, this.url);
@@ -336,6 +367,126 @@
                 var savedRange = null;
                 var currentLinkRange = null;
                 var currentMediaRange = null;
+
+                function normalizeMediaUrl(url) {
+                    var cleanUrl = (url || '').trim();
+                    if (!cleanUrl) return '';
+                    if (/^(data:|blob:|\/\/)/i.test(cleanUrl)) return cleanUrl;
+
+                    try {
+                        var parsedUrl = new URL(cleanUrl.replace(/^\/+/, '/'), window.location.origin);
+                        var localHosts = ['localhost', '127.0.0.1', '[::1]', '::1'];
+                        var isLocalStorageUrl = parsedUrl.pathname.indexOf('/storage/') === 0
+                            && localHosts.indexOf(parsedUrl.hostname) !== -1
+                            && localHosts.indexOf(window.location.hostname) !== -1;
+
+                        if (isLocalStorageUrl && parsedUrl.origin !== window.location.origin) {
+                            return window.location.origin + parsedUrl.pathname + parsedUrl.search + parsedUrl.hash;
+                        }
+
+                        return parsedUrl.href;
+                    } catch (e) {
+                        return cleanUrl;
+                    }
+                }
+
+                function dataUrlToImageFile(dataUrl) {
+                    var match = (dataUrl || '').match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+                    if (!match) return null;
+
+                    var mimeType = match[1];
+                    var binary = atob(match[2]);
+                    var bytes = new Uint8Array(binary.length);
+                    for (var i = 0; i < binary.length; i++) {
+                        bytes[i] = binary.charCodeAt(i);
+                    }
+
+                    var extension = (mimeType.split('/')[1] || 'png').replace('jpeg', 'jpg');
+                    return new File([bytes], 'pasted-image.' + extension, { type: mimeType });
+                }
+
+                function getClipboardImageFile(clipboardData) {
+                    if (!clipboardData) return null;
+
+                    if (clipboardData.files && clipboardData.files.length) {
+                        for (var i = 0; i < clipboardData.files.length; i++) {
+                            if (clipboardData.files[i].type.indexOf('image') === 0) {
+                                return clipboardData.files[i];
+                            }
+                        }
+                    }
+
+                    if (clipboardData.items && clipboardData.items.length) {
+                        for (var j = 0; j < clipboardData.items.length; j++) {
+                            var item = clipboardData.items[j];
+                            if (item.type.indexOf('image') === 0) {
+                                var itemFile = item.getAsFile();
+                                if (itemFile) return itemFile;
+                            }
+                        }
+                    }
+
+                    var html = clipboardData.getData ? clipboardData.getData('text/html') : '';
+                    var imageMatch = html.match(/<img[^>]+src=["'](data:image\/[^"']+)["']/i);
+                    var dataUrl = imageMatch ? imageMatch[1] : '';
+                    return dataUrlToImageFile(dataUrl);
+                }
+
+                function compressPastedImage(file) {
+                    if (!file || file.size <= 1900 * 1024) {
+                        return Promise.resolve(file);
+                    }
+
+                    return new Promise(function(resolve) {
+                        var image = new Image();
+                        var objectUrl = URL.createObjectURL(file);
+
+                        image.onload = function() {
+                            var maxDimension = 1600;
+                            var scale = Math.min(1, maxDimension / image.width, maxDimension / image.height);
+                            var canvas = document.createElement('canvas');
+                            canvas.width = Math.max(1, Math.round(image.width * scale));
+                            canvas.height = Math.max(1, Math.round(image.height * scale));
+
+                            var context = canvas.getContext('2d');
+                            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+                            canvas.toBlob(function(blob) {
+                                URL.revokeObjectURL(objectUrl);
+                                if (!blob) {
+                                    resolve(file);
+                                    return;
+                                }
+
+                                resolve(new File([blob], 'pasted-image.jpg', { type: 'image/jpeg' }));
+                            }, 'image/jpeg', 0.82);
+                        };
+
+                        image.onerror = function() {
+                            URL.revokeObjectURL(objectUrl);
+                            resolve(file);
+                        };
+
+                        image.src = objectUrl;
+                    });
+                }
+
+                function removeClipboardImageArtifacts() {
+                    quill.root.querySelectorAll('img').forEach(function(image) {
+                        var src = image.getAttribute('src') || '';
+                        if (!src || src.indexOf('data:image/') === 0 || src.indexOf('blob:') === 0) {
+                            var blot = Quill.find(image);
+                            if (!blot) {
+                                image.remove();
+                                return;
+                            }
+
+                            var index = quill.getIndex(blot);
+                            quill.deleteText(index, 1, 'silent');
+                        }
+                    });
+                    hiddenInput.value = quill.root.innerHTML;
+                }
 
                 function openLinkModal() {
                     var range = quill.getSelection(true);
@@ -495,7 +646,7 @@
                         hiddenInput.value = quill.root.innerHTML;
                     },
                     applyMedia: function(type, url) {
-                        var cleanUrl = (url || '').trim();
+                        var cleanUrl = normalizeMediaUrl(url);
                         var mediaType = type === 'video' ? 'video' : 'image';
                         var range = currentMediaRange || savedRange || quill.getSelection(true);
 
@@ -535,25 +686,29 @@
                     hiddenInput.value = quill.root.innerHTML;
                 });
 
-                // Intercept Image Paste to prevent Base64 bloat
-                quill.root.addEventListener('paste', async function(e) {
+                // Intercept image paste on the editor container before Quill inserts temporary/base64 image nodes.
+                container.addEventListener('paste', async function(e) {
                     var clipboardData = e.clipboardData || window.clipboardData;
                     if (!clipboardData) return;
-                    
-                    var items = clipboardData.items;
-                    var file = null;
-                    for (var i = 0; i < items.length; i++) {
-                        if (items[i].type.indexOf('image') === 0) {
-                            file = items[i].getAsFile();
-                            break;
-                        }
-                    }
+
+                    var file = getClipboardImageFile(clipboardData);
                     
                     if (file) {
                         e.preventDefault();
-                        var range = quill.getSelection();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        removeClipboardImageArtifacts();
+
+                        var uploadFile = await compressPastedImage(file);
+
+                        if (uploadFile.size > 2048 * 1024) {
+                            alert('Ukuran gambar paste maksimal 2MB. Kompres gambar terlebih dahulu atau upload gambar yang lebih kecil.');
+                            return;
+                        }
+
+                        var range = quill.getSelection(true) || { index: quill.getLength(), length: 0 };
                         var formData = new FormData();
-                        formData.append('image', file);
+                        formData.append('image', uploadFile);
                         
                         try {
                             let csrfMeta = document.querySelector('meta[name=csrf-token]');
@@ -564,9 +719,11 @@
                             });
                             var data = await res.json();
                             
-                            if (data.url) {
-                                quill.insertEmbed(range ? range.index : 0, 'image', data.url, 'user');
-                                if (range) quill.setSelection(range.index + 1, 'silent');
+                            if (res.ok && data.url) {
+                                removeClipboardImageArtifacts();
+                                quill.insertEmbed(range ? range.index : 0, 'image', normalizeMediaUrl(data.url), 'user');
+                                quill.setSelection(range.index + 1, 0, 'silent');
+                                hiddenInput.value = quill.root.innerHTML;
                             } else {
                                 alert('Gagal mengupload gambar yang di-paste: ' + (data.message || 'Unknown error'));
                             }
@@ -574,7 +731,7 @@
                             alert('Gagal menghubungi server untuk upload gambar paste. Pastikan endpoint /dashboard/editor/upload tersedia.');
                         }
                     }
-                });
+                }, true);
             });
         </script>
     @elseif ($type === 'toggle')

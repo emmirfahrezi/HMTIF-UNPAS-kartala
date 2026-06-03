@@ -81,14 +81,14 @@
 
                     <div class="mb-12">
                         <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-4">Agenda Pembahasan</label>
-                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-medium leading-relaxed overflow-hidden break-words [&_*]:max-w-full" style="overflow-wrap: anywhere; word-break: break-word;">
                             {!! $minute->agenda !!}
                         </div>
                     </div>
 
                     <div>
                         <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-4">Isi & Hasil Keputusan Rapat</label>
-                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm sm:prose-base p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 font-medium leading-relaxed text-slate-700 dark:text-slate-300">
+                        <div class="prose dark:prose-invert prose-slate max-w-none prose-sm sm:prose-base p-6 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-slate-800 font-medium leading-relaxed text-slate-700 dark:text-slate-300 overflow-hidden break-words [&_*]:max-w-full" style="overflow-wrap: anywhere; word-break: break-word;">
                             {!! $minute->isi_rapat !!}
                         </div>
                     </div>
@@ -130,21 +130,72 @@
             </div>
 
             {{-- Documentation Preview --}}
-            @if($minute->dokumentasi_file)
+            @php
+                $documentationFile = str_replace('\\', '/', trim((string) ($minute->dokumentasi_file ?? '')));
+                $documentationHref = null;
+                $documentationSrc = null;
+                $documentationPathPart = parse_url($documentationFile, PHP_URL_PATH) ?: $documentationFile;
+                $documentationStoragePath = ltrim($documentationPathPart, '/');
+                $documentationExt = strtolower(pathinfo($documentationPathPart, PATHINFO_EXTENSION));
+                $documentationIsImage = in_array($documentationExt, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'], true);
+
+                if ($documentationFile !== '') {
+                    if (\Illuminate\Support\Str::startsWith($documentationStoragePath, 'storage/')) {
+                        $documentationStoragePath = substr($documentationStoragePath, strlen('storage/'));
+                    }
+
+                    $documentationHref = \Illuminate\Support\Str::startsWith($documentationFile, ['http://', 'https://'])
+                        ? $documentationFile
+                        : (\Illuminate\Support\Str::startsWith($documentationFile, ['/storage/', 'storage/'])
+                            ? asset(ltrim($documentationFile, '/'))
+                            : \Illuminate\Support\Facades\Storage::disk('public')->url($documentationStoragePath));
+
+                    if ($documentationIsImage && ! \Illuminate\Support\Str::startsWith($documentationFile, ['http://', 'https://'])) {
+                        $documentationLocalPath = \Illuminate\Support\Facades\Storage::disk('public')->path($documentationStoragePath);
+
+                        if (is_file($documentationLocalPath) && is_readable($documentationLocalPath)) {
+                            $documentationMime = function_exists('mime_content_type')
+                                ? mime_content_type($documentationLocalPath)
+                                : null;
+                            $documentationSrc = 'data:' . ($documentationMime ?: 'image/' . $documentationExt) . ';base64,' . base64_encode(file_get_contents($documentationLocalPath));
+                        }
+                    }
+
+                    $documentationSrc = $documentationSrc ?: $documentationHref;
+                }
+            @endphp
+            @if($documentationHref)
                 <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
                     <h3 class="text-xs font-black text-slate-800 dark:text-white uppercase tracking-[0.2em] mb-6">Dokumentasi</h3>
-                    <div class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 mb-4 shadow-inner">
-                        <img src="{{ Storage::url($minute->dokumentasi_file) }}" alt="Dokumentasi" class="w-full h-auto object-cover dark:opacity-80">
-                    </div>
-                    <x-atoms.shared.button 
-                        variant="ghost" 
-                        size="sm"
-                        href="{{ Storage::url($minute->dokumentasi_file) }}" 
-                        target="_blank"
-                        class="w-full">
-                        Buka File Asli
-                    </x-atoms.shared.button>
+                    @if($documentationIsImage)
+                        <button
+                            type="button"
+                            onclick="window.dispatchEvent(new CustomEvent('open-modal', { detail: { name: 'minute-documentation-preview' } }))"
+                            class="group relative block w-full overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 shadow-inner transition hover:border-primary/30 focus:outline-none focus:ring-4 focus:ring-primary/10 dark:border-slate-800 dark:bg-slate-950"
+                        >
+                            <img src="{{ $documentationSrc }}" alt="Dokumentasi" class="block w-full max-h-96 object-contain transition duration-300 group-hover:scale-[1.01] dark:opacity-80">
+                            <span class="absolute right-3 top-3 flex size-9 items-center justify-center rounded-xl bg-slate-950/70 text-white opacity-0 shadow-lg backdrop-blur transition group-hover:opacity-100">
+                                <x-heroicon-o-magnifying-glass-plus class="size-5" />
+                            </span>
+                        </button>
+                    @else
+                        <div class="rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                    <x-heroicon-o-document class="size-5" />
+                                </div>
+                                <span class="text-xs font-bold text-slate-600 dark:text-slate-300 truncate">{{ basename($documentationFile) }}</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
+
+                @if($documentationIsImage)
+                    @include('dashboard.minutes._preview-image-doc-modal', [
+                        'documentationSrc' => $documentationSrc,
+                        'documentationFile' => $documentationFile,
+                    ])
+                @endif
             @endif
         </div>
     </div>

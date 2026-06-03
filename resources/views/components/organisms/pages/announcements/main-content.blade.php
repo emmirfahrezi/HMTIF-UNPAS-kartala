@@ -16,7 +16,7 @@
                         class="text-primary">Terbaru</span></h2>
             </div>
 
-            <div class="hidden md:block w-full lg:w-auto">
+            <div id="announcement-filter-panel" class="hidden md:block w-full lg:w-auto">
                 <form action="{{ route('announcements') }}" method="GET" x-data="announcementFilters()"
                     @submit.prevent="apply($event)" class="flex flex-col sm:flex-row items-center gap-4">
                     @if (request('category_id'))
@@ -24,7 +24,7 @@
                     @endif
 
                     {{-- Sort Dropdown --}}
-                    <div class="w-full sm:w-48">
+                    <div class="w-full sm:w-48" @change="setTimeout(() => apply($event), 50)">
                         <x-molecules.shared.forms.form-input 
                             type="select"
                             name="sort"
@@ -32,7 +32,6 @@
                             :options="['latest' => 'Terbaru', 'oldest' => 'Terlama', 'az' => 'A - Z', 'za' => 'Z - A']"
                             :transparent="false"
                             :size="'sm'"
-                            @change="setTimeout(() => apply($event), 50)"
                         />
                     </div>
 
@@ -60,14 +59,7 @@
         <div id="announcement-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
             @php $delay = 1; @endphp
             @forelse ($news as $item)
-                @php
-                    $thumbnail = (string) ($item->thumbnail ?? '');
-                    $isLocalThumbnail =
-                        $thumbnail !== '' &&
-                        \Illuminate\Support\Str::startsWith($thumbnail, ['/', 'storage/', 'images/', url('/')]);
-                    $announcementImage = $isLocalThumbnail ? $thumbnail : asset('images/placeholders/announcement.svg');
-                @endphp
-                <x-molecules.pages.cards.news-card :title="$item->title" :date="optional($item->published_at)->translatedFormat('d M Y')" :image="$announcementImage"
+                <x-molecules.pages.cards.news-card :title="$item->title" :date="optional($item->published_at)->translatedFormat('d M Y')" :image="$item->thumbnail_url"
                     :href="route('announcements.show', $item->slug)" class="reveal-delay-{{ $delay++ }}" :excerpt="$item->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($item->body), 120)" />
             @empty
                 <div class="md:col-span-2 rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
@@ -82,7 +74,7 @@
             @endforelse
         </div>
 
-        <div x-data="{
+        <div id="announcement-pagination" x-data="{
             loading: false,
             nextUrl: '{{ $news->nextPageUrl() }}',
             async loadMore() {
@@ -154,6 +146,7 @@
                     loading: false,
                     debounceTimer: null,
                     gridSelector: '#announcement-grid',
+                    filterSelector: '#announcement-filter-panel',
                     init() {
                         window.addEventListener('keydown', (e) => {
                             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -174,7 +167,41 @@
                         }
 
                         this.loading = true;
-                        window.location.href = url.toString();
+                        try {
+                            const response = await fetch(url.toString(), {
+                                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                            });
+                            const html = await response.text();
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const newGrid = doc.querySelector(this.gridSelector);
+                            const oldGrid = document.querySelector(this.gridSelector);
+
+                            if (newGrid && oldGrid) {
+                                oldGrid.replaceWith(newGrid);
+                                newGrid.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                            }
+
+                            const newPagination = doc.querySelector('#announcement-pagination');
+                            const oldPagination = document.querySelector('#announcement-pagination');
+                            if (newPagination && oldPagination) {
+                                oldPagination.replaceWith(newPagination);
+                                window.Alpine?.initTree(newPagination);
+                            }
+
+                            const newFilter = doc.querySelector(this.filterSelector);
+                            const oldFilter = document.querySelector(this.filterSelector);
+                            if (newFilter && oldFilter) {
+                                oldFilter.replaceWith(newFilter);
+                                window.Alpine?.initTree(newFilter);
+                            }
+
+                            window.history.pushState({}, '', url.toString());
+                        } catch (error) {
+                            console.error(error);
+                            window.location.href = url.toString();
+                        } finally {
+                            this.loading = false;
+                        }
                     },
                     onSearchInput(e) {
                         clearTimeout(this.debounceTimer);

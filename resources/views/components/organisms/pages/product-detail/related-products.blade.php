@@ -13,17 +13,15 @@
                 @php $delay = 1; @endphp
                 @foreach ($products as $item)
                     @php
-                        $primaryImage = (string) (optional($item->primaryImage)->image_path ?? '');
-                        $isLocalImage =
-                            $primaryImage !== '' &&
-                            \Illuminate\Support\Str::startsWith($primaryImage, ['/', 'storage/', 'images/', url('/')]);
-                        $productImage = $isLocalImage ? $primaryImage : asset('images/placeholders/product.svg');
+                        $itemImage = $item->primaryImage?->image_url
+                            ?? $item->images()->orderBy('order')->first()?->image_url
+                            ?? asset('images/placeholders/product.svg');
                     @endphp
                     <a href="{{ route('store.show', $item->slug) }}"
                         class="block bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-700 group reveal reveal-up reveal-delay-{{ $delay++ }}">
                         <div
                             class="relative aspect-square rounded-xl bg-section/50 mb-6 flex items-center justify-center overflow-hidden">
-                            <img src="{{ $productImage }}"
+                            <img src="{{ $itemImage }}"
                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                 alt="{{ $item->name }}" data-fallback-src="{{ asset('images/placeholders/product.svg') }}">
                             <div

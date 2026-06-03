@@ -1,6 +1,7 @@
 {{-- Dashboard Sidebar --}}
 @php
     $currentRoute = request()->path();
+    $archivesRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.archives.index');
 
     $menuGroups = $dashboardMenuGroups ?? [
         'Overview' => [
@@ -11,18 +12,18 @@
             ['label' => 'Kegiatan', 'icon' => 'heroicon-o-calendar', 'href' => '/dashboard/activities', 'match' => 'dashboard/activities'],
             ['label' => 'Pengumuman', 'icon' => 'heroicon-o-megaphone', 'href' => '/dashboard/announcements', 'match' => 'dashboard/announcements'],
         ],
-        'Organisasi' => [
+        'Organisasi' => array_values(array_filter([
             ['label' => 'Pengurus', 'icon' => 'heroicon-o-users', 'href' => '/dashboard/staffs', 'match' => 'dashboard/staffs'],
             ['label' => 'Aspirasi', 'icon' => 'heroicon-o-chat-bubble-left-right', 'href' => '/dashboard/aspirations', 'match' => 'dashboard/aspirations'],
             ['label' => 'Notulensi', 'icon' => 'heroicon-o-clipboard-document-list', 'href' => '/dashboard/minutes', 'match' => 'dashboard/minutes'],
-        ],
+            $archivesRouteReady ? ['label' => 'Pengarsipan', 'icon' => 'heroicon-o-archive-box', 'href' => '/dashboard/archives', 'match' => 'dashboard/archives'] : null,
+        ])),
         'Store' => [
             ['label' => 'Produk', 'icon' => 'heroicon-o-shopping-bag', 'href' => '/dashboard/products', 'match' => 'dashboard/products'],
         ],
         'Pengaturan' => [
             ['label' => 'Profil Saya', 'icon' => 'heroicon-o-user', 'href' => '/dashboard/profile', 'match' => 'dashboard/profile'],
             ['label' => 'Log Aktivitas', 'icon' => 'heroicon-o-document-text', 'href' => '/dashboard/activity-logs', 'match' => 'dashboard/activity-logs'],
-            ['label' => 'Statistik', 'icon' => 'heroicon-o-chart-bar', 'href' => '/dashboard/stats', 'match' => 'dashboard/stats'],
             ['label' => 'Pengguna', 'icon' => 'heroicon-o-user-circle', 'href' => '/dashboard/users', 'match' => 'dashboard/users'],
             ['label' => 'Sistem Settings', 'icon' => 'heroicon-o-cog-8-tooth', 'href' => '/dashboard/settings', 'match' => 'dashboard/settings'],
         ],

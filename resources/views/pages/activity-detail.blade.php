@@ -32,7 +32,7 @@
                     class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter text-heading leading-tight">
                     {{ $activity->title }}
                 </h1>
-                <div class="prose prose-slate mt-5 text-base text-body/70 md:text-lg">
+                <div class="public-richtext-content prose prose-slate mt-5 text-base text-body md:text-lg">
                     @if ($activity->description)
                         {!! $activity->description !!}
                     @else
@@ -62,7 +62,7 @@
                             Kegiatan</h2>
                         @if ($activity->body)
                             <div
-                                class="prose prose-slate max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary">
+                                class="public-richtext-content prose prose-slate max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary">
                                 {!! $activity->body !!}
                             </div>
                         @else

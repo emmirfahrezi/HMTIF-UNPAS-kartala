@@ -41,6 +41,12 @@ Variables yang dibutuhkan BE:
                     saja Anda buat.
                 </p>
 
+                <div class="mb-8 rounded-xl border border-amber-200 bg-amber-50 p-4 text-left">
+                    <p class="text-xs font-semibold leading-relaxed text-amber-800">
+                        Jika bukan Anda yang mengatur password ini, segera hubungi admin HMTIF untuk pengamanan akun.
+                    </p>
+                </div>
+
                 {{-- Account Info --}}
                 <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-8 text-left">
                     <div class="flex items-center gap-3">

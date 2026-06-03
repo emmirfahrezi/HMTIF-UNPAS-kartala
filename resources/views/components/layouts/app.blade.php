@@ -28,7 +28,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-slate-50 antialiased">
+<body class="font-pages bg-slate-50 antialiased">
     <x-molecules.shared.flash />
     <x-organisms.pages.navbar :transparent="$transparent" />
 

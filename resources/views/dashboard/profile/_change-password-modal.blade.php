@@ -49,6 +49,7 @@
                 label="Password Saat Ini" 
                 name="old_password" 
                 placeholder="••••••••"
+                autocomplete="current-password"
                 required 
             />
 
@@ -58,9 +59,13 @@
                 label="Password Baru" 
                 name="password" 
                 placeholder="••••••••"
-                helper="Minimal 8 karakter berupa kombinasi huruf & angka."
+                helper="Ikuti syarat password kuat di bawah."
+                minlength="12"
+                autocomplete="new-password"
                 required 
             />
+
+            <x-molecules.shared.security.password-policy compact />
 
             {{-- Konfirmasi Password --}}
             <x-molecules.shared.forms.form-input 
@@ -68,6 +73,8 @@
                 label="Konfirmasi Password Baru" 
                 name="password_confirmation" 
                 placeholder="••••••••"
+                minlength="12"
+                autocomplete="new-password"
                 required 
             />
 

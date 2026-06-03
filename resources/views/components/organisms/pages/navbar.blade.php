@@ -1,17 +1,17 @@
 @props(['transparent' => false])
 
-<header x-data="{ 
-        mobileMenuOpen: false, 
-        isTransparent: {{ $transparent ? 'true' : 'false' }},
-        atTop: true
-    }" x-init="
-        window.addEventListener('scroll', () => {
-            atTop = window.pageYOffset < 50
-        })
-    " :class="{
+<header x-data="{
+    mobileMenuOpen: false,
+    isTransparent: {{ $transparent ? 'true' : 'false' }},
+    atTop: true
+}" x-init="window.addEventListener('scroll', () => {
+    atTop = window.pageYOffset < 50
+})"
+    :class="{
         'bg-white shadow-lg border-b border-slate-100': !atTop || !isTransparent,
         'bg-transparent': atTop && isTransparent
-    }" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+    }"
+    class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
     <nav aria-label="Global" class="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-4 xl:px-12">
         {{-- Logo --}}
         <div class="flex xl:flex-1">
@@ -23,7 +23,7 @@
                 </div>
                 <h1 class="font-black text-xl tracking-tighter uppercase italic transition-colors duration-500"
                     :class="(!atTop || !isTransparent) ? 'text-slate-900' : 'text-white'">
-                    HMTIF<span class="text-primary font-black">UNPAS</span>
+                    HMTIF-<span class="text-primary font-black">UNPAS</span>
                 </h1>
             </a>
         </div>
@@ -50,11 +50,12 @@
                 ];
             @endphp
 
-            @foreach($navItems as $item)
+            @foreach ($navItems as $item)
                 @php $isActive = request()->is($item['match']); @endphp
                 <a href="{{ $item['href'] }}"
                     class="relative text-sm font-black uppercase tracking-widest transition-all duration-300 hover:text-primary group py-2"
-                    :class="(!atTop || !isTransparent) ? '{{ $isActive ? 'text-primary' : 'text-slate-600' }}' : '{{ $isActive ? 'text-secondary' : 'text-white' }}'">
+                    :class="(!atTop || !isTransparent) ? '{{ $isActive ? 'text-primary' : 'text-slate-600' }}' :
+                    '{{ $isActive ? 'text-secondary' : 'text-white' }}'">
                     {{ $item['label'] }}
                     <span
                         class="absolute bottom-0 left-0 w-0 h-1 bg-primary rounded-full transition-all duration-300 group-hover:w-full {{ $isActive ? 'w-full' : '' }}"></span>
@@ -89,12 +90,13 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                @foreach($navItems as $item)
+                @foreach ($navItems as $item)
                     @php $isActive = request()->is($item['match']); @endphp
                     <a href="{{ $item['href'] }}"
                         class="flex items-center justify-between p-4 rounded-2xl text-lg font-black uppercase tracking-widest transition-all duration-300 {{ $isActive ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'text-slate-600 hover:bg-slate-50' }}">
                         {{ $item['label'] }}
-                        <x-heroicon-o-chevron-right class="size-5 {{ $isActive ? 'text-white/50' : 'text-slate-300' }}" />
+                        <x-heroicon-o-chevron-right
+                            class="size-5 {{ $isActive ? 'text-white/50' : 'text-slate-300' }}" />
                     </a>
                 @endforeach
             </div>

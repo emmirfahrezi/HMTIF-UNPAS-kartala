@@ -18,11 +18,11 @@
             
             if (str_contains($currentPath, '/activities') || str_contains($currentPath, '/announcements')) {
                 $categoryName = 'Manajemen Konten';
-            } elseif (str_contains($currentPath, '/staffs') || str_contains($currentPath, '/aspirations') || str_contains($currentPath, '/minutes')) {
+            } elseif (str_contains($currentPath, '/staffs') || str_contains($currentPath, '/aspirations') || str_contains($currentPath, '/minutes') || str_contains($currentPath, '/archives')) {
                 $categoryName = 'Manajemen Organisasi';
             } elseif (str_contains($currentPath, '/products')) {
                 $categoryName = 'Manajemen Store';
-            } elseif (str_contains($currentPath, '/users') || str_contains($currentPath, '/stats') || str_contains($currentPath, '/activity-logs')) {
+            } elseif (str_contains($currentPath, '/users') || str_contains($currentPath, '/activity-logs')) {
                 $categoryName = 'Manajemen Sistem';
             }
         @endphp

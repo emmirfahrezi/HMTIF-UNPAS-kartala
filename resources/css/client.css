@@ -158,6 +158,53 @@
   font-weight: 500;
 }
 
+/* Public aspiration form placeholder readability */
+.aspiration-form input::placeholder,
+.aspiration-form textarea::placeholder {
+  color: #94a3b8;
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Public rich text readability for announcement/activity details */
+.public-richtext-content,
+.public-richtext-content :where(p, li, span, div, strong, em, u, s) {
+  color: #334155 !important;
+}
+
+.public-richtext-content :where(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-heading) !important;
+}
+
+.public-richtext-content :where(a) {
+  color: var(--color-primary) !important;
+  font-weight: 700;
+}
+
+.public-richtext-content :where(blockquote) {
+  color: #475569 !important;
+  border-left-color: var(--color-primary);
+}
+
+.public-richtext-content :where(img) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+}
+
+.public-richtext-content :where(.ql-align-center) {
+  text-align: center;
+}
+
+.public-richtext-content :where(.ql-align-right) {
+  text-align: right;
+}
+
+.public-richtext-content :where(.ql-align-justify) {
+  text-align: justify;
+}
+
 /* --- TOAST SYSTEM --- */
 .toast-container {
   position: fixed;
