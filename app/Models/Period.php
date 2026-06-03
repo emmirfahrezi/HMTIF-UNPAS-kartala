@@ -46,6 +46,11 @@ class Period extends Model
         return $periods->firstWhere('is_active', true);
     }
 
+    public function getDisplayLabelAttribute(): string
+    {
+        return 'Tahun ' . $this->label;
+    }
+
     public function staffPeriods(): HasMany
     {
         return $this->hasMany(StaffPeriod::class);

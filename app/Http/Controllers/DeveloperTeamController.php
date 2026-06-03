@@ -19,11 +19,12 @@ class DeveloperTeamController extends Controller
 
     public function show(Request $request, GetDeveloperTeamContentService $getContent): View
     {
-        $periods      = Period::orderBy('display_order')->get();
-        $activePeriod = Period::resolveFromRequest($request, $periods);
-        $content      = $getContent->execute($activePeriod);
+        $periods        = Period::orderBy('display_order')->get();
+        $activePeriod   = Period::resolveFromRequest($request, $periods);
+        $content        = $getContent->execute($activePeriod);
+        $periodOptions  = $periods->pluck('display_label', 'label')->all();
 
-        return view('pages.developer-team', compact('periods', 'activePeriod', 'content'));
+        return view('pages.developer-team', compact('periods', 'activePeriod', 'content', 'periodOptions'));
     }
 
     // -----------------------------------------------------------------------
