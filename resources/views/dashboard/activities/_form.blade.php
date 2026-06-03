@@ -118,33 +118,12 @@
                     :options="['upcoming' => 'Mendatang', 'ongoing' => 'Berlangsung', 'past' => 'Selesai']"
                     required />
 
-                <div x-data="{ source: 'url' }" class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Sumber Thumbnail</label>
-                        <div class="inline-grid grid-cols-2 overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-950/60 p-1">
-                            <button type="button" @click="source = 'url'"
-                                :class="source === 'url' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
-                                class="rounded-xl px-4 py-1.5 text-[10px] font-black transition uppercase tracking-widest">URL</button>
-                            <button type="button" @click="source = 'file'"
-                                :class="source === 'file' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400'"
-                                class="rounded-xl px-4 py-1.5 text-[10px] font-black transition uppercase tracking-widest">File Lokal</button>
-                        </div>
-                    </div>
-
-                    <div x-show="source === 'url'" x-cloak>
-                        <x-molecules.shared.forms.form-input 
-                            name="thumbnail" 
-                            placeholder="https://..."
-                            :value="$activity?->thumbnail ?? ''" 
-                            helper="Gunakan URL gambar dari internet (opsional)" />
-                    </div>
-
-                    <div x-show="source === 'file'" x-cloak class="space-y-2">
-                        <input type="file" name="thumbnail_file" accept="image/*"
-                            class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-primary/5 dark:file:bg-primary/20 file:text-primary hover:file:bg-primary/10 transition cursor-pointer" />
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-1">Format: JPG, PNG. Opsional.</p>
-                    </div>
-                </div>
+                <x-molecules.shared.forms.image-picker
+                    label="Gambar Thumbnail"
+                    name="thumbnail"
+                    file-name="thumbnail_file"
+                    :value="$activity?->thumbnail ?? ''"
+                    helper="Pilih link gambar atau upload dari device. Format: JPG, JPEG, PNG. Maks. 2MB. Kosongkan jika tidak ingin mengubah." />
 
                 <div class="space-y-2">
                     <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">File Lampiran</label>

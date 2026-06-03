@@ -9,6 +9,11 @@ Variables yang dibutuhkan BE:
 --}}
 
 @php
+    $recipientName = trim((string) ($name ?? ''));
+    if ($recipientName === '' || in_array($recipientName, ['Pengirim', 'Pelapor'], true)) {
+        $recipientName = 'Sobat HMTIF';
+    }
+
     $statusMap = [
         'pending' => ['label' => 'Menunggu', 'color' => '#f59e0b', 'bg' => '#fef3c7'],
         'reviewed' => ['label' => 'Ditinjau', 'color' => '#3b82f6', 'bg' => '#dbeafe'],
@@ -62,7 +67,7 @@ Variables yang dibutuhkan BE:
                                         {{-- Greeting --}}
                                         <h1
                                             style="margin: 0 0 8px; font-size: 22px; font-weight: 800; color: #0f172a; line-height: 1.3;">
-                                            Halo, {{ $name }}! 👋
+                                            Halo, {{ $recipientName }}! 👋
                                         </h1>
                                         <p style="margin: 0 0 28px; font-size: 15px; color: #64748b; line-height: 1.6;">
                                             Ada update terbaru untuk aspirasi yang kamu kirimkan. Berikut detail

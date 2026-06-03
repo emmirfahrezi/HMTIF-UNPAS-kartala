@@ -7,9 +7,6 @@
             <div id="activity-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @php $delay = 1; @endphp
                 @foreach ($activities as $item)
-                    @php
-                        $activityImage = $item->thumbnail_url;
-                    @endphp
                     <div class="reveal reveal-up reveal-delay-{{ $delay++ }} flex flex-col h-full">
                         <div x-data x-on:click="window.location.href='{{ route('activities.show', $item->slug) }}'"
                             class="group relative bg-white rounded-lg border border-gray-100 shadow-md hover:shadow-xl transition-all duration-700 flex flex-col overflow-hidden hover:-translate-y-2 cursor-pointer h-full">
@@ -21,7 +18,7 @@
                             {{-- Thumbnail Wrapper --}}
                             <div class="relative h-56 bg-primary/5 flex items-center justify-center overflow-hidden">
                                 <div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                                    style="background-image: url('{{ $activityImage }}');">
+                                    style="background-image: url('{{ $item->thumbnail_url }}');">
                                 </div>
                                 <div
                                     class="absolute inset-0 bg-linear-to-t from-primary-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -72,7 +69,7 @@
             @endif
 
             {{-- Load More Section --}}
-            <div 
+            <div id="activity-pagination"
                 x-data="{ 
                     loading: false, 
                     nextUrl: '{{ $activities->nextPageUrl() }}',

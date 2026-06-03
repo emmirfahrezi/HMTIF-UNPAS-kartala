@@ -4,6 +4,6 @@
     <x-organisms.pages.aspirations.hero />
 
     {{-- Track Aspiration (Mockup) --}}
-    <x-organisms.pages.aspirations.track-status />
+    <x-organisms.pages.aspirations.track-status :trackedAspiration="$trackedAspiration ?? null" />
     <x-organisms.pages.aspirations.form />
 </x-layouts.app>

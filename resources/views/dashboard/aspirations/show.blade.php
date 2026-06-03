@@ -53,28 +53,22 @@
                     </div>
                 </div>
 
-                {{-- Action Card --}}
-                <div class="bg-slate-900 dark:bg-slate-950 rounded-3xl p-6 shadow-xl shadow-slate-200 dark:shadow-none text-white border dark:border-slate-800 transition-all">
-                    <h3 class="text-sm font-bold mb-4">Aksi Cepat</h3>
-                    <div class="grid grid-cols-1 gap-3">
-                        <x-atoms.shared.button 
-                            type="button"
-                            variant="primary"
-                            @click="feedbackModalOpen = true"
-                            icon="heroicon-o-chat-bubble-left-right"
-                            class="w-full">
-                            Balas & Feedback
-                        </x-atoms.shared.button>
-                        
-                        <x-atoms.shared.button 
-                            variant="danger"
-                            @click="openDeleteModal('/dashboard/aspirations/{{ $aspiration->id }}')"
-                            icon="heroicon-o-trash"
-                            class="w-full">
-                            Hapus Aspirasi
-                        </x-atoms.shared.button>
+                @if ($permissions['update'] ?? false)
+                    {{-- Action Card --}}
+                    <div class="bg-slate-900 dark:bg-slate-950 rounded-3xl p-6 shadow-xl shadow-slate-200 dark:shadow-none text-white border dark:border-slate-800 transition-all">
+                        <h3 class="text-sm font-bold mb-4">Aksi Cepat</h3>
+                        <div class="grid grid-cols-1 gap-3">
+                            <x-atoms.shared.button
+                                type="button"
+                                variant="primary"
+                                @click="feedbackModalOpen = true"
+                                icon="heroicon-o-chat-bubble-left-right"
+                                class="w-full">
+                                Balas & Feedback
+                            </x-atoms.shared.button>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
 
             {{-- Right Column: Message Content & Feedback History --}}
@@ -133,7 +127,9 @@
             </div>
         </div>
 
-        @include('dashboard.aspirations._show-feedback-modal')
+        @if ($permissions['update'] ?? false)
+            @include('dashboard.aspirations._show-feedback-modal')
+        @endif
 
     </div>
 </x-layouts.dashboard>

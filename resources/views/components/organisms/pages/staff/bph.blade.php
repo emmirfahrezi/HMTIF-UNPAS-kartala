@@ -20,8 +20,8 @@
 
     <div class="grid grid-cols-1 gap-6 md:gap-8 max-w-[400px] mx-auto">
         @foreach ($leaders as $index => $staff)
-            <x-molecules.pages.cards.member-card :name="$staff->name" :position="$staff->position" size="xl" dept="KARTALA"
-                class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo ?: asset('images/placeholders/member.svg')"
+            <x-molecules.pages.cards.member-card :name="$staff->name" position="Ketua Umum" size="xl" dept="KARTALA"
+                class="reveal-delay-{{ $index + 1 }}" :image="$staff->photo_url"
                 :href="route('staff.show', $staff->id)" />
         @endforeach
     </div>
@@ -31,7 +31,7 @@
             <div class="min-w-[82%] sm:min-w-[58%] md:min-w-0 snap-start reveal reveal-up reveal-delay-{{ ($index % 4) + 1 }}">
                 <x-molecules.pages.cards.member-card :name="$staff->name" :position="$staff->position" size="normal"
                     :dept="$staff->abbreviation" :href="route('staff.show', $staff->id)"
-                    :image="$staff->photo ?: asset('images/placeholders/member.svg')" />
+                    :image="$staff->photo_url" />
             </div>
         @endforeach
     </div>

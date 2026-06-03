@@ -11,7 +11,7 @@
     {{-- Main Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-slate-50 antialiased overflow-hidden">
+<body class="font-pages bg-slate-50 antialiased overflow-hidden">
     <div class="min-h-screen flex items-center justify-center p-6 relative">
         {{-- Artistic Background --}}
         <div class="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none select-none">

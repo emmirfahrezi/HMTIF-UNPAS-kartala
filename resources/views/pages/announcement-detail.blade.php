@@ -63,7 +63,7 @@
                         <h2 class="text-2xl font-black italic uppercase tracking-tighter text-heading mb-6">Isi
                             Pengumuman</h2>
                         <div
-                            class="prose prose-slate max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary">
+                            class="public-richtext-content prose prose-slate max-w-none prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary">
                             {!! $announcement->body !!}
                         </div>
 

@@ -120,46 +120,59 @@
                 </x-atoms.shared.button>
             </div>
 
-            <div class="space-y-4 flex-1 overflow-y-auto max-h-[600px] pr-2 custom-scrollbar">
+            <div class="space-y-5 flex-1 overflow-y-auto max-h-[600px] pr-2 pt-1 custom-scrollbar">
                 <template x-for="(attendee, index) in attendees" :key="index">
-                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl relative group/item animate-in fade-in slide-in-from-right-4 duration-300">
+                    <div class="p-5 bg-slate-50 dark:bg-slate-900/80 border border-slate-200/70 dark:border-slate-700/70 rounded-2xl relative group/item animate-in fade-in slide-in-from-right-4 duration-300 shadow-sm">
                         <button type="button" @click="removeAttendee(index)"
-                            class="absolute -top-2 -right-2 size-6 bg-white dark:bg-slate-950 text-red-500 border border-red-100 dark:border-red-900/50 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white shadow-sm transition opacity-0 group-hover/item:opacity-100">
-                            <x-heroicon-o-x-mark class="size-3.5" />
+                            class="absolute top-4 right-4 size-8 bg-white dark:bg-slate-950 text-red-500 border border-red-100 dark:border-red-900/50 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white shadow-sm transition opacity-100 lg:opacity-0 lg:group-hover/item:opacity-100 focus:opacity-100 focus:outline-none focus:ring-4 focus:ring-red-500/10"
+                            title="Hapus Peserta">
+                            <x-heroicon-o-x-mark class="size-4" />
                         </button>
 
-                        <div class="space-y-3">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Nama Peserta</label>
+                        <div class="mb-4 pr-10">
+                            <p class="text-xs font-black text-primary uppercase tracking-widest">
+                                Peserta <span x-text="index + 1"></span>
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="space-y-2">
+                                <label class="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Nama Peserta</label>
                                 <input type="text" :name="'attendees['+index+'][name]'" x-model="attendee.name" 
                                     placeholder="Contoh: John Doe"
-                                    class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-xs font-bold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" required />
+                                    class="w-full px-4 py-3 bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm font-semibold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" required />
                             </div>
                             
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="space-y-1">
-                                    <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">NIM</label>
+                            <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">NIM</label>
                                     <input type="text" :name="'attendees['+index+'][nim]'" x-model="attendee.nim" 
                                         placeholder="NIM"
-                                        class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[10px] font-bold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" />
+                                        class="w-full px-4 py-3 bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm font-semibold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" />
                                 </div>
                                 
-                                <div class="space-y-1">
-                                    <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Keterangan</label>
-                                    <select :name="'attendees['+index+'][keterangan]'" x-model="attendee.keterangan"
-                                        class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[11px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 appearance-none cursor-pointer shadow-sm bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%2364748b%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1rem_1rem] bg-[right_0.75rem_center] bg-no-repeat">
-                                        <option value="hadir" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Hadir</option>
-                                        <option value="izin" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Izin</option>
-                                        <option value="alpha" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200">Alpha</option>
-                                    </select>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Keterangan</label>
+                                    <x-molecules.shared.forms.form-input
+                                        type="select"
+                                        name="attendees[][keterangan]"
+                                        name-expression="'attendees[' + index + '][keterangan]'"
+                                        selected-expression="attendee.keterangan || 'hadir'"
+                                        model-expression="attendee.keterangan"
+                                        :options="[
+                                            'hadir' => 'Hadir',
+                                            'izin' => 'Izin',
+                                            'alpha' => 'Alpha',
+                                        ]"
+                                        required />
                                 </div>
                             </div>
 
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Jabatan (Opsional)</label>
+                            <div class="space-y-2">
+                                <label class="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Jabatan (Opsional)</label>
                                 <input type="text" :name="'attendees['+index+'][jabatan]'" x-model="attendee.jabatan" 
                                     placeholder="Jabatan"
-                                    class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-xl text-[10px] font-bold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" />
+                                    class="w-full px-4 py-3 bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-slate-700/80 rounded-xl text-sm font-semibold text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-300 shadow-sm" />
                             </div>
                         </div>
                     </div>

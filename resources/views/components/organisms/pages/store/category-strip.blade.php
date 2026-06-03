@@ -32,7 +32,7 @@
                 {{-- Right: Search & Sort --}}
                 <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
                     {{-- Sort Dropdown --}}
-                    <div class="w-full sm:w-52">
+                    <div class="w-full sm:w-52" @change="setTimeout(() => apply($event), 50)">
                         <x-molecules.shared.forms.form-input 
                             type="select"
                             name="sort"
@@ -40,12 +40,11 @@
                             :options="[
                                 'latest' => 'Terbaru', 
                                 'oldest' => 'Terlama', 
-                                'price_low' => 'Harga Terendah',
-                                'price_high' => 'Harga Tertinggi'
+                                'price_asc' => 'Harga Terendah',
+                                'price_desc' => 'Harga Tertinggi'
                             ]"
                             :transparent="false"
                             :size="'sm'"
-                            @change="setTimeout(() => apply($event), 50)"
                         />
                     </div>
 
@@ -101,7 +100,34 @@
                         }
 
                         this.loading = true;
-                        window.location.href = url.toString();
+                        try {
+                            const response = await fetch(url.toString(), {
+                                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                            });
+                            const html = await response.text();
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const newGrid = doc.querySelector(this.gridSelector);
+                            const oldGrid = document.querySelector(this.gridSelector);
+
+                            if (newGrid && oldGrid) {
+                                oldGrid.replaceWith(newGrid);
+                                newGrid.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                            }
+
+                            const newFilterBar = doc.querySelector(this.filterBarSelector);
+                            const oldFilterBar = document.querySelector(this.filterBarSelector);
+                            if (newFilterBar && oldFilterBar) {
+                                oldFilterBar.replaceWith(newFilterBar);
+                                window.Alpine?.initTree(newFilterBar);
+                            }
+
+                            window.history.pushState({}, '', url.toString());
+                        } catch (error) {
+                            console.error(error);
+                            window.location.href = url.toString();
+                        } finally {
+                            this.loading = false;
+                        }
                     },
                     onSearchInput(e) {
                         clearTimeout(this.debounceTimer);
