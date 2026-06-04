@@ -6,6 +6,7 @@ use App\Models\DeveloperTeamMember;
 use App\Models\DeveloperTeamMilestone;
 use App\Models\DeveloperTeamSetting;
 use App\Models\Period;
+use App\Models\Staff;
 
 class SaveDeveloperTeamContentService
 {
@@ -24,16 +25,23 @@ class SaveDeveloperTeamContentService
         DeveloperTeamMilestone::where('period_id', $period->id)->delete();
 
         foreach ($validated['members'] ?? [] as $order => $data) {
-            if (empty($data['name']) && empty($data['role'])) {
+            if (empty($data['staff_id']) && empty($data['role'])) {
                 continue;
             }
 
+            // Ambil data staff untuk di-cache sebagai fallback
+            $staff = ! empty($data['staff_id'])
+                ? Staff::with('division')->find($data['staff_id'])
+                : null;
+
             DeveloperTeamMember::create([
                 'period_id'     => $period->id,
-                'name'          => $data['name'] ?? '',
+                'staff_id'      => $staff?->id,
                 'role'          => $data['role'] ?? '',
-                'division'      => $data['division'] ?? null,
-                'photo'         => $data['photo'] ?? null,
+                // Cache fallback agar data lama tanpa staff_id tetap tampil
+                'name'          => $staff?->name ?? '',
+                'division'      => $staff?->division?->name ?? null,
+                'photo'         => $staff?->photo ?? null,
                 'display_order' => (int) $order,
             ]);
         }

@@ -20,14 +20,14 @@ class RoleSeeder extends Seeder
         $staffMenus = [
             'dashboard', 'profile',
             'activities', 'announcements',
-            'staffs', 'aspirations', 'minutes',
+            'staffs', 'aspirations', 'minutes', 'archives',
             'products',
         ];
 
         $koordinatorMenus = [
             'dashboard', 'profile',
             'home-sections', 'activities', 'announcements', 'announcements/categories',
-            'staffs', 'staffs/divisions', 'aspirations', 'minutes', 'developer-teams',
+            'staffs', 'staffs/divisions', 'aspirations', 'minutes', 'developer-teams', 'archives',
             'products', 'products/categories',
             'stats',
         ];

@@ -27,20 +27,41 @@ class DashboardProfileController extends Controller
     }
 
     /**
-     * Perbarui data profil (email, bio, instagram, linkedin, github, foto).
+     * Perbarui data profil (email, bio, instagram, linkedin, foto).
+     *
+     * Foto disimpan di users.photo terlebih dahulu.
+     * Jika user punya relasi staff, foto staff ikut disinkronkan.
      */
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'email'     => 'required|email|max:255|unique:users,email,' . auth()->id(),
-            'bio'       => 'nullable|string|max:500',
-            'instagram' => 'nullable|string|max:255',
-            'linkedin'  => 'nullable|string|max:1024',
-            'photo'     => 'nullable|file|image|max:2048',
+            'email'      => 'required|email|max:255|unique:users,email,' . auth()->id(),
+            'bio'        => 'nullable|string|max:500',
+            'instagram'  => 'nullable|string|max:255',
+            'linkedin'   => 'nullable|string|max:1024',
+            'photo'      => 'nullable|string|max:1024',
+            'photo_file' => 'nullable|file|image|max:2048',
         ]);
 
-        $user = auth()->user();
-        $user->update(['email' => $validated['email']]);
+        $user      = auth()->user();
+        $photoPath = null;
+
+        if ($request->hasFile('photo_file')) {
+            // Hapus foto lama user jika bukan URL eksternal
+            if ($user->photo && ! str_starts_with($user->photo, 'http')) {
+                Storage::disk('public')->delete($user->photo);
+            }
+            $photoPath = $request->file('photo_file')->store('profile/photos', 'public');
+        } elseif (! empty($validated['photo'])) {
+            $photoPath = $validated['photo'];
+        }
+
+        $userUpdate = ['email' => $validated['email']];
+        if ($photoPath !== null) {
+            $userUpdate['photo'] = $photoPath;
+        }
+
+        $user->update($userUpdate);
 
         $staff = $user->staff;
 
@@ -51,12 +72,13 @@ class DashboardProfileController extends Controller
                 'linkedin'  => $validated['linkedin']  ?? $staff->linkedin,
             ];
 
-            if ($request->hasFile('photo')) {
-                // Hapus foto lama dari storage (jika bukan URL eksternal)
-                if ($staff->photo && ! str_starts_with($staff->photo, 'http')) {
+            // Sinkronkan foto ke staff jika ada foto baru
+            if ($photoPath !== null) {
+                // Hapus foto lama staff dari storage lokal jika berbeda dengan foto user baru
+                if ($staff->photo && $staff->photo !== $photoPath && ! str_starts_with($staff->photo, 'http')) {
                     Storage::disk('public')->delete($staff->photo);
                 }
-                $staffData['photo'] = $request->file('photo')->store('staffs/photos', 'public');
+                $staffData['photo'] = $photoPath;
             }
 
             $staff->update($staffData);

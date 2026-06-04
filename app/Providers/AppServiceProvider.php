@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Rate limiter untuk form aspirasi publik:
         // maks 5 pengiriman per 10 menit per IP
-        RateLimiter::for('aspirasi', function (Request $request) {
+        RateLimiter::for('aspirations', function (Request $request) {
             return Limit::perMinutes(10, 5)->by($request->ip());
         });
     }

@@ -20,6 +20,7 @@ class DashboardSettingController extends Controller
         ['key' => 'aspirations',              'label' => 'Aspirasi',              'type' => 'item', 'parent' => 'organisasi'],
         ['key' => 'minutes',                  'label' => 'Notulensi',             'type' => 'item', 'parent' => 'organisasi'],
         ['key' => 'developer-teams',          'label' => 'Tim Pengembang',        'type' => 'item', 'parent' => 'organisasi'],
+        ['key' => 'archives',                 'label' => 'Pengarsipan',           'type' => 'item', 'parent' => 'organisasi'],
         ['key' => 'store',                    'label' => 'Store',                 'type' => 'category'],
         ['key' => 'products',                 'label' => 'Produk',                'type' => 'item', 'parent' => 'store'],
         ['key' => 'products/categories',      'label' => 'Kategori Produk',       'type' => 'item', 'parent' => 'products'],

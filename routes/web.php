@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SetupPasswordController;
 use App\Http\Controllers\DashboardActivityController;
+use App\Http\Controllers\DashboardArchiveController;
 use App\Http\Controllers\DashboardActivityLogController;
 use App\Http\Controllers\DashboardAnnouncementController;
 use App\Http\Controllers\DashboardAspirationController;
@@ -32,7 +33,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',                     [PageController::class, 'home'])->name('home');
 Route::get('/staff',                [PageController::class, 'staffs'])->name('staff');
 Route::get('/staff/{id}',           [PageController::class, 'staffDetail'])->name('staff.show');
-Route::get('/divisi/{slug}',        [PageController::class, 'divisionDetail'])->name('divisions.show');
+Route::get('/divisions/{slug}',     [PageController::class, 'divisionDetail'])->name('divisions.show');
+Route::get('/divisi/{slug}',        fn (string $slug) => redirect()->route('divisions.show', $slug, 301));
 Route::get('/activities',           [PageController::class, 'activities'])->name('activities');
 Route::get('/activities/{slug}',    [PageController::class, 'activityDetail'])->name('activities.show');
 Route::get('/store',                [PageController::class, 'store'])->name('store');
@@ -40,10 +42,19 @@ Route::get('/store/{slug}',         [PageController::class, 'productDetail'])->n
 Route::get('/announcements',        [PageController::class, 'announcements'])->name('announcements');
 Route::get('/announcements/{slug}', [PageController::class, 'announcementDetail'])->name('announcements.show');
 Route::get('/aspirations',          [PageController::class, 'aspirations'])->name('aspirations');
-Route::get('/tim-pengembang',       [DeveloperTeamController::class, 'show'])->name('developer-team');
+Route::get('/developer-team',       [DeveloperTeamController::class, 'show'])->name('developer-team');
+Route::redirect('/tim-pengembang',  '/developer-team', 301);
+
+// Public archive share (tanpa auth)
+Route::get('/archives/share/{token}',          [DashboardArchiveController::class, 'shareView'])->name('archives.share');
+Route::get('/archives/share/{token}/download', [DashboardArchiveController::class, 'download'])->name('archives.download');
+Route::get('/a/{shortCode}',                   [DashboardArchiveController::class, 'shortRedirect'])->name('archives.short');
+// Legacy redirect berbasis id → token-based (301)
+Route::get('/archives/{archive}/share',        [DashboardArchiveController::class, 'legacyShare']);
+Route::get('/archives/{archive}/download',     [DashboardArchiveController::class, 'legacyDownload']);
 
 Route::post('/aspirations', [AspirationController::class, 'storeWeb'])
-    ->middleware('throttle:aspirasi')
+    ->middleware('throttle:aspirations')
     ->name('aspirations.store');
 
 // =============================================================================
@@ -172,6 +183,16 @@ Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function 
     Route::get('/users/{user}/edit',     [DashboardUserController::class, 'edit'])->name('dashboard.users.edit');
     Route::put('/users/{user}',          [DashboardUserController::class, 'update'])->name('dashboard.users.update');
     Route::delete('/users/{user}',       [DashboardUserController::class, 'destroy'])->name('dashboard.users.destroy');
+
+    // Archives (Pengarsipan)
+    Route::get('/archives',                    [DashboardArchiveController::class, 'index'])->name('dashboard.archives');
+    Route::get('/archives/create',             [DashboardArchiveController::class, 'create'])->name('dashboard.archives.create');
+    Route::post('/archives',                   [DashboardArchiveController::class, 'store'])->name('dashboard.archives.store');
+    Route::delete('/archives/bulk-delete',     [DashboardArchiveController::class, 'bulkDestroy']);
+    Route::get('/archives/{archive}',          [DashboardArchiveController::class, 'show'])->name('dashboard.archives.show');
+    Route::get('/archives/{archive}/edit',     [DashboardArchiveController::class, 'edit'])->name('dashboard.archives.edit');
+    Route::put('/archives/{archive}',          [DashboardArchiveController::class, 'update'])->name('dashboard.archives.update');
+    Route::delete('/archives/{archive}',       [DashboardArchiveController::class, 'destroy'])->name('dashboard.archives.destroy');
 
     // Settings
     Route::get('/settings',              [DashboardSettingController::class, 'index'])->name('dashboard.settings.index');
