@@ -1,3 +1,7 @@
+@php
+    $archiveQrLogoUrl = asset('images/logo-hmtif.jpeg');
+@endphp
+
 <x-molecules.shared.modal id="archive-share-modal" title="Bagikan Arsip" maxWidth="lg">
     <div
         x-data="{
@@ -67,11 +71,14 @@
         <div x-show="mode === 'qr'" x-cloak class="space-y-5">
             <template x-if="shareArchive.qrCodeUrl">
                 <div class="flex flex-col items-center gap-4">
-                    <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800">
+                    <div class="relative rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800">
                         <img :src="shareArchive.qrCodeUrl" alt="QR Code Arsip" class="size-64 rounded-xl object-contain">
+                        <div class="pointer-events-none absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-white p-1.5 shadow-sm ring-4 ring-white">
+                            <img src="{{ $archiveQrLogoUrl }}" alt="Logo HMTIF UNPAS" class="size-full rounded-xl object-contain">
+                        </div>
                     </div>
                     <p class="max-w-sm text-center text-xs font-medium text-slate-500 dark:text-slate-400">
-                        QR Code dikirim dari backend dan sudah memuat logo HMTIF UNPAS di tengah.
+                        QR Code dikirim dari backend. Logo HMTIF UNPAS ditampilkan di tengah sebagai penanda visual.
                     </p>
                 </div>
             </template>

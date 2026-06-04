@@ -2,7 +2,22 @@
     $periodValue = $activePeriod?->label ?? ($period ?? null)?->label ?? request('period', '');
     $members = ($content['members'] ?? collect())->values();
     $milestones = ($content['milestones'] ?? collect())->values();
-    $milestoneStatusOptions = \App\Models\DeveloperTeamMilestone::STATUSES;
+    $staffOptions = collect($staffs ?? $staffOptions ?? [])
+        ->map(function ($staff) {
+            $divisionName = data_get($staff, 'division.name') ?: data_get($staff, 'division_name') ?: 'Tanpa Divisi';
+
+            return [
+                'id' => data_get($staff, 'id'),
+                'label' => trim(data_get($staff, 'name', 'Staff') . ' - ' . $divisionName),
+            ];
+        })
+        ->filter(fn ($staff) => filled(data_get($staff, 'id')))
+        ->values();
+    $milestoneStatusOptions = $milestoneStatusOptions ?? [
+        'done' => 'Selesai',
+        'current' => 'Berjalan',
+        'planned' => 'Rencana',
+    ];
 @endphp
 
 <div
@@ -100,9 +115,9 @@
                                     name-expression="'members[' + index + '][staff_id]'"
                                     selected-expression="member.staff_id || ''"
                                     model-expression="member.staff_id"
-                                    :options="$staffOptions ?? []"
+                                    :options="$staffOptions"
                                     option-value-key="id"
-                                    option-label-key="developer_team_option_label"
+                                    option-label-key="label"
                                     placeholder="Pilih staff..."
                                     required />
                             </div>

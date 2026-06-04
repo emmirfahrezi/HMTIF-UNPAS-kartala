@@ -1,32 +1,27 @@
 <x-layouts.dashboard pageTitle="Profil Saya" :breadcrumbs="[['label' => 'Profil Saya']]">
     <div x-data="{
         editMode: false,
-        name: '{{ $user->name ?? '' }}',
-        email: '{{ $user->email ?? '' }}',
-        instagram: '{{ $staff?->instagram ?? '' }}',
-        linkedin: '{{ $staff?->linkedin ?? '' }}',
-        bio: '{{ $staff?->bio ?? '' }}',
-        avatarPreview: '{{ $user->avatar_url ?? '' }}',
+        name: @js($user->name ?? ''),
+        email: @js($user->email ?? ''),
+        instagram: @js($staff?->instagram ?? ''),
+        linkedin: @js($staff?->linkedin ?? ''),
+        bio: @js($staff?->bio ?? ''),
+        avatarPreview: @js($user->avatar_url ?? ''),
+        position: @js($staff?->position ?? $user->role_label ?? 'Pengurus'),
         passwordModalOpen: false,
         submitting: false,
-    
-        onAvatarChange(event) {
-            const file = event.target.files[0];
-            if (file) {
-                this.avatarPreview = URL.createObjectURL(file);
-            }
-        },
-    
+
         cancel() {
             this.editMode = false;
-            this.name = '{{ $user->name ?? '' }}';
-            this.email = '{{ $user->email ?? '' }}';
-            this.instagram = '{{ $staff?->instagram ?? '' }}';
-            this.linkedin = '{{ $staff?->linkedin ?? '' }}';
-            this.bio = '{{ $staff?->bio ?? '' }}';
-            this.avatarPreview = '{{ $user->avatar_url ?? '' }}';
+            this.name = @js($user->name ?? '');
+            this.email = @js($user->email ?? '');
+            this.instagram = @js($staff?->instagram ?? '');
+            this.linkedin = @js($staff?->linkedin ?? '');
+            this.bio = @js($staff?->bio ?? '');
+            this.avatarPreview = @js($user->avatar_url ?? '');
         }
-    }" class="max-w-6xl mx-auto space-y-8">
+    }" @image-picker-updated.window="if ($event.detail.name === 'photo') avatarPreview = $event.detail.preview || avatarPreview"
+        class="max-w-6xl mx-auto space-y-8">
 
         {{-- Form Utama Profil --}}
         <form action="{{ route('dashboard.profile.update') }}" method="POST" enctype="multipart/form-data"
@@ -41,26 +36,33 @@
                     {{-- Decorative Background Circle --}}
                     <div class="absolute -top-12 -right-12 size-32 bg-primary/5 rounded-full blur-2xl"></div>
 
-                    {{-- Avatar Display / Uploader --}}
-                    <div class="relative group mt-4">
-                        <div
-                            class="size-32 rounded-3xl overflow-hidden ring-4 ring-primary/10 border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex items-center justify-center transition-all duration-300">
-                            <img :src="avatarPreview" alt="Avatar" class="w-full h-full object-cover">
+                    {{-- Portrait Profile Card --}}
+                    <div
+                        class="relative mt-2 w-full max-w-[18rem] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm ring-1 ring-primary/10 dark:border-slate-800 dark:bg-slate-950">
+                        <div class="aspect-[3/4]">
+                            <img :src="avatarPreview" alt="Foto profil"
+                                class="h-full w-full object-cover transition duration-300"
+                                style="object-position: center top;">
                         </div>
 
-                        {{-- Upload Overlay (Hanya aktif saat editMode) --}}
-                        <label x-show="editMode" x-cloak
-                            class="absolute inset-0 rounded-3xl bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <x-heroicon-o-camera class="size-6 mb-1" />
-                            <span class="text-[10px] font-bold uppercase tracking-wider">Ubah Foto</span>
-                            <input type="file" name="photo" accept="image/*" class="hidden"
-                                @change="onAvatarChange">
-                        </label>
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/75"></div>
+                        <div class="pointer-events-none absolute right-4 top-8 rotate-90 text-4xl font-black uppercase tracking-[0.35em] text-primary/5 dark:text-primary/10">
+                            KARTALA
+                        </div>
+
+                        <div class="absolute inset-x-0 bottom-0 p-6 text-left">
+                            <div class="mb-3 flex items-center gap-3">
+                                <span class="h-0.5 w-10 rounded-full bg-primary"></span>
+                                <p class="text-[10px] font-black uppercase tracking-[0.35em] text-primary"
+                                    x-text="position"></p>
+                            </div>
+                            <h3 class="break-words text-3xl font-black italic uppercase leading-none text-slate-950 dark:text-white"
+                                x-text="name"></h3>
+                        </div>
                     </div>
 
                     {{-- User Basic Info --}}
-                    <h3 class="mt-5 text-lg font-bold text-slate-850 dark:text-white" x-text="name"></h3>
-                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium">{{ $user->email ?? '' }}</p>
+                    <p class="mt-5 text-sm font-black text-slate-900 dark:text-white" x-text="email"></p>
 
                     {{-- Badge Role --}}
                     <span
@@ -70,6 +72,15 @@
                     </span>
 
                     <hr class="w-full my-6 border-slate-100 dark:border-slate-800">
+
+                    {{-- Input Foto Profil --}}
+                    <div x-show="editMode" x-cloak class="w-full text-left">
+                        <x-molecules.shared.forms.image-picker label="Foto Profil" name="photo" file-name="photo_file"
+                            :value="$user->photo ?: ($staff?->photo ?? '')"
+                            helper="Pilih link gambar atau upload dari device. Format: JPG, JPEG, PNG. Maks. 2MB." />
+                    </div>
+
+                    <hr x-show="editMode" x-cloak class="w-full my-6 border-slate-100 dark:border-slate-800">
 
                     {{-- Menu Cepat / Tindakan Utama --}}
                     <div class="w-full space-y-3">
@@ -90,7 +101,7 @@
 
                         <x-atoms.shared.button type="button" variant="danger"
                             class="w-full py-3 !bg-red-500/10 hover:!bg-red-500/20 !text-red-500 !border !border-red-500/20 shadow-none"
-                            x-show="editMode" x-cloak @click="cancel">
+                            x-show="editMode" x-cloak @click="cancel(); $el.closest('form').reset()">
                             <x-heroicon-o-x-circle class="size-4" />
                             Batal Edit
                         </x-atoms.shared.button>

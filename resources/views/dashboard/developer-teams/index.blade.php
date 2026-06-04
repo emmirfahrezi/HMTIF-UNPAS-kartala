@@ -5,6 +5,14 @@
 @endphp
 
 <x-layouts.dashboard pageTitle="Tim Pengembang" :breadcrumbs="[['label' => 'Tim Pengembang']]">
+    @if ($permissions['read'])
+        <x-slot:headerActions>
+            <x-atoms.shared.button href="{{ route('developer-team', ['period' => $activePeriodLabel]) }}" target="_blank" variant="soft" icon="heroicon-o-arrow-top-right-on-square">
+                Lihat Public
+            </x-atoms.shared.button>
+        </x-slot:headerActions>
+    @endif
+
     @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center rounded-3xl border border-slate-100 bg-white px-4 pb-24 pt-16 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div class="mb-6 flex size-16 animate-pulse items-center justify-center rounded-2xl bg-red-50 text-red-500 shadow-inner dark:bg-red-500/10">
@@ -15,16 +23,6 @@
         </div>
     @else
         <div class="space-y-8">
-            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div>
-                    <h2 class="text-2xl font-black uppercase italic text-slate-800 dark:text-white">Tim Pengembang</h2>
-                    <p class="mt-1 text-sm font-medium text-slate-500 dark:text-slate-400">Kelola konten public page tim pengembang per periode.</p>
-                </div>
-                <x-atoms.shared.button href="{{ route('developer-team', ['period' => $activePeriodLabel]) }}" target="_blank" variant="soft" icon="heroicon-o-arrow-top-right-on-square">
-                    Lihat Public
-                </x-atoms.shared.button>
-            </div>
-
             <div class="flex gap-2 overflow-x-auto pb-1">
                 @foreach($periods as $periodItem)
                     <a href="{{ route('dashboard.developer-teams', ['period' => $periodItem->label]) }}"
@@ -42,7 +40,8 @@
                     'activePeriod' => $activePeriod,
                     'content' => $content,
                     'periods' => $periods,
-                    'staffOptions' => $staffOptions,
+                    'staffs' => $staffs ?? ($staffOptions ?? collect()),
+                    'milestoneStatusOptions' => $milestoneStatusOptions ?? null,
                 ])
 
                 @if ($permissions['update'])

@@ -9,10 +9,13 @@
     $createdDate = $createdAt instanceof \Carbon\CarbonInterface
         ? $createdAt->format('d M Y')
         : ($createdAt ? \Illuminate\Support\Carbon::parse($createdAt)->format('d M Y') : '-');
-    $shareUrl = data_get($archive, 'share_url') ?: url('/archives/' . $archiveId . '/share');
+    $shareUrl = data_get($archive, 'share_url', '');
     $shortUrl = data_get($archive, 'short_url', '');
     $qrCodeUrl = data_get($archive, 'qr_code_url', '');
     $qrDownloadUrl = data_get($archive, 'qr_download_url', '');
+    $previewUrl = \Illuminate\Support\Facades\Route::has('dashboard.archives.preview')
+        ? route('dashboard.archives.preview', $archive)
+        : $fileUrl;
 @endphp
 
 <x-layouts.dashboard pageTitle="Detail Arsip" :breadcrumbs="[['label' => 'Pengarsipan', 'href' => '/dashboard/archives'], ['label' => 'Detail']]">
@@ -49,7 +52,7 @@
                         Edit Data
                     </x-atoms.shared.button>
                 @endif
-                <x-atoms.shared.button variant="secondary" href="{{ $fileUrl }}" target="_blank" icon="heroicon-o-arrow-top-right-on-square">
+                <x-atoms.shared.button variant="secondary" href="{{ $previewUrl }}" target="_blank" icon="heroicon-o-arrow-top-right-on-square">
                     Buka PDF
                 </x-atoms.shared.button>
             </div>
@@ -63,12 +66,12 @@
                             <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Preview PDF</p>
                             <p class="truncate text-sm font-bold text-slate-700 dark:text-slate-200">{{ $fileName ?: 'Dokumen PDF' }}</p>
                         </div>
-                        <x-atoms.shared.button href="{{ $fileUrl }}" target="_blank" variant="ghost" size="sm" icon="heroicon-o-arrow-top-right-on-square">
+                        <x-atoms.shared.button href="{{ $previewUrl }}" target="_blank" variant="ghost" size="sm" icon="heroicon-o-arrow-top-right-on-square">
                             Tab Baru
                         </x-atoms.shared.button>
                     </div>
-                    <object data="{{ $fileUrl }}" type="application/pdf" class="block h-[72vh] w-full bg-slate-50 dark:bg-slate-950">
-                        <iframe src="{{ $fileUrl }}" class="h-[72vh] w-full" title="Preview PDF {{ $archiveName }}"></iframe>
+                    <object data="{{ $previewUrl }}" type="application/pdf" class="block h-[72vh] w-full bg-slate-50 dark:bg-slate-950">
+                        <iframe src="{{ $previewUrl }}" class="h-[72vh] w-full" title="Preview PDF {{ $archiveName }}"></iframe>
                     </object>
                 </div>
             </div>
