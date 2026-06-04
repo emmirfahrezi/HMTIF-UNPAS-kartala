@@ -37,9 +37,17 @@ class DeveloperTeamController extends Controller
         $periods      = Period::orderBy('display_order')->get();
         $activePeriod = Period::resolveFromRequest($request, $periods);
         $content      = $getContent->execute($activePeriod);
-        $staffs       = Staff::with('division')->where('is_active', true)->orderBy('order')->get();
+        $staffOptions = Staff::with('division')
+            ->where('is_active', true)
+            ->orderBy('order')
+            ->get()
+            ->map(fn ($staff) => [
+                'id'                          => $staff->id,
+                'developer_team_option_label' => $staff->name . ' — ' . ($staff->division?->name ?? '-'),
+            ])
+            ->values();
 
-        return view('dashboard.developer-teams.index', compact('periods', 'activePeriod', 'content', 'staffs'));
+        return view('dashboard.developer-teams.index', compact('periods', 'activePeriod', 'content', 'staffOptions'));
     }
 
     public function save(Request $request, SaveDeveloperTeamContentService $saveContent): RedirectResponse

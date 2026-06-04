@@ -20,9 +20,26 @@ if (!function_exists('media_url')) {
             return asset($placeholder);
         }
 
-        // External URL — gunakan langsung
+        // External URL — gunakan langsung, kecuali URL localhost yang perlu dikonversi
+        // agar tidak terjadi mixed-content blocking ketika site diakses via HTTPS
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
-            return $path;
+            $localBases = ['http://localhost', 'http://127.0.0.1', 'https://localhost'];
+            $stripped   = null;
+
+            foreach ($localBases as $base) {
+                if (str_starts_with($path, $base)) {
+                    $stripped = substr($path, \strlen($base));
+                    break;
+                }
+            }
+
+            // Bukan localhost → kembalikan langsung sebagai external URL
+            if ($stripped === null) {
+                return $path;
+            }
+
+            // Strip localhost prefix, lanjutkan ke resolving path di bawah
+            $path = $stripped;
         }
 
         // Path absolut dengan leading slash — strip lalu asset()

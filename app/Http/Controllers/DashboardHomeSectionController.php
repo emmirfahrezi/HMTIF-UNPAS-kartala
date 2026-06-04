@@ -37,9 +37,22 @@ class DashboardHomeSectionController extends Controller
     {
         abort_if(!in_array($section, $this->sections), 404);
 
+        // Field gambar per section — jangan timpa dengan nilai kosong
+        // agar gambar lama tidak terhapus ketika user tidak mengganti gambar
+        $mediaFields = [
+            'hero'     => ['background_image'],
+            'identity' => ['image'],
+            'era'      => ['image'],
+        ];
+
+        $sectionMediaFields = $mediaFields[$section] ?? [];
         $data = $request->except(['_token', '_method']);
 
         foreach ($data as $key => $value) {
+            if (\in_array($key, $sectionMediaFields, true) && empty($value)) {
+                continue;
+            }
+
             HomeSection::set($section, $key, $value);
         }
 

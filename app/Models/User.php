@@ -39,7 +39,7 @@ class User extends Authenticatable
     public function isKoordinator(): bool { return in_array($this->role, ['admin', 'bph', 'koordinator']); }
 
     protected $fillable = [
-        'email', 'password', 'role', 'staff_id',
+        'email', 'password', 'role', 'staff_id', 'photo',
     ];
 
     public function getNameAttribute(): string
@@ -66,25 +66,18 @@ class User extends Authenticatable
      * URL lengkap foto profil user.
      *
      * Prioritas:
-     * 1. Foto staff yang sudah diupload ke storage lokal → path dikonversi ke URL storage.
-     * 2. Foto staff berupa URL eksternal → digunakan langsung.
+     * 1. users.photo (foto yang di-set langsung di profil dashboard).
+     * 2. staff.photo (foto dari data pengurus terhubung).
      * 3. Fallback ke avatar DiceBear (SVG) dengan seed = nama user.
      */
     public function getAvatarUrlAttribute(): string
     {
-        $photo = (string) ($this->staff?->photo ?? '');
+        $photo = (string) ($this->photo ?? $this->staff?->photo ?? '');
 
         if ($photo !== '') {
-            // URL eksternal — pakai langsung
-            if (str_starts_with($photo, 'http://') || str_starts_with($photo, 'https://')) {
-                return $photo;
-            }
-
-            // Path lokal (storage) — konversi ke URL yang bisa diakses browser
-            return \Illuminate\Support\Facades\Storage::disk('public')->url($photo);
+            return \media_url($photo, 'images/placeholders/member.svg');
         }
 
-        // Fallback: DiceBear avatar SVG dengan seed dari nama user
         return 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . urlencode($this->name);
     }
 
