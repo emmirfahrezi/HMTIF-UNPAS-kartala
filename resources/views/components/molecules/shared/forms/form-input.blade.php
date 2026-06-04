@@ -15,6 +15,8 @@
     'nameExpression' => null,
     'selectedExpression' => null,
     'modelExpression' => null,
+    'optionValueKey' => null,
+    'optionLabelKey' => null,
 ])
 
 @php
@@ -43,9 +45,25 @@
             $isSearchable = $searchable || $type === 'search-select';
             $formattedOptions = [];
             foreach ($options as $optVal => $optLabel) {
+                if (is_object($optLabel) || is_array($optLabel)) {
+                    $optionValue = filled($optionValueKey)
+                        ? data_get($optLabel, $optionValueKey)
+                        : data_get($optLabel, 'id', $optVal);
+                    $optionLabel = filled($optionLabelKey)
+                        ? data_get($optLabel, $optionLabelKey)
+                        : (data_get($optLabel, 'display_label')
+                            ?? data_get($optLabel, 'name')
+                            ?? data_get($optLabel, 'title')
+                            ?? data_get($optLabel, 'label')
+                            ?? $optionValue);
+                } else {
+                    $optionValue = $optVal;
+                    $optionLabel = $optLabel;
+                }
+
                 $formattedOptions[] = [
-                    'value' => (string) (is_object($optLabel) ? ($optLabel->id ?? $optVal) : $optVal),
-                    'label' => (string) (is_object($optLabel) ? ($optLabel->name ?? $optLabel->title ?? $optLabel) : $optLabel),
+                    'value' => (string) $optionValue,
+                    'label' => (string) $optionLabel,
                 ];
             }
         @endphp

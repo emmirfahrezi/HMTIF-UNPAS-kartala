@@ -3,7 +3,7 @@
     'searchPlaceholder' => 'Cari data...',
 ])
 
-<div class="bg-white/40 dark:bg-white/5 backdrop-blur-2xl p-5 rounded-2xl border border-slate-200/50 dark:border-white/10 mb-8 shadow-xl shadow-slate-200/20 dark:shadow-black/20 transition-all duration-300">
+<div class="dashboard-filter-card bg-white/40 dark:bg-white/5 backdrop-blur-2xl p-5 rounded-2xl border border-slate-200/50 dark:border-white/10 mb-8 shadow-xl shadow-slate-200/20 dark:shadow-black/20 transition-all duration-300">
     <form method="GET" action="{{ $searchRoute }}" id="filter-form" class="flex flex-col lg:flex-row lg:items-center gap-6">
         {{-- Search Section --}}
         @if ($searchRoute)
@@ -31,7 +31,7 @@
         @endif
 
         {{-- Filters Section --}}
-        <div class="flex flex-wrap items-center gap-6">
+        <div class="dashboard-filter-controls flex flex-wrap items-center gap-6">
             {{-- Custom Slot for Module-specific filters --}}
             {{ $slot }}
 

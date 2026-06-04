@@ -1,10 +1,8 @@
 @php
-    $periodValue = $period ?? data_get($content, 'period', '2025/2026');
-    $periodOptions = collect($periods ?? [$periodValue])
-        ->mapWithKeys(fn ($period) => [$period => 'Tahun ' . $period])
-        ->all();
-    $members = collect(data_get($content, 'members', []))->values();
-    $milestones = collect(data_get($content, 'milestones', []))->values();
+    $periodValue = $activePeriod?->label ?? ($period ?? null)?->label ?? request('period', '');
+    $members = ($content['members'] ?? collect())->values();
+    $milestones = ($content['milestones'] ?? collect())->values();
+    $milestoneStatusOptions = \App\Models\DeveloperTeamMilestone::STATUSES;
 @endphp
 
 <div
@@ -16,14 +14,14 @@
             if (!this.milestones.length) this.addMilestone();
         },
         addMember() {
-            this.members.push({ name: '', role: '', division: 'Bidang Kominfo', photo: '' });
+            this.members.push({ staff_id: '', role: '' });
         },
         removeMember(index) {
             this.members.splice(index, 1);
             if (!this.members.length) this.addMember();
         },
         addMilestone() {
-            this.milestones.push({ period: @js($periodValue), title: '', description: '', status: 'planned' });
+            this.milestones.push({ period_label: @js($periodValue), title: '', description: '', status: 'planned' });
         },
         removeMilestone(index) {
             this.milestones.splice(index, 1);
@@ -47,8 +45,16 @@
 
             <div class="space-y-6">
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <x-molecules.shared.forms.form-input label="Periode" name="period" type="select" :options="$periodOptions" :value="$periodValue" required />
-                    <x-molecules.shared.forms.form-input label="Judul Halaman" name="title" placeholder="Tim Pengembang" :value="data_get($content, 'title', 'Tim Pengembang')" required />
+                    <x-molecules.shared.forms.form-input
+                        label="Periode"
+                        name="period"
+                        type="select"
+                        :options="$periods"
+                        option-value-key="label"
+                        option-label-key="display_label"
+                        :value="$periodValue"
+                        required />
+                    <x-molecules.shared.forms.form-input label="Judul Halaman" name="title" placeholder="Tim Pengembang" :value="$content['title'] ?? 'Tim Pengembang'" required />
                 </div>
 
                 <x-molecules.shared.forms.form-input
@@ -57,7 +63,7 @@
                     type="textarea"
                     :rows="4"
                     placeholder="Tuliskan pengantar singkat halaman..."
-                    :value="data_get($content, 'description', '')" />
+                    :value="$content['description'] ?? ''" />
             </div>
         </div>
 
@@ -87,21 +93,26 @@
 
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Nama</label>
-                                <x-atoms.shared.input type="text" x-model="member.name" x-bind:name="'members[' + index + '][name]'" placeholder="Nama anggota..." />
+                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Staff / Pengurus</label>
+                                <x-molecules.shared.forms.form-input
+                                    type="search-select"
+                                    name="members[][staff_id]"
+                                    name-expression="'members[' + index + '][staff_id]'"
+                                    selected-expression="member.staff_id || ''"
+                                    model-expression="member.staff_id"
+                                    :options="$staffOptions ?? []"
+                                    option-value-key="id"
+                                    option-label-key="developer_team_option_label"
+                                    placeholder="Pilih staff..."
+                                    required />
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Role</label>
                                 <x-atoms.shared.input type="text" x-model="member.role" x-bind:name="'members[' + index + '][role]'" placeholder="Frontend Developer..." />
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Bidang</label>
-                                <x-atoms.shared.input type="text" x-model="member.division" x-bind:name="'members[' + index + '][division]'" placeholder="Bidang Kominfo..." />
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Foto URL / Path</label>
-                                <x-atoms.shared.input type="text" x-model="member.photo" x-bind:name="'members[' + index + '][photo]'" placeholder="https://..." />
-                            </div>
+                            <p class="text-xs font-medium leading-relaxed text-slate-400 dark:text-slate-500 md:col-span-2">
+                                Nama, foto, dan bidang otomatis mengikuti data staff yang dipilih.
+                            </p>
                         </div>
                     </div>
                 </template>
@@ -135,16 +146,18 @@
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Periode Label</label>
-                                <x-atoms.shared.input type="text" x-model="milestone.period" x-bind:name="'milestones[' + index + '][period]'" placeholder="2025/2026" />
+                                <x-atoms.shared.input type="text" x-model="milestone.period_label" x-bind:name="'milestones[' + index + '][period]'" placeholder="2025/2026" />
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Status</label>
-                                <select x-model="milestone.status" x-bind:name="'milestones[' + index + '][status]'"
-                                    class="w-full rounded-2xl border border-slate-200/50 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm outline-none transition-all duration-300 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-slate-800/70 dark:bg-slate-950/45 dark:text-white">
-                                    <option value="done">Selesai</option>
-                                    <option value="current">Sedang Berjalan</option>
-                                    <option value="planned">Rencana</option>
-                                </select>
+                                <x-molecules.shared.forms.form-input
+                                    type="select"
+                                    name="milestones[][status]"
+                                    name-expression="'milestones[' + index + '][status]'"
+                                    selected-expression="milestone.status || 'planned'"
+                                    model-expression="milestone.status"
+                                    :options="$milestoneStatusOptions"
+                                    required />
                             </div>
                             <div class="space-y-2 md:col-span-2">
                                 <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Judul</label>

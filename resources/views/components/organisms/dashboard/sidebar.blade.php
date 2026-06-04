@@ -2,7 +2,7 @@
 @php
     $currentRoute = request()->path();
     $archivesRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.archives.index');
-    $developerTeamsRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.developer-teams.index');
+    $developerTeamsRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.developer-teams');
 
     $menuGroups = $dashboardMenuGroups ?? [
         'Overview' => [
@@ -51,7 +51,7 @@
 @endphp
 
 <aside id="dashSidebar" :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full lg:translate-x-0': !sidebarOpen }"
-    class="fixed top-0 left-0 h-screen w-[260px] bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-900 flex flex-col overflow-y-auto z-50 transition-all duration-300 ease-in-out">
+    class="fixed top-0 left-0 h-screen w-[260px] bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-900 flex flex-col overflow-hidden z-50 transition-all duration-300 ease-in-out">
 
     {{-- Logo --}}
     <div
@@ -64,7 +64,7 @@
     </div>
 
     {{-- Menu --}}
-    <nav class="flex-1 py-4 px-3 space-y-6">
+    <nav class="dashboard-sidebar-scroll flex-1 min-h-0 overflow-y-auto overscroll-contain py-4 px-3 space-y-6">
         @foreach ($menuGroups as $group => $items)
             <div>
                 @if ($group !== 'Overview')

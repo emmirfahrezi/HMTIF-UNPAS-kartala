@@ -18,6 +18,7 @@
             shareArchive: {
                 name: '',
                 shareUrl: '',
+                shortUrl: '',
                 qrCodeUrl: '',
                 qrDownloadUrl: '',
             },
@@ -105,6 +106,7 @@
                         ? $createdAt->format('d M Y')
                         : ($createdAt ? \Illuminate\Support\Carbon::parse($createdAt)->format('d M Y') : '-');
                     $shareUrl = data_get($item, 'share_url') ?: url('/archives/' . $archiveId . '/share');
+                    $shortUrl = data_get($item, 'short_url', '');
                     $qrCodeUrl = data_get($item, 'qr_code_url', '');
                     $qrDownloadUrl = data_get($item, 'qr_download_url', '');
                 @endphp
@@ -146,6 +148,7 @@
                                 @click="shareArchive = @js([
                                     'name' => $archiveName,
                                     'shareUrl' => $shareUrl,
+                                    'shortUrl' => $shortUrl,
                                     'qrCodeUrl' => $qrCodeUrl,
                                     'qrDownloadUrl' => $qrDownloadUrl,
                                 ]); $dispatch('open-modal', { name: 'archive-share-modal' })">

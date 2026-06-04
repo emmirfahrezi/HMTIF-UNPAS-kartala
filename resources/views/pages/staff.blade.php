@@ -22,12 +22,6 @@
     </x-slot:head>
     <x-organisms.pages.staff.hero />
 
-    @php
-        $periodOptions = collect($periods ?? [])
-            ->mapWithKeys(fn ($period) => [$period->label => 'Tahun ' . $period->label])
-            ->all();
-    @endphp
-
     <div class="bg-white pt-8 md:pt-10 pb-20 md:pb-24">
         <div class="mx-auto px-6 lg:px-8 max-w-screen-2xl">
             <div class="mb-10 flex justify-end">
@@ -37,7 +31,9 @@
                         name="period"
                         type="select"
                         :value="$activePeriod?->label ?? request('period')"
-                        :options="$periodOptions"
+                        :options="$periods ?? []"
+                        option-value-key="label"
+                        option-label-key="display_label"
                         :size="'sm'"
                         @change="setTimeout(() => $el.closest('form').submit(), 50)" />
                 </form>

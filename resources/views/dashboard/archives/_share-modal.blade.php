@@ -2,13 +2,19 @@
     <div
         x-data="{
             mode: 'link',
-            copied: false,
-            copyLink() {
-                if (!this.shareArchive?.shareUrl) return;
-                navigator.clipboard?.writeText(this.shareArchive.shareUrl);
-                this.copied = true;
+            copiedTarget: '',
+            copyValue(value, target = 'link') {
+                if (!value) return;
+                navigator.clipboard?.writeText(value);
+                this.copiedTarget = target;
                 if (typeof toast === 'function') toast('Link arsip disalin', 'success');
-                setTimeout(() => this.copied = false, 1800);
+                setTimeout(() => this.copiedTarget = '', 1800);
+            },
+            copyLink() {
+                this.copyValue(this.shareArchive?.shareUrl, 'link');
+            },
+            copyShortLink() {
+                this.copyValue(this.shareArchive?.shortUrl || this.shareArchive?.shareUrl, 'short');
             },
         }"
         class="space-y-6"
@@ -35,15 +41,25 @@
 
         <div x-show="mode === 'link'" x-cloak class="space-y-4">
             <x-molecules.shared.forms.form-input
+                label="Link Pendek"
+                name="archive_short_url_preview"
+                type="text"
+                x-bind:value="shareArchive.shortUrl || shareArchive.shareUrl"
+                readonly />
+
+            <x-molecules.shared.forms.form-input
                 label="Link Publik"
                 name="archive_share_url_preview"
                 type="text"
                 x-bind:value="shareArchive.shareUrl"
                 readonly />
 
-            <div class="flex justify-end">
-                <x-atoms.shared.button type="button" variant="primary" @click="copyLink()" icon="heroicon-o-clipboard-document">
-                    <span x-text="copied ? 'Tersalin' : 'Salin Link'"></span>
+            <div class="flex flex-col-reverse justify-end gap-3 sm:flex-row">
+                <x-atoms.shared.button type="button" variant="ghost" @click="copyLink()" icon="heroicon-o-link">
+                    <span x-text="copiedTarget === 'link' ? 'Tersalin' : 'Salin Link Publik'"></span>
+                </x-atoms.shared.button>
+                <x-atoms.shared.button type="button" variant="primary" @click="copyShortLink()" icon="heroicon-o-clipboard-document">
+                    <span x-text="copiedTarget === 'short' ? 'Tersalin' : 'Salin Link Pendek'"></span>
                 </x-atoms.shared.button>
             </div>
         </div>
@@ -69,7 +85,7 @@
             </template>
 
             <div class="flex flex-col-reverse justify-end gap-3 sm:flex-row">
-                <x-atoms.shared.button type="button" variant="ghost" @click="copyLink()" icon="heroicon-o-clipboard-document">
+                <x-atoms.shared.button type="button" variant="ghost" @click="copyShortLink()" icon="heroicon-o-clipboard-document">
                     Salin Link
                 </x-atoms.shared.button>
                 <x-atoms.shared.button href="#" x-bind:href="shareArchive.qrDownloadUrl || shareArchive.qrCodeUrl || '#'" download variant="primary" icon="heroicon-o-arrow-down-tray">

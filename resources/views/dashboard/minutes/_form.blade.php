@@ -29,6 +29,14 @@
                     :value="$minute->perihal ?? ''" 
                     required />
 
+                <x-molecules.shared.forms.form-input
+                    label="Bidang / Divisi"
+                    name="division_id"
+                    type="select"
+                    :value="$minute->division_id ?? ''"
+                    placeholder="Pilih Bidang / Divisi"
+                    :options="$divisions ?? []" />
+
                 <x-molecules.shared.forms.form-input 
                     label="Tanggal Rapat" 
                     name="tanggal" 
