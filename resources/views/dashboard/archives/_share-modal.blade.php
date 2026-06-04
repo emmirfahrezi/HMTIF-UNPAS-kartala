@@ -1,8 +1,30 @@
+@php
+    $archiveQrLogoUrl = asset('images/logo-hmtif.jpeg');
+@endphp
+
 <x-molecules.shared.modal id="archive-share-modal" title="Bagikan Arsip" maxWidth="lg">
     <div
         x-data="{
             mode: 'link',
             copiedTarget: '',
+            archive: {
+                name: '',
+                shareUrl: '',
+                shortUrl: '',
+                qrCodeUrl: '',
+                qrDownloadUrl: '',
+            },
+            init() {
+                window.addEventListener('archive-share-data', (event) => {
+                    this.archive = {
+                        name: event.detail?.name || '',
+                        shareUrl: event.detail?.shareUrl || '',
+                        shortUrl: event.detail?.shortUrl || '',
+                        qrCodeUrl: event.detail?.qrCodeUrl || '',
+                        qrDownloadUrl: event.detail?.qrDownloadUrl || '',
+                    };
+                });
+            },
             copyValue(value, target = 'link') {
                 if (!value) return;
                 navigator.clipboard?.writeText(value);
@@ -11,10 +33,10 @@
                 setTimeout(() => this.copiedTarget = '', 1800);
             },
             copyLink() {
-                this.copyValue(this.shareArchive?.shareUrl, 'link');
+                this.copyValue(this.archive.shareUrl, 'link');
             },
             copyShortLink() {
-                this.copyValue(this.shareArchive?.shortUrl || this.shareArchive?.shareUrl, 'short');
+                this.copyValue(this.archive.shortUrl || this.archive.shareUrl, 'short');
             },
         }"
         class="space-y-6"
@@ -36,7 +58,7 @@
 
         <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
             <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Arsip</p>
-            <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200" x-text="shareArchive.name || '-'"></p>
+            <p class="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200" x-text="archive.name || '-'"></p>
         </div>
 
         <div x-show="mode === 'link'" x-cloak class="space-y-4">
@@ -44,14 +66,14 @@
                 label="Link Pendek"
                 name="archive_short_url_preview"
                 type="text"
-                x-bind:value="shareArchive.shortUrl || shareArchive.shareUrl"
+                x-bind:value="archive.shortUrl || archive.shareUrl"
                 readonly />
 
             <x-molecules.shared.forms.form-input
                 label="Link Publik"
                 name="archive_share_url_preview"
                 type="text"
-                x-bind:value="shareArchive.shareUrl"
+                x-bind:value="archive.shareUrl"
                 readonly />
 
             <div class="flex flex-col-reverse justify-end gap-3 sm:flex-row">
@@ -65,18 +87,21 @@
         </div>
 
         <div x-show="mode === 'qr'" x-cloak class="space-y-5">
-            <template x-if="shareArchive.qrCodeUrl">
+            <template x-if="archive.qrCodeUrl">
                 <div class="flex flex-col items-center gap-4">
-                    <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800">
-                        <img :src="shareArchive.qrCodeUrl" alt="QR Code Arsip" class="size-64 rounded-xl object-contain">
+                    <div class="relative rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800">
+                        <img :src="archive.qrCodeUrl" alt="QR Code Arsip" class="size-64 rounded-xl object-contain">
+                        <div class="pointer-events-none absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-white p-1.5 shadow-sm ring-4 ring-white">
+                            <img src="{{ $archiveQrLogoUrl }}" alt="Logo HMTIF UNPAS" class="size-full rounded-xl object-contain">
+                        </div>
                     </div>
                     <p class="max-w-sm text-center text-xs font-medium text-slate-500 dark:text-slate-400">
-                        QR Code dikirim dari backend dan sudah memuat logo HMTIF UNPAS di tengah.
+                        QR Code dikirim dari backend. Logo HMTIF UNPAS ditampilkan di tengah sebagai penanda visual.
                     </p>
                 </div>
             </template>
 
-            <template x-if="!shareArchive.qrCodeUrl">
+            <template x-if="!archive.qrCodeUrl">
                 <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center dark:border-slate-800 dark:bg-slate-950">
                     <x-heroicon-o-qr-code class="mx-auto size-10 text-slate-300 dark:text-slate-700" />
                     <p class="mt-3 text-sm font-bold text-slate-600 dark:text-slate-300">QR Code belum tersedia.</p>
@@ -88,7 +113,7 @@
                 <x-atoms.shared.button type="button" variant="ghost" @click="copyShortLink()" icon="heroicon-o-clipboard-document">
                     Salin Link
                 </x-atoms.shared.button>
-                <x-atoms.shared.button href="#" x-bind:href="shareArchive.qrDownloadUrl || shareArchive.qrCodeUrl || '#'" download variant="primary" icon="heroicon-o-arrow-down-tray">
+                <x-atoms.shared.button href="#" x-bind:href="archive.qrDownloadUrl || archive.qrCodeUrl || '#'" download variant="primary" icon="heroicon-o-arrow-down-tray">
                     Download QR
                 </x-atoms.shared.button>
             </div>

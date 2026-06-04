@@ -1,5 +1,5 @@
 @php
-    $archiveTypes = $archiveTypes ?? [
+    $archiveTypes = $types ?? $archiveTypes ?? [
         'general_letter' => 'Surat Umum',
         'lpj' => 'LPJ',
         'proposal' => 'Proposal',
@@ -10,6 +10,9 @@
         ->mapWithKeys(fn ($division) => [data_get($division, 'id') => data_get($division, 'name')])
         ->filter(fn ($name, $id) => filled($id) && filled($name))
         ->all();
+    $dashboardArchivesUrl = \Illuminate\Support\Facades\Route::has('dashboard.archives')
+        ? route('dashboard.archives')
+        : url('/dashboard/archives');
 @endphp
 
 <x-layouts.dashboard pageTitle="Pengarsipan" :breadcrumbs="[['label' => 'Pengarsipan']]">
@@ -26,57 +29,61 @@
         class="space-y-8"
     >
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-                <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight italic uppercase">Pengarsipan</h2>
-                <p class="mt-1 text-sm font-medium text-slate-500 dark:text-slate-400">Pusat penyimpanan PDF surat, LPJ, proposal, dan nota.</p>
+            <div class="flex gap-2 overflow-x-auto pb-1 md:pb-0">
+                @foreach($archiveTypes as $type => $label)
+                    @php
+                        $query = array_merge(request()->except(['page', 'type']), ['type' => $type]);
+                        $href = $dashboardArchivesUrl . '?' . http_build_query($query);
+                        $isActive = $activeType === $type;
+                    @endphp
+                    <a href="{{ $href }}"
+                        class="shrink-0 rounded-2xl border px-4 py-2 text-xs font-black uppercase tracking-widest transition {{ $isActive ? 'border-primary bg-primary text-white shadow-lg shadow-primary/20' : 'border-slate-200 bg-white text-slate-500 hover:border-primary/30 hover:text-primary dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400' }}">
+                        {{ $label }}
+                    </a>
+                @endforeach
             </div>
+
             @if($permissions['create'] ?? false)
-                <x-atoms.shared.button href="/dashboard/archives/create" icon="heroicon-o-plus">
+                <x-atoms.shared.button href="/dashboard/archives/create" icon="heroicon-o-plus" class="w-full justify-center md:w-auto">
                     Tambah Arsip
                 </x-atoms.shared.button>
             @endif
         </div>
 
-        <div class="flex gap-2 overflow-x-auto pb-1">
-            @foreach($archiveTypes as $type => $label)
-                @php
-                    $query = array_merge(request()->except(['page', 'type']), ['type' => $type]);
-                    $href = url('/dashboard/archives') . '?' . http_build_query($query);
-                    $isActive = $activeType === $type;
-                @endphp
-                <a href="{{ $href }}"
-                    class="shrink-0 rounded-2xl border px-4 py-2 text-xs font-black uppercase tracking-widest transition {{ $isActive ? 'border-primary bg-primary text-white shadow-lg shadow-primary/20' : 'border-slate-200 bg-white text-slate-500 hover:border-primary/30 hover:text-primary dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400' }}">
-                    {{ $label }}
-                </a>
-            @endforeach
-        </div>
-
-        <x-molecules.dashboard.cards.filter-card searchRoute="/dashboard/archives" searchPlaceholder="Cari nama surat...">
+        <x-molecules.dashboard.cards.filter-card
+            :searchRoute="$dashboardArchivesUrl"
+            searchPlaceholder="Cari nama surat...">
             <input type="hidden" name="type" value="{{ $activeType }}">
 
-            <div class="w-48">
-                <x-molecules.shared.forms.form-input
-                    type="select"
-                    name="division"
-                    :value="request('division', '')"
-                    :options="$divisionOptions"
-                    :size="'sm'"
-                    @change="setTimeout(() => $el.closest('form').submit(), 50)" />
+            <div class="flex items-center gap-2 transition-colors duration-300">
+                <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Urutkan</label>
+                <div class="w-44">
+                    <x-molecules.shared.forms.form-input
+                        type="select"
+                        name="sort"
+                        :value="request('sort', 'latest')"
+                        :options="[
+                            'latest' => 'Terbaru',
+                            'oldest' => 'Terlama',
+                            'az' => 'A - Z',
+                            'za' => 'Z - A',
+                        ]"
+                        :size="'sm'"
+                        @change="setTimeout(() => $el.closest('form').submit(), 50)" />
+                </div>
             </div>
 
-            <div class="w-44">
-                <x-molecules.shared.forms.form-input
-                    type="select"
-                    name="sort"
-                    :value="request('sort', 'latest')"
-                    :options="[
-                        'latest' => 'Terbaru',
-                        'oldest' => 'Terlama',
-                        'az' => 'A - Z',
-                        'za' => 'Z - A',
-                    ]"
-                    :size="'sm'"
-                    @change="setTimeout(() => $el.closest('form').submit(), 50)" />
+            <div class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3 transition-colors duration-300">
+                <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] whitespace-nowrap">Divisi</label>
+                <div class="w-44">
+                    <x-molecules.shared.forms.form-input
+                        type="select"
+                        name="division"
+                        :value="request('division', '')"
+                        :options="$divisionOptions"
+                        :size="'sm'"
+                        @change="setTimeout(() => $el.closest('form').submit(), 50)" />
+                </div>
             </div>
         </x-molecules.dashboard.cards.filter-card>
 
@@ -105,7 +112,7 @@
                     $createdDate = $createdAt instanceof \Carbon\CarbonInterface
                         ? $createdAt->format('d M Y')
                         : ($createdAt ? \Illuminate\Support\Carbon::parse($createdAt)->format('d M Y') : '-');
-                    $shareUrl = data_get($item, 'share_url') ?: url('/archives/' . $archiveId . '/share');
+                    $shareUrl = data_get($item, 'share_url', '');
                     $shortUrl = data_get($item, 'short_url', '');
                     $qrCodeUrl = data_get($item, 'qr_code_url', '');
                     $qrDownloadUrl = data_get($item, 'qr_download_url', '');
@@ -140,20 +147,31 @@
                             <x-atoms.shared.button variant="ghost" size="sm" href="/dashboard/archives/{{ $archiveId }}" class="size-9 !px-0" title="Preview Arsip">
                                 <x-heroicon-o-eye class="size-5 text-slate-400 hover:text-primary transition-colors" />
                             </x-atoms.shared.button>
-                            <x-atoms.shared.button
-                                variant="ghost"
-                                size="sm"
-                                class="size-9 !px-0"
+                            <button
+                                type="button"
                                 title="Bagikan Arsip"
-                                @click="shareArchive = @js([
-                                    'name' => $archiveName,
-                                    'shareUrl' => $shareUrl,
-                                    'shortUrl' => $shortUrl,
-                                    'qrCodeUrl' => $qrCodeUrl,
-                                    'qrDownloadUrl' => $qrDownloadUrl,
-                                ]); $dispatch('open-modal', { name: 'archive-share-modal' })">
+                                data-archive-name="{{ $archiveName }}"
+                                data-share-url="{{ $shareUrl }}"
+                                data-short-url="{{ $shortUrl }}"
+                                data-qr-code-url="{{ $qrCodeUrl }}"
+                                data-qr-download-url="{{ $qrDownloadUrl }}"
+                                onclick="
+                                    window.dispatchEvent(new CustomEvent('archive-share-data', {
+                                        detail: {
+                                            name: this.dataset.archiveName || '',
+                                            shareUrl: this.dataset.shareUrl || '',
+                                            shortUrl: this.dataset.shortUrl || '',
+                                            qrCodeUrl: this.dataset.qrCodeUrl || '',
+                                            qrDownloadUrl: this.dataset.qrDownloadUrl || '',
+                                        },
+                                    }));
+                                    window.dispatchEvent(new CustomEvent('open-modal', {
+                                        detail: { name: 'archive-share-modal' },
+                                    }));
+                                "
+                                class="flex size-9 items-center justify-center rounded-2xl text-slate-500 transition-all duration-300 hover:bg-slate-100 hover:text-slate-700 active:scale-95 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200">
                                 <x-heroicon-o-share class="size-5 text-slate-400 hover:text-primary transition-colors" />
-                            </x-atoms.shared.button>
+                            </button>
                             @if($permissions['update'] ?? false)
                                 <x-atoms.shared.button variant="ghost" size="sm" href="/dashboard/archives/{{ $archiveId }}/edit" class="size-9 !px-0" title="Edit Arsip">
                                     <x-heroicon-o-pencil-square class="size-5 text-slate-400 hover:text-amber-500 transition-colors" />

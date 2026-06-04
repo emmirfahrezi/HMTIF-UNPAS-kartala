@@ -1,5 +1,5 @@
 @php
-    $archiveTypes = $archiveTypes ?? [
+    $archiveTypes = $types ?? $archiveTypes ?? [
         'general_letter' => 'Surat Umum',
         'lpj' => 'LPJ',
         'proposal' => 'Proposal',
@@ -11,6 +11,10 @@
         ->all();
     $isEdit = filled(data_get($archive ?? null, 'id'));
     $fileName = data_get($archive ?? null, 'file_name') ?: basename((string) data_get($archive ?? null, 'file_url', ''));
+    $shareExpiresAt = data_get($archive ?? null, 'share_expires_at');
+    $shareExpiresValue = $shareExpiresAt instanceof \Carbon\CarbonInterface
+        ? $shareExpiresAt->format('Y-m-d\TH:i')
+        : ($shareExpiresAt ? \Illuminate\Support\Carbon::parse($shareExpiresAt)->format('Y-m-d\TH:i') : '');
 @endphp
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -51,7 +55,7 @@
                     type="select"
                     :value="data_get($archive ?? null, 'division_id', '')"
                     :options="$divisionOptions"
-                    required />
+                    helper="Opsional jika dokumen bersifat umum." />
             </div>
         </div>
     </div>
@@ -83,6 +87,30 @@
                     </div>
                 </div>
             @endif
+        </div>
+
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm relative transition-colors duration-300">
+            <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-primary pointer-events-none">
+                <x-heroicon-o-share class="size-24" />
+            </div>
+
+            <h3 class="text-xs font-black text-slate-800 dark:text-white mb-6 uppercase tracking-widest">Share Publik</h3>
+
+            <div class="space-y-5">
+                <x-molecules.shared.forms.form-input
+                    label="Aktifkan Share"
+                    name="share_enabled"
+                    type="toggle"
+                    :value="old('share_enabled', data_get($archive ?? null, 'share_enabled', true))"
+                    helper="Jika aktif, backend menyediakan link readonly dan QR code." />
+
+                <x-molecules.shared.forms.form-input
+                    label="Batas Waktu Share"
+                    name="share_expires_at"
+                    type="datetime-local"
+                    :value="old('share_expires_at', $shareExpiresValue)"
+                    helper="Opsional. Kosongkan jika link tidak memiliki batas waktu." />
+            </div>
         </div>
 
         <div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/10 dark:border-primary/20 transition-colors duration-300">
