@@ -1,3 +1,10 @@
+@php
+    $profilePhotoValue = $user->photo ?: ($staff?->photo ?? '');
+    $profilePhotoPreview = filled($profilePhotoValue)
+        ? $user->avatar_url
+        : asset('images/placeholders/member.svg');
+@endphp
+
 <x-layouts.dashboard pageTitle="Profil Saya" :breadcrumbs="[['label' => 'Profil Saya']]">
     <div x-data="{
         editMode: false,
@@ -6,7 +13,7 @@
         instagram: @js($staff?->instagram ?? ''),
         linkedin: @js($staff?->linkedin ?? ''),
         bio: @js($staff?->bio ?? ''),
-        avatarPreview: @js($user->avatar_url ?? ''),
+        avatarPreview: @js($profilePhotoPreview),
         position: @js($staff?->position ?? $user->role_label ?? 'Pengurus'),
         passwordModalOpen: false,
         submitting: false,
@@ -18,7 +25,7 @@
             this.instagram = @js($staff?->instagram ?? '');
             this.linkedin = @js($staff?->linkedin ?? '');
             this.bio = @js($staff?->bio ?? '');
-            this.avatarPreview = @js($user->avatar_url ?? '');
+            this.avatarPreview = @js($profilePhotoPreview);
         }
     }" @image-picker-updated.window="if ($event.detail.name === 'photo') avatarPreview = $event.detail.preview || avatarPreview"
         class="max-w-6xl mx-auto space-y-8">
@@ -36,33 +43,20 @@
                     {{-- Decorative Background Circle --}}
                     <div class="absolute -top-12 -right-12 size-32 bg-primary/5 rounded-full blur-2xl"></div>
 
-                    {{-- Portrait Profile Card --}}
+                    {{-- Portrait Profile Photo --}}
                     <div
                         class="relative mt-2 w-full max-w-[18rem] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm ring-1 ring-primary/10 dark:border-slate-800 dark:bg-slate-950">
                         <div class="aspect-[3/4]">
                             <img :src="avatarPreview" alt="Foto profil"
                                 class="h-full w-full object-cover transition duration-300"
+                                @error="avatarPreview = @js(asset('images/placeholders/member.svg'))"
                                 style="object-position: center top;">
-                        </div>
-
-                        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/75"></div>
-                        <div class="pointer-events-none absolute right-4 top-8 rotate-90 text-4xl font-black uppercase tracking-[0.35em] text-primary/5 dark:text-primary/10">
-                            KARTALA
-                        </div>
-
-                        <div class="absolute inset-x-0 bottom-0 p-6 text-left">
-                            <div class="mb-3 flex items-center gap-3">
-                                <span class="h-0.5 w-10 rounded-full bg-primary"></span>
-                                <p class="text-[10px] font-black uppercase tracking-[0.35em] text-primary"
-                                    x-text="position"></p>
-                            </div>
-                            <h3 class="break-words text-3xl font-black italic uppercase leading-none text-slate-950 dark:text-white"
-                                x-text="name"></h3>
                         </div>
                     </div>
 
                     {{-- User Basic Info --}}
-                    <p class="mt-5 text-sm font-black text-slate-900 dark:text-white" x-text="email"></p>
+                    <h3 class="mt-5 max-w-full break-words text-lg font-bold text-slate-850 dark:text-white" x-text="name"></h3>
+                    <p class="max-w-full break-all text-xs text-slate-400 dark:text-slate-500 font-medium" x-text="email"></p>
 
                     {{-- Badge Role --}}
                     <span
@@ -76,7 +70,7 @@
                     {{-- Input Foto Profil --}}
                     <div x-show="editMode" x-cloak class="w-full text-left">
                         <x-molecules.shared.forms.image-picker label="Foto Profil" name="photo" file-name="photo_file"
-                            :value="$user->photo ?: ($staff?->photo ?? '')"
+                            :value="$profilePhotoValue"
                             helper="Pilih link gambar atau upload dari device. Format: JPG, JPEG, PNG. Maks. 2MB." />
                     </div>
 

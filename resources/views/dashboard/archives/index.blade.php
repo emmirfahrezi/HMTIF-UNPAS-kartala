@@ -147,20 +147,31 @@
                             <x-atoms.shared.button variant="ghost" size="sm" href="/dashboard/archives/{{ $archiveId }}" class="size-9 !px-0" title="Preview Arsip">
                                 <x-heroicon-o-eye class="size-5 text-slate-400 hover:text-primary transition-colors" />
                             </x-atoms.shared.button>
-                            <x-atoms.shared.button
-                                variant="ghost"
-                                size="sm"
-                                class="size-9 !px-0"
+                            <button
+                                type="button"
                                 title="Bagikan Arsip"
-                                @click="shareArchive = @js([
-                                    'name' => $archiveName,
-                                    'shareUrl' => $shareUrl,
-                                    'shortUrl' => $shortUrl,
-                                    'qrCodeUrl' => $qrCodeUrl,
-                                    'qrDownloadUrl' => $qrDownloadUrl,
-                                ]); $dispatch('open-modal', { name: 'archive-share-modal' })">
+                                data-archive-name="{{ $archiveName }}"
+                                data-share-url="{{ $shareUrl }}"
+                                data-short-url="{{ $shortUrl }}"
+                                data-qr-code-url="{{ $qrCodeUrl }}"
+                                data-qr-download-url="{{ $qrDownloadUrl }}"
+                                onclick="
+                                    window.dispatchEvent(new CustomEvent('archive-share-data', {
+                                        detail: {
+                                            name: this.dataset.archiveName || '',
+                                            shareUrl: this.dataset.shareUrl || '',
+                                            shortUrl: this.dataset.shortUrl || '',
+                                            qrCodeUrl: this.dataset.qrCodeUrl || '',
+                                            qrDownloadUrl: this.dataset.qrDownloadUrl || '',
+                                        },
+                                    }));
+                                    window.dispatchEvent(new CustomEvent('open-modal', {
+                                        detail: { name: 'archive-share-modal' },
+                                    }));
+                                "
+                                class="flex size-9 items-center justify-center rounded-2xl text-slate-500 transition-all duration-300 hover:bg-slate-100 hover:text-slate-700 active:scale-95 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200">
                                 <x-heroicon-o-share class="size-5 text-slate-400 hover:text-primary transition-colors" />
-                            </x-atoms.shared.button>
+                            </button>
                             @if($permissions['update'] ?? false)
                                 <x-atoms.shared.button variant="ghost" size="sm" href="/dashboard/archives/{{ $archiveId }}/edit" class="size-9 !px-0" title="Edit Arsip">
                                     <x-heroicon-o-pencil-square class="size-5 text-slate-400 hover:text-amber-500 transition-colors" />

@@ -44,7 +44,25 @@
 
             <div class="flex flex-wrap items-center gap-3">
                 <x-atoms.shared.button type="button" variant="soft" icon="heroicon-o-share"
-                    @click="$dispatch('open-modal', { name: 'archive-share-modal' })">
+                    data-archive-name="{{ $archiveName }}"
+                    data-share-url="{{ $shareUrl }}"
+                    data-short-url="{{ $shortUrl }}"
+                    data-qr-code-url="{{ $qrCodeUrl }}"
+                    data-qr-download-url="{{ $qrDownloadUrl }}"
+                    onclick="
+                        window.dispatchEvent(new CustomEvent('archive-share-data', {
+                            detail: {
+                                name: this.dataset.archiveName || '',
+                                shareUrl: this.dataset.shareUrl || '',
+                                shortUrl: this.dataset.shortUrl || '',
+                                qrCodeUrl: this.dataset.qrCodeUrl || '',
+                                qrDownloadUrl: this.dataset.qrDownloadUrl || '',
+                            },
+                        }));
+                        window.dispatchEvent(new CustomEvent('open-modal', {
+                            detail: { name: 'archive-share-modal' },
+                        }));
+                    ">
                     Share
                 </x-atoms.shared.button>
                 @if($permissions['update'] ?? false)
