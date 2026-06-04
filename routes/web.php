@@ -48,6 +48,7 @@ Route::redirect('/tim-pengembang',  '/developer-team', 301);
 // Public archive share (tanpa auth)
 Route::get('/archives/share/{token}',          [DashboardArchiveController::class, 'shareView'])->name('archives.share');
 Route::get('/archives/share/{token}/download', [DashboardArchiveController::class, 'download'])->name('archives.download');
+Route::get('/archives/share/{token}/qr',       [DashboardArchiveController::class, 'qrDownload'])->name('archives.qr-download');
 Route::get('/a/{shortCode}',                   [DashboardArchiveController::class, 'shortRedirect'])->name('archives.short');
 // Legacy redirect berbasis id → token-based (301)
 Route::get('/archives/{archive}/share',        [DashboardArchiveController::class, 'legacyShare']);
@@ -191,6 +192,7 @@ Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function 
     Route::delete('/archives/bulk-delete',     [DashboardArchiveController::class, 'bulkDestroy']);
     Route::get('/archives/{archive}',          [DashboardArchiveController::class, 'show'])->name('dashboard.archives.show');
     Route::get('/archives/{archive}/edit',     [DashboardArchiveController::class, 'edit'])->name('dashboard.archives.edit');
+    Route::get('/archives/{archive}/preview',  [DashboardArchiveController::class, 'preview'])->name('dashboard.archives.preview');
     Route::put('/archives/{archive}',          [DashboardArchiveController::class, 'update'])->name('dashboard.archives.update');
     Route::delete('/archives/{archive}',       [DashboardArchiveController::class, 'destroy'])->name('dashboard.archives.destroy');
 

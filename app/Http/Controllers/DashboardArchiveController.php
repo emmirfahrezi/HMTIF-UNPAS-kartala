@@ -151,6 +151,22 @@ class DashboardArchiveController extends Controller
     }
 
     // -----------------------------------------------------------------------
+    // Dashboard — Preview PDF (inline, no download)
+    // -----------------------------------------------------------------------
+
+    public function preview(Archive $archive): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $path = Storage::disk('public')->path($archive->file_path);
+
+        abort_unless(file_exists($path), 404);
+
+        return response()->file($path, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $archive->file_name . '"',
+        ]);
+    }
+
+    // -----------------------------------------------------------------------
     // Public — Share & Download
     // -----------------------------------------------------------------------
 
@@ -170,6 +186,15 @@ class DashboardArchiveController extends Controller
         abort_unless($archive->isShareActive(), 404);
 
         return Storage::disk('public')->download($archive->file_path, $archive->file_name);
+    }
+
+    public function qrDownload(string $token): RedirectResponse
+    {
+        $archive = Archive::where('share_token', $token)->firstOrFail();
+
+        abort_unless($archive->isShareActive(), 404);
+
+        return redirect($archive->qr_download_url);
     }
 
     public function shortRedirect(string $shortCode): RedirectResponse
