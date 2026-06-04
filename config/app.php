@@ -125,7 +125,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'logo_url' => env('APP_LOGO_URL', 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/logo-hmtif-rb.png'),
+    'logo_url'       => env('APP_LOGO_URL', 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/logo-hmtif-rb.png'),
     'logo_unpas_url' => env('APP_LOGO_UNPAS_URL', 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/Logo_UNPAS.png'),
+    'logo_qr_url'    => env('APP_LOGO_QR_URL', ''),
 
 ];
