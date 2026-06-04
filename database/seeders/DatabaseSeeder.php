@@ -10,6 +10,7 @@ use App\Models\Division;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
+use App\Models\Archive;
 use App\Models\DeveloperTeamMember;
 use App\Models\DeveloperTeamMilestone;
 use App\Models\DeveloperTeamSetting;
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
 
+        Archive::query()->delete();
         DeveloperTeamMember::query()->delete();
         DeveloperTeamMilestone::query()->delete();
         DeveloperTeamSetting::query()->delete();

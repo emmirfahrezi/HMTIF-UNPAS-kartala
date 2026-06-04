@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
 use App\Models\Period;
+use App\Models\Staff;
 use App\Services\DeveloperTeam\DeleteDeveloperTeamPeriodContentService;
 use App\Services\DeveloperTeam\GetDeveloperTeamContentService;
 use App\Services\DeveloperTeam\SaveDeveloperTeamContentService;
@@ -36,8 +37,9 @@ class DeveloperTeamController extends Controller
         $periods      = Period::orderBy('display_order')->get();
         $activePeriod = Period::resolveFromRequest($request, $periods);
         $content      = $getContent->execute($activePeriod);
+        $staffs       = Staff::with('division')->where('is_active', true)->orderBy('order')->get();
 
-        return view('dashboard.developer-teams.index', compact('periods', 'activePeriod', 'content'));
+        return view('dashboard.developer-teams.index', compact('periods', 'activePeriod', 'content', 'staffs'));
     }
 
     public function save(Request $request, SaveDeveloperTeamContentService $saveContent): RedirectResponse
@@ -47,10 +49,8 @@ class DeveloperTeamController extends Controller
             'title'                       => 'required|string|max:255',
             'description'                 => 'nullable|string',
             'members'                     => 'nullable|array',
-            'members.*.name'              => 'nullable|string|max:255',
+            'members.*.staff_id'          => 'nullable|string|exists:staffs,id',
             'members.*.role'              => 'nullable|string|max:255',
-            'members.*.division'          => 'nullable|string|max:255',
-            'members.*.photo'             => 'nullable|string|max:1024',
             'milestones'                  => 'nullable|array',
             'milestones.*.period'         => 'nullable|string|max:50',
             'milestones.*.title'          => 'nullable|string|max:255',

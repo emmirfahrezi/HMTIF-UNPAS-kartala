@@ -22,7 +22,7 @@ class GetDeveloperTeamContentService
         $setting = DeveloperTeamSetting::first();
 
         $members    = $period
-            ? DeveloperTeamMember::where('period_id', $period->id)->orderBy('display_order')->get()
+            ? DeveloperTeamMember::with('staff.division')->where('period_id', $period->id)->orderBy('display_order')->get()
             : collect();
 
         $milestones = $period
