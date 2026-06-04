@@ -61,7 +61,7 @@
                     </a>
                 </div>
 
-                <a href="/tim-pengembang"
+                <a href="{{ route('developer-team') }}"
                     class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white/80 transition hover:border-secondary/40 hover:bg-secondary hover:text-black">
                     <x-heroicon-o-code-bracket-square class="size-4" />
                     Tim Pengembang

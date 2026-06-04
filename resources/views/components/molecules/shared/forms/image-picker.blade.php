@@ -36,12 +36,22 @@
         localFileName: '',
         isUploading: false,
         error: '',
+        emitUpdate() {
+            window.dispatchEvent(new CustomEvent('image-picker-updated', {
+                detail: {
+                    name: @js($name),
+                    value: this.value,
+                    preview: this.preview,
+                },
+            }));
+        },
         showLocalPreview(event) {
             const file = event.target.files?.[0];
             if (!file) return;
             this.error = '';
             this.localFileName = file.name;
             this.preview = URL.createObjectURL(file);
+            this.emitUpdate();
         },
         async uploadWithEditor(event) {
             const file = event.target.files?.[0];
@@ -71,6 +81,7 @@
                 this.value = data.url;
                 this.localFileName = '';
                 this.preview = data.url;
+                this.emitUpdate();
             } catch (error) {
                 this.error = error.message || 'Upload gambar gagal.';
             } finally {
@@ -109,7 +120,7 @@
     <template x-if="mode === 'link'">
         <input type="text"
             x-model="value"
-            @input="localFileName = ''; preview = value"
+            @input="localFileName = ''; preview = value; emitUpdate()"
             placeholder="https://... atau /storage/..."
             class="w-full rounded-2xl border border-slate-200/50 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-slate-800/50 dark:bg-slate-950/45 dark:text-white dark:placeholder:text-slate-600" />
     </template>

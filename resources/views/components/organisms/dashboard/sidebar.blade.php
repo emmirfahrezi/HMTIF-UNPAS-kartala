@@ -1,7 +1,7 @@
 {{-- Dashboard Sidebar --}}
 @php
     $currentRoute = request()->path();
-    $archivesRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.archives.index');
+    $archivesRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.archives');
     $developerTeamsRouteReady = \Illuminate\Support\Facades\Route::has('dashboard.developer-teams');
 
     $menuGroups = $dashboardMenuGroups ?? [
@@ -18,7 +18,7 @@
             ['label' => 'Pengurus', 'icon' => 'heroicon-o-users', 'href' => '/dashboard/staffs', 'match' => 'dashboard/staffs'],
             ['label' => 'Aspirasi', 'icon' => 'heroicon-o-chat-bubble-left-right', 'href' => '/dashboard/aspirations', 'match' => 'dashboard/aspirations'],
             ['label' => 'Notulensi', 'icon' => 'heroicon-o-clipboard-document-list', 'href' => '/dashboard/minutes', 'match' => 'dashboard/minutes'],
-            $archivesRouteReady ? ['label' => 'Pengarsipan', 'icon' => 'heroicon-o-archive-box', 'href' => '/dashboard/archives', 'match' => 'dashboard/archives'] : null,
+            $archivesRouteReady ? ['label' => 'Pengarsipan', 'icon' => 'heroicon-o-archive-box', 'href' => route('dashboard.archives'), 'match' => 'dashboard/archives'] : null,
         ])),
         'Store' => [
             ['label' => 'Produk', 'icon' => 'heroicon-o-shopping-bag', 'href' => '/dashboard/products', 'match' => 'dashboard/products'],
