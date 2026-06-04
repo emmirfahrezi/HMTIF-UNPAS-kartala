@@ -10,6 +10,7 @@
         ? $createdAt->format('d M Y')
         : ($createdAt ? \Illuminate\Support\Carbon::parse($createdAt)->format('d M Y') : '-');
     $shareUrl = data_get($archive, 'share_url') ?: url('/archives/' . $archiveId . '/share');
+    $shortUrl = data_get($archive, 'short_url', '');
     $qrCodeUrl = data_get($archive, 'qr_code_url', '');
     $qrDownloadUrl = data_get($archive, 'qr_download_url', '');
 @endphp
@@ -20,6 +21,7 @@
             shareArchive: @js([
                 'name' => $archiveName,
                 'shareUrl' => $shareUrl,
+                'shortUrl' => $shortUrl,
                 'qrCodeUrl' => $qrCodeUrl,
                 'qrDownloadUrl' => $qrDownloadUrl,
             ]),

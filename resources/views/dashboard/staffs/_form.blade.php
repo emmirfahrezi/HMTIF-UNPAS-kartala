@@ -1,8 +1,9 @@
 @php
-    $activePeriodLabel = $activePeriod?->label ?? request('period', '2025/2026');
-    $periodOptions = collect($periods ?? [])
-        ->mapWithKeys(fn ($period) => [$period->label => 'Tahun ' . $period->label])
-        ->all();
+    $requestedPeriod = request('period');
+    $selectedPeriod = $staff?->currentAssignment?->period
+        ?? collect($periods ?? [])->firstWhere('label', $requestedPeriod)
+        ?? collect($periods ?? [])->firstWhere('is_active', true)
+        ?? collect($periods ?? [])->first();
 @endphp
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -26,10 +27,12 @@
             <div class="space-y-6">
                 <x-molecules.shared.forms.form-input
                     label="Periode Kepengurusan"
-                    name="period"
+                    name="period_id"
                     type="select"
-                    :value="$activePeriodLabel"
-                    :options="$periodOptions"
+                    :value="$selectedPeriod?->id ?? ''"
+                    :options="$periods ?? []"
+                    option-value-key="id"
+                    option-label-key="display_label"
                     required />
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

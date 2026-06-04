@@ -104,6 +104,66 @@
   display: block;
 }
 
+/* Keep filter layout familiar, but place labels above their select controls. */
+.dashboard-filter-card .dashboard-filter-controls > .flex.items-center.gap-2 {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.dashboard-filter-card .dashboard-filter-controls > .flex.items-center.gap-2 > label {
+  line-height: 1;
+}
+
+.dashboard-filter-card .dashboard-filter-controls > .flex.items-center.gap-2 > div[class*='w-'] {
+  width: 11rem;
+}
+
+.dashboard-filter-card .dashboard-filter-controls > .flex.items-center.gap-2 > .w-48 {
+  width: 12rem;
+}
+
+/* Sidebar scroll area: keep chrome subtle and avoid the native Windows gutter. */
+.dashboard-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 28%, transparent) transparent;
+}
+
+.dashboard-sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dashboard-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard-sidebar-scroll::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 34%, transparent);
+  background-clip: content-box;
+}
+
+.dashboard-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary) 58%, transparent);
+  background-clip: content-box;
+}
+
+.dark .dashboard-sidebar-scroll {
+  scrollbar-color: color-mix(in srgb, var(--color-primary-soft) 34%, transparent) transparent;
+}
+
+.dark .dashboard-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary-soft) 28%, transparent);
+  background-clip: content-box;
+}
+
+.dark .dashboard-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary-soft) 48%, transparent);
+  background-clip: content-box;
+}
+
 /* --- CUSTOM SCROLLBAR --- */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;

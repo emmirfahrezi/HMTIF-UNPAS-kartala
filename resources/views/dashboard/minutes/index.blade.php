@@ -1,27 +1,4 @@
 
-@php
-    $minuteDivisionOptions = ['' => 'Semua Bidang'];
-
-    if (isset($divisions) && collect($divisions)->isNotEmpty()) {
-        $minuteDivisionOptions += collect($divisions)
-            ->mapWithKeys(fn ($division, $key) => is_scalar($division)
-                ? [$key => $division]
-                : [data_get($division, 'id') => data_get($division, 'name')])
-            ->filter(fn ($name, $id) => filled($id) && filled($name))
-            ->all();
-    } else {
-        $minuteDivisionOptions += [
-            'bph' => 'BPH',
-            'kastrad' => 'Bidang Kastrad',
-            'medkominfo' => 'Bidang Medkominfo',
-            'ristek' => 'Bidang Ristek',
-            'keskraf' => 'Bidang Keskraf',
-            'psdm' => 'Bidang PSDM',
-            'pmb' => 'Bidang PMB',
-        ];
-    }
-@endphp
-
 <x-layouts.dashboard pageTitle="Notulensi Rapat" :breadcrumbs="[['label' => 'Notulensi']]">
     @if (!$permissions['read'])
         <div class="flex flex-col items-center justify-center pt-16 pb-24 px-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm mt-8">
@@ -52,7 +29,8 @@
                     type="select"
                     name="division"
                     :value="request('division', '')"
-                    :options="$minuteDivisionOptions"
+                    placeholder="Semua Bidang"
+                    :options="$divisions ?? []"
                     @change="setTimeout(() => $el.closest('form').submit(), 50)"
                 />
             </div>
