@@ -179,6 +179,28 @@ class StaffSeeder extends Seeder
                 'is_active'   => true,
                 'is_bph'      => false,
             ],
+            [
+                'division_id' => $kominfo->id,
+                'name'        => 'Alfimiftanur',
+                'position'    => 'Anggota KOMINFO',
+                'photo'       => null,
+                'bio'         => 'Fullstack Developer Tim Pengembang Website HMTIF-UNPAS Kabinet Kartala.',
+                'instagram'   => '@alfimiftanur',
+                'order'       => 5,
+                'is_active'   => true,
+                'is_bph'      => false,
+            ],
+            [
+                'division_id' => $kominfo->id,
+                'name'        => 'Emir Fahrezi',
+                'position'    => 'Anggota KOMINFO',
+                'photo'       => null,
+                'bio'         => 'Frontend Developer Tim Pengembang Website HMTIF-UNPAS Kabinet Kartala.',
+                'instagram'   => '@emirfahrezi',
+                'order'       => 6,
+                'is_active'   => true,
+                'is_bph'      => false,
+            ],
 
             // KESKRAF
             [
