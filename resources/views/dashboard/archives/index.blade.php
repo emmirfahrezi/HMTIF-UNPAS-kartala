@@ -115,7 +115,10 @@
                     $shareUrl = data_get($item, 'share_url', '');
                     $shortUrl = data_get($item, 'short_url', '');
                     $qrCodeUrl = data_get($item, 'qr_code_url', '');
-                    $qrDownloadUrl = data_get($item, 'qr_download_url', '');
+                    $shareToken = data_get($item, 'share_token', '');
+                    $qrDownloadUrl = filled($shareToken)
+                        ? route('archives.qr-download', $shareToken)
+                        : data_get($item, 'qr_download_url', '');
                 @endphp
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200" data-row-id="{{ $archiveId }}">
                     @if($permissions['delete'] ?? false)
