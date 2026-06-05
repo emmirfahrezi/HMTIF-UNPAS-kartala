@@ -99,14 +99,15 @@ class Archive extends Model
 
     public function getQrCodeUrlAttribute(): string
     {
-        $target   = urlencode($this->short_url);
-        $logoUrl  = config('app.logo_qr_url', '');  // APP_LOGO_QR_URL — PNG kecil khusus QR, max ~100KB
+        $target  = urlencode($this->short_url);
+        // APP_LOGO_QR_URL overrides; falls back to APP_LOGO_URL (HMTIF logo); empty → no logo
+        $logoUrl = config('app.logo_qr_url') ?: config('app.logo_url', '');
 
         $logoParam = $logoUrl !== ''
-            ? '&centerImageUrl=' . urlencode($logoUrl) . '&centerImageSizeRatio=0.25&ecLevel=H'
+            ? '&centerImageUrl=' . urlencode($logoUrl) . '&centerImageSizeRatio=0.20'
             : '';
 
-        return "https://quickchart.io/qr?text={$target}&size=300&format=png{$logoParam}";
+        return "https://quickchart.io/qr?text={$target}&size=300&format=png&ecLevel=H{$logoParam}";
     }
 
     public function getQrDownloadUrlAttribute(): string

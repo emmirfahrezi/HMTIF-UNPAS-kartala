@@ -6,6 +6,7 @@ use App\Models\DeveloperTeamMember;
 use App\Models\DeveloperTeamMilestone;
 use App\Models\DeveloperTeamSetting;
 use App\Models\Period;
+use App\Models\Staff;
 use Illuminate\Database\Seeder;
 
 class DeveloperTeamSeeder extends Seeder
@@ -31,9 +32,16 @@ class DeveloperTeamSeeder extends Seeder
         ];
 
         foreach ($members as $data) {
+            $staff = Staff::where('name', $data['name'])->first();
+
+            $values = $data + ['period_id' => $period->id];
+            if ($staff) {
+                $values['staff_id'] = $staff->id;
+            }
+
             DeveloperTeamMember::updateOrCreate(
                 ['period_id' => $period->id, 'name' => $data['name']],
-                $data + ['period_id' => $period->id]
+                $values
             );
         }
 
