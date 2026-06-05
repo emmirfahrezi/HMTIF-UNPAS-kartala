@@ -40,7 +40,7 @@
                     'activePeriod' => $activePeriod,
                     'content' => $content,
                     'periods' => $periods,
-                    'staffs' => $staffs ?? ($staffOptions ?? collect()),
+                    'staffOptions' => $staffOptions ?? collect(),
                     'milestoneStatusOptions' => $milestoneStatusOptions ?? null,
                 ])
 

@@ -12,10 +12,11 @@
     $shareUrl = data_get($archive, 'share_url', '');
     $shortUrl = data_get($archive, 'short_url', '');
     $qrCodeUrl = data_get($archive, 'qr_code_url', '');
-    $qrDownloadUrl = data_get($archive, 'qr_download_url', '');
-    $previewUrl = \Illuminate\Support\Facades\Route::has('dashboard.archives.preview')
-        ? route('dashboard.archives.preview', $archive)
-        : $fileUrl;
+    $shareToken = data_get($archive, 'share_token', '');
+    $qrDownloadUrl = filled($shareToken)
+        ? route('archives.qr-download', $shareToken)
+        : data_get($archive, 'qr_download_url', '');
+    $previewUrl = route('dashboard.archives.preview', $archive);
 @endphp
 
 <x-layouts.dashboard pageTitle="Detail Arsip" :breadcrumbs="[['label' => 'Pengarsipan', 'href' => '/dashboard/archives'], ['label' => 'Detail']]">

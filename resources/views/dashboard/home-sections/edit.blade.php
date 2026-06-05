@@ -13,7 +13,22 @@
         'identity' => ['image' => 'Gambar Identitas & Harapan'],
         'era' => ['image' => 'Gambar Era Baru: Kartala'],
     ];
+    $mediaGuides = [
+        'hero' => [
+            'title' => 'Ukuran Gambar Hero',
+            'text' => 'Gunakan rasio 16:9. Rekomendasi 1920 x 1080 px, minimum 1600 x 900 px. Simpan objek utama di tengah karena gambar dipakai sebagai background.',
+        ],
+        'identity' => [
+            'title' => 'Ukuran Gambar Identitas',
+            'text' => 'Gunakan rasio 4:5. Rekomendasi 1200 x 1500 px, minimum 800 x 1000 px. Pilih foto portrait dengan ruang aman di area wajah.',
+        ],
+        'era' => [
+            'title' => 'Ukuran Gambar Era',
+            'text' => 'Gunakan rasio 4:5. Rekomendasi 1200 x 1500 px, minimum 800 x 1000 px. Hindari teks kecil di dalam gambar agar tetap terbaca di mobile.',
+        ],
+    ];
     $mediaFieldLabels = $mediaFields[$section] ?? [];
+    $activeMediaGuide = $mediaGuides[$section] ?? null;
     $missingMediaKeys = collect(array_keys($mediaFieldLabels))->reject(fn ($key) => isset($fields[$key]));
     $totalFieldCount = $fields->count() + $missingMediaKeys->count();
 @endphp
@@ -348,6 +363,22 @@
                         </div>
                     </div>
                 </div>
+
+                @if($activeMediaGuide)
+                    <div class="bg-blue-50 dark:bg-blue-500/10 rounded-2xl p-6 border border-blue-100 dark:border-blue-500/20">
+                        <div class="flex gap-4">
+                            <div class="size-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-500 flex items-center justify-center shrink-0">
+                                <x-heroicon-s-photo class="size-5" />
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-black text-blue-600 dark:text-blue-500 uppercase tracking-widest mb-1">{{ $activeMediaGuide['title'] }}</h4>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                                    {{ $activeMediaGuide['text'] }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </aside>
         </div>
 

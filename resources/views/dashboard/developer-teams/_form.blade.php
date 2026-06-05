@@ -2,15 +2,7 @@
     $periodValue = $activePeriod?->label ?? ($period ?? null)?->label ?? request('period', '');
     $members = ($content['members'] ?? collect())->values();
     $milestones = ($content['milestones'] ?? collect())->values();
-    $staffOptions = collect($staffs ?? $staffOptions ?? [])
-        ->map(function ($staff) {
-            $divisionName = data_get($staff, 'division.name') ?: data_get($staff, 'division_name') ?: 'Tanpa Divisi';
-
-            return [
-                'id' => data_get($staff, 'id'),
-                'label' => trim(data_get($staff, 'name', 'Staff') . ' - ' . $divisionName),
-            ];
-        })
+    $staffOptions = collect($staffOptions ?? [])
         ->filter(fn ($staff) => filled(data_get($staff, 'id')))
         ->values();
     $milestoneStatusOptions = $milestoneStatusOptions ?? [
@@ -117,7 +109,7 @@
                                     model-expression="member.staff_id"
                                     :options="$staffOptions"
                                     option-value-key="id"
-                                    option-label-key="label"
+                                    option-label-key="developer_team_option_label"
                                     placeholder="Pilih staff..."
                                     required />
                             </div>
