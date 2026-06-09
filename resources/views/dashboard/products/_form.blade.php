@@ -99,6 +99,37 @@
                 Gambar Produk
             </h3>
 
+            <div class="mb-6 rounded-2xl border border-primary/15 bg-primary/5 p-5 dark:bg-primary/10">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="min-w-0">
+                        <h4 class="mb-1 text-xs font-black uppercase tracking-widest text-primary">Upload Banyak Gambar</h4>
+                        <p class="text-[11px] font-medium leading-relaxed text-slate-600 dark:text-slate-400">
+                            Pilih beberapa file dari device untuk langsung ditambahkan ke galeri produk. Urutan otomatis dimulai setelah gambar yang diatur manual.
+                        </p>
+                    </div>
+
+                    <label
+                        for="bulkProductImages"
+                        class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-xs font-black uppercase tracking-widest text-white shadow-sm transition hover:bg-primary/90">
+                        <x-heroicon-o-arrow-up-tray class="size-4" />
+                        Pilih File
+                    </label>
+                </div>
+
+                <input
+                    id="bulkProductImages"
+                    type="file"
+                    name="bulk_image_files[]"
+                    accept="image/png,image/jpg,image/jpeg"
+                    multiple
+                    class="sr-only"
+                    onchange="updateBulkProductImagesSummary(this)">
+
+                <p id="bulkProductImagesSummary" class="mt-3 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    Belum ada file dipilih.
+                </p>
+            </div>
+
             @php
                 $imageCount = $product?->images?->count() ?? 0;
             @endphp
@@ -347,5 +378,21 @@
 
         ensureProductImagePreview(event.target);
     });
+
+    function updateBulkProductImagesSummary(input) {
+        const summary = document.getElementById('bulkProductImagesSummary');
+        const files = Array.from(input.files || []);
+
+        if (!summary) return;
+
+        if (files.length === 0) {
+            summary.textContent = 'Belum ada file dipilih.';
+            return;
+        }
+
+        const names = files.slice(0, 3).map((file) => file.name).join(', ');
+        const extra = files.length > 3 ? `, +${files.length - 3} file lainnya` : '';
+        summary.textContent = `${files.length} file dipilih: ${names}${extra}`;
+    }
 </script>
 @endpush

@@ -24,6 +24,7 @@
                 shortUrl: '',
                 qrCodeUrl: '',
                 qrDownloadUrl: '',
+                qrLogoUrl: '',
             },
         }"
         class="space-y-8"
@@ -115,6 +116,7 @@
                     $shareUrl = data_get($item, 'share_url', '');
                     $shortUrl = data_get($item, 'short_url', '');
                     $qrCodeUrl = data_get($item, 'qr_code_url', '');
+                    $qrLogoUrl = data_get($item, 'qr_logo_url', config('app.logo_url'));
                     $shareToken = data_get($item, 'share_token', '');
                     $qrDownloadUrl = filled($shareToken)
                         ? route('archives.qr-download', $shareToken)
@@ -158,6 +160,7 @@
                                 data-short-url="{{ $shortUrl }}"
                                 data-qr-code-url="{{ $qrCodeUrl }}"
                                 data-qr-download-url="{{ $qrDownloadUrl }}"
+                                data-qr-logo-url="{{ $qrLogoUrl }}"
                                 onclick="
                                     window.dispatchEvent(new CustomEvent('archive-share-data', {
                                         detail: {
@@ -166,6 +169,7 @@
                                             shortUrl: this.dataset.shortUrl || '',
                                             qrCodeUrl: this.dataset.qrCodeUrl || '',
                                             qrDownloadUrl: this.dataset.qrDownloadUrl || '',
+                                            qrLogoUrl: this.dataset.qrLogoUrl || '',
                                         },
                                     }));
                                     window.dispatchEvent(new CustomEvent('open-modal', {

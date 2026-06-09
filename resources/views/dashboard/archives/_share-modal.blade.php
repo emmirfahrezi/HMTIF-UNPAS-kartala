@@ -9,6 +9,7 @@
                 shortUrl: '',
                 qrCodeUrl: '',
                 qrDownloadUrl: '',
+                qrLogoUrl: '',
             },
             init() {
                 window.addEventListener('archive-share-data', (event) => {
@@ -18,6 +19,7 @@
                         shortUrl: event.detail?.shortUrl || '',
                         qrCodeUrl: event.detail?.qrCodeUrl || '',
                         qrDownloadUrl: event.detail?.qrDownloadUrl || '',
+                        qrLogoUrl: event.detail?.qrLogoUrl || '',
                     };
                 });
             },
@@ -85,11 +87,16 @@
         <div x-show="mode === 'qr'" x-cloak class="space-y-5">
             <template x-if="archive.qrCodeUrl">
                 <div class="flex flex-col items-center gap-4">
-                    <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800">
+                    <div class="relative rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800">
                         <img :src="archive.qrCodeUrl" alt="QR Code Arsip" class="size-64 rounded-xl object-contain">
+                        <template x-if="archive.qrLogoUrl">
+                            <span class="absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border border-white bg-white p-1.5 shadow-md">
+                                <img :src="archive.qrLogoUrl" alt="Logo HMTIF" class="size-full rounded-xl object-contain">
+                            </span>
+                        </template>
                     </div>
                     <p class="max-w-sm text-center text-xs font-medium text-slate-500 dark:text-slate-400">
-                        QR Code dikirim dari backend dan sudah memuat logo HMTIF UNPAS di tengah.
+                        QR Code dibuat backend; logo HMTIF UNPAS ditampilkan di tengah preview.
                     </p>
                 </div>
             </template>
