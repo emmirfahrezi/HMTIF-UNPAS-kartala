@@ -49,7 +49,7 @@
                         <div class="aspect-[3/4]">
                             <img :src="avatarPreview" alt="Foto profil"
                                 class="h-full w-full object-cover transition duration-300"
-                                @error="avatarPreview = @js(asset('images/placeholders/member.svg'))"
+                                x-on:error="avatarPreview = @js(asset('images/placeholders/member.svg'))"
                                 style="object-position: center top;">
                         </div>
                     </div>
