@@ -1,13 +1,4 @@
 <x-layouts.dashboard pageTitle="Aspirasi" :breadcrumbs="[['label' => 'Aspirasi']]">
-    @php
-        $statusColorClasses = [
-            'pending' => 'bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400',
-            'reviewed' => 'bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400',
-            'resolved' => 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400',
-            'rejected' => 'bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400',
-        ];
-    @endphp
-
     <x-molecules.dashboard.cards.filter-card searchRoute="/dashboard/aspirations" searchPlaceholder="Cari aspirasi...">
         <div
             class="flex items-center gap-2 border-l border-slate-100 dark:border-slate-800 pl-3 transition-colors duration-300">
@@ -39,12 +30,8 @@
                 <td class="px-5 py-4 text-sm font-medium text-slate-700 dark:text-slate-200 max-w-xs truncate">
                     {{ $item->subject }}</td>
                 <td class="px-5 py-4">
-                    @php
-                        $statusColorClass = $statusColorClasses[$item->status] ?? 'bg-slate-500/10 border border-slate-500/20 text-slate-600 dark:text-slate-400';
-                    @endphp
-                    <span
-                        class="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase {{ $statusColorClass }}">
-                        {{ $item->status }}
+                    <span class="{{ $item->status_color_class }} rounded-full px-2.5 py-0.5 text-xs font-medium">
+                        {{ $item->status_label }}
                     </span>
                 </td>
 

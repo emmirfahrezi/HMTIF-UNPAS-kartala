@@ -116,7 +116,7 @@
                     $shareUrl = data_get($item, 'share_url', '');
                     $shortUrl = data_get($item, 'short_url', '');
                     $qrCodeUrl = data_get($item, 'qr_code_url', '');
-                    $qrLogoUrl = data_get($item, 'qr_logo_url', config('app.logo_url'));
+                    $qrLogoUrl = data_get($item, 'qr_logo_url', '');
                     $shareToken = data_get($item, 'share_token', '');
                     $qrDownloadUrl = filled($shareToken)
                         ? route('archives.qr-download', $shareToken)
