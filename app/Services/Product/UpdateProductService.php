@@ -18,7 +18,27 @@ class UpdateProductService
             $this->syncProductImages($product, $validated['images']);
         }
 
+        if (! empty($validated['bulk_image_files'])) {
+            $this->appendBulkImages($product, $validated['bulk_image_files']);
+        }
+
         return $product;
+    }
+
+    private function appendBulkImages(Product $product, array $files): void
+    {
+        $nextOrder = ($product->images()->max('order') ?? 0) + 1;
+
+        foreach ($files as $file) {
+            if (! $file instanceof UploadedFile) {
+                continue;
+            }
+            $product->images()->create([
+                'image_path' => $file->store('products/images', 'public'),
+                'is_primary' => false,
+                'order'      => $nextOrder++,
+            ]);
+        }
     }
 
     private function syncProductImages(Product $product, array $images): void

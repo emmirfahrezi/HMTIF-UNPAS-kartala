@@ -99,20 +99,19 @@ class Archive extends Model
 
     public function getQrCodeUrlAttribute(): string
     {
-        $target  = urlencode($this->short_url);
-        // APP_LOGO_QR_URL overrides; falls back to APP_LOGO_URL (HMTIF logo); empty → no logo
-        $logoUrl = config('app.logo_qr_url') ?: config('app.logo_url', '');
-
-        $logoParam = $logoUrl !== ''
-            ? '&centerImageUrl=' . urlencode($logoUrl) . '&centerImageSizeRatio=0.20'
-            : '';
-
-        return "https://quickchart.io/qr?text={$target}&size=300&format=png&ecLevel=H{$logoParam}";
+        $target = urlencode($this->short_url);
+        return "https://quickchart.io/qr?text={$target}&size=300&format=png&ecLevel=H";
     }
 
     public function getQrDownloadUrlAttribute(): string
     {
         return $this->qr_code_url . '&download=1';
+    }
+
+    // Logo ditangani oleh FE sebagai overlay — QuickChart gagal fetch logo Supabase (403)
+    public function getQrLogoUrlAttribute(): string
+    {
+        return config('app.logo_qr_url') ?: config('app.logo_url', '');
     }
 
     // -----------------------------------------------------------------------

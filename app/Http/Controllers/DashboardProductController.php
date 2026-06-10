@@ -51,6 +51,8 @@ class DashboardProductController extends Controller
             'images.*.image_file'  => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'images.*.order'       => 'nullable|integer',
             'images.*.is_primary'  => 'sometimes|boolean',
+            'bulk_image_files'     => 'nullable|array',
+            'bulk_image_files.*'   => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $product = $this->createProduct->execute($validated);
@@ -85,6 +87,8 @@ class DashboardProductController extends Controller
             'images.*.image_file'  => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'images.*.order'       => 'nullable|integer',
             'images.*.is_primary'  => 'sometimes|boolean',
+            'bulk_image_files'     => 'nullable|array',
+            'bulk_image_files.*'   => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $this->updateProduct->execute($product, $validated);
