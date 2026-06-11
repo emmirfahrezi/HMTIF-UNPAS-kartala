@@ -1,12 +1,12 @@
 <x-layouts.dashboard pageTitle="Detail Aspirasi" :breadcrumbs="[['label' => 'Aspirasi', 'href' => '/dashboard/aspirations'], ['label' => 'Detail']]">
     @php
-        $statusColorClasses = [
+        $statusColorClass = $aspiration->status_color_class ?: match ($aspiration->status) {
             'pending' => 'bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400',
             'reviewed' => 'bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400',
             'resolved' => 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400',
             'rejected' => 'bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400',
-        ];
-        $statusColorClass = $statusColorClasses[$aspiration->status] ?? 'bg-slate-500/10 border border-slate-500/20 text-slate-600 dark:text-slate-400';
+            default => 'bg-slate-500/10 border border-slate-500/20 text-slate-600 dark:text-slate-400',
+        };
     @endphp
 
     <div x-data="{ feedbackModalOpen: false }" class="max-w-5xl mx-auto space-y-6">
@@ -24,8 +24,8 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase {{ $statusColorClass }}">
-                    {{ $aspiration->status }}
+                <span class="{{ $statusColorClass }} rounded-full px-4 py-1.5 text-xs font-medium">
+                    {{ $aspiration->status_label }}
                 </span>
                 
 

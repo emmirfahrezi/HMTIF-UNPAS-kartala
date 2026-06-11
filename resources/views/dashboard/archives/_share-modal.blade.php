@@ -3,6 +3,7 @@
         x-data="{
             mode: 'link',
             copiedTarget: '',
+            downloadingQr: false,
             archive: {
                 name: '',
                 shareUrl: '',
@@ -35,6 +36,122 @@
             },
             copyShortLink() {
                 this.copyValue(this.archive.shortUrl || this.archive.shareUrl, 'short');
+            },
+            slugify(value) {
+                return (value || 'arsip')
+                    .toString()
+                    .normalize('NFKD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '') || 'arsip';
+            },
+            loadQrImage(url) {
+                return new Promise((resolve, reject) => {
+                    const image = new Image();
+                    image.crossOrigin = 'anonymous';
+                    image.onload = () => resolve(image);
+                    image.onerror = () => reject(new Error('Gambar QR gagal dimuat.'));
+                    image.src = url;
+                });
+            },
+            qrImageUrl(size) {
+                try {
+                    const url = new URL(this.archive.qrCodeUrl, window.location.href);
+                    url.searchParams.set('size', size);
+                    return url.toString();
+                } catch (error) {
+                    return this.archive.qrCodeUrl;
+                }
+            },
+            drawRoundedRect(context, x, y, width, height, radius) {
+                if (typeof context.roundRect === 'function') {
+                    context.beginPath();
+                    context.roundRect(x, y, width, height, radius);
+                    context.fill();
+                    return;
+                }
+
+                context.beginPath();
+                context.moveTo(x + radius, y);
+                context.lineTo(x + width - radius, y);
+                context.quadraticCurveTo(x + width, y, x + width, y + radius);
+                context.lineTo(x + width, y + height - radius);
+                context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                context.lineTo(x + radius, y + height);
+                context.quadraticCurveTo(x, y + height, x, y + height - radius);
+                context.lineTo(x, y + radius);
+                context.quadraticCurveTo(x, y, x + radius, y);
+                context.fill();
+            },
+            canvasToBlob(canvas) {
+                return new Promise((resolve, reject) => {
+                    canvas.toBlob((blob) => {
+                        blob ? resolve(blob) : reject(new Error('File QR gagal dibuat.'));
+                    }, 'image/png');
+                });
+            },
+            triggerQrDownload(blob) {
+                const objectUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = objectUrl;
+                link.download = `qr-${this.slugify(this.archive.name)}.png`;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+            },
+            async downloadPlainQr() {
+                const url = this.archive.qrDownloadUrl || this.archive.qrCodeUrl;
+                if (!url) return;
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `qr-${this.slugify(this.archive.name)}.png`;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            },
+            async downloadQrWithLogo() {
+                if (!this.archive.qrCodeUrl || this.downloadingQr) return;
+
+                this.downloadingQr = true;
+
+                try {
+                    const size = 1200;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = size;
+                    canvas.height = size;
+
+                    const context = canvas.getContext('2d');
+                    context.fillStyle = '#ffffff';
+                    context.fillRect(0, 0, size, size);
+
+                    const qrImage = await this.loadQrImage(this.qrImageUrl(size));
+                    context.drawImage(qrImage, 0, 0, size, size);
+
+                    if (this.archive.qrLogoUrl) {
+                        const logoImage = await this.loadQrImage(this.archive.qrLogoUrl);
+                        const boxSize = 264;
+                        const logoSize = 186;
+                        const boxPosition = (size - boxSize) / 2;
+                        const logoPosition = (size - logoSize) / 2;
+
+                        context.fillStyle = '#ffffff';
+                        this.drawRoundedRect(context, boxPosition, boxPosition, boxSize, boxSize, 48);
+                        context.drawImage(logoImage, logoPosition, logoPosition, logoSize, logoSize);
+                    }
+
+                    const blob = await this.canvasToBlob(canvas);
+                    this.triggerQrDownload(blob);
+                    if (typeof toast === 'function') toast('QR Code berlogo sedang diunduh', 'success');
+                } catch (error) {
+                    console.error(error);
+                    await this.downloadPlainQr();
+                    if (typeof toast === 'function') toast('Logo gagal disematkan, QR polos diunduh sebagai fallback', 'error');
+                } finally {
+                    this.downloadingQr = false;
+                }
             },
         }"
         class="space-y-6"
@@ -113,8 +230,13 @@
                 <x-atoms.shared.button type="button" variant="ghost" @click="copyShortLink()" icon="heroicon-o-clipboard-document">
                     Salin Link
                 </x-atoms.shared.button>
-                <x-atoms.shared.button href="#" x-bind:href="archive.qrDownloadUrl || archive.qrCodeUrl || '#'" download variant="primary" icon="heroicon-o-arrow-down-tray">
-                    Download QR
+                <x-atoms.shared.button
+                    type="button"
+                    variant="primary"
+                    icon="heroicon-o-arrow-down-tray"
+                    @click="downloadQrWithLogo()"
+                    x-bind:disabled="downloadingQr || !archive.qrCodeUrl">
+                    <span x-text="downloadingQr ? 'Menyiapkan...' : 'Download QR'"></span>
                 </x-atoms.shared.button>
             </div>
         </div>
