@@ -1,8 +1,17 @@
 <?php
 
 use App\Models\Aspiration;
+use App\Services\Mail\MailService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\MockInterface;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->mock(MailService::class, function (MockInterface $mock) {
+        $mock->shouldIgnoreMissing();
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -22,11 +31,11 @@ uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 it('saves valid aspiration to database and redirects with success indicator', function () {
     $response = $this->post(route('aspirations.store'), [
-        'nama'   => 'Ahmad Fauzi',
-        'nim'    => '23552011015',
-        'email'  => 'ahmad@student.unpas.ac.id',
+        'nama' => 'Ahmad Fauzi',
+        'nim' => '23552011015',
+        'email' => 'ahmad@student.unpas.ac.id',
         'tujuan' => 'Permohonan Perbaikan Proyektor Ruang C4',
-        'pesan'  => 'Proyektor di ruang C4 sering mati saat digunakan untuk presentasi. Mohon segera diperbaiki.',
+        'pesan' => 'Proyektor di ruang C4 sering mati saat digunakan untuk presentasi. Mohon segera diperbaiki.',
     ]);
 
     $response->assertRedirect();
@@ -37,14 +46,14 @@ it('saves valid aspiration to database and redirects with success indicator', fu
     $this->assertDatabaseHas('aspirations', [
         'subject' => 'Permohonan Perbaikan Proyektor Ruang C4',
         'message' => 'Proyektor di ruang C4 sering mati saat digunakan untuk presentasi. Mohon segera diperbaiki.',
-        'status'  => 'pending',
+        'status' => 'pending',
     ]);
 });
 
 it('saves anonymous aspiration (without name, nim, and email)', function () {
     $response = $this->post(route('aspirations.store'), [
         'tujuan' => 'Aspirasi Anonim tentang Kebersihan Toilet',
-        'pesan'  => 'Toilet di lantai 3 perlu lebih sering dibersihkan.',
+        'pesan' => 'Toilet di lantai 3 perlu lebih sering dibersihkan.',
     ]);
 
     $response->assertRedirect();
@@ -59,7 +68,7 @@ it('saves anonymous aspiration (without name, nim, and email)', function () {
 
 it('rejects aspiration when required field tujuan is missing', function () {
     $response = $this->post(route('aspirations.store'), [
-        'nama'  => 'Budi',
+        'nama' => 'Budi',
         'pesan' => 'Pesan valid tapi tanpa tujuan.',
         // 'tujuan' missing
     ]);
@@ -70,7 +79,7 @@ it('rejects aspiration when required field tujuan is missing', function () {
 
 it('rejects aspiration when required field pesan is missing', function () {
     $response = $this->post(route('aspirations.store'), [
-        'nama'   => 'Budi',
+        'nama' => 'Budi',
         'tujuan' => 'Tujuan valid',
         // 'pesan' missing
     ]);
@@ -81,9 +90,9 @@ it('rejects aspiration when required field pesan is missing', function () {
 
 it('rejects aspiration when both required fields are empty', function () {
     $response = $this->post(route('aspirations.store'), [
-        'nama'   => 'Budi',
+        'nama' => 'Budi',
         'tujuan' => '',
-        'pesan'  => '',
+        'pesan' => '',
     ]);
 
     $response->assertSessionHasErrors(['tujuan', 'pesan']);
@@ -91,9 +100,9 @@ it('rejects aspiration when both required fields are empty', function () {
 
 it('rejects aspiration with invalid email format', function () {
     $response = $this->post(route('aspirations.store'), [
-        'email'  => 'bukan-email-valid',
+        'email' => 'bukan-email-valid',
         'tujuan' => 'Tujuan valid',
-        'pesan'  => 'Pesan valid dan cukup panjang.',
+        'pesan' => 'Pesan valid dan cukup panjang.',
     ]);
 
     $response->assertSessionHasErrors(['email']);
@@ -103,7 +112,7 @@ it('rejects aspiration with invalid email format', function () {
 it('accepts aspiration with no email (optional field)', function () {
     $response = $this->post(route('aspirations.store'), [
         'tujuan' => 'Aspirasi tanpa email',
-        'pesan'  => 'Ini adalah pesan aspirasi tanpa email.',
+        'pesan' => 'Ini adalah pesan aspirasi tanpa email.',
     ]);
 
     $response->assertRedirect();
@@ -114,12 +123,12 @@ it('accepts aspiration with no email (optional field)', function () {
 it('generates unique tracking code for each aspiration', function () {
     $this->post(route('aspirations.store'), [
         'tujuan' => 'Aspirasi pertama',
-        'pesan'  => 'Pesan aspirasi pertama untuk test tracking code.',
+        'pesan' => 'Pesan aspirasi pertama untuk test tracking code.',
     ]);
 
     $this->post(route('aspirations.store'), [
         'tujuan' => 'Aspirasi kedua',
-        'pesan'  => 'Pesan aspirasi kedua untuk test tracking code.',
+        'pesan' => 'Pesan aspirasi kedua untuk test tracking code.',
     ]);
 
     $aspirations = Aspiration::all();
