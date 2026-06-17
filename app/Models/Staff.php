@@ -29,8 +29,8 @@ class Staff extends Model
         'Wakil Sekretaris Umum'  => 'WASEKUM',
         'Bendahara Umum'         => 'BEND',
         'Wakil Bendahara Umum'   => 'WABEND',
-        'Kepala Bidang 1'        => 'KAB 1',
-        'Kepala Bidang 2'        => 'KAB 2',
+        'Kepala Bidang I'        => 'KAB I',
+        'Kepala Bidang II'       => 'KAB II',
     ];
 
     protected $fillable = [
