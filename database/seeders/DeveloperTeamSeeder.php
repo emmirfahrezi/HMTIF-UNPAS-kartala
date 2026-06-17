@@ -27,8 +27,8 @@ class DeveloperTeamSeeder extends Seeder
         }
 
         $members = [
-            ['name' => 'Alfi Mifta Nurhakim', 'role' => 'Fullstack Developer', 'division' => 'KOMINFO', 'display_order' => 1],
-            ['name' => 'Aufa Ramadhan',        'role' => 'Backend Developer',   'division' => 'KOMINFO', 'display_order' => 2],
+            ['name' => 'Alfi Mifta Nurhakim', 'role' => 'Backend Developer',   'division' => 'KOMINFO', 'display_order' => 1],
+            ['name' => 'Aufa Ramadhan',        'role' => 'Frontend Developer',  'division' => 'KOMINFO', 'display_order' => 2],
         ];
 
         foreach ($members as $data) {
@@ -64,21 +64,21 @@ class DeveloperTeamSeeder extends Seeder
                 'period_label'  => 'Jan 2026',
                 'title'         => 'Implementasi Modul Pengarsipan Digital',
                 'description'   => 'Pembangunan sistem pengarsipan dokumen dan aset organisasi yang terstruktur, mudah dicari, dan dapat diakses oleh pengurus berwenang.',
-                'status'        => 'current',
+                'status'        => 'done',
                 'display_order' => 3,
             ],
             [
                 'period_label'  => 'Mar 2026',
                 'title'         => 'Modul Notulensi & Berita Acara',
                 'description'   => 'Pengembangan fitur pencatatan notulensi rapat dan pembuatan berita acara resmi secara digital dengan manajemen peserta dan tanda tangan.',
-                'status'        => 'planned',
+                'status'        => 'done',
                 'display_order' => 4,
             ],
             [
                 'period_label'  => 'Jun 2026',
                 'title'         => 'Sistem Role Access & Menu Access',
                 'description'   => 'Implementasi manajemen hak akses berbasis peran (Role-Based Access Control) untuk mengatur navigasi menu dan fitur bagi setiap level anggota pengurus.',
-                'status'        => 'planned',
+                'status'        => 'current',
                 'display_order' => 5,
             ],
         ];
