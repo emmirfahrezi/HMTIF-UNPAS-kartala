@@ -3,6 +3,11 @@
 return [
 
     /*
+     * URL gambar hero halaman utama (placeholder saat database belum diisi).
+     */
+    'home_hero_url' => env('APP_HOME_HERO_URL'),
+
+    /*
      * Deskripsi tugas dan wewenang jabatan BPH.
      */
     'bph_roles' => [

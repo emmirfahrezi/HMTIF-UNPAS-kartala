@@ -6,11 +6,10 @@
     $subtitle = data_get($homeSections, 'hero.description', 'Membangun harmoni, menginspirasi perubahan, dan mewujudkan Teknik Informatika yang lebih progresif melalui dedikasi dan kerja nyata.');
     $btnPrimary = data_get($homeSections, 'hero.btn_primary', 'Jelajahi Program');
     $btnSecondary = data_get($homeSections, 'hero.btn_secondary', 'Tentang Kami');
-    $defaultBackgroundImage = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80';
     $backgroundImageValue = trim((string) data_get($homeSections, 'hero.background_image', ''));
     $backgroundImage = $backgroundImageValue !== ''
         ? media_url($backgroundImageValue, 'images/placeholders/hero-home.svg')
-        : $defaultBackgroundImage;
+        : (config('hmtif.home_hero_url') ?: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80');
 @endphp
 
 <div

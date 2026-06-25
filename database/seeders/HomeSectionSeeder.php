@@ -36,7 +36,7 @@ class HomeSectionSeeder extends Seeder
 
             // Visi & Misi
             ['section' => 'vision_mission', 'key' => 'label',       'value' => 'Arah Gerak Organisasi',                    'order' => 1],
-            ['section' => 'vision_mission', 'key' => 'title',       'value' => 'Visi & Misi HMTIF',                        'order' => 2],
+            ['section' => 'vision_mission', 'key' => 'title',       'value' => 'Visi & Misi Ketua Umum',                        'order' => 2],
             ['section' => 'vision_mission', 'key' => 'description', 'value' => 'Fondasi nilai yang membentuk cara kami berpikir, bergerak, dan berkontribusi untuk mahasiswa Teknik Informatika UNPAS.', 'order' => 3],
             ['section' => 'vision_mission', 'key' => 'vision_title',  'value' => 'Visi Utama',                             'order' => 4],
             ['section' => 'vision_mission', 'key' => 'vision_text',   'value' => 'Mewujudkan HMTIF UNPAS sebagai organisasi yang adaptif, edukatif, dan inspiratif dalam membangun harmoni serta kemajuan Teknik Informatika.', 'order' => 5],

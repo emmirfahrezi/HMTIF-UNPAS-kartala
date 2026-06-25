@@ -27,8 +27,8 @@ class DeveloperTeamSeeder extends Seeder
         }
 
         $members = [
-            ['name' => 'Alfimiftanur', 'role' => 'Fullstack Developer', 'division' => 'KOMINFO', 'display_order' => 1],
-            ['name' => 'Emir Fahrezi', 'role' => 'Frontend Developer',  'division' => 'KOMINFO', 'display_order' => 2],
+            ['name' => 'Alfi Mifta Nurhakim', 'role' => 'Backend Developer',   'division' => 'KOMINFO', 'display_order' => 1],
+            ['name' => 'Aufa Ramadhan',        'role' => 'Frontend Developer',  'division' => 'KOMINFO', 'display_order' => 2],
         ];
 
         foreach ($members as $data) {
@@ -46,10 +46,41 @@ class DeveloperTeamSeeder extends Seeder
         }
 
         $milestones = [
-            ['period_label' => 'Jun 2025', 'title' => 'Inisiasi Proyek',     'description' => 'Setup repositori, arsitektur awal, dan tim inti.', 'status' => 'done',    'display_order' => 1],
-            ['period_label' => 'Sep 2025', 'title' => 'Rilis Beta',          'description' => 'Peluncuran versi beta untuk pengujian internal.',    'status' => 'done',    'display_order' => 2],
-            ['period_label' => 'Jan 2026', 'title' => 'Rilis v1.0',          'description' => 'Peluncuran resmi website ke publik.',                'status' => 'current', 'display_order' => 3],
-            ['period_label' => 'Jun 2026', 'title' => 'Handover Periode',    'description' => 'Dokumentasi dan serah terima ke tim periode berikutnya.', 'status' => 'planned', 'display_order' => 4],
+            [
+                'period_label'  => 'Jun 2025',
+                'title'         => 'Perencanaan & Arsitektur Sistem',
+                'description'   => 'Perancangan arsitektur website, penentuan tech stack, setup repositori, dan pembentukan tim pengembang HMTIF-UNPAS Kabinet Kartala.',
+                'status'        => 'done',
+                'display_order' => 1,
+            ],
+            [
+                'period_label'  => 'Sep 2025',
+                'title'         => 'Pengembangan Fitur Aspirasi Mahasiswa',
+                'description'   => 'Implementasi modul aspirasi yang memungkinkan mahasiswa menyampaikan masukan, saran, dan aspirasi secara digital kepada pengurus.',
+                'status'        => 'done',
+                'display_order' => 2,
+            ],
+            [
+                'period_label'  => 'Jan 2026',
+                'title'         => 'Implementasi Modul Pengarsipan Digital',
+                'description'   => 'Pembangunan sistem pengarsipan dokumen dan aset organisasi yang terstruktur, mudah dicari, dan dapat diakses oleh pengurus berwenang.',
+                'status'        => 'done',
+                'display_order' => 3,
+            ],
+            [
+                'period_label'  => 'Mar 2026',
+                'title'         => 'Modul Notulensi & Berita Acara',
+                'description'   => 'Pengembangan fitur pencatatan notulensi rapat dan pembuatan berita acara resmi secara digital dengan manajemen peserta dan tanda tangan.',
+                'status'        => 'done',
+                'display_order' => 4,
+            ],
+            [
+                'period_label'  => 'Jun 2026',
+                'title'         => 'Sistem Role Access & Menu Access',
+                'description'   => 'Implementasi manajemen hak akses berbasis peran (Role-Based Access Control) untuk mengatur navigasi menu dan fitur bagi setiap level anggota pengurus.',
+                'status'        => 'current',
+                'display_order' => 5,
+            ],
         ];
 
         foreach ($milestones as $data) {
