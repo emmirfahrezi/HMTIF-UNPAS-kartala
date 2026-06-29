@@ -170,6 +170,7 @@
                                         <img src="{{ $item->thumbnail_url }}"
                                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                             alt="{{ $item->title }}"
+                                            loading="lazy" decoding="async"
                                             data-fallback-src="{{ asset('images/placeholders/activity.svg') }}">
                                         <div class="absolute top-3 left-3">
                                             <span class="px-2.5 py-0.5 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md text-primary text-[9px] font-black uppercase tracking-wider rounded-md border border-primary/10 italic">

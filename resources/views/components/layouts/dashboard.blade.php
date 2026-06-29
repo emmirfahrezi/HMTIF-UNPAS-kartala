@@ -53,8 +53,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/dashboard/main.js'])
 
-    {{-- Quill Rich Text Editor --}}
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    {{-- Quill CSS bundled via npm/Vite (dashboard.css @import) --}}
 
     <script>
         if (localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia(
@@ -481,8 +480,7 @@
     </div>
 
 
-    {{-- Quill JS --}}
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    {{-- Quill JS bundled via npm/Vite (window.Quill exposed in main.js) --}}
 
     {{ $scripts ?? '' }}
     @stack('scripts')

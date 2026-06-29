@@ -1,6 +1,6 @@
-<x-layouts.app title="Detail Bidang | HMTIF-UNPAS"
-    description="Halaman detail struktur bidang HMTIF-UNPAS berisi koordinator dan anggota aktif."
-    keywords="Detail Bidang HMTIF, Struktur Divisi HMTIF, Anggota Bidang" :transparent="false">
+<x-layouts.app :title="$division->name . ' | HMTIF-UNPAS'"
+    :description="\Illuminate\Support\Str::limit($division->description, 155)"
+    :keywords="$division->name . ', Bidang HMTIF, Divisi HMTIF, Struktur Organisasi HMTIF-UNPAS'" :transparent="false">
     <x-organisms.pages.division-detail.hero :division="$division" />
     <x-organisms.pages.division-detail.index :division="$division" />
 </x-layouts.app>
