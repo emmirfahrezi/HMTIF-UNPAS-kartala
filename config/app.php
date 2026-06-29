@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'admin_email' => env('ADMIN_EMAIL', env('MAIL_FROM_ADDRESS', 'admin@hmtif.ac.id')),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -65,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'Asia/Jakarta'),
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +124,9 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'logo_url'       => env('APP_LOGO_URL', 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/logo-hmtif-rb.png'),
+    'logo_unpas_url' => env('APP_LOGO_UNPAS_URL', 'https://zbdknbyvmvbgsvmepdvk.supabase.co/storage/v1/object/public/images/Logo_UNPAS.png'),
+    'logo_qr_url'    => env('APP_LOGO_QR_URL', ''),
 
 ];

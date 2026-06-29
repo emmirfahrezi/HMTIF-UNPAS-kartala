@@ -1,0 +1,192 @@
+@php
+    $profilePhotoValue = $user->photo ?: ($staff?->photo ?? '');
+    $profilePhotoPreview = filled($profilePhotoValue)
+        ? $user->avatar_url
+        : asset('images/placeholders/member.svg');
+@endphp
+
+<x-layouts.dashboard pageTitle="Profil Saya" :breadcrumbs="[['label' => 'Profil Saya']]">
+    <div x-data="{
+        editMode: false,
+        name: @js($user->name ?? ''),
+        email: @js($user->email ?? ''),
+        instagram: @js($staff?->instagram ?? ''),
+        linkedin: @js($staff?->linkedin ?? ''),
+        bio: @js($staff?->bio ?? ''),
+        avatarPreview: @js($profilePhotoPreview),
+        position: @js($staff?->position ?? $user->role_label ?? 'Pengurus'),
+        passwordModalOpen: false,
+        submitting: false,
+
+        cancel() {
+            this.editMode = false;
+            this.name = @js($user->name ?? '');
+            this.email = @js($user->email ?? '');
+            this.instagram = @js($staff?->instagram ?? '');
+            this.linkedin = @js($staff?->linkedin ?? '');
+            this.bio = @js($staff?->bio ?? '');
+            this.avatarPreview = @js($profilePhotoPreview);
+        }
+    }" @image-picker-updated.window="if ($event.detail.name === 'photo') avatarPreview = $event.detail.preview || avatarPreview"
+        class="max-w-6xl mx-auto space-y-8">
+
+        {{-- Form Utama Profil --}}
+        <form action="{{ route('dashboard.profile.update') }}" method="POST" enctype="multipart/form-data"
+            @submit="submitting = true" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            @csrf
+            @method('PUT')
+
+            {{-- Kolom Kiri: Foto, Info Singkat, & Tombol Kontrol --}}
+            <div class="space-y-6">
+                <div
+                    class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden transition-all duration-300">
+                    {{-- Decorative Background Circle --}}
+                    <div class="absolute -top-12 -right-12 size-32 bg-primary/5 rounded-full blur-2xl"></div>
+
+                    {{-- Portrait Profile Photo --}}
+                    <div
+                        class="relative mt-2 w-full max-w-[18rem] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm ring-1 ring-primary/10 dark:border-slate-800 dark:bg-slate-950">
+                        <div class="aspect-[3/4]">
+                            <img :src="avatarPreview" alt="Foto profil"
+                                class="h-full w-full object-cover transition duration-300"
+                                x-on:error="avatarPreview = @js(asset('images/placeholders/member.svg'))"
+                                style="object-position: center top;">
+                        </div>
+                    </div>
+
+                    {{-- User Basic Info --}}
+                    <h3 class="mt-5 max-w-full break-words text-lg font-bold text-slate-850 dark:text-white" x-text="name"></h3>
+                    <p class="max-w-full break-all text-xs text-slate-400 dark:text-slate-500 font-medium" x-text="email"></p>
+
+                    {{-- Badge Role --}}
+                    <span
+                        class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary border border-primary/10">
+                        <x-heroicon-s-shield-check class="size-3.5" />
+                        {{ $user->role_label ?? 'Staff' }}
+                    </span>
+
+                    <hr class="w-full my-6 border-slate-100 dark:border-slate-800">
+
+                    {{-- Input Foto Profil --}}
+                    <div x-show="editMode" x-cloak class="w-full text-left">
+                        <x-molecules.shared.forms.image-picker label="Foto Profil" name="photo" file-name="photo_file"
+                            :value="$profilePhotoValue"
+                            helper="Pilih link gambar atau upload dari device. Format: JPG, JPEG, PNG. Maks. 2MB." />
+                    </div>
+
+                    <hr x-show="editMode" x-cloak class="w-full my-6 border-slate-100 dark:border-slate-800">
+
+                    {{-- Menu Cepat / Tindakan Utama --}}
+                    <div class="w-full space-y-3">
+                        {{-- Tombol Ganti Password (Paling Atas) --}}
+                        <x-atoms.shared.button type="button" variant="outline-slate"
+                            class="w-full py-3 hover:!bg-amber-500/10 hover:!text-amber-500 hover:!border-amber-500/20 text-amber-600 dark:text-amber-400 !border !border-amber-500/10 dark:!border-amber-500/20 bg-amber-500/5 dark:bg-amber-500/10 shadow-none"
+                            @click="passwordModalOpen = true">
+                            <x-heroicon-o-key class="size-4" />
+                            Ganti Password
+                        </x-atoms.shared.button>
+
+                        {{-- Tombol Edit / Batal (Alpine Toggle) --}}
+                        <x-atoms.shared.button type="button" variant="outline-slate" class="w-full py-3"
+                            x-show="!editMode" @click="editMode = true">
+                            <x-heroicon-o-pencil-square class="size-4" />
+                            Edit Profil
+                        </x-atoms.shared.button>
+
+                        <x-atoms.shared.button type="button" variant="danger"
+                            class="w-full py-3 !bg-red-500/10 hover:!bg-red-500/20 !text-red-500 !border !border-red-500/20 shadow-none"
+                            x-show="editMode" x-cloak @click="cancel(); $el.closest('form').reset()">
+                            <x-heroicon-o-x-circle class="size-4" />
+                            Batal Edit
+                        </x-atoms.shared.button>
+
+                        {{-- Tombol Simpan Perubahan (Disabled if not editMode) --}}
+                        <x-atoms.shared.button type="submit" variant="primary"
+                            class="w-full py-3 shadow-lg shadow-primary/20" x-bind:disabled="!editMode">
+                            <template x-if="!submitting">
+                                <span class="flex items-center justify-center gap-2">
+                                    <x-heroicon-o-check-circle class="size-4" />
+                                    Simpan Perubahan
+                                </span>
+                            </template>
+                            <template x-if="submitting">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg class="animate-spin size-4" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4" fill="none"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                    Memproses...
+                                </span>
+                            </template>
+                        </x-atoms.shared.button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Kolom Kanan: Form Data Pribadi & Media Sosial --}}
+            <div class="lg:col-span-2 space-y-6">
+                {{-- Card: Data Personal (Menggunakan Form Section) --}}
+                <x-molecules.shared.forms.form-section title="Informasi Akun"
+                    description="Kelola nama profil dan detail dasar keanggotaan Anda" icon="heroicon-s-user"
+                    bg-icon="heroicon-o-user">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {{-- Input Nama --}}
+                        <x-molecules.shared.forms.form-input type="text" label="Nama Lengkap" name="name"
+                            x-model="name" x-bind:disabled="!editMode"
+                            class="disabled:opacity-60 disabled:cursor-not-allowed" required />
+
+                        {{-- Input Posisi (Readonly) --}}
+                        <x-molecules.shared.forms.form-input type="text" label="Jabatan Pengurus (Read Only)"
+                            name="position" value="{{ $staff?->position ?? 'Admin Sistem' }}"
+                            class="disabled:opacity-60 disabled:cursor-not-allowed" disabled />
+
+                        {{-- Input Email --}}
+                        <x-molecules.shared.forms.form-input type="email" label="Alamat Email" name="email"
+                            x-model="email" x-bind:disabled="!editMode"
+                            class="disabled:opacity-60 disabled:cursor-not-allowed" required />
+
+                        {{-- Input Hak Akses (Readonly) --}}
+                        <x-molecules.shared.forms.form-input type="text" label="Tingkat Akses (Read Only)"
+                            name="role" value="{{ $user->role_label ?? '' }}"
+                            class="disabled:opacity-60 disabled:cursor-not-allowed" disabled />
+
+                        {{-- Input Bio --}}
+                        <div class="md:col-span-2">
+                            <x-molecules.shared.forms.form-input type="textarea" label="Biografi Singkat" name="bio"
+                                x-model="bio" x-bind:disabled="!editMode"
+                                class="disabled:opacity-60 disabled:cursor-not-allowed" rows="3" />
+                        </div>
+                    </div>
+                </x-molecules.shared.forms.form-section>
+
+                {{-- Card: Sosial Media (Menggunakan Form Section) --}}
+                <x-molecules.shared.forms.form-section title="Sosial Media & Tautan"
+                    description="Hubungkan profil pengurus Anda dengan jejaring luar" icon="heroicon-s-link"
+                    bg-icon="heroicon-o-link">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {{-- Instagram --}}
+                        <x-molecules.shared.forms.form-input type="text" label="Username Instagram"
+                            name="instagram" x-model="instagram" x-bind:disabled="!editMode"
+                            class="disabled:opacity-60 disabled:cursor-not-allowed" placeholder="@username" />
+
+                        {{-- LinkedIn --}}
+                        <x-molecules.shared.forms.form-input type="text" label="LinkedIn" name="linkedin"
+                            x-model="linkedin" x-bind:disabled="!editMode"
+                            class="disabled:opacity-60 disabled:cursor-not-allowed"
+                            placeholder="URL profil LinkedIn..." />
+
+                    </div>
+                </x-molecules.shared.forms.form-section>
+            </div>
+        </form>
+
+        {{-- Modal Ganti Password (Alpine Overlay Modal) --}}
+        @include('dashboard.profile._change-password-modal')
+
+    </div>
+</x-layouts.dashboard>

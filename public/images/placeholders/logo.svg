@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Logo HMTIF">
+  <rect width="160" height="160" rx="28" fill="#0f2618"/>
+  <rect x="18" y="18" width="124" height="124" rx="22" fill="#248232" opacity="0.25"/>
+  <path d="M42 118V42h18v28h40V42h18v76h-18V88H60v30z" fill="#ffffff"/>
+</svg>
