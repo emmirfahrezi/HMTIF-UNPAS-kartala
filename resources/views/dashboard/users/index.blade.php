@@ -83,11 +83,17 @@
                         </span>
                     </td>
                     <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">{{ $item->created_at?->format('d M Y') }}</td>
-                    @if ($permissions['update'] || $permissions['delete'])
+                    @php
+                        $isAdminRow   = $item->role === 'admin';
+                        $isSelf       = $item->id === auth()->id();
+                        $canEdit      = $permissions['update'] && !($isAdminRow && !auth()->user()->isAdmin());
+                        $canDelete    = $permissions['delete'] && !$isSelf && !($isAdminRow && !auth()->user()->isAdmin());
+                    @endphp
+                    @if ($canEdit || $canDelete)
                     <td class="px-5 py-4 text-right">
                         <div class="flex items-center justify-end gap-1">
-                            @if ($permissions['update'])
-                            <x-atoms.shared.button 
+                            @if ($canEdit)
+                            <x-atoms.shared.button
                                 variant="ghost"
                                 size="sm"
                                 href="/dashboard/users/{{ $item->id }}/edit"
@@ -96,8 +102,8 @@
                                 <x-heroicon-o-pencil-square class="size-5" />
                             </x-atoms.shared.button>
                             @endif
-                            @if ($permissions['delete'])
-                            <x-atoms.shared.button 
+                            @if ($canDelete)
+                            <x-atoms.shared.button
                                 variant="ghost"
                                 size="sm"
                                 @click="openDeleteModal('/dashboard/users/{{ $item->id }}', 'Hapus pengguna &quot;{{ $item->name }}&quot;?')"
@@ -108,6 +114,8 @@
                             @endif
                         </div>
                     </td>
+                    @else
+                    <td class="px-5 py-4"></td>
                     @endif
                 </tr>
             @empty
