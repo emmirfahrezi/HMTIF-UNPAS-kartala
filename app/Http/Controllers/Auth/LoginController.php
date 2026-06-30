@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\ResponseResource;
 use App\Services\Auth\LoginService;
 use App\Services\Auth\LogoutService;
@@ -30,12 +31,9 @@ class LoginController extends Controller
     }
 
     /** Proses login via form (POST /login). */
-    public function loginWeb(Request $request): RedirectResponse
+    public function loginWeb(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $credentials = $request->validated();
 
         try {
             $this->loginService->execute($credentials);
@@ -61,12 +59,9 @@ class LoginController extends Controller
     // -----------------------------------------------------------------------
 
     /** Login via API — mengembalikan token. */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $credentials = $request->validated();
 
         try {
             $result = $this->loginService->execute($credentials);

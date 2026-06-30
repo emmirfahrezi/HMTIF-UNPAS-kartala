@@ -89,7 +89,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
+            'locked_until'      => 'datetime',
         ];
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->locked_until !== null && $this->locked_until->isFuture();
     }
 
     public function staff(): BelongsTo

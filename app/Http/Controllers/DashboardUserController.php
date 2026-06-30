@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Dashboard\BulkDestroyUserRequest;
+use App\Http\Requests\Dashboard\StoreUserRequest;
+use App\Http\Requests\Dashboard\UpdateUserRequest;
 use App\Models\ActivityLog;
 use App\Models\Staff;
 use App\Models\User;
@@ -35,14 +38,9 @@ class DashboardUserController extends Controller
         return view('dashboard.users.create', compact('staffOptions', 'roleOptions'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validated = $request->validate([
-            'email'    => 'required|email|max:255|unique:users,email',
-            'role'     => 'required|string|in:admin,bph,koordinator,staff',
-            'staff_id' => 'nullable|exists:staffs,id',
-        ]);
-
+        $validated = $request->validated();
         $validated['password'] = bcrypt(Str::random(32));
 
         $user = $this->createUser->execute($validated);
@@ -73,20 +71,18 @@ class DashboardUserController extends Controller
 
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
+
         $staffOptions = Staff::orderBy('name', 'asc')->get()->mapWithKeys(fn ($s) => [$s->id => $s->name])->toArray();
         $roleOptions  = User::ROLES;
         return view('dashboard.users.edit', compact('user', 'staffOptions', 'roleOptions'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'email'    => "required|email|max:255|unique:users,email,{$user->id}",
-            'role'     => 'required|string|in:admin,bph,koordinator,staff',
-            'staff_id' => 'nullable|exists:staffs,id',
-        ]);
+        $this->authorize('update', $user);
 
-        $this->updateUser->execute($user, $validated);
+        $this->updateUser->execute($user, $request->validated());
 
         ActivityLog::record('updated', $user, "Memperbarui pengguna: {$user->email}");
 
@@ -95,6 +91,8 @@ class DashboardUserController extends Controller
 
     public function destroy(User $user)
     {
+        $this->authorize('delete', $user);
+
         $email = $user->email;
         ActivityLog::record('deleted', $user, "Menghapus pengguna: {$email}");
 
@@ -103,16 +101,19 @@ class DashboardUserController extends Controller
         return redirect()->route('dashboard.users')->with('success', 'Pengguna berhasil dihapus.');
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDestroy(BulkDestroyUserRequest $request)
     {
-        $ids = $request->validate(['ids' => 'required|array', 'ids.*' => 'string'])['ids'];
+        $users = User::whereIn('id', $request->validated('ids'))->get();
 
-        $users = User::whereIn('id', $ids)->get();
+        foreach ($users as $user) {
+            $this->authorize('delete', $user);
+        }
+
         foreach ($users as $user) {
             ActivityLog::record('deleted', $user, "Menghapus pengguna: {$user->email}");
             $this->deleteUser->execute($user);
         }
 
-        return redirect()->back()->with('success', count($ids) . ' pengguna berhasil dihapus.');
+        return redirect()->back()->with('success', count($users) . ' pengguna berhasil dihapus.');
     }
 }
