@@ -34,7 +34,7 @@ class Staff extends Model
     ];
 
     protected $fillable = [
-        'division_id', 'name', 'position', 'photo', 'bio',
+        'division_id', 'name', 'npm', 'position', 'photo', 'bio',
         'instagram', 'linkedin', 'order', 'is_active', 'is_bph',
     ];
 
