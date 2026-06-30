@@ -45,7 +45,7 @@ class DashboardActivityController extends Controller
             'location'         => 'nullable|string|max:255',
             'registration_url' => 'nullable|url|max:1024',
             'status'           => 'required|in:upcoming,ongoing,past',
-            'file'             => 'nullable|file|max:10240',
+            'file'             => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip|max:10240',
         ]);
 
         $activity = $this->createActivity->execute(
@@ -78,7 +78,7 @@ class DashboardActivityController extends Controller
             'location'         => 'nullable|string|max:255',
             'registration_url' => 'nullable|url|max:1024',
             'status'           => 'required|in:upcoming,ongoing,past',
-            'file'             => 'nullable|file|max:10240',
+            'file'             => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip|max:10240',
         ]);
 
         $this->updateActivity->execute(

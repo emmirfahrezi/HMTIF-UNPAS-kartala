@@ -88,7 +88,7 @@ Route::middleware('guest')->group(function () {
 // Dashboard (Auth Required)
 // =============================================================================
 
-Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function () {
+Route::middleware(['auth', 'check.menu', \App\Http\Middleware\NoIndexDashboard::class])->prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Announcements

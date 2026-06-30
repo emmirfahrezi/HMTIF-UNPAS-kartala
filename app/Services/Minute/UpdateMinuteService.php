@@ -4,6 +4,7 @@ namespace App\Services\Minute;
 
 use App\Models\Minute;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateMinuteService
@@ -17,13 +18,15 @@ class UpdateMinuteService
             $validated['dokumentasi_file'] = $file->store('minutes/files', 'public');
         }
 
-        $minute->update($validated);
+        return DB::transaction(function () use ($minute, $validated) {
+            $minute->update($validated);
 
-        if (isset($validated['attendees'])) {
-            $this->syncMinuteAttendees($minute, $validated['attendees']);
-        }
+            if (isset($validated['attendees'])) {
+                $this->syncMinuteAttendees($minute, $validated['attendees']);
+            }
 
-        return $minute;
+            return $minute;
+        });
     }
 
     private function syncMinuteAttendees(Minute $minute, array $attendees): void
