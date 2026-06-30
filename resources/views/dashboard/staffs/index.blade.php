@@ -416,7 +416,7 @@
 
     @if ($permissions['update'])
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+        {{-- Sortable bundled via npm/Vite (window.Sortable exposed in main.js) --}}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const tables = document.querySelectorAll('tbody');

@@ -62,6 +62,7 @@
                     aria-label="Tampilkan gambar produk {{ $index + 1 }}">
                     <img src="{{ $img }}"
                         class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                        loading="lazy" decoding="async"
                         data-fallback-src="{{ $fallbackImage }}">
                 </button>
             @endforeach

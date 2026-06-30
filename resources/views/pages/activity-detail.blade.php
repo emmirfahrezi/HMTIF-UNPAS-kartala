@@ -1,5 +1,32 @@
 <x-layouts.app :title="$activity->title . ' | HMTIF-UNPAS'" :description="strip_tags($activity->description ?: 'Lihat rincian lengkap kegiatan HMTIF-UNPAS.')"
     keywords="Detail Acara HMTIF, Info Kegiatan Informatika, Event Mahasiswa UNPAS" :transparent="false">
+    <x-slot:head>
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Event",
+            "name": "{{ e($activity->title) }}",
+            "description": "{{ e(strip_tags($activity->description ?? '')) }}",
+            "startDate": "{{ $activity->start_date?->toIso8601String() }}",
+            @if ($activity->end_date)
+            "endDate": "{{ $activity->end_date->toIso8601String() }}",
+            @endif
+            @if ($activity->location)
+            "location": {
+                "@@type": "Place",
+                "name": "{{ e($activity->location) }}"
+            },
+            @endif
+            "image": "{{ $activity->thumbnail_url }}",
+            "url": "{{ url()->current() }}",
+            "organizer": {
+                "@@type": "Organization",
+                "name": "HMTIF-UNPAS",
+                "url": "{{ url('/') }}"
+            }
+        }
+        </script>
+    </x-slot:head>
     @php
         $heroImage = $activity->thumbnail_url;
         

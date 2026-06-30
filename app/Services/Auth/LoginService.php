@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginService
 {
-    public function execute(array $credentials): array
+    public function execute(#[\SensitiveParameter] array $credentials): array
     {
         if (! Auth::attempt($credentials)) {
             throw new AuthenticationException('Email atau password salah.');

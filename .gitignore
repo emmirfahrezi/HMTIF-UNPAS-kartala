@@ -1,4 +1,5 @@
 *.log
+/public/sitemap.xml
 .DS_Store
 .env
 .env.backup

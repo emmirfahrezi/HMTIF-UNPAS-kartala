@@ -7,11 +7,13 @@ use App\Models\DeveloperTeamMilestone;
 use App\Models\DeveloperTeamSetting;
 use App\Models\Period;
 use App\Models\Staff;
+use Illuminate\Support\Facades\DB;
 
 class SaveDeveloperTeamContentService
 {
     public function execute(array $validated, Period $period): void
     {
+        DB::transaction(function () use ($validated, $period) {
         // Simpan copy hero global (upsert — selalu satu record)
         $setting = DeveloperTeamSetting::first() ?? new DeveloperTeamSetting();
         $setting->fill([
@@ -60,5 +62,6 @@ class SaveDeveloperTeamContentService
                 'display_order' => (int) $order,
             ]);
         }
+        }); // end DB::transaction
     }
 }

@@ -1,6 +1,0 @@
-# https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Allow: /
-
-# Sitemaps
-Sitemap: http://127.0.0.1:8000/sitemap.xml

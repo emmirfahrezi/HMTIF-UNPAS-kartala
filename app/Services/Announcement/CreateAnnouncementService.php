@@ -4,6 +4,7 @@ namespace App\Services\Announcement;
 
 use App\Models\Announcement;
 use Illuminate\Http\UploadedFile;
+use Mews\Purifier\Facades\Purifier;
 
 class CreateAnnouncementService
 {
@@ -24,6 +25,10 @@ class CreateAnnouncementService
 
         // Buang key thumbnail_file agar tidak masuk ke DB
         unset($validated['thumbnail_file']);
+
+        if (isset($validated['body'])) {
+            $validated['body'] = Purifier::clean($validated['body']);
+        }
 
         return Announcement::create($validated);
     }
