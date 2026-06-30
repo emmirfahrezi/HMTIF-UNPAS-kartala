@@ -37,13 +37,24 @@
                     <p class="text-primary font-black uppercase tracking-[0.2em] text-sm">{{ $staff->position }}</p>
                 </div>
 
-                {{-- Bidang Info --}}
-                <div class="mb-10">
-                    <p class="text-[10px] text-body/50 font-black uppercase tracking-widest mb-3">Bidang / Divisi</p>
-                    <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-section border border-border">
-                        <x-heroicon-o-briefcase class="size-5 text-primary" />
-                        <span class="font-bold text-heading">{{ $staff->division?->name ?? 'Belum ditetapkan' }}</span>
+                {{-- Bidang & NPM --}}
+                <div class="mb-10 flex flex-wrap gap-4">
+                    <div>
+                        <p class="text-[10px] text-body/50 font-black uppercase tracking-widest mb-3">Bidang / Divisi</p>
+                        <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-section border border-border">
+                            <x-heroicon-o-briefcase class="size-5 text-primary" />
+                            <span class="font-bold text-heading">{{ $staff->division?->name ?? 'Belum ditetapkan' }}</span>
+                        </div>
                     </div>
+                    @if($staff->npm)
+                    <div>
+                        <p class="text-[10px] text-body/50 font-black uppercase tracking-widest mb-3">NPM</p>
+                        <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-section border border-border">
+                            <x-heroicon-o-identification class="size-5 text-primary" />
+                            <span class="font-bold text-heading font-mono">{{ $staff->npm }}</span>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 {{-- Ringkasan / Bio --}}
