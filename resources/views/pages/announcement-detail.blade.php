@@ -1,5 +1,24 @@
 <x-layouts.app :title="$announcement->title . ' | HMTIF-UNPAS'" :description="$announcement->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($announcement->body), 160)"
     keywords="Info Penting HMTIF, Warta Terbaru Informatika, Pengumuman Mahasiswa" :transparent="false">
+    <x-slot:head>
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Article",
+            "headline": "{{ e($announcement->title) }}",
+            "description": "{{ e($announcement->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($announcement->body ?? ''), 160)) }}",
+            "image": "{{ $announcement->thumbnail_url }}",
+            "url": "{{ url()->current() }}",
+            "datePublished": "{{ $announcement->created_at->toIso8601String() }}",
+            "dateModified": "{{ $announcement->updated_at->toIso8601String() }}",
+            "publisher": {
+                "@@type": "Organization",
+                "name": "HMTIF-UNPAS",
+                "url": "{{ url('/') }}"
+            }
+        }
+        </script>
+    </x-slot:head>
     @php
         $heroImage = $announcement->thumbnail_url;
         $relatedAnnouncements = $relatedAnnouncements ?? collect();

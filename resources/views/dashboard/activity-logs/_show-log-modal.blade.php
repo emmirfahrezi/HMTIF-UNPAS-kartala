@@ -30,7 +30,7 @@
             <p class="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Deskripsi Tambahan</p>
             <div class="prose prose-sm prose-slate max-w-none break-words rounded-2xl border border-slate-200/60 bg-slate-50 p-5 text-slate-600 dark:prose-invert dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300">
                 @if ($item->description)
-                    {!! $item->description !!}
+                    {{ $item->description }}
                 @else
                     <p>Tidak ada deskripsi tambahan.</p>
                 @endif

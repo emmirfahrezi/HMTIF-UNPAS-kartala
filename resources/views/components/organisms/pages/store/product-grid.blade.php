@@ -21,6 +21,7 @@
                                 <img src="{{ $productImage }}"
                                     alt="{{ $product->name }}"
                                     class="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                    loading="lazy" decoding="async"
                                     data-fallback-src="{{ asset('images/placeholders/product.svg') }}">
                                 <div
                                     class="absolute inset-x-0 bottom-0 h-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity z-20">

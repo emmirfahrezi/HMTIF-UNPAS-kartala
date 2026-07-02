@@ -3,6 +3,12 @@
  * Consolidates smaller helpers into one file for cleaner project structure
  */
 
+import Quill from 'quill';
+import Sortable from 'sortablejs';
+
+window.Quill = Quill;
+window.Sortable = Sortable;
+
 // 1. Flash Message Auto-hide
 document.addEventListener('DOMContentLoaded', function() {
     const flashEl = document.getElementById('flashMessage');

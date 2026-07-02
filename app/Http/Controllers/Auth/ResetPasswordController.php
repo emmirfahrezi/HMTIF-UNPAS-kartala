@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\View\View;
 
 class ResetPasswordController extends Controller
@@ -22,15 +21,8 @@ class ResetPasswordController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(ResetPasswordRequest $request): RedirectResponse
     {
-        $request->validate([
-            'token'                 => 'required|string',
-            'email'                 => 'required|email',
-            'password'              => ['required', 'confirmed', PasswordRule::min(12)->mixedCase()->numbers()->symbols()],
-            'password_confirmation' => 'required|string',
-        ]);
-
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {

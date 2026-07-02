@@ -4,6 +4,7 @@ namespace App\Services\Activity;
 
 use App\Models\Activity;
 use Illuminate\Http\UploadedFile;
+use Mews\Purifier\Facades\Purifier;
 
 class CreateActivityService
 {
@@ -24,6 +25,10 @@ class CreateActivityService
 
         // Buang key thumbnail_file agar tidak masuk ke DB
         unset($validated['thumbnail_file']);
+
+        if (isset($validated['body'])) {
+            $validated['body'] = Purifier::clean($validated['body']);
+        }
 
         return Activity::create($validated);
     }

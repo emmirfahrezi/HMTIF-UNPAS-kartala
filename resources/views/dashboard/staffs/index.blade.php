@@ -219,6 +219,7 @@
                 }
                 $headers = array_merge($headers, [
                     ['label' => 'Nama'],
+                    ['label' => 'NPM'],
                     ['label' => 'Jabatan'],
                     ['label' => 'BPH'],
                     ['label' => 'Status'],
@@ -257,6 +258,7 @@
                                 <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $item->name }}</span>
                             </div>
                         </td>
+                        <td class="px-5 py-4 text-sm text-slate-400 dark:text-slate-500 font-mono">{{ $item->npm ?? '—' }}</td>
                         <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400 font-medium">{{ $item->position }}</td>
                         <td class="px-5 py-4">
                             @if ($item->is_bph)
@@ -416,7 +418,7 @@
 
     @if ($permissions['update'])
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+        {{-- Sortable bundled via npm/Vite (window.Sortable exposed in main.js) --}}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const tables = document.querySelectorAll('tbody');

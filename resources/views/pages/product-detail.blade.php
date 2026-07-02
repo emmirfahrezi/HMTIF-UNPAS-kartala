@@ -1,6 +1,6 @@
-<x-layouts.app title="Detail Produk | HMTIF Store"
-    description="Rincian produk resmi HMTIF-UNPAS. Cek spesifikasi bahan, ukuran, dan harga merchandise eksklusif HMTIF. Pesan sekarang melalui WhatsApp."
-    keywords="Merchandise Informatika, Hoodie Kartala, Atribut HMTIF-UNPAS, Jual Jaket Informatika" :transparent="false">
+<x-layouts.app :title="$product->name . ' | HMTIF Store'"
+    :description="\Illuminate\Support\Str::limit(strip_tags($product->description ?: 'Produk merchandise resmi HMTIF-UNPAS. Pesan sekarang melalui WhatsApp.'), 155)"
+    :keywords="$product->name . ', Merchandise HMTIF, Atribut HMTIF-UNPAS, HMTIF Store'" :transparent="false">
     <x-organisms.pages.product-detail.breadcrumb />
 
     <section class="py-16 bg-white overflow-hidden">

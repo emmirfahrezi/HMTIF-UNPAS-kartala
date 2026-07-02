@@ -50,7 +50,8 @@
                     @forelse($members as $member)
                         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-primary/30 hover:shadow-lg hover:shadow-slate-200/70">
                             <img src="{{ $member->photo_url }}" alt="{{ $member->display_name }}"
-                                class="size-14 rounded-2xl border border-slate-200 object-cover">
+                                class="size-14 rounded-2xl border border-slate-200 object-cover"
+                                loading="lazy" decoding="async">
                             <h3 class="mt-4 text-base font-black text-slate-950">{{ $member->display_name }}</h3>
                             <p class="mt-1 text-sm font-bold text-primary">{{ $member->role }}</p>
                             <p class="mt-3 flex items-center gap-1.5 text-xs font-bold text-slate-500">

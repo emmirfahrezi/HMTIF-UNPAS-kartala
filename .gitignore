@@ -1,4 +1,5 @@
 *.log
+/public/sitemap.xml
 .DS_Store
 .env
 .env.backup
@@ -22,7 +23,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-/.github
 /.github/copilot-instructions.md
 /.github/hooks/
 task-revisi.md

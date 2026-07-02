@@ -5,6 +5,7 @@ namespace App\Services\Activity;
 use App\Models\Activity;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Mews\Purifier\Facades\Purifier;
 
 class UpdateActivityService
 {
@@ -30,6 +31,10 @@ class UpdateActivityService
 
         // Buang key thumbnail_file agar tidak masuk ke DB
         unset($validated['thumbnail_file']);
+
+        if (isset($validated['body'])) {
+            $validated['body'] = Purifier::clean($validated['body']);
+        }
 
         $activity->update($validated);
 

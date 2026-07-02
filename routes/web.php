@@ -27,6 +27,13 @@ use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 // =============================================================================
+// Static-ish Files (served via Blade for dynamic APP_URL)
+// =============================================================================
+
+Route::get('/robots.txt', fn () => response(view('robots'), 200, ['Content-Type' => 'text/plain; charset=utf-8']));
+Route::get('/llms.txt',   fn () => response(view('llms'),   200, ['Content-Type' => 'text/plain; charset=utf-8']));
+
+// =============================================================================
 // Halaman Publik (Client)
 // =============================================================================
 
@@ -81,7 +88,7 @@ Route::middleware('guest')->group(function () {
 // Dashboard (Auth Required)
 // =============================================================================
 
-Route::middleware(['auth', 'check.menu'])->prefix('/dashboard')->group(function () {
+Route::middleware(['auth', 'check.menu', \App\Http\Middleware\NoIndexDashboard::class])->prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Announcements

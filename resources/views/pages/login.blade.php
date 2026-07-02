@@ -44,7 +44,7 @@
 
                     @if ($errors->has('email') || $errors->has('password'))
                         <div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 text-sm font-semibold leading-relaxed text-red-600">
-                            Email atau password salah.
+                            {{ $errors->first('email') ?: $errors->first('password') ?: 'Email atau password salah.' }}
                         </div>
                     @endif
 

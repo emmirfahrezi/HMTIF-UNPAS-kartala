@@ -15,8 +15,6 @@ class RegisterService
             'password' => Hash::make($data['password']),
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return ['user' => $user, 'token' => $token];
+        return ['user' => $user];
     }
 }
