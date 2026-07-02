@@ -41,7 +41,7 @@ Variables yang dibutuhkan BE:
     </table>
 
     <p style="margin: 0 0 24px; font-size: 12px; color: #94a3b8; text-align: center; line-height: 1.6;">
-        Link ini hanya berlaku selama <strong style="color: #64748b;">60 menit</strong> dan satu kali pakai.
+        Link ini hanya berlaku selama <strong style="color: #64748b;">30 menit</strong> dan satu kali pakai.
     </p>
 
     {{-- Alternative URL --}}
