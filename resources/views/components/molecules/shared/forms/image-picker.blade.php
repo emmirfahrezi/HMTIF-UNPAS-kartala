@@ -50,8 +50,9 @@
             if (!file) return;
             this.error = '';
             this.localFileName = file.name;
-            this.preview = URL.createObjectURL(file);
-            this.emitUpdate();
+            const reader = new FileReader();
+            reader.onload = (e) => { this.preview = e.target.result; this.emitUpdate(); };
+            reader.readAsDataURL(file);
         },
         async uploadWithEditor(event) {
             const file = event.target.files?.[0];
@@ -60,7 +61,9 @@
             this.error = '';
             this.localFileName = file.name;
             this.isUploading = true;
-            this.preview = URL.createObjectURL(file);
+            const reader = new FileReader();
+            reader.onload = (e) => { this.preview = e.target.result; };
+            reader.readAsDataURL(file);
 
             const formData = new FormData();
             formData.append('image', file);
