@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Mail\MailService;
 use App\Traits\GeneratesId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -96,6 +97,16 @@ class User extends Authenticatable
     public function isLocked(): bool
     {
         return $this->locked_until !== null && $this->locked_until->isFuture();
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $resetUrl = url(route('password.reset', [
+            'token' => $token,
+            'email' => $this->email,
+        ], false));
+
+        app(MailService::class)->sendResetPasswordLink($this->email, $resetUrl);
     }
 
     public function staff(): BelongsTo

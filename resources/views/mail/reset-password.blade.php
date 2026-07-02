@@ -1,17 +1,17 @@
 {{--
-Email: Setup Password untuk Akun Baru
+Email: Reset Password
 Variables yang dibutuhkan BE:
 - $email    : string (Email penerima)
-- $setupUrl : string (URL lengkap ke halaman setup password, termasuk token)
+- $resetUrl : string (URL lengkap ke halaman reset password, termasuk token)
 --}}
 
-<x-layouts.mail title="Setup Password — HMTIF-UNPAS">
+<x-layouts.mail title="Reset Password — HMTIF-UNPAS">
 
     <h1 style="margin: 0 0 8px; font-size: 22px; font-weight: 800; color: #0f172a; line-height: 1.3;">
-        Selamat Datang! 🎉
+        Permintaan Reset Password
     </h1>
     <p style="margin: 0 0 28px; font-size: 15px; color: #64748b; line-height: 1.6;">
-        Akun dashboard HMTIF-UNPAS telah dibuat untuk Anda. Silakan klik tombol di bawah untuk mengatur password akun Anda.
+        Kami menerima permintaan untuk mereset password akun dashboard HMTIF-UNPAS Anda. Klik tombol di bawah untuk membuat password baru.
     </p>
 
     {{-- Account Info Box --}}
@@ -29,16 +29,20 @@ Variables yang dibutuhkan BE:
     </table>
 
     {{-- CTA Button --}}
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 28px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 16px;">
         <tr>
             <td align="center">
-                <a href="{{ $setupUrl }}"
+                <a href="{{ $resetUrl }}"
                     style="display: inline-block; padding: 14px 36px; background-color: #166534; color: #ffffff; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);">
-                    🔐 Atur Password Sekarang
+                    🔑 Reset Password Sekarang
                 </a>
             </td>
         </tr>
     </table>
+
+    <p style="margin: 0 0 24px; font-size: 12px; color: #94a3b8; text-align: center; line-height: 1.6;">
+        Link ini hanya berlaku selama <strong style="color: #64748b;">60 menit</strong> dan satu kali pakai.
+    </p>
 
     {{-- Alternative URL --}}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
@@ -49,7 +53,7 @@ Variables yang dibutuhkan BE:
                     ⚠️ Tombol tidak berfungsi?</p>
                 <p style="margin: 0; font-size: 12px; color: #78716c; line-height: 1.6; word-break: break-all;">
                     Salin dan tempel link berikut di browser Anda:<br>
-                    <span style="color: #166534; font-weight: 600;">{{ $setupUrl }}</span>
+                    <span style="color: #166534; font-weight: 600;">{{ $resetUrl }}</span>
                 </p>
             </td>
         </tr>
@@ -58,7 +62,7 @@ Variables yang dibutuhkan BE:
     <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;">
 
     <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.6;">
-        Jika Anda merasa tidak mendaftar di HMTIF-UNPAS, abaikan email ini. Link ini hanya berlaku sementara dan satu kali pakai. Jika sudah kedaluwarsa, minta link baru melalui admin HMTIF atau alur reset password via email.
+        Jika Anda tidak merasa meminta reset password, abaikan email ini — password Anda tidak akan berubah. Jika Anda curiga ada aktivitas mencurigakan, segera hubungi admin HMTIF-UNPAS.
     </p>
 
 </x-layouts.mail>

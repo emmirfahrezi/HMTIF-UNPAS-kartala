@@ -144,7 +144,7 @@
                                 <div class="font-black text-slate-400 uppercase tracking-wide text-[10px] mb-1">Dokumen
                                 </div>
                                 @if ($activity->file)
-                                    <a href="{{ $activity->file }}" target="_blank" rel="noopener noreferrer"
+                                    <a href="{{ Str::startsWith($activity->file, ['http://', 'https://']) ? $activity->file : asset('storage/' . $activity->file) }}" target="_blank" rel="noopener noreferrer"
                                         class="font-semibold text-primary hover:underline">Lihat Lampiran</a>
                                 @else
                                     <div class="font-semibold text-heading">-</div>
