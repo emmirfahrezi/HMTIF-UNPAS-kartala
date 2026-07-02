@@ -97,14 +97,22 @@
                     :value="$announcement?->thumbnail ?? ''"
                     helper="Pilih link gambar atau upload dari device. Format: JPG, JPEG, PNG. Maks. 2MB. Kosongkan jika tidak ingin mengubah." />
 
-                <div class="space-y-2">
+                <div class="space-y-2" x-data="{ fileName: '' }">
                     <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">File Lampiran</label>
-                    <input type="file" name="file"
-                        class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-primary/5 dark:file:bg-primary/20 file:text-primary hover:file:bg-primary/10 transition cursor-pointer" />
+                    <label class="flex items-center gap-3 w-full rounded-2xl border border-slate-200/50 bg-white dark:border-slate-800/50 dark:bg-slate-950/45 px-4 py-3 cursor-pointer hover:border-primary/40 transition-all duration-200 group">
+                        <input type="file" name="file" class="sr-only"
+                            @change="fileName = $event.target.files[0]?.name ?? ''">
+                        <span class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest group-hover:bg-primary/20 transition">
+                            <x-heroicon-o-paper-clip class="size-3.5" />
+                            Pilih File
+                        </span>
+                        <span class="text-xs text-slate-400 dark:text-slate-500 truncate min-w-0"
+                            x-text="fileName || 'Belum ada file dipilih'"></span>
+                    </label>
                     @if ($announcement?->file)
-                        <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 mt-2">
-                            <x-heroicon-o-paper-clip class="size-4 text-slate-400 dark:text-slate-500" />
-                            <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 truncate">{{ $announcement->file }}</span>
+                        <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                            <x-heroicon-o-paper-clip class="size-4 text-slate-400 dark:text-slate-500 shrink-0" />
+                            <span class="text-[10px] font-medium text-slate-500 dark:text-slate-400 truncate">File saat ini: {{ $announcement->file }}</span>
                         </div>
                     @endif
                 </div>

@@ -88,7 +88,7 @@
 
                         @if ($announcement->file)
                             <div class="mt-8 pt-6 border-t border-slate-100">
-                                <a href="{{ $announcement->file }}" target="_blank" rel="noopener noreferrer"
+                                <a href="{{ Str::startsWith($announcement->file, ['http://', 'https://']) ? $announcement->file : asset('storage/' . $announcement->file) }}" target="_blank" rel="noopener noreferrer"
                                     class="inline-flex items-center gap-2 text-primary font-bold hover:underline">
                                     <x-heroicon-o-paper-clip class="size-4" />
                                     Buka Lampiran
