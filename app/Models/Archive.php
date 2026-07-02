@@ -84,6 +84,14 @@ class Archive extends Model
 
     public function getFileUrlAttribute(): string
     {
+        if (empty($this->file_path)) {
+            return '';
+        }
+
+        if (str_starts_with($this->file_path, 'http')) {
+            return $this->file_path;
+        }
+
         return Storage::disk('public')->url($this->file_path);
     }
 

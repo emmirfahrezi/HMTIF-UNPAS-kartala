@@ -54,6 +54,29 @@ class MailService
     }
 
     /**
+     * Kirim email reset password ke user.
+     */
+    public function sendResetPasswordLink(string $toEmail, string $resetUrl): bool
+    {
+        try {
+            $mail = $this->mailer();
+            $mail->addAddress($toEmail);
+            $mail->Subject = 'Reset Password — ' . config('app.name');
+            $mail->isHTML(true);
+            $mail->Body    = view('mail.reset-password', [
+                'email'    => $toEmail,
+                'resetUrl' => $resetUrl,
+            ])->render();
+            $mail->AltBody = "Klik link berikut untuk mereset password akun HMTIF-UNPAS Anda: {$resetUrl}";
+            $mail->send();
+            return true;
+        } catch (MailException $e) {
+            Log::error('PHPMailer reset-password error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Kirim notifikasi aspirasi masuk ke email admin.
      */
     public function sendAspirationNotification(array $aspiration): bool
