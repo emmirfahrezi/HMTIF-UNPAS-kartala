@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SetupPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class SetupPasswordController extends Controller
@@ -24,15 +23,8 @@ class SetupPasswordController extends Controller
     /**
      * Proses pengaturan password baru dari form.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(SetupPasswordRequest $request): RedirectResponse
     {
-        $request->validate([
-            'token'                 => 'required|string',
-            'email'                 => 'required|email',
-            'password'              => ['required', 'confirmed', Password::min(12)->mixedCase()->numbers()->symbols()],
-            'password_confirmation' => 'required|string',
-        ]);
-
         $record = DB::table('password_reset_tokens')
             ->where('email', $request->email)
             ->first();

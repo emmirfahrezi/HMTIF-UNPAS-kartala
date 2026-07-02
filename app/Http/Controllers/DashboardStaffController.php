@@ -48,6 +48,7 @@ class DashboardStaffController extends Controller
         $validated = $request->validate([
             'period_id'   => 'nullable|exists:periods,id',
             'name'        => 'required|string|max:255',
+            'npm'         => 'nullable|string|digits:9',
             'position'    => 'required|string|max:255',
             'division_id' => 'required|exists:divisions,id',
             'user_id'     => 'nullable|exists:users,id',
@@ -82,6 +83,7 @@ class DashboardStaffController extends Controller
         $validated = $request->validate([
             'period_id'   => 'nullable|exists:periods,id',
             'name'        => 'required|string|max:255',
+            'npm'         => 'nullable|string|digits:9',
             'position'    => 'required|string|max:255',
             'division_id' => 'required|exists:divisions,id',
             'user_id'     => 'nullable|exists:users,id',

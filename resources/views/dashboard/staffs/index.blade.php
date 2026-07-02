@@ -219,6 +219,7 @@
                 }
                 $headers = array_merge($headers, [
                     ['label' => 'Nama'],
+                    ['label' => 'NPM'],
                     ['label' => 'Jabatan'],
                     ['label' => 'BPH'],
                     ['label' => 'Status'],
@@ -257,6 +258,7 @@
                                 <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ $item->name }}</span>
                             </div>
                         </td>
+                        <td class="px-5 py-4 text-sm text-slate-400 dark:text-slate-500 font-mono">{{ $item->npm ?? '—' }}</td>
                         <td class="px-5 py-4 text-sm text-slate-500 dark:text-slate-400 font-medium">{{ $item->position }}</td>
                         <td class="px-5 py-4">
                             @if ($item->is_bph)

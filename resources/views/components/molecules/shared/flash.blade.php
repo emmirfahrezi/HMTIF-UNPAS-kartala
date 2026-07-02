@@ -19,9 +19,9 @@
     ];
 @endphp
 
-    <div 
-        x-data="{ 
-            show: false, 
+    <div x-cloak
+        x-data="{
+            show: false,
             type: '{{ $type ?? 'success' }}',
             message: '{{ $message ?? '' }}',
             icons: {

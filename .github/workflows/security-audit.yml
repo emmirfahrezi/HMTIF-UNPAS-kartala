@@ -1,0 +1,42 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [main, dev, dev-backend, dev-frontend, dev-security-seo]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  composer-audit:
+    name: Composer Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run composer audit
+        run: composer audit --format=table --abandoned=report --ignore-severity=low
+
+  npm-audit:
+    name: NPM Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high

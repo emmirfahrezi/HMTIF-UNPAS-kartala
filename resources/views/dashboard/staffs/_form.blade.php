@@ -43,6 +43,13 @@
                         placeholder="Contoh: Ketua Umum" :value="$staff?->position ?? ''" required />
                 </div>
 
+                <x-molecules.shared.forms.form-input
+                    label="NPM"
+                    name="npm"
+                    placeholder="Contoh: 233040028"
+                    :value="$staff?->npm ?? ''"
+                    helper="Nomor Pokok Mahasiswa (9 digit)." />
+
                 <x-molecules.shared.forms.form-input label="Divisi" name="division_id" type="select" :value="$staff?->division_id ?? ''"
                     :options="$divisions ?? []" required />
 
